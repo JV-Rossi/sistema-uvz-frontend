@@ -46,7 +46,7 @@ export default function Login({ setTelaAtual, setMensagem }) {
 
   return (
     <div style={{ maxWidth: '400px', margin: '50px auto', background: '#222', padding: '25px', borderRadius: '8px', color: '#fff' }}>
-      <h2>UVZ - Sistema de Controle de Acesso</h2>
+      <h2>CVSA - Sistema de Controle de Acesso</h2>
       <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <div>
           <label>Usuário (Login):</label>
