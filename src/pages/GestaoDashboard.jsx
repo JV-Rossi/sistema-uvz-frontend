@@ -41,7 +41,7 @@ export default function GestaoDashboard() {
         <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '1000px', margin: '0 auto', color: '#fff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <div>
-                    <h1>📊 Painel de Controle - Gestão UVZ</h1>
+                    <h1>📊 Painel de Controle - Gestão CVSA</h1>
                     <p style={{ color: '#aaa' }}>Consolidado de Visitas de Campo e Monitoramento de Endemias</p>
                     {usuarioNome && <p style={{ color: '#007bff', fontSize: '14px' }}>👤 Bem-vindo, {usuarioNome}!</p>}
                 </div>

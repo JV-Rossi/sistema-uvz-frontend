@@ -29,7 +29,7 @@ export default function Cadastro({ setTelaAtual, setMensagem }) {
 
   return (
     <div style={{ maxWidth: '400px', margin: '50px auto', background: '#222', padding: '25px', borderRadius: '8px', color: '#fff' }}>
-      <h2>UVZ - Cadastro de Funcionários</h2>
+      <h2>CVSA - Cadastro de Funcionários</h2>
       <form onSubmit={handleCadastro} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <div>
           <label>Nome Completo:</label>

@@ -62,7 +62,7 @@ export default function TecnicaDashboard() {
     return (
         <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '900px', margin: '0 auto', color: '#fff' }}>
             <div style={{ marginBottom: '20px' }}>
-                <h1>🔬 Painel da Equipe Técnica - Laboratório UVZ</h1>
+                <h1>🔬 Painel da Equipe Técnica - Laboratório CVSA</h1>
                 <p style={{ color: '#aaa' }}>Análise microscópica de vetores e emissão de laudos oficiais</p>
                 {usuarioNome && <p style={{ color: '#007bff', fontSize: '14px', margin: '5px 0 0 0' }}>👤 Técnico: {usuarioNome}</p>}
             </div>
