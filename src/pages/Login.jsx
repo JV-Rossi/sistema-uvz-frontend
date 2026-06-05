@@ -21,6 +21,7 @@ export default function Login({ setTelaAtual, setMensagem }) {
         localStorage.setItem('userCargo', cargoUsuario);
         localStorage.setItem('userLogin', loginUsername);
 
+        // 1. Atualiza o estado da tela localmente
         if (cargoUsuario === 'GESTAO') {
           setTelaAtual('gestao');
         } else if (cargoUsuario === 'TECNICO' || cargoUsuario === 'EQUIPE_TECNICA') {
@@ -29,6 +30,11 @@ export default function Login({ setTelaAtual, setMensagem }) {
         } else if (cargoUsuario === 'AGENTE_CAMPO') {
           setTelaAtual('campo');
         }
+
+        // 2. O PULO DO GATO: Atualiza a URL do navegador e força a renderização limpa do React
+        window.location.hash = '/';
+        window.location.reload();
+
       } else {
         setMensagem('❌ Usuário ou senha incorretos.');
       }
@@ -44,22 +50,22 @@ export default function Login({ setTelaAtual, setMensagem }) {
       <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <div>
           <label>Usuário (Login):</label>
-          <input 
-            type="text" 
-            value={loginUsername} 
-            onChange={(e) => setLoginUsername(e.target.value)} 
-            required 
-            style={{ width: '100%', padding: '8px', marginTop: '5px', background: '#333', color: '#fff', border: '1px solid #444', borderRadius: '4px' }} 
+          <input
+            type="text"
+            value={loginUsername}
+            onChange={(e) => setLoginUsername(e.target.value)}
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px', background: '#333', color: '#fff', border: '1px solid #444', borderRadius: '4px' }}
           />
         </div>
         <div>
           <label>Senha:</label>
-          <input 
-            type="password" 
-            value={loginPassword} 
-            onChange={(e) => setLoginPassword(e.target.value)} 
-            required 
-            style={{ width: '100%', padding: '8px', marginTop: '5px', background: '#333', color: '#fff', border: '1px solid #444', borderRadius: '4px' }} 
+          <input
+            type="password"
+            value={loginPassword}
+            onChange={(e) => setLoginPassword(e.target.value)}
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px', background: '#333', color: '#fff', border: '1px solid #444', borderRadius: '4px' }}
           />
         </div>
         <button type="submit" style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 'bold', borderRadius: '4px' }}>
@@ -68,8 +74,8 @@ export default function Login({ setTelaAtual, setMensagem }) {
       </form>
       <p style={{ textAlign: 'center', marginTop: '15px', color: '#ccc' }}>
         Novo por aqui?{' '}
-        <button 
-          onClick={() => { setTelaAtual('cadastro'); setMensagem(''); }} 
+        <button
+          onClick={() => { setTelaAtual('cadastro'); setMensagem(''); }}
           style={{ background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', textDecoration: 'underline', fontWeight: 'bold' }}
         >
           Cadastre um funcionário
