@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App.jsx'
 import GestaoDashboard from './pages/GestaoDashboard.jsx'
 import TecnicaDashboard from './pages/TecnicaDashboard.jsx'
@@ -9,7 +9,7 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Router>
       <Routes>
         {/* A rota raiz '/' carrega a nossa tela de Login/Cadastro */}
         <Route path="/" element={<App />} />
@@ -19,6 +19,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/dashboard-tecnica" element={<TecnicaDashboard />} />
         <Route path="/dashboard-campo" element={<CampoDashboard />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>,
 )
