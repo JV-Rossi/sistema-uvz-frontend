@@ -21,8 +21,13 @@ export default function CampoDashboard({ setTelaAtual }) {
         complemento: '',
         tipo: 'CASA',
         pendencia: 'NAO',
+        // Inspecionados:
         a2: 0, b: 0, c: 0, d1: 0, d2: 0, e: 0,
-        depEliminado: 0,
+        //Controle de Eliminados e Observação
+        teveDepositoEliminado: false,
+        a2_elim: 0, b_elim: 0, c_elim: 0, d1_elim: 0, d2_elim: 0, e_elim: 0,
+        observacao: '',
+        // Tratamento:
         larvicidaGrama: 0
     });
 
@@ -47,7 +52,7 @@ export default function CampoDashboard({ setTelaAtual }) {
             alert('⚠️ Digite o endereço e o número do imóvel!');
             return;
         }
-        
+
         //Miniminiza o cabeçalho ao enviar a primeira casa
         if (listaImoveis.length === 0) {
             setHeaderMinimizado(true);
@@ -58,12 +63,14 @@ export default function CampoDashboard({ setTelaAtual }) {
 
         // 2. 🔄 O RESET: Limpa os campos da tela para o próximo vizinho
         setImovelAtual(prev => ({
-            ...prev, // Mantém o Quarteirão e o Endereço/Rua intocados!
+            ...prev,
             numero: '',
             complemento: '',
-            a2: 0, b: 0, c: 0, d1: 0, d2: 0, e: 0,
-            depEliminado: 0,
-            larvicidaGrama: 0 // 🧪 Reseta o larvicida para 0 para a próxima casa!
+            a2: 0, b: 0, c: 0, d1: 0, d2: 0, e: 0,    
+            teveDepositoEliminado: false,
+            a2_elim: 0, b_elim: 0, c_elim: 0, d1_elim: 0, d2_elim: 0, e_elim: 0,
+            observacao: '',            
+            larvicidaGrama: 0
         }));
     };
 
@@ -258,6 +265,54 @@ export default function CampoDashboard({ setTelaAtual }) {
                         </div>
                     </div>
                 )}
+
+                {/* ========================================================================= */}
+                {/* 🌟 NOVO 1: CAIXA DE MARCAÇÃO PARA DEPÓSITO ELIMINADO E SEUS CONTADORES */}
+                <div style={{ marginTop: '15px', background: '#252525', padding: '10px', borderRadius: '6px', borderLeft: '4px solid #ef5350' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontSize: '14px', fontWeight: 'bold', color: '#ef5350' }}>
+                        <input 
+                            type="checkbox" 
+                            checked={imovelAtual.teveDepositoEliminado}
+                            onChange={(e) => setImovelAtual({ ...imovelAtual, teveDepositoEliminado: e.target.checked })}
+                            style={{ width: '18px', height: '18px' }}
+                        />
+                        Houve Depósito Eliminado?
+                    </label>
+
+                    {/* SE A CAIXA FOR MARCADA, ESSA TELA APARECE MAGICA E AUTOMATICAMENTE */}
+                    {imovelAtual.teveDepositoEliminado && (
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '15px' }}>
+                            {['a2', 'b', 'c', 'd1', 'd2', 'e'].map(dep => {
+                                const depElim = `${dep}_elim`; // Junta o nome (ex: vira 'a2_elim')
+                                return (
+                                    <div key={depElim} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px', background: '#333', borderRadius: '4px' }}>
+                                        <span style={{ fontWeight: 'bold', textTransform: 'uppercase', color: '#ef5350' }}>{dep}:</span>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            {/* A sua função alterarContador já é inteligente o suficiente para entender o nome novo! */}
+                                            <button type="button" onClick={() => alterarContador(depElim, '-')} style={{ ...btnContador, background: '#555' }}>-</button>
+                                            <span style={{ fontSize: '16px', minWidth: '20px', textAlign: 'center' }}>{imovelAtual[depElim]}</span>
+                                            <button type="button" onClick={() => alterarContador(depElim, '+')} style={{ ...btnContador, background: '#555' }}>+</button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+
+                {/* ========================================================================= */}
+                {/*  CAIXA DE TEXTO PARA OBSERVAÇÕES */}
+                <div style={{ marginTop: '15px', marginBottom: '15px' }}>
+                    <label style={{ fontSize: '12px' }}>Observações do Imóvel (Opcional):</label>
+                    <textarea 
+                        rows="2"
+                        placeholder="Ex: Morador ausente, cão bravo, casa abandonada com lixo..."
+                        value={imovelAtual.observacao}
+                        onChange={e => setImovelAtual({ ...imovelAtual, observacao: e.target.value })}
+                        style={{ ...styleInput, resize: 'vertical', fontFamily: 'inherit' }}
+                    />
+                </div>
+                {/* ========================================================================= */}
 
                 <button type="button" onClick={handleAdicionarImovel} style={{ marginTop: '15px', width: '100%', padding: '12px', background: '#e67e22', border: 'none', color: '#fff', fontWeight: 'bold', borderRadius: '4px', cursor: 'pointer' }}>
                     ➕ Salvar Imóvel na Ficha
