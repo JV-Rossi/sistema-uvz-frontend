@@ -49,14 +49,14 @@ export default function CampoMenu({ setTelaAtual }) {
           <small style={{ color: '#aaa', fontSize: '11px' }}>Denúncia bloqueio</small>
         </div>
 
-        {/* CARD 3: Reunião Semanal */}
+        {/* CARD 3: Resumo Semanal */}
         <div
-          onClick={() => alert('⏳ Formulário de Reunião semanal em desenvolvimento pela T.I')}
+          onClick={() => setTelaAtual('resumo_semanal')}
           style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', opacity: '0.6', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
         >
           <div style={{ fontSize: '30px', background: '#3498db', width: '55px', height: '55px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📅</div>
-          <strong style={{ fontSize: '15px', letterSpacing: '0.5px' }}>Reunião Semanal</strong>
-          <small style={{ color: '#aaa', fontSize: '11px' }}>Anúncios e avisos</small>
+          <strong style={{ fontSize: '15px', letterSpacing: '0.5px' }}>Resumo Semanal</strong>
+          <small style={{ color: '#aaa', fontSize: '11px' }}>Controle do trabalho</small>
         </div>
 
         {/* CARD 4: Amostragem com Ovitrampas */}

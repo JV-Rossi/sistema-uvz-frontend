@@ -267,7 +267,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                 )}
 
                 {/* ========================================================================= */}
-                {/* 🌟 NOVO 1: CAIXA DE MARCAÇÃO PARA DEPÓSITO ELIMINADO E SEUS CONTADORES */}
+                {/* CAIXA DE MARCAÇÃO PARA DEPÓSITO ELIMINADO E SEUS CONTADORES */}
                 <div style={{ marginTop: '15px', background: '#252525', padding: '10px', borderRadius: '6px', borderLeft: '4px solid #ef5350' }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontSize: '14px', fontWeight: 'bold', color: '#ef5350' }}>
                         <input 
@@ -306,7 +306,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                     <label style={{ fontSize: '12px' }}>Observações do Imóvel (Opcional):</label>
                     <textarea 
                         rows="2"
-                        placeholder="Ex: Morador ausente, cão bravo, casa abandonada com lixo..."
+                        placeholder="Ex: ocorrência de escorpião, casa abandonada..."
                         value={imovelAtual.observacao}
                         onChange={e => setImovelAtual({ ...imovelAtual, observacao: e.target.value })}
                         style={{ ...styleInput, resize: 'vertical', fontFamily: 'inherit' }}
