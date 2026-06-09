@@ -6,7 +6,8 @@ import Cadastro from './pages/Cadastro';
 import GestaoDashboard from './pages/GestaoDashboard';
 import CampoDashboard from './pages/CampoDashboard';
 import TecnicaDashboard from './pages/TecnicaDashboard';
-import CampoMenu from './pages/CampoMenu'; // 🔌 Importando o novo Menu!
+import CampoMenu from './pages/CampoMenu'; 
+import ResumoSemanal from './pages/ResumoSemanal';
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');
@@ -43,6 +44,10 @@ function App() {
       
       {telaAtual === 'campo_formulario_zoonoses' && (
         <CampoDashboard setTelaAtual={setTelaAtual} />
+      )}
+
+      {telaAtual === 'resumo_semanal' && (
+        <ResumoSemanal setTelaAtual={setTelaAtual} />
       )}
 
       {/* MENSAGEM DE STATUS */}
