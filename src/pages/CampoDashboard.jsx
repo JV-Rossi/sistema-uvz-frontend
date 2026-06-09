@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 export default function CampoDashboard({ setTelaAtual }) {
     // 1. Estados do Cabeçalho da Ficha 
+    const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(false);
     const [cabecalho, setCabecalho] = useState({
         bairro: '',
         zona: '',
@@ -101,42 +102,64 @@ export default function CampoDashboard({ setTelaAtual }) {
             <h2>📋 Novo Boletim de Campo</h2>
             <p style={{ color: '#aaa', fontSize: '14px' }}>Substituindo a Ficha Entomológica de Papel</p>
 
-            {/* ================= BLOCÃO 1: CABEÇALHO (ATUALIZADO) ================= */}
-            <div style={{ background: '#222', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #333' }}>
-                <h3 style={{ margin: '0 0 10px 0', color: '#42a5f5', fontSize: '16px' }}>📍 Dados da Folha / Ciclo</h3>
+            {/* ================= BLOCÃO 1: CABEÇALHO COM FUNÇÃO DE MINIMIZAR ================= */}
+            <div style={{ background: '#222', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #333', position: 'relative' }}>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
-                    <div>
-                        <label style={{ fontSize: '12px' }}>Localidade / Bairro:</label>
-                        <input type="text" value={cabecalho.bairro} onChange={e => setCabecalho({ ...cabecalho, bairro: e.target.value })} style={styleInput} />
-                    </div>
-                    <div>
-                        <label style={{ fontSize: '12px' }}>Zona:</label>
-                        <input type="text" value={cabecalho.zona} onChange={e => setCabecalho({ ...cabecalho, zona: e.target.value })} style={styleInput} />
-                    </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: isHeaderCollapsed ? '0' : '15px' }}>
+                    <h3 style={{ margin: 0, color: '#42a5f5', fontSize: '16px' }}>📍 Dados da Folha / Ciclo</h3>
+                    <button
+                        onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
+                        style={{ background: '#333', color: '#42a5f5', border: '1px solid #42a5f5', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
+                    >
+                        {isHeaderCollapsed ? "EXPANDIR 🔓" : "CONCLUIR / OCULTAR 🔒"}
+                    </button>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
-                    <div>
-                        <label style={{ fontSize: '12px' }}>Código:</label>
-                        <input type="text" placeholder="Ex: 282" value={cabecalho.codigo} onChange={e => setCabecalho({ ...cabecalho, codigo: e.target.value })} style={styleInput} />
+                {isHeaderCollapsed ? (
+                    /* VISUALIZAÇÃO MINIMIZADA (RESUMO) */
+                    <div onClick={() => setIsHeaderCollapsed(false)} style={{ cursor: 'pointer', fontSize: '14px', color: '#aaa', fontStyle: 'italic', background: '#1a1a1a', padding: '10px', borderRadius: '4px' }}>
+                        Bairro: <span style={{ color: '#fff' }}>{cabecalho.bairro || '---'}</span> |
+                        Ciclo: <span style={{ color: '#fff' }}>{cabecalho.ciclo || '---'}</span> |
+                        Semana: <span style={{ color: '#fff' }}>{cabecalho.semana || '---'}</span>
+                        <div style={{ fontSize: '10px', marginTop: '5px', color: '#42a5f5' }}>Toque para editar os dados da folha</div>
                     </div>
-                    <div>
-                        <label style={{ fontSize: '12px' }}>Desmembramento:</label>
-                        <input type="text" placeholder="Ex: *" value={cabecalho.desmembramento} onChange={e => setCabecalho({ ...cabecalho, desmembramento: e.target.value })} style={styleInput} />
-                    </div>
-                </div>
+                ) : (
+                    /* VISUALIZAÇÃO COMPLETA (FORMULÁRIO) */
+                    <>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
+                            <div>
+                                <label style={{ fontSize: '12px' }}>Localidade / Bairro:</label>
+                                <input type="text" value={cabecalho.bairro} onChange={e => setCabecalho({ ...cabecalho, bairro: e.target.value })} style={styleInput} />
+                            </div>
+                            <div>
+                                <label style={{ fontSize: '12px' }}>Zona:</label>
+                                <input type="text" value={cabecalho.zona} onChange={e => setCabecalho({ ...cabecalho, zona: e.target.value })} style={styleInput} />
+                            </div>
+                        </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                    <div>
-                        <label style={{ fontSize: '12px' }}>Ciclo:</label>
-                        <input type="text" value={cabecalho.ciclo} onChange={e => setCabecalho({ ...cabecalho, ciclo: e.target.value })} style={styleInput} />
-                    </div>
-                    <div>
-                        <label style={{ fontSize: '12px' }}>Semana:</label>
-                        <input type="text" value={cabecalho.semana} onChange={e => setCabecalho({ ...cabecalho, semana: e.target.value })} style={styleInput} />
-                    </div>
-                </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
+                            <div>
+                                <label style={{ fontSize: '12px' }}>Código:</label>
+                                <input type="text" placeholder="Ex: 282" value={cabecalho.codigo} onChange={e => setCabecalho({ ...cabecalho, codigo: e.target.value })} style={styleInput} />
+                            </div>
+                            <div>
+                                <label style={{ fontSize: '12px' }}>Desmembramento:</label>
+                                <input type="text" placeholder="Ex: *" value={cabecalho.desmembramento} onChange={e => setCabecalho({ ...cabecalho, desmembramento: e.target.value })} style={styleInput} />
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                            <div>
+                                <label style={{ fontSize: '12px' }}>Ciclo:</label>
+                                <input type="text" value={cabecalho.ciclo} onChange={e => setCabecalho({ ...cabecalho, ciclo: e.target.value })} style={styleInput} />
+                            </div>
+                            <div>
+                                <label style={{ fontSize: '12px' }}>Semana:</label>
+                                <input type="text" value={cabecalho.semana} onChange={e => setCabecalho({ ...cabecalho, semana: e.target.value })} style={styleInput} />
+                            </div>
+                        </div>
+                    </>
+                )}
             </div>
 
             {/* ================= BLOCÃO 2: ADICIONAR IMÓVEL ================= */}
