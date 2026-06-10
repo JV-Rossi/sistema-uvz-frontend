@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ResumoSemanal({ setTelaAtual }) {
-    // 1. ESTADO DA MATRIZ (Gavetas vazias prontas para receber várias fichas)
+    // 1. ESTADO DA MATRIZ (Gavetas prontas para receber várias fichas)
     const [matriz, setMatriz] = useState({
         seg_mat: [], seg_vesp: [],
         ter_mat: [], ter_vesp: [],
@@ -12,18 +12,78 @@ export default function ResumoSemanal({ setTelaAtual }) {
 
     const [quadranteAtivo, setQuadranteAtivo] = useState(null);
 
-    // Banco de Fichas Simulado
-    const [fichasPendentes, setFichasPendentes] = useState([
-        { id: 1, codigo: '282', imoveis: 25 },
-        { id: 2, codigo: '283', imoveis: 18 },
-        { id: 3, codigo: '284', imoveis: 22 }
-    ]);
+    // Banco de Fichas
+    const [fichasPendentes, setFichasPendentes] = useState([]);
+
+    useEffect(() => {
+        const buscarFichasDoBanco = async () => {
+            try {
+                const resposta = await fetch('https://sistema-uvz-backend.onrender.com/api/visitas');
+
+                if (resposta.ok) {
+                    const todasAsVisitas = await resposta.json();
+
+                    // 1. Agrupar primeiro por loteToken (recupera os boletins originais)
+                    const boletinsIdependents = {};
+                    todasAsVisitas.forEach(visita => {
+                        const token = visita.loteToken || `avulso_${visita.id}`;
+                        if (!boletinsIdependents[token]) {
+                            boletinsIdependents[token] = {
+                                loteToken: token,
+                                semana: visita.semana || 'Sem Semana',
+                                codigo: visita.codigo,
+                                bairro: visita.bairro,
+                                dataVisita: visita.dataVisita,
+                                imoveis: []
+                            };
+                        }
+                        boletinsIdependents[token].imoveis.push(visita);
+                    });
+
+                    // Convertemos para lista para conseguir ordenar
+                    const listaBoletins = Object.values(boletinsIdependents);
+
+                    // 2. Ordenar os boletins por data de criação (mais antigos primeiro)
+                    listaBoletins.sort((a, b) => new Date(a.dataVisita) - new Date(b.dataVisita));
+
+                    // 3. Contadores para numerar sequencialmente por semana (Ex: 1ª, 2ª da semana 20)
+                    const contadoresSemana = {};
+
+                    const fichasFinais = listaBoletins.map(boletim => {
+                        const sem = boletim.semana;
+
+                        // Se for a primeira vez que vemos esta semana, o contador inicia em 1
+                        if (!contadoresSemana[sem]) {
+                            contadoresSemana[sem] = 1;
+                        } else {
+                            contadoresSemana[sem] += 1; // Incrementa para a próxima ficha da mesma semana
+                        }
+
+                        return {
+                            id: boletim.loteToken,
+                            codigo: boletim.codigo,
+                            semana: sem,
+                            numeroSequencial: contadoresSemana[sem], // Guarda se é a 1ª, 2ª...
+                            bairro: boletim.bairro,
+                            imoveis: boletim.imoveis
+                        };
+                    });
+
+                    setFichasPendentes(fichasFinais);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar as visitas:", error);
+            }
+        };
+
+        buscarFichasDoBanco();
+    }, []);
 
     // LÓGICA: Adicionar e Remover Fichas
     const handleSelecionarFicha = (fichaEscolhida) => {
         setMatriz({
             ...matriz,
-            [quadranteAtivo]: [...matriz[quadranteAtivo], fichaEscolhida]
+            [quadranteAtivo]: [...(matriz[quadranteAtivo] || []), fichaEscolhida]
         });
         setFichasPendentes(fichasPendentes.filter(f => f.id !== fichaEscolhida.id));
         setQuadranteAtivo(null);
@@ -34,40 +94,80 @@ export default function ResumoSemanal({ setTelaAtual }) {
         setFichasPendentes([...fichasPendentes, fichaParaRemover]);
         setMatriz({
             ...matriz,
-            [idQuadrante]: matriz[idQuadrante].filter(f => f.id !== fichaParaRemover.id)
+            [idQuadrante]: (matriz[idQuadrante] || []).filter(f => f.id !== fichaParaRemover.id)
         });
     };
 
-    // =========================================================================
-    // 🌟 OTIMIZAÇÃO: Mini-componente para não repetir código visual
-    // =========================================================================
-    const Quadrante = ({ id }) => (
-        <div
-            onClick={() => setQuadranteAtivo(id)}
-            style={matriz[id].length > 0 ? styleQuadrantePreenchido : styleQuadranteVazio}
-        >
-            {matriz[id].length > 0 ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' }}>
-                    {matriz[id].map(ficha => (
-                        <div key={ficha.id} style={{ position: 'relative', background: '#2e7d32', padding: '4px', borderRadius: '4px', textAlign: 'center', border: '1px solid #4caf50' }}>
-                            <div
-                                onClick={(e) => handleRemoverFicha(id, ficha, e)}
-                                style={{ position: 'absolute', top: '-6px', right: '-6px', background: '#d32f2f', color: '#fff', width: '18px', height: '18px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
-                            >
-                                X
-                            </div>
-                            <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#fff' }}>#{ficha.codigo}</span>
-                        </div>
-                    ))}
-                    <div style={{ fontSize: '14px', textAlign: 'center', color: '#a5d6a7', marginTop: '2px' }}>+</div>
-                </div>
-            ) : '+'}
-        </div>
-    );
+    // MATEMÁTICA DO PLACAR
+    const calcularTotalSemana = () => {
+        let totalImoveis = 0;
+
+        // O Object.values pega todas as listas dentro da matriz e junta
+        Object.values(matriz).forEach(gavetaDoTurno => {
+            gavetaDoTurno.forEach(ficha => {
+                totalImoveis += ficha.imoveis; // Soma os imóveis da ficha
+            });
+        });
+
+        return totalImoveis;
+    };
+
+    // 🌟 CONEXÃO COM O JAVA: Enviar a matriz para o banco
+    const handleEnviarResumoSemanal = async () => {
+        const totalImoveis = calcularTotalSemana();
+
+        // Validação básica: evitar enviar resumo zerado
+        if (totalImoveis === 0) {
+            alert('⚠️ Aloque pelo menos uma ficha nos dias da semana antes de enviar!');
+            return;
+        }
+
+        // Monta o pacote de dados exatamente como o backend espera
+        const payload = {
+            totalImoveis: totalImoveis,
+            distribuicao: matriz // Envia as listas de segunda a sexta organizadas
+        };
+
+        try {
+            // Dispara para o endpoint do seu servidor Java (porta 8080)
+            const resposta = await fetch('https://sistema-uvz-backend.onrender.com/api/resumos-semanais', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (resposta.ok) {
+                alert('✅ Resumo Semanal salvo e enviado com sucesso para o banco de dados!');
+                // Opcional: Volta para o menu após salvar
+                setTelaAtual('campo_menu');
+            } else {
+                alert('❌ O servidor Java encontrou um erro ao processar o resumo.');
+            }
+        } catch (error) {
+            console.error("Erro na requisição:", error);
+            alert('❌ Não foi possível conectar ao Java. Certifique-se de que o backend está rodando na porta 8080!');
+        }
+    };
 
     return (
         <div style={{ padding: '10px', background: '#111', minHeight: '100vh', color: '#fff', fontFamily: 'sans-serif' }}>
-            <h2 style={{ color: '#42a5f5', textAlign: 'center', margin: '10px 0 20px 0' }}>📅 Matriz Semanal</h2>
+
+            {/* CABEÇALHO E PLACAR DA SEMANA */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', background: '#1a237e', padding: '15px', borderRadius: '8px', border: '1px solid #3949ab' }}>
+                <div>
+                    <h2 style={{ margin: '0', color: '#90caf9', fontSize: '18px' }}>📅 Resumo Semanal</h2>
+                    <span style={{ fontSize: '12px', color: '#ccc' }}>Alocação de Fichas</span>
+                </div>
+
+                <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '11px', color: '#a5d6a7', fontWeight: 'bold', textTransform: 'uppercase' }}>Total Produzido</div>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#fff' }}>
+                        {calcularTotalSemana()} <span style={{ fontSize: '14px', color: '#aaa', fontWeight: 'normal' }}>imóveis</span>
+                    </div>
+                </div>
+            </div>
 
             {/* GRID DA MATRIZ */}
             <div style={{
@@ -77,32 +177,100 @@ export default function ResumoSemanal({ setTelaAtual }) {
                 overflowX: 'auto',
                 paddingBottom: '20px'
             }}>
-                <div></div> {/* Espaço vazio do canto */}
+                <div></div>
                 {['Seg', 'Ter', 'Qua', 'Qui', 'Sex'].map(dia => (
                     <div key={dia} style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '14px', paddingBottom: '5px', borderBottom: '2px solid #333' }}>
                         {dia}
                     </div>
                 ))}
 
-                {/* Turno Matutino */}
+                {/* ===================================== */}
+                {/* LINHA MATUTINO */}
+                {/* ===================================== */}
                 <div style={styleTurnoHeader}>☀️ Mat</div>
                 {['seg_mat', 'ter_mat', 'qua_mat', 'qui_mat', 'sex_mat'].map(id => (
-                    <Quadrante key={id} id={id} />
+                    <div
+                        key={id}
+                        onClick={() => setQuadranteAtivo(id)}
+                        style={matriz[id] && matriz[id].length > 0 ? styleQuadrantePreenchido : styleQuadranteVazio}
+                    >
+                        {matriz[id] && matriz[id].length > 0 ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' }}>
+                                {matriz[id].map(ficha => (
+                                    <div key={ficha.id} style={{ position: 'relative', background: '#2e7d32', padding: '4px', borderRadius: '4px', textAlign: 'center', border: '1px solid #4caf50' }}>
+                                        <div
+                                            onClick={(e) => handleRemoverFicha(id, ficha, e)}
+                                            style={{ position: 'absolute', top: '-6px', right: '-6px', background: '#d32f2f', color: '#fff', width: '18px', height: '18px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+                                        >
+                                            X
+                                        </div>
+                                        <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#fff' }}>#{ficha.codigo}</span>
+                                    </div>
+                                ))}
+                                <div style={{ fontSize: '14px', textAlign: 'center', color: '#a5d6a7', marginTop: '2px' }}>+</div>
+                            </div>
+                        ) : '+'}
+                    </div>
                 ))}
 
-                {/* Turno Vespertino */}
+                {/* ===================================== */}
+                {/* LINHA VESPERTINO */}
+                {/* ===================================== */}
                 <div style={styleTurnoHeader}>🌙 Vesp</div>
                 {['seg_vesp', 'ter_vesp', 'qua_vesp', 'qui_vesp', 'sex_vesp'].map(id => (
-                    <Quadrante key={id} id={id} />
+                    <div
+                        key={id}
+                        onClick={() => setQuadranteAtivo(id)}
+                        style={matriz[id] && matriz[id].length > 0 ? styleQuadrantePreenchido : styleQuadranteVazio}
+                    >
+                        {matriz[id] && matriz[id].length > 0 ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' }}>
+                                {matriz[id].map(ficha => (
+                                    <div key={ficha.id} style={{ position: 'relative', background: '#2e7d32', padding: '4px', borderRadius: '4px', textAlign: 'center', border: '1px solid #4caf50' }}>
+                                        <div
+                                            onClick={(e) => handleRemoverFicha(id, ficha, e)}
+                                            style={{ position: 'absolute', top: '-6px', right: '-6px', background: '#d32f2f', color: '#fff', width: '18px', height: '18px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+                                        >
+                                            X
+                                        </div>
+                                        <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#fff' }}>#{ficha.codigo}</span>
+                                    </div>
+                                ))}
+                                <div style={{ fontSize: '14px', textAlign: 'center', color: '#a5d6a7', marginTop: '2px' }}>+</div>
+                            </div>
+                        ) : '+'}
+                    </div>
                 ))}
             </div>
 
+            {/* 🌟 ADICIONE ESTE BOTÃO VERDE AQUI: */}
+            <button
+                onClick={handleEnviarResumoSemanal}
+                style={{
+                    width: '100%',
+                    padding: '15px',
+                    background: '#28a745',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    marginTop: '20px',
+                    fontWeight: 'bold',
+                    fontSize: '16px',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+                }}
+            >
+                💾 FINALIZAR RESUMO SEMANAL
+            </button>
+
+            {/* O seu botão de voltar existente continua aqui embaixo */}
             <button
                 onClick={() => setTelaAtual('campo_menu')}
                 style={{ width: '100%', padding: '12px', background: '#555', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', marginTop: '10px' }}
             >
                 ⬅️ Voltar para o Menu
             </button>
+
 
             {/* MODAL (MENU FLUTUANTE) */}
             {quadranteAtivo && (
@@ -121,8 +289,11 @@ export default function ResumoSemanal({ setTelaAtual }) {
                                     onClick={() => handleSelecionarFicha(ficha)}
                                     style={{ background: '#222', border: '1px solid #444', padding: '10px', borderRadius: '6px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                                 >
-                                    <strong style={{ color: '#42a5f5' }}>Ficha #{ficha.codigo}</strong>
-                                    <span style={{ fontSize: '12px', color: '#aaa' }}>{ficha.imoveis} imóveis</span>
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <strong style={{ color: '#42a5f5' }}>{ficha.numeroSequencial}ª Ficha - Sem. {ficha.semana}</strong>
+                                        <span style={{ fontSize: '12px', color: '#ffb74d' }}>Área: #{ficha.codigo}</span>
+                                    </div>
+                                    <span style={{ fontSize: '12px', color: '#aaa' }}>{ficha.imoveis ? ficha.imoveis.length : 0} imóveis</span>
                                 </div>
                             ))}
                         </div>

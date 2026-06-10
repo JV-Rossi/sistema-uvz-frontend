@@ -87,7 +87,7 @@ export default function CampoDashboard({ setTelaAtual }) {
 
         try {
             // 🚀 Dispara os dados direto para o endpoint em lote do Java
-            const resposta = await fetch('http://localhost:8080/api/visitas/lote', {
+           const resposta = await fetch('https://sistema-uvz-backend.onrender.com/api/visitas/lote', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
