@@ -105,7 +105,9 @@ export default function ResumoSemanal({ setTelaAtual }) {
         // O Object.values pega todas as listas dentro da matriz e junta
         Object.values(matriz).forEach(gavetaDoTurno => {
             gavetaDoTurno.forEach(ficha => {
-                totalImoveis += ficha.imoveis; // Soma os imóveis da ficha
+                if (ficha.imoveis && Array.isArray(ficha.imoveis)) {
+                    totalImoveis += ficha.imoveis.length;
+                }
             });
         });
 
