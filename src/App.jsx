@@ -3,11 +3,12 @@ import './App.css';
 
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
+import CampoMenu from './pages/CampoMenu';
 import GestaoDashboard from './pages/GestaoDashboard';
 import CampoDashboard from './pages/CampoDashboard';
 import TecnicaDashboard from './pages/TecnicaDashboard';
-import CampoMenu from './pages/CampoMenu'; 
 import ResumoSemanal from './pages/ResumoSemanal';
+import OvitrampaDashboard from './pages/OvitrampaDashboard';
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');
@@ -41,7 +42,7 @@ function App() {
       {telaAtual === 'campo_menu' && (
         <CampoMenu setTelaAtual={setTelaAtual} />
       )}
-      
+
       {telaAtual === 'campo_formulario_zoonoses' && (
         <CampoDashboard setTelaAtual={setTelaAtual} />
       )}
@@ -50,13 +51,17 @@ function App() {
         <ResumoSemanal setTelaAtual={setTelaAtual} />
       )}
 
+      {telaAtual === 'ovitrampas' && (
+        <OvitrampaDashboard setTelaAtual={setTelaAtual} />
+      )}
+
       {/* MENSAGEM DE STATUS */}
       {(telaAtual === 'login' || telaAtual === 'cadastro') && mensagem && (
         <p style={{ marginTop: '20px', fontWeight: 'bold', textAlign: 'center', color: '#ffc107' }}>
           {mensagem}
         </p>
       )}
-      
+
     </div>
   );
 }
