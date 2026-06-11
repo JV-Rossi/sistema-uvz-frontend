@@ -458,7 +458,6 @@ export default function CampoDashboard({ setTelaAtual }) {
         }
     };
 
-    // 2. COLE AQUI: A lógica de filtro
     // 1. O Filtro agora olha para dentro do cabecalho
     const bairrosFiltrados = tabelaBairros.filter(b => b.regional === cabecalho.regional);
 
@@ -521,17 +520,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                 <div style={{ background: '#222', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #333' }}>
                     <h3 style={{ margin: '0 0 10px 0', color: '#42a5f5', fontSize: '16px' }}>📍 Dados da Folha / Ciclo</h3>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', marginBottom: '10px' }}>
-                        {/* 1. CAMPO DA ZONA (Exatamente como o seu original) */}
-                        <div>
-                            <label style={{ fontSize: '12px' }}>Zona:</label>
-                            <input
-                                type="text"
-                                value={cabecalho.zona}
-                                onChange={e => setCabecalho({ ...cabecalho, zona: e.target.value })}
-                                style={styleInput}
-                            />
-                        </div>
-                        {/* 2. CAMPO DA REGIONAL (O Filtro Novo) */}
+                        {/* 1. CAMPO DA REGIONAL (O Filtro Novo) */}
                         <div>
                             <label style={{ fontSize: '12px' }}>Regional:</label>
                             <select
@@ -546,7 +535,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                                 <option value="Oeste">Oeste</option>
                             </select>
                         </div>
-                        {/* 3. CAMPO DO BAIRRO (A Lupa Inteligente) */}
+                        {/* 2. CAMPO DO BAIRRO (A Lupa Inteligente) */}
                         <div>
                             <label style={{ fontSize: '12px' }}>Localidade / Bairro:</label>
                             <input
@@ -570,7 +559,18 @@ export default function CampoDashboard({ setTelaAtual }) {
                             </datalist>
                             {erroBairro && <span style={{ color: '#e74c3c', fontSize: '11px', display: 'block', marginTop: '4px' }}>{erroBairro}</span>}
                         </div>
+                        {/* 3. CAMPO DA ZONA (Exatamente como o seu original) */}
+                        <div>
+                            <label style={{ fontSize: '12px' }}>Zona:</label>
+                            <input
+                                type="text"
+                                value={cabecalho.zona}
+                                onChange={e => setCabecalho({ ...cabecalho, zona: e.target.value })}
+                                style={styleInput}
+                            />
+                        </div>
                     </div>
+
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
                         <div>
