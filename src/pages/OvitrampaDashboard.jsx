@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function OvitrampaDashboard() {
+export default function OvitrampaDashboard({ setTelaAtual }) {
     // Dados simulados para o mockup visual
     const [moradores] = useState([
         { id: 1, nome: 'Maria Oliveira', endereco: 'Rua das Flores, 105', quarteirao: '012A', armadilha: 'OV-098', status: 'INSTALADA' },
@@ -27,7 +27,26 @@ export default function OvitrampaDashboard() {
 
     return (
         <div style={{ backgroundColor: '#121212', color: '#e0e0e0', minHeight: '100vh', padding: '40px', fontFamily: 'system-ui, sans-serif' }}>
-            
+
+            <button
+                onClick={() => setTelaAtual('campo_menu')}
+                style={{
+                    background: '#333',
+                    color: '#fff',
+                    border: '1px solid #444',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    marginBottom: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px'
+                }}
+            >
+                ⬅️ Voltar para o Menu
+            </button>
+
             {/* Cabeçalho da Página */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
                 <div>
@@ -41,7 +60,7 @@ export default function OvitrampaDashboard() {
 
             {/* Card Principal - Tabela de Gestão */}
             <div style={{ backgroundColor: '#1e1e1e', borderRadius: '12px', padding: '25px', boxShadow: '0 8px 16px rgba(0,0,0,0.5)', border: '1px solid #333' }}>
-                
+
                 {/* Barra de Filtros */}
                 <div style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
                     <input type="text" placeholder="🔍 Buscar por Bairro..." style={estiloInputFiltro} />
@@ -74,7 +93,7 @@ export default function OvitrampaDashboard() {
                                 <td style={{ padding: '15px 10px', color: '#4fc3f7', fontWeight: 'bold' }}>{m.armadilha}</td>
                                 <td style={{ padding: '15px 10px' }}>{renderizarStatus(m.status)}</td>
                                 <td style={{ padding: '15px 10px', textAlign: 'right' }}>
-                                    
+
                                     {/* Botões Condicionais baseados no Status */}
                                     {m.status === 'INSTALADA' && (
                                         <button style={estiloBotaoAcao}>📥 Registrar 1ª Coleta</button>
