@@ -25,6 +25,17 @@ export default function OvitrampaDashboard({ setTelaAtual }) {
         );
     };
 
+    // Função que recebe o ID do morador e remove da lista
+    const removerMorador = (id) => {
+        const confirmacao = window.confirm("Tem certeza que deseja remover este morador?");
+
+        if (confirmacao) {
+            // O filter cria uma lista nova com todo mundo, EXCETO o cara que tem esse ID
+            const novaLista = moradores.filter((morador) => morador.id !== id);
+            setMoradores(novaLista); // Atualiza a tela sem o morador
+        }
+    };
+
     return (
         <div style={{ backgroundColor: '#121212', color: '#e0e0e0', minHeight: '100vh', padding: '40px', fontFamily: 'system-ui, sans-serif' }}>
 
@@ -107,6 +118,24 @@ export default function OvitrampaDashboard({ setTelaAtual }) {
                                     {m.status === 'SEM_ARMADILHA' && (
                                         <button style={{ ...estiloBotaoAcao, backgroundColor: '#424242' }}>🛠️ Instalar</button>
                                     )}
+
+                                    {/* 🔴 BOTÃO DE REMOVER */}
+                                    <button
+                                        onClick={() => removerMorador(m.id)}
+                                        style={{
+                                            backgroundColor: '#e74c3c',
+                                            color: '#fff',
+                                            border: 'none',
+                                            padding: '6px 10px',
+                                            borderRadius: '6px',
+                                            cursor: 'pointer',
+                                            marginLeft: '10px', // Dá um respiro entre o botão de ação e a lixeira
+                                            fontSize: '14px'
+                                        }}
+                                        title="Remover Morador"
+                                    >
+                                        🗑️
+                                    </button>
                                 </td>
                             </tr>
                         ))}
