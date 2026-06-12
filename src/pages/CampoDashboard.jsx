@@ -17,8 +17,32 @@ export default function CampoDashboard({ setTelaAtual }) {
         desmembramento: '',
         ciclo: '',
         semana: '',
-        data: ''
+        data: '',
+        agentes: ['']
     });
+
+    // Adiciona um novo campo de agente na lista
+    const adicionarAgente = () => {
+        setCabecalho(prev => ({
+            ...prev,
+            agentes: [...prev.agentes, '']
+        }));
+    };
+
+    // Remove um agente caso o usuário tenha clicado sem querer
+    const removerAgente = (indexParaRemover) => {
+        setCabecalho(prev => ({
+            ...prev,
+            agentes: prev.agentes.filter((_, index) => index !== indexParaRemover)
+        }));
+    };
+
+    // Atualiza o nome digitado no campo específico
+    const handleNomeAgente = (index, novoNome) => {
+        const novaLista = [...cabecalho.agentes];
+        novaLista[index] = novoNome;
+        setCabecalho(prev => ({ ...prev, agentes: novaLista }));
+    };
 
     // 3. Estados do formulário do imóvel atual que está sendo digitado
     const [imovelAtual, setImovelAtual] = useState({
@@ -118,6 +142,10 @@ export default function CampoDashboard({ setTelaAtual }) {
     // 1. O Filtro agora olha para dentro do cabecalho
     const bairrosFiltrados = tabelaBairros.filter(b => b.regional === cabecalho.regional);
 
+    //Filtro para agentes
+    const agentesFiltrados = listaAgentesOficiais.filter(a => a.regional === cabecalho.regional);
+
+
     // 2. Atualiza a Regional dentro do cabecalho com segurança
     const handleRegionalChange = (e) => {
         const novaRegional = e.target.value;
@@ -176,8 +204,9 @@ export default function CampoDashboard({ setTelaAtual }) {
                 // --- MODO EXPANDIDO ---
                 <div style={{ background: '#222', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #333' }}>
                     <h3 style={{ margin: '0 0 10px 0', color: '#42a5f5', fontSize: '16px' }}>📍 Dados da Folha / Ciclo</h3>
+
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', marginBottom: '10px' }}>
-                        {/* 1. CAMPO DA REGIONAL (O Filtro Novo) */}
+                        {/* 1. CAMPO DA REGIONAL */}
                         <div>
                             <label style={{ fontSize: '12px' }}>Regional:</label>
                             <select
@@ -192,7 +221,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                                 <option value="Oeste">Oeste</option>
                             </select>
                         </div>
-                        {/* 2. CAMPO DO BAIRRO (A Lupa Inteligente) */}
+                        {/* 2. CAMPO DO BAIRRO */}
                         <div>
                             <label style={{ fontSize: '12px' }}>Localidade / Bairro:</label>
                             <input
@@ -216,7 +245,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                             </datalist>
                             {erroBairro && <span style={{ color: '#e74c3c', fontSize: '11px', display: 'block', marginTop: '4px' }}>{erroBairro}</span>}
                         </div>
-                        {/* 3. CAMPO DA ZONA (Exatamente como o seu original) */}
+                        {/* 3. CAMPO DA ZONA */}
                         <div>
                             <label style={{ fontSize: '12px' }}>Zona:</label>
                             <input
@@ -227,7 +256,6 @@ export default function CampoDashboard({ setTelaAtual }) {
                             />
                         </div>
                     </div>
-
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
                         <div>
@@ -251,6 +279,67 @@ export default function CampoDashboard({ setTelaAtual }) {
                         </div>
                     </div>
 
+                    {/* ============================================================ */}
+                    {/* 🔴 PARTE 3: CAIXA DE EQUIPE INSERIDA ANTES DO BOTÃO AZUL 🔴 */}
+                    {/* ============================================================ */}
+                    <div style={{ marginTop: '5px', marginBottom: '20px', padding: '15px', background: '#1a1a1a', borderRadius: '8px', border: '1px solid #333' }}>
+                        <h4 style={{ color: '#4fc3f7', marginBottom: '15px', marginTop: 0, fontSize: '14px' }}>👥 Equipe em Campo</h4>
+
+                        {cabecalho.agentes.map((agente, index) => (
+                            <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
+                                <div style={{ flex: 1 }}>
+                                    <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px' }}>
+                                        {index === 0 ? "Agente Titular:" : `Agente Parceiro ${index + 1}:`}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={agente}
+                                        onChange={(e) => handleNomeAgente(index, e.target.value)}
+                                        placeholder="Nome do ACE..."
+                                        style={styleInput}
+                                    />
+                                </div>
+
+                                {index > 0 && (
+                                    <button
+                                        onClick={() => removerAgente(index)}
+                                        style={{ background: 'transparent', border: 'none', color: '#e74c3c', cursor: 'pointer', marginTop: '18px', fontSize: '16px', padding: '0 5px' }}
+                                        title="Remover colega"
+                                    >
+                                        ✖️
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+
+                        <datalist id="lista-agentes-oficiais">
+                            {agentesFiltrados.map((agente) => (
+                                <option key={agente.nome} value={agente.nome} />
+                            ))}
+                        </datalist>
+
+                        <button
+                            onClick={adicionarAgente}
+                            style={{ background: '#333', color: '#fff', border: '1px dashed #666', padding: '8px', borderRadius: '4px', cursor: 'pointer', width: '100%', fontSize: '13px', marginTop: '5px' }}
+                        >
+                            ➕ Adicionar Colega à Equipe
+                        </button>
+
+                        {/* Calculadora em Tempo Real (Só aparece se tiver mais de 1 agente e tiver imóveis registrados) */}
+                        {cabecalho.agentes.length > 1 && totalImoveis > 0 && (
+                            <div style={{ marginTop: '15px', padding: '10px', background: '#2c3e50', borderRadius: '6px', textAlign: 'center' }}>
+                                <span style={{ color: '#ecf0f1', fontSize: '13px' }}>
+                                    Total: <strong>{totalImoveis}</strong> imóveis ÷ <strong>{cabecalho.agentes.length}</strong> agentes
+                                </span>
+                                <br />
+                                <strong style={{ color: '#2ecc71', fontSize: '15px', display: 'block', marginTop: '4px' }}>
+                                    = {(totalImoveis / cabecalho.agentes.length).toFixed(1)} imóveis para cada
+                                </strong>
+                            </div>
+                        )}
+                    </div>
+                    {/* ================= FIM DA PARTE 3 ================= */}
+
                     <button
                         type="button"
                         onClick={() => setHeaderMinimizado(true)}
@@ -266,7 +355,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                     style={{ background: '#1a237e', padding: '10px 15px', borderRadius: '6px', marginBottom: '20px', border: '1px solid #3949ab', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
                     <span style={{ fontSize: '14px', fontWeight: 'bold' }}>
-                        📍 {cabecalho.bairro || 'Sem Bairro'} | Ciclo: {cabecalho.ciclo} | Sem: {cabecalho.semana}
+                        📍 {cabecalho.bairro || 'Sem Bairro'} | Ciclo: {cabecalho.ciclo} | Equipe: {cabecalho.agentes.length}
                     </span>
                     <span style={{ fontSize: '12px', color: '#90caf9' }}>Editar ✏️</span>
                 </div>
