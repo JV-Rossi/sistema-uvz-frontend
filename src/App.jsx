@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-
+import { db } from './services/dbLocal';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import CampoMenu from './pages/CampoMenu';
@@ -13,6 +13,15 @@ import OvitrampaDashboard from './pages/OvitrampaDashboard';
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');
   const [mensagem, setMensagem] = useState('');
+
+  useEffect(() => {
+    // Essa linha força o navegador a "acordar" e criar o banco visivelmente
+    db.open().then(() => {
+      console.log("Banco de dados criado e aberto com sucesso!");
+    }).catch(err => {
+      console.error("Erro ao abrir o banco:", err);
+    });
+  }, []);
 
   // 🛡️ REFRESH DE SEGURANÇA: Se der F5, o agente vai direto para o MENU agora
   useEffect(() => {
