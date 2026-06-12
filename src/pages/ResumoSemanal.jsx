@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { db } from '../database/dbLocal'; // 👈 Importação do nosso cofre offline
+import { db } from '../services/dbLocal'; // 👈 Importação do nosso cofre offline
 
 export default function ResumoSemanal({ setTelaAtual }) {
     // 1. ESTADO DA MATRIZ (Gavetas prontas para receber várias fichas)
