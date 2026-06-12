@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { tabelaBairros } from '../utils/dadosBairros';
 import { listaAgentesOficiais } from '../utils/dadosAgentes';
+import { db } from '../database/dbLocal';
 
 export default function CampoDashboard({ setTelaAtual }) {
 
@@ -29,6 +30,36 @@ export default function CampoDashboard({ setTelaAtual }) {
         data: '',
         agentes: [titularPadronizado] // 👈 O array já nasce com o dono da conta
     });
+
+    const salvarBoletimOffline = async () => {
+        try {
+            // 1. Montar o pacote de dados respeitando a nossa arquitetura (Chave Estrangeira do Titular)
+            const pacoteBoletim = {
+                titular: localStorage.getItem('userLogin') || 'DESCONHECIDO', // Apenas o Login!
+                bairro: cabecalho.bairro,
+                regional: cabecalho.regional,
+                ciclo: cabecalho.ciclo,
+                // O filtro inteligente que já usamos para ignorar caixas vazias:
+                equipe_parceiros: cabecalho.agentes.filter(agente => agente && agente.trim() !== ''),
+                total_imoveis: typeof totalImoveis !== 'undefined' ? totalImoveis : 0,
+                data_registro: new Date().toISOString(), // Marca o exato segundo em que foi salvo
+                status_envio: 'pendente' // Uma flag útil para o futuro
+            };
+
+            // 2. O PULO DO GATO: Guardar no cofre do Dexie
+            await db.boletins_pendentes.add(pacoteBoletim);
+
+            // 3. Feedback visual para o agente no sol quente
+            alert('✅ Quarteirão salvo no tablet com sucesso!');
+
+            // Aqui (opcionalmente) você pode colocar a sua lógica para limpar 
+            // os campos de imóveis e preparar a tela para a próxima rua.
+
+        } catch (error) {
+            console.error('Falha ao trancar no cofre:', error);
+            alert('❌ Erro ao tentar salvar os dados no tablet.');
+        }
+    };
 
     // 1. Adicionar Colega (Blindado)
     const adicionarAgente = (e) => {
@@ -133,31 +164,30 @@ export default function CampoDashboard({ setTelaAtual }) {
             return;
         }
 
-        const payload = {
+        // 1. Monta o pacote injetando a chave de quem está logado no tablet
+        const payloadOffline = {
             ...cabecalho,
-            imoveis: listaImoveis
+            imoveis: listaImoveis,
+            titular_login: localStorage.getItem('userLogin') || 'DESCONHECIDO', // 👈 Nossa arquitetura de BD
+            data_registro: new Date().toISOString() // Importante para a ordenação depois
         };
 
         try {
-            // 🚀 Dispara os dados direto para o endpoint em lote do Java
-            const resposta = await fetch('https://sistema-uvz-backend.onrender.com/api/visitas/lote', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
+            // 2. 🚀 CORTAMOS A INTERNET: Dispara os dados direto para a gaveta local do Dexie
+            await db.fichas_soltas.add(payloadOffline);
 
-            if (resposta.ok) {
-                alert('✅ Boletim enviado com sucesso para o banco de dados!');
-                setListaImoveis([]);
-                setTelaAtual('campo_menu'); // Volta para o menu do app
-            } else {
-                alert('❌ O servidor Java recebeu, mas deu erro ao salvar.');
+            if (payloadOffline) {
+                alert('✅ Ficha guardada na gaveta do tablet com sucesso!');
+                setListaImoveis([]); // Limpa a tela para a próxima rua
+
+                // Se a sua intenção é voltar para o menu após salvar, mantenha esta linha:
+                if (typeof setTelaAtual === 'function') {
+                    setTelaAtual('campo_menu');
+                }
             }
         } catch (error) {
-            console.error("Erro na requisição:", error);
-            alert('❌ Não foi possível conectar ao Java. O servidor na porta 8080 está rodando?');
+            console.error("Erro ao salvar ficha no Dexie:", error);
+            alert('❌ Ocorreu um erro ao tentar trancar a ficha no armazenamento do tablet.');
         }
     };
 
