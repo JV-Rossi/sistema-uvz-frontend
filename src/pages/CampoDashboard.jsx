@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import { tabelaBairros } from '../utils/dadosBairros';
+import { listaAgentesOficiais } from '../utils/dadosAgentes';
 
 export default function CampoDashboard({ setTelaAtual }) {
+
+    // 1. Puxa o nome de usuário que foi salvo no login
+    const nomeLogado = localStorage.getItem('userLogin') || '';
+
+    // Como padronizamos a nossa lista toda em MAIÚSCULAS, 
+    // garantimos que o nome do titular também fique igual.
+    const titularPadronizado = nomeLogado.toUpperCase();
 
     const [regional, setRegional] = useState('');
     const [bairroInput, setBairroInput] = useState('');
@@ -11,6 +19,7 @@ export default function CampoDashboard({ setTelaAtual }) {
     // 2. Estados do Cabeçalho da Ficha 
     const [headerMinimizado, setHeaderMinimizado] = useState(false);
     const [cabecalho, setCabecalho] = useState({
+        regional: '',
         bairro: '',
         zona: '',
         codigo: '',
@@ -18,30 +27,43 @@ export default function CampoDashboard({ setTelaAtual }) {
         ciclo: '',
         semana: '',
         data: '',
-        agentes: ['']
+        agentes: [titularPadronizado] // 👈 O array já nasce com o dono da conta
     });
 
-    // Adiciona um novo campo de agente na lista
-    const adicionarAgente = () => {
-        setCabecalho(prev => ({
-            ...prev,
-            agentes: [...prev.agentes, '']
-        }));
+    // 1. Adicionar Colega (Blindado)
+    const adicionarAgente = (e) => {
+        if (e) e.preventDefault(); // 👈 Isso impede que o botão recarregue ou bugue a tela
+
+        setCabecalho(prev => {
+            // 👈 Isso garante que se algum campo apagou a lista por acidente, ela volta a existir
+            const listaSegura = Array.isArray(prev.agentes) ? prev.agentes : [''];
+            return {
+                ...prev,
+                agentes: [...listaSegura, ''] // Adiciona um novo espaço no final
+            };
+        });
     };
 
-    // Remove um agente caso o usuário tenha clicado sem querer
-    const removerAgente = (indexParaRemover) => {
-        setCabecalho(prev => ({
-            ...prev,
-            agentes: prev.agentes.filter((_, index) => index !== indexParaRemover)
-        }));
+    // 2. Remover Colega (Blindado)
+    const removerAgente = (indexParaRemover, e) => {
+        if (e) e.preventDefault();
+
+        setCabecalho(prev => {
+            const listaSegura = Array.isArray(prev.agentes) ? prev.agentes : [''];
+            return {
+                ...prev,
+                agentes: listaSegura.filter((_, index) => index !== indexParaRemover)
+            };
+        });
     };
 
-    // Atualiza o nome digitado no campo específico
+    // 3. Atualizar Nome do Agente (Blindado)
     const handleNomeAgente = (index, novoNome) => {
-        const novaLista = [...cabecalho.agentes];
-        novaLista[index] = novoNome;
-        setCabecalho(prev => ({ ...prev, agentes: novaLista }));
+        setCabecalho(prev => {
+            const listaSegura = Array.isArray(prev.agentes) ? [...prev.agentes] : [''];
+            listaSegura[index] = novoNome;
+            return { ...prev, agentes: listaSegura };
+        });
     };
 
     // 3. Estados do formulário do imóvel atual que está sendo digitado
@@ -143,7 +165,12 @@ export default function CampoDashboard({ setTelaAtual }) {
     const bairrosFiltrados = tabelaBairros.filter(b => b.regional === cabecalho.regional);
 
     //Filtro para agentes
-    const agentesFiltrados = listaAgentesOficiais.filter(a => a.regional === cabecalho.regional);
+    const agentesFiltrados = listaAgentesOficiais
+        ? listaAgentesOficiais.filter(a => a.regional === cabecalho.regional)
+        : [];
+
+    const qtdAgentesValidos = cabecalho.agentes.filter
+        (agente => agente && agente.trim() !== '').length;
 
 
     // 2. Atualiza a Regional dentro do cabecalho com segurança
@@ -280,60 +307,86 @@ export default function CampoDashboard({ setTelaAtual }) {
                     </div>
 
                     {/* ============================================================ */}
-                    {/* 🔴 PARTE 3: CAIXA DE EQUIPE INSERIDA ANTES DO BOTÃO AZUL 🔴 */}
+                    {/* 🔴 PARTE 3: CAIXA DE EQUIPE (COM TRAVA DE REGIONAL) 🔴 */}
                     {/* ============================================================ */}
                     <div style={{ marginTop: '5px', marginBottom: '20px', padding: '15px', background: '#1a1a1a', borderRadius: '8px', border: '1px solid #333' }}>
                         <h4 style={{ color: '#4fc3f7', marginBottom: '15px', marginTop: 0, fontSize: '14px' }}>👥 Equipe em Campo</h4>
 
-                        {cabecalho.agentes.map((agente, index) => (
-                            <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
-                                <div style={{ flex: 1 }}>
-                                    <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px' }}>
-                                        {index === 0 ? "Agente Titular:" : `Agente Parceiro ${index + 1}:`}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={agente}
-                                        onChange={(e) => handleNomeAgente(index, e.target.value)}
-                                        placeholder="Nome do ACE..."
-                                        style={styleInput}
-                                    />
-                                </div>
+                        {cabecalho.agentes.map((agente, index) => {
+                            // 👈 Oculta a caixa do Agente Titular (posição 0) da interface
+                            if (index === 0) return null;
 
-                                {index > 0 && (
+                            return (
+                                <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px' }}>
+                                            Agente Parceiro {index}:
+                                        </label>
+                                        <input
+                                            type="text"
+                                            list="lista-agentes-oficiais"
+                                            value={agente}
+                                            onChange={(e) => handleNomeAgente(index, e.target.value)}
+                                            placeholder={cabecalho.regional ? "🔍 Pesquisar ACE parceiro..." : "⚠️ Escolha a Regional primeiro"}
+                                            disabled={!cabecalho.regional} // 👈 Trava a digitação
+                                            style={{
+                                                ...styleInput,
+                                                cursor: cabecalho.regional ? 'text' : 'not-allowed',
+                                                opacity: cabecalho.regional ? 1 : 0.6
+                                            }}
+                                        />
+                                    </div>
+
                                     <button
-                                        onClick={() => removerAgente(index)}
-                                        style={{ background: 'transparent', border: 'none', color: '#e74c3c', cursor: 'pointer', marginTop: '18px', fontSize: '16px', padding: '0 5px' }}
+                                        type="button"
+                                        onClick={(e) => removerAgente(index, e)}
+                                        style={{ background: 'transparent', border: 'none', color: '#e74c3c',
+                                             cursor: 'pointer', marginTop: '18px', fontSize: '16px', padding: '0 5px' }}
                                         title="Remover colega"
                                     >
                                         ✖️
                                     </button>
-                                )}
-                            </div>
-                        ))}
+                                </div>
+                            );
+                        })}
+
 
                         <datalist id="lista-agentes-oficiais">
-                            {agentesFiltrados.map((agente) => (
+                            {agentesFiltrados && agentesFiltrados.map((agente) => (
                                 <option key={agente.nome} value={agente.nome} />
                             ))}
                         </datalist>
 
                         <button
-                            onClick={adicionarAgente}
-                            style={{ background: '#333', color: '#fff', border: '1px dashed #666', padding: '8px', borderRadius: '4px', cursor: 'pointer', width: '100%', fontSize: '13px', marginTop: '5px' }}
+                            type="button"
+                            onClick={(e) => adicionarAgente(e)}
+                            disabled={!cabecalho.regional} // 👈 SUA IDEIA APLICADA: Trava o clique do botão
+                            style={{
+                                background: cabecalho.regional ? '#333' : '#111',
+                                color: cabecalho.regional ? '#fff' : '#555',
+                                border: cabecalho.regional ? '1px dashed #666' : '1px dashed #333',
+                                padding: '8px',
+                                borderRadius: '4px',
+                                cursor: cabecalho.regional ? 'pointer' : 'not-allowed',
+                                width: '100%',
+                                fontSize: '13px',
+                                marginTop: '5px'
+                            }}
                         >
                             ➕ Adicionar Colega à Equipe
                         </button>
 
-                        {/* Calculadora em Tempo Real (Só aparece se tiver mais de 1 agente e tiver imóveis registrados) */}
-                        {cabecalho.agentes.length > 1 && totalImoveis > 0 && (
+
+
+                        {/* Calculadora (Agora totalmente blindada contra crashes e caixas vazias) */}
+                        {qtdAgentesValidos > 1 && (typeof totalImoveis !== 'undefined' && totalImoveis > 0) && (
                             <div style={{ marginTop: '15px', padding: '10px', background: '#2c3e50', borderRadius: '6px', textAlign: 'center' }}>
                                 <span style={{ color: '#ecf0f1', fontSize: '13px' }}>
-                                    Total: <strong>{totalImoveis}</strong> imóveis ÷ <strong>{cabecalho.agentes.length}</strong> agentes
+                                    Total: <strong>{totalImoveis}</strong> imóveis ÷ <strong>{qtdAgentesValidos}</strong> agentes
                                 </span>
                                 <br />
                                 <strong style={{ color: '#2ecc71', fontSize: '15px', display: 'block', marginTop: '4px' }}>
-                                    = {(totalImoveis / cabecalho.agentes.length).toFixed(1)} imóveis para cada
+                                    = {(totalImoveis / qtdAgentesValidos).toFixed(1)} imóveis para cada
                                 </strong>
                             </div>
                         )}
@@ -355,7 +408,8 @@ export default function CampoDashboard({ setTelaAtual }) {
                     style={{ background: '#1a237e', padding: '10px 15px', borderRadius: '6px', marginBottom: '20px', border: '1px solid #3949ab', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
                     <span style={{ fontSize: '14px', fontWeight: 'bold' }}>
-                        📍 {cabecalho.bairro || 'Sem Bairro'} | Ciclo: {cabecalho.ciclo} | Equipe: {cabecalho.agentes.length}
+                        {/* 👇 A correção foi feita bem aqui no final dessa linha 👇 */}
+                        📍 {cabecalho.bairro || 'Sem Bairro'} | Ciclo: {cabecalho.ciclo} | Equipe: {qtdAgentesValidos}
                     </span>
                     <span style={{ fontSize: '12px', color: '#90caf9' }}>Editar ✏️</span>
                 </div>
