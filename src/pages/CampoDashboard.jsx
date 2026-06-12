@@ -340,8 +340,10 @@ export default function CampoDashboard({ setTelaAtual }) {
                                     <button
                                         type="button"
                                         onClick={(e) => removerAgente(index, e)}
-                                        style={{ background: 'transparent', border: 'none', color: '#e74c3c',
-                                             cursor: 'pointer', marginTop: '18px', fontSize: '16px', padding: '0 5px' }}
+                                        style={{
+                                            background: 'transparent', border: 'none', color: '#e74c3c',
+                                            cursor: 'pointer', marginTop: '18px', fontSize: '16px', padding: '0 5px'
+                                        }}
                                         title="Remover colega"
                                     >
                                         ✖️
@@ -408,8 +410,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                     style={{ background: '#1a237e', padding: '10px 15px', borderRadius: '6px', marginBottom: '20px', border: '1px solid #3949ab', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
                     <span style={{ fontSize: '14px', fontWeight: 'bold' }}>
-                        {/* 👇 A correção foi feita bem aqui no final dessa linha 👇 */}
-                        📍 {cabecalho.bairro || 'Sem Bairro'} | Ciclo: {cabecalho.ciclo} | Equipe: {qtdAgentesValidos}
+                        📍 {cabecalho.bairro || 'Sem Bairro'} | Ciclo: {cabecalho.ciclo} | Equipe: {cabecalho.agentes.filter(agente => agente && agente.trim() !== '').length}
                     </span>
                     <span style={{ fontSize: '12px', color: '#90caf9' }}>Editar ✏️</span>
                 </div>
