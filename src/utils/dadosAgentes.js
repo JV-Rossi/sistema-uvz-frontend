@@ -1,9 +1,4 @@
 export const listaAgentes = [
-
-    /*
-                        REGIONAL NORTE
-    */
-
     {
         "nome": "ADRIANA PATURISE ACOSTA",
         "matricula": "4036465",
@@ -105,7 +100,7 @@ export const listaAgentes = [
         "regional": "Norte"
     },
     {
-        "nome": "ELIANA GUIMARÃES DE OLIVEIRA",
+        "nome": "ELIANA GUIMARAES DE OLIVEIRA",
         "matricula": "4933442",
         "regional": "Norte"
     },
@@ -125,7 +120,7 @@ export const listaAgentes = [
         "regional": "Norte"
     },
     {
-        "nome": "FLÁVIO SOARES MONTEIRO",
+        "nome": "FLAVIO SOARES MONTEIRO",
         "matricula": "4927681",
         "regional": "Norte"
     },
@@ -230,7 +225,7 @@ export const listaAgentes = [
         "regional": "Norte"
     },
     {
-        "nome": "LIANE DIAS DA CRUZ MAGALHÃES",
+        "nome": "LIANE DIAS DA CRUZ MAGALHAES",
         "matricula": "4036540",
         "regional": "Norte"
     },
@@ -280,7 +275,7 @@ export const listaAgentes = [
         "regional": "Norte"
     },
     {
-        "nome": "MARCOS MAGALHÃES A. JESUS",
+        "nome": "MARCOS MAGALHAES A. JESUS",
         "matricula": "4927670",
         "regional": "Norte"
     },
@@ -295,7 +290,7 @@ export const listaAgentes = [
         "regional": "Norte"
     },
     {
-        "nome": "NOELLI PIRES GONÇALVES",
+        "nome": "NOELLI PIRES GONCALVES",
         "matricula": "4927692",
         "regional": "Norte"
     },
@@ -384,1148 +379,1133 @@ export const listaAgentes = [
         "matricula": "4927628",
         "regional": "Norte"
     },
-
-      /*
-                           REGIONAL SUL
-      */
-
     {
-        "nome": "Alexandra Pinheiro Orlando",
+        "nome": "ALEXANDRA PINHEIRO ORLANDO",
         "matricula": "4036479",
         "regional": "Sul"
     },
     {
-        "nome": "Allyssandra Aparecida de Souza",
+        "nome": "ALLYSSANDRA APARECIDA DE SOUZA",
         "matricula": "4868709",
         "regional": "Sul"
     },
     {
-        "nome": "Ana Lucia Marques de Misquita",
+        "nome": "ANA LUCIA MARQUES DE MISQUITA",
         "matricula": "4036483",
         "regional": "Sul"
     },
     {
-        "nome": "Anadir Amadeus da Silva",
+        "nome": "ANADIR AMADEUS DA SILVA",
         "matricula": "4036509",
         "regional": "Sul"
     },
     {
-        "nome": "Ângela Maria Santos Araújo",
+        "nome": "ANGELA MARIA SANTOS ARAUJO",
         "matricula": "4036506",
         "regional": "Sul"
     },
     {
-        "nome": "Angela Meira da Silva",
+        "nome": "ANGELA MEIRA DA SILVA",
         "matricula": "4927631",
         "regional": "Sul"
     },
     {
-        "nome": "Antonio Ribeiro do Nascimento",
+        "nome": "ANTONIO RIBEIRO DO NASCIMENTO",
         "matricula": "4868669",
         "regional": "Sul"
     },
     {
-        "nome": "Avay Ferreira Alves",
+        "nome": "AVAY FERREIRA ALVES",
         "matricula": "4036494",
         "regional": "Sul"
     },
     {
-        "nome": "Benedita Verônica Pereira",
+        "nome": "BENEDITA VERONICA PEREIRA",
         "matricula": "4036495",
         "regional": "Sul"
     },
     {
-        "nome": "Celso Rodrigues da Silva",
+        "nome": "CELSO RODRIGUES DA SILVA",
         "matricula": "4868664",
         "regional": "Sul"
     },
     {
-        "nome": "Conceição Aparecida de Oliveira",
+        "nome": "CONCEICAO APARECIDA DE OLIVEIRA",
         "matricula": "4933379",
         "regional": "Sul"
     },
     {
-        "nome": "Cristino Silva do Prado",
+        "nome": "CRISTINO SILVA DO PRADO",
         "matricula": "4868711",
         "regional": "Sul"
     },
     {
-        "nome": "Devonete de Carvalho Leite",
+        "nome": "DEVONETE DE CARVALHO LEITE",
         "matricula": "4036470",
         "regional": "Sul"
     },
     {
-        "nome": "Divina Paula dos Reis",
+        "nome": "DIVINA PAULA DOS REIS",
         "matricula": "4036472",
         "regional": "Sul"
     },
     {
-        "nome": "Edimilson Sebastião de Paula",
+        "nome": "EDIMILSON SEBASTIAO DE PAULA",
         "matricula": "4036363",
         "regional": "Sul"
     },
     {
-        "nome": "Eduardo César Pereira",
+        "nome": "EDUARDO CESAR PEREIRA",
         "matricula": "4036319",
         "regional": "Sul"
     },
     {
-        "nome": "Eliane Andréia Wagner",
+        "nome": "ELIANE ANDREIA WAGNER",
         "matricula": "4927632",
         "regional": "Sul"
     },
     {
-        "nome": "Eliane Leite Moreira dos Reis",
+        "nome": "ELIANE LEITE MOREIRA DOS REIS",
         "matricula": "4036416",
         "regional": "Sul"
     },
     {
-        "nome": "Eliswelton Rodrigues Teixeira",
+        "nome": "ELISWELTON RODRIGUES TEIXEIRA",
         "matricula": "4927620",
         "regional": "Sul"
     },
     {
-        "nome": "Eva Lucinei da Silva",
+        "nome": "EVA LUCINEI DA SILVA",
         "matricula": "4036413",
         "regional": "Sul"
     },
     {
-        "nome": "Evanilde da Silva Franco",
+        "nome": "EVANILDE DA SILVA FRANCO",
         "matricula": "4036396",
         "regional": "Sul"
     },
     {
-        "nome": "Florizete Vergilia da Silva",
+        "nome": "FLORIZETE VERGILIA DA SILVA",
         "matricula": "4868646",
         "regional": "Sul"
     },
     {
-        "nome": "Francis Gomes da Cruz",
+        "nome": "FRANCIS GOMES DA CRUZ",
         "matricula": "4868716",
         "regional": "Sul"
     },
     {
-        "nome": "Francisca Gomes  de Oliveira",
+        "nome": "FRANCISCA GOMES  DE OLIVEIRA",
         "matricula": "4036571",
         "regional": "Sul"
     },
     {
-        "nome": "Francislânia de Freitas e Souza",
+        "nome": "FRANCISLANIA DE FREITAS E SOUZA",
         "matricula": "4933672",
         "regional": "Sul"
     },
     {
-        "nome": "Gabriel Henrique C. e Silva",
+        "nome": "GABRIEL HENRIQUE C. E SILVA",
         "matricula": "4933661",
         "regional": "Sul"
     },
     {
-        "nome": "Geisa Aline Azevedo Oliveira Santos",
+        "nome": "GEISA ALINE AZEVEDO OLIVEIRA SANTOS",
         "matricula": "4868654",
         "regional": "Sul"
     },
     {
-        "nome": "Geneci Marques de lima",
+        "nome": "GENECI MARQUES DE LIMA",
         "matricula": "4927723",
         "regional": "Sul"
     },
     {
-        "nome": "Gisele Cristina S.Brito",
+        "nome": "GISELE CRISTINA S.BRITO",
         "matricula": "4868663",
         "regional": "Sul"
     },
     {
-        "nome": "Ilda da Silva Borges",
+        "nome": "ILDA DA SILVA BORGES",
         "matricula": "4036476",
         "regional": "Sul"
     },
     {
-        "nome": "Isabel Geralda Cruz",
+        "nome": "ISABEL GERALDA CRUZ",
         "matricula": "4036480",
         "regional": "Sul"
     },
     {
-        "nome": "Ises Pereira de Almeida Peixoto",
+        "nome": "ISES PEREIRA DE ALMEIDA PEIXOTO",
         "matricula": "4036482",
         "regional": "Sul"
     },
     {
-        "nome": "Ivanete Martins da Cruz",
+        "nome": "IVANETE MARTINS DA CRUZ",
         "matricula": "4036485",
         "regional": "Sul"
     },
     {
-        "nome": "Jaime Pereira Santana",
+        "nome": "JAIME PEREIRA SANTANA",
         "matricula": "4036397",
         "regional": "Sul"
     },
     {
-        "nome": "João Victtor Ferreira Paes de Barros",
+        "nome": "JOAO VICTTOR FERREIRA PAES DE BARROS",
         "matricula": "4927615",
         "regional": "Sul"
     },
     {
-        "nome": "João Victor Rossi Brandão",
+        "nome": "JOAO VICTOR ROSSI BRANDAO",
         "matricula": "4927693",
         "regional": "Sul"
     },
     {
-        "nome": "Jonielson Souza Dias",
+        "nome": "JONIELSON SOUZA DIAS",
         "matricula": "4927807",
         "regional": "Sul"
     },
     {
-        "nome": "José Amaro Queiroz de Campos",
+        "nome": "JOSE AMARO QUEIROZ DE CAMPOS",
         "matricula": "4927627",
         "regional": "Sul"
     },
     {
-        "nome": "José Lucas Monteiro",
+        "nome": "JOSE LUCAS MONTEIRO",
         "matricula": "4036332",
         "regional": "Sul"
     },
     {
-        "nome": "Juliana Amancio dos Santos",
+        "nome": "JULIANA AMANCIO DOS SANTOS",
         "matricula": "4868638",
         "regional": "Sul"
     },
     {
-        "nome": "Katia Rodrigues de Sousa",
+        "nome": "KATIA RODRIGUES DE SOUSA",
         "matricula": "4868729",
         "regional": "Sul"
     },
     {
-        "nome": "kauene Souza de Arruda",
+        "nome": "KAUENE SOUZA DE ARRUDA",
         "matricula": "4927644",
         "regional": "Sul"
     },
     {
-        "nome": "Kêmia Christhyanny Barbosa da Silva",
+        "nome": "KEMIA CHRISTHYANNY BARBOSA DA SILVA",
         "matricula": "4036414",
         "regional": "Sul"
     },
     {
-        "nome": "Kristalem Vasconcelos Barbosa Dias",
+        "nome": "KRISTALEM VASCONCELOS BARBOSA DIAS",
         "matricula": "4933429",
         "regional": "Sul"
     },
     {
-        "nome": "Lenilma Rodrigues dos Santos Rego",
+        "nome": "LENILMA RODRIGUES DOS SANTOS REGO",
         "matricula": "4927731",
         "regional": "Sul"
     },
     {
-        "nome": "Lenir Barbosa da Silva",
+        "nome": "LENIR BARBOSA DA SILVA",
         "matricula": "4036544",
         "regional": "Sul"
     },
     {
-        "nome": "Leociney Joana Guimarães Silva",
+        "nome": "LEOCINEY JOANA GUIMARAES SILVA",
         "matricula": "4036543",
         "regional": "Sul"
     },
     {
-        "nome": "Leandro José da Silva",
+        "nome": "LEANDRO JOSE DA SILVA",
         "matricula": "4927609",
         "regional": "Sul"
     },
     {
-        "nome": "Leonardo Barbosa de Moura",
+        "nome": "LEONARDO BARBOSA DE MOURA",
         "matricula": "4933710",
         "regional": "Sul"
     },
     {
-        "nome": "Leticia Bazzi do Nascimento Balbuena",
+        "nome": "LETICIA BAZZI DO NASCIMENTO BALBUENA",
         "matricula": "4927773",
         "regional": "Sul"
     },
     {
-        "nome": "Lígia Luzia de Moraes",
+        "nome": "LIGIA LUZIA DE MORAES",
         "matricula": "4036539",
         "regional": "Sul"
     },
     {
-        "nome": "Lívia Pínto de Moraes Silva Souza",
+        "nome": "LIVIA PINTO DE MORAES SILVA SOUZA",
         "matricula": "4036541",
         "regional": "Sul"
     },
     {
-        "nome": "Lucas José da Silva leite",
+        "nome": "LUCAS JOSE DA SILVA LEITE",
         "matricula": "4927694",
         "regional": "Sul"
     },
     {
-        "nome": "Lucas Leite de Morais",
+        "nome": "LUCAS LEITE DE MORAIS",
         "matricula": "4927721",
         "regional": "Sul"
     },
     {
-        "nome": "Luzinei Benedita dos Santos",
+        "nome": "LUZINEI BENEDITA DOS SANTOS",
         "matricula": "4036519",
         "regional": "Sul"
     },
     {
-        "nome": "Luzineide Vieira dos Santos",
+        "nome": "LUZINEIDE VIEIRA DOS SANTOS",
         "matricula": "4868693",
         "regional": "Sul"
     },
     {
-        "nome": "Marcello Montenegro",
+        "nome": "MARCELLO MONTENEGRO",
         "matricula": "4868656",
         "regional": "Sul"
     },
     {
-        "nome": "Margarete Franzosi",
+        "nome": "MARGARETE FRANZOSI",
         "matricula": "4868696",
         "regional": "Sul"
     },
     {
-        "nome": "Maria Auxiliadora Barbosa",
+        "nome": "MARIA AUXILIADORA BARBOSA",
         "matricula": "4868659",
         "regional": "Sul"
     },
     {
-        "nome": "Maria Costa Ferreira",
+        "nome": "MARIA COSTA FERREIRA",
         "matricula": "4036556",
         "regional": "Sul"
     },
     {
-        "nome": "Maria Eunice Rondon",
+        "nome": "MARIA EUNICE RONDON",
         "matricula": "4036293",
         "regional": "Sul"
     },
     {
-        "nome": "Maria Matildes Pereira da Silva",
+        "nome": "MARIA MATILDES PEREIRA DA SILVA",
         "matricula": "4868636",
         "regional": "Sul"
     },
     {
-        "nome": "Maria Neide de Oliveira",
+        "nome": "MARIA NEIDE DE OLIVEIRA",
         "matricula": "4933933",
         "regional": "Sul"
     },
     {
-        "nome": "Maria Verônica Silva dos Santos",
+        "nome": "MARIA VERONICA SILVA DOS SANTOS",
         "matricula": "4036291",
         "regional": "Sul"
     },
     {
-        "nome": "Marlene Ribeiro de Freitas",
+        "nome": "MARLENE RIBEIRO DE FREITAS",
         "matricula": "4036312",
         "regional": "Sul"
     },
     {
-        "nome": "Mauro da Silva",
+        "nome": "MAURO DA SILVA",
         "matricula": "4036300",
         "regional": "Sul"
     },
     {
-        "nome": "Mislene Pereira da Silva Veiga",
+        "nome": "MISLENE PEREIRA DA SILVA VEIGA",
         "matricula": "4868634",
         "regional": "Sul"
     },
     {
-        "nome": "Natalia Ferreira Duque",
+        "nome": "NATALIA FERREIRA DUQUE",
         "matricula": "4927635",
         "regional": "Sul"
     },
     {
-        "nome": "Natanael Melo Monteiro",
+        "nome": "NATANAEL MELO MONTEIRO",
         "matricula": "4927630",
         "regional": "Sul"
     },
     {
-        "nome": "Nilda de Freitas Café Lisboa",
+        "nome": "NILDA DE FREITAS CAFE LISBOA",
         "matricula": "4036221",
         "regional": "Sul"
     },
     {
-        "nome": "Paulo Dias da Silva Rocha",
+        "nome": "PAULO DIAS DA SILVA ROCHA",
         "matricula": "4927638",
         "regional": "Sul"
     },
     {
-        "nome": "Rosângela Beatriz Lima Santos",
+        "nome": "ROSANGELA BEATRIZ LIMA SANTOS",
         "matricula": "4036279",
         "regional": "Sul"
     },
     {
-        "nome": "Rosângela Leonora Peixoto",
+        "nome": "ROSANGELA LEONORA PEIXOTO",
         "matricula": "4036275",
         "regional": "Sul"
     },
     {
-        "nome": "Roseleia de Jesus Pereira",
+        "nome": "ROSELEIA DE JESUS PEREIRA",
         "matricula": "4036267",
         "regional": "Sul"
     },
     {
-        "nome": "Rosilda Regina Gomes da Silva",
+        "nome": "ROSILDA REGINA GOMES DA SILVA",
         "matricula": "4036254",
         "regional": "Sul"
     },
     {
-        "nome": "Sandra Maria Santos Araujo",
+        "nome": "SANDRA MARIA SANTOS ARAUJO",
         "matricula": "4927673",
         "regional": "Sul"
     },
     {
-        "nome": "Sidnei Santos da Costa",
+        "nome": "SIDNEI SANTOS DA COSTA",
         "matricula": "4036248",
         "regional": "Sul"
     },
     {
-        "nome": "Solange Gonçalves da Silva",
+        "nome": "SOLANGE GONCALVES DA SILVA",
         "matricula": "4933861",
         "regional": "Sul"
     },
     {
-        "nome": "Suza Neta da Silva Santos",
+        "nome": "SUZA NETA DA SILVA SANTOS",
         "matricula": "4036230",
         "regional": "Sul"
     },
     {
-        "nome": "Terezinha Maria da Costa",
+        "nome": "TEREZINHA MARIA DA COSTA",
         "matricula": "4036229",
         "regional": "Sul"
     },
     {
-        "nome": "Valdete Aparecida Miranda",
+        "nome": "VALDETE APARECIDA MIRANDA",
         "matricula": "4036282",
         "regional": "Sul"
     },
     {
-        "nome": "Valteir Jesus Dias",
+        "nome": "VALTEIR JESUS DIAS",
         "matricula": "4868685",
         "regional": "Sul"
     },
     {
-        "nome": "Vanir Aparecida da Silva",
+        "nome": "VANIR APARECIDA DA SILVA",
         "matricula": "4036274",
         "regional": "Sul"
     },
     {
-        "nome": "Varlice M José Pereira",
+        "nome": "VARLICE M JOSE PEREIRA",
         "matricula": "4036272",
         "regional": "Sul"
     },
     {
-        "nome": "Veridiana Inês Coimbra",
+        "nome": "VERIDIANA INES COIMBRA",
         "matricula": "4933833",
         "regional": "Sul"
     },
     {
-        "nome": "Wanderleia Silva Amorim de França",
+        "nome": "WANDERLEIA SILVA AMORIM DE FRANCA",
         "matricula": "4933792",
         "regional": "Sul"
     },
     {
-        "nome": "Wilson Gonçalo de Oliveira Jr.",
+        "nome": "WILSON GONCALO DE OLIVEIRA JR.",
         "matricula": "4868703",
         "regional": "Sul"
     },
     {
-        "nome": "Zenilda Mendes da Silva",
+        "nome": "ZENILDA MENDES DA SILVA",
         "matricula": "4036284",
         "regional": "Sul"
     },
-
-    /*
-                        REGIONAL LESTE
-    */
-
     {
-        "nome": "Alcione Barbosa da Cruz",
+        "nome": "ALCIONE BARBOSA DA CRUZ",
         "matricula": "4036468",
         "regional": "Leste"
     },
     {
-        "nome": "Alemazilda Vaz dos Santos",
+        "nome": "ALEMAZILDA VAZ DOS SANTOS",
         "matricula": "4868668",
         "regional": "Leste"
     },
     {
-        "nome": "Alessandra Cavalcanti da Silva",
+        "nome": "ALESSANDRA CAVALCANTI DA SILVA",
         "matricula": "4036474",
         "regional": "Leste"
     },
     {
-        "nome": "Alessandra de Assis",
+        "nome": "ALESSANDRA DE ASSIS",
         "matricula": "4036475",
         "regional": "Leste"
     },
     {
-        "nome": "Amanda Klippel de Azevedo",
+        "nome": "AMANDA KLIPPEL DE AZEVEDO",
         "matricula": "4868730",
         "regional": "Leste"
     },
     {
-        "nome": "Ana Maria Fernandes de Brito",
+        "nome": "ANA MARIA FERNANDES DE BRITO",
         "matricula": "4036486",
         "regional": "Leste"
     },
     {
-        "nome": "Antonia Moreira",
+        "nome": "ANTONIA MOREIRA",
         "matricula": "4868707",
         "regional": "Leste"
     },
     {
-        "nome": "Augusto A. de Miranda Santos",
+        "nome": "AUGUSTO A. DE MIRANDA SANTOS",
         "matricula": "4927611",
         "regional": "Leste"
     },
     {
-        "nome": "Cezina Gonçalves de Almeida",
+        "nome": "CEZINA GONCALVES DE ALMEIDA",
         "matricula": "4036516",
         "regional": "Leste"
     },
     {
-        "nome": "Cleudiomar Rosa de Moura",
+        "nome": "CLEUDIOMAR ROSA DE MOURA",
         "matricula": "4927819",
         "regional": "Leste"
     },
     {
-        "nome": "Daniel Bernardo Aguiar",
+        "nome": "DANIEL BERNARDO AGUIAR",
         "matricula": "4868723",
         "regional": "Leste"
     },
     {
-        "nome": "Danila Costa Almeida",
+        "nome": "DANILA COSTA ALMEIDA",
         "matricula": "4868697",
         "regional": "Leste"
     },
     {
-        "nome": "Divina Aparecida F. de Oliveira",
+        "nome": "DIVINA APARECIDA F. DE OLIVEIRA",
         "matricula": "4868650",
         "regional": "Leste"
     },
     {
-        "nome": "Divina Pereira",
+        "nome": "DIVINA PEREIRA",
         "matricula": "4036473",
         "regional": "Leste"
     },
     {
-        "nome": "Eder Freitas Correa",
+        "nome": "EDER FREITAS CORREA",
         "matricula": "4868675",
         "regional": "Leste"
     },
     {
-        "nome": "Elaine Cristina G. Cirino",
+        "nome": "ELAINE CRISTINA G. CIRINO",
         "matricula": "4036370",
         "regional": "Leste"
     },
     {
-        "nome": "Eliane Leite Pereira",
+        "nome": "ELIANE LEITE PEREIRA",
         "matricula": "4868710",
         "regional": "Leste"
     },
     {
-        "nome": "Eliane Pedrosa de Jesus Pereira",
+        "nome": "ELIANE PEDROSA DE JESUS PEREIRA",
         "matricula": "4868728",
         "regional": "Leste"
     },
     {
-        "nome": "Elizabeth Antunes Sampaio",
+        "nome": "ELIZABETH ANTUNES SAMPAIO",
         "matricula": "4868683",
         "regional": "Leste"
     },
     {
-        "nome": "Elvis Fagner de Oliveira",
+        "nome": "ELVIS FAGNER DE OLIVEIRA",
         "matricula": "4868712",
         "regional": "Leste"
     },
     {
-        "nome": "Érica Priscila G. Cirino",
+        "nome": "ERICA PRISCILA G. CIRINO",
         "matricula": "4036408",
         "regional": "Leste"
     },
     {
-        "nome": "Fabiane Abadia Martins",
+        "nome": "FABIANE ABADIA MARTINS",
         "matricula": "4868704",
         "regional": "Leste"
     },
     {
-        "nome": "Fernanda Botelho da Silva",
+        "nome": "FERNANDA BOTELHO DA SILVA",
         "matricula": "4927804",
         "regional": "Leste"
     },
     {
-        "nome": "Gaudisbeth Rodrigues da Silva",
+        "nome": "GAUDISBETH RODRIGUES DA SILVA",
         "matricula": "4036505",
         "regional": "Leste"
     },
     {
-        "nome": "Gilvani Maria Nunes",
+        "nome": "GILVANI MARIA NUNES",
         "matricula": "4868702",
         "regional": "Leste"
     },
     {
-        "nome": "Izilda Fernandes dos Santos",
+        "nome": "IZILDA FERNANDES DOS SANTOS",
         "matricula": "4036492",
         "regional": "Leste"
     },
     {
-        "nome": "Jaine Maria Soares",
+        "nome": "JAINE MARIA SOARES",
         "matricula": "4036395",
         "regional": "Leste"
     },
     {
-        "nome": "Jane Rodrigues de Figueiredo",
+        "nome": "JANE RODRIGUES DE FIGUEIREDO",
         "matricula": "4927727",
         "regional": "Leste"
     },
     {
-        "nome": "Jefferson J. Nunes de Moura",
+        "nome": "JEFFERSON J. NUNES DE MOURA",
         "matricula": "4036371",
         "regional": "Leste"
     },
     {
-        "nome": "Jorciley Francisco Ferreira",
+        "nome": "JORCILEY FRANCISCO FERREIRA",
         "matricula": "4933695",
         "regional": "Leste"
     },
     {
-        "nome": "Jocilene Pedrosa Barreto",
+        "nome": "JOCILENE PEDROSA BARRETO",
         "matricula": "4868649",
         "regional": "Leste"
     },
     {
-        "nome": "Joice Silva dos Santos",
+        "nome": "JOICE SILVA DOS SANTOS",
         "matricula": "4927818",
         "regional": "Leste"
     },
     {
-        "nome": "José Maria Ferreira de Oliveira",
+        "nome": "JOSE MARIA FERREIRA DE OLIVEIRA",
         "matricula": "4036329",
         "regional": "Leste"
     },
     {
-        "nome": "Josefina Felix de Souza",
+        "nome": "JOSEFINA FELIX DE SOUZA",
         "matricula": "4868682",
         "regional": "Leste"
     },
     {
-        "nome": "Joze Luiza dos Santos Barbosa",
+        "nome": "JOZE LUIZA DOS SANTOS BARBOSA",
         "matricula": "4036323",
         "regional": "Leste"
     },
     {
-        "nome": "Juliana Nunes de Araujo",
+        "nome": "JULIANA NUNES DE ARAUJO",
         "matricula": "4933730",
         "regional": "Leste"
     },
     {
-        "nome": "Laura Regina Dias Marinho",
+        "nome": "LAURA REGINA DIAS MARINHO",
         "matricula": "4036545",
         "regional": "Leste"
     },
     {
-        "nome": "Leonardo Gomes da Cunha",
+        "nome": "LEONARDO GOMES DA CUNHA",
         "matricula": "4927671",
         "regional": "Leste"
     },
     {
-        "nome": "Leticia Eberhard Vieira",
+        "nome": "LETICIA EBERHARD VIEIRA",
         "matricula": "4927821",
         "regional": "Leste"
     },
     {
-        "nome": "Luana Silva Oliveira",
+        "nome": "LUANA SILVA OLIVEIRA",
         "matricula": "4933735",
         "regional": "Leste"
     },
     {
-        "nome": "Lucas Oliveira da Silva",
+        "nome": "LUCAS OLIVEIRA DA SILVA",
         "matricula": "4927809",
         "regional": "Leste"
     },
     {
-        "nome": "Luciana Carla de Oliveira",
+        "nome": "LUCIANA CARLA DE OLIVEIRA",
         "matricula": "4036535",
         "regional": "Leste"
     },
     {
-        "nome": "Lucileide Gonçalves Souza",
+        "nome": "LUCILEIDE GONCALVES SOUZA",
         "matricula": "4036532",
         "regional": "Leste"
     },
     {
-        "nome": "Maisa Valéria Rondão",
+        "nome": "MAISA VALERIA RONDAO",
         "matricula": "4927851",
         "regional": "Leste"
     },
     {
-        "nome": "Maria Cristina Lara",
+        "nome": "MARIA CRISTINA LARA",
         "matricula": "4868691",
         "regional": "Leste"
     },
     {
-        "nome": "Maria da Glória Correia",
+        "nome": "MARIA DA GLORIA CORREIA",
         "matricula": "4036290",
         "regional": "Leste"
     },
     {
-        "nome": "Maria de Fátima Padilha",
+        "nome": "MARIA DE FATIMA PADILHA",
         "matricula": "4036292",
         "regional": "Leste"
     },
     {
-        "nome": "Maria Ferreira Gomes",
+        "nome": "MARIA FERREIRA GOMES",
         "matricula": "4036301",
         "regional": "Leste"
     },
     {
-        "nome": "Maria Regina Pereira",
+        "nome": "MARIA REGINA PEREIRA",
         "matricula": "4036289",
         "regional": "Leste"
     },
     {
-        "nome": "Maricelma Magalhães Ramos",
+        "nome": "MARICELMA MAGALHAES RAMOS",
         "matricula": "4036310",
         "regional": "Leste"
     },
     {
-        "nome": "Marinete dos Santos Carvalho",
+        "nome": "MARINETE DOS SANTOS CARVALHO",
         "matricula": "4036297",
         "regional": "Leste"
     },
     {
-        "nome": "Marly Martins Lopes Soares",
+        "nome": "MARLY MARTINS LOPES SOARES",
         "matricula": "4036305",
         "regional": "Leste"
     },
     {
-        "nome": "Matheus da Silva Venancio",
+        "nome": "MATHEUS DA SILVA VENANCIO",
         "matricula": "4927626",
         "regional": "Leste"
     },
     {
-        "nome": "Mauricea Maia da Silva",
+        "nome": "MAURICEA MAIA DA SILVA",
         "matricula": "4927672",
         "regional": "Leste"
     },
     {
-        "nome": "Natalia Vanni",
+        "nome": "NATALIA VANNI",
         "matricula": "4868717",
         "regional": "Leste"
     },
     {
-        "nome": "Odeuza Maria de Barros",
+        "nome": "ODEUZA MARIA DE BARROS",
         "matricula": "4036231",
         "regional": "Leste"
     },
     {
-        "nome": "Patricia Auxiliadora P. A. Ribeiro",
+        "nome": "PATRICIA AUXILIADORA P. A. RIBEIRO",
         "matricula": "4868642",
         "regional": "Leste"
     },
     {
-        "nome": "Patricia Oliveira",
+        "nome": "PATRICIA OLIVEIRA",
         "matricula": "4868689",
         "regional": "Leste"
     },
     {
-        "nome": "Rafaela da Silva Polon",
+        "nome": "RAFAELA DA SILVA POLON",
         "matricula": "4927622",
         "regional": "Leste"
     },
     {
-        "nome": "Roberta Pereira de Sales Rondon",
+        "nome": "ROBERTA PEREIRA DE SALES RONDON",
         "matricula": "4933803",
         "regional": "Leste"
     },
     {
-        "nome": "Rosedelma M. de Oliveira",
+        "nome": "ROSEDELMA M. DE OLIVEIRA",
         "matricula": "4036273",
         "regional": "Leste"
     },
     {
-        "nome": "Rosenira de Freitas Barbosa",
+        "nome": "ROSENIRA DE FREITAS BARBOSA",
         "matricula": "4868645",
         "regional": "Leste"
     },
     {
-        "nome": "Samira Miranda Aguiar",
+        "nome": "SAMIRA MIRANDA AGUIAR",
         "matricula": "4868687",
         "regional": "Leste"
     },
     {
-        "nome": "Sanmandai Bom Despacho",
+        "nome": "SANMANDAI BOM DESPACHO",
         "matricula": "4933476",
         "regional": "Leste"
     },
     {
-        "nome": "Sara Regina Rocha e Silva",
+        "nome": "SARA REGINA ROCHA E SILVA",
         "matricula": "4036251",
         "regional": "Leste"
     },
     {
-        "nome": "Silvani Correa Constantino",
+        "nome": "SILVANI CORREA CONSTANTINO",
         "matricula": "4927711",
         "regional": "Leste"
     },
     {
-        "nome": "Silvani Ferreira do Nascimento",
+        "nome": "SILVANI FERREIRA DO NASCIMENTO",
         "matricula": "4868734",
         "regional": "Leste"
     },
     {
-        "nome": "Simão Lima da Silva",
+        "nome": "SIMAO LIMA DA SILVA",
         "matricula": "4927646",
         "regional": "Leste"
     },
     {
-        "nome": "Solange Darci Chinveslki",
+        "nome": "SOLANGE DARCI CHINVESLKI",
         "matricula": "4036243",
         "regional": "Leste"
     },
     {
-        "nome": "Vicentina Domingas da Costa",
+        "nome": "VICENTINA DOMINGAS DA COSTA",
         "matricula": "4036269",
         "regional": "Leste"
     },
     {
-        "nome": "Wesley Cardoso Rondon",
+        "nome": "WESLEY CARDOSO RONDON",
         "matricula": "4933795",
         "regional": "Leste"
     },
-
-        /*
-                              REGIONAL OESTE
-        */
-
     {
-        "nome": "Ademir Ferreira Moura",
+        "nome": "ADEMIR FERREIRA MOURA",
         "matricula": "4036460",
         "regional": "Oeste"
     },
     {
-        "nome": "Adriana Megume S. Waminaguni",
+        "nome": "ADRIANA MEGUME S. WAMINAGUNI",
         "matricula": "4927806",
         "regional": "Oeste"
     },
     {
-        "nome": "Alan Silva Alves",
+        "nome": "ALAN SILVA ALVES",
         "matricula": "4927617",
         "regional": "Oeste"
     },
     {
-        "nome": "Alessandra Ribeiro Da Silva Ferreira",
+        "nome": "ALESSANDRA RIBEIRO DA SILVA FERREIRA",
         "matricula": "4868661",
         "regional": "Oeste"
     },
     {
-        "nome": "Aluzair de S. A Santos",
+        "nome": "ALUZAIR DE S. A SANTOS",
         "matricula": "4036481",
         "regional": "Oeste"
     },
     {
-        "nome": "Anderson de Arruda Sena",
+        "nome": "ANDERSON DE ARRUDA SENA",
         "matricula": "4036633",
         "regional": "Oeste"
     },
     {
-        "nome": "Anderson Santana Moreira",
+        "nome": "ANDERSON SANTANA MOREIRA",
         "matricula": "4927642",
         "regional": "Oeste"
     },
     {
-        "nome": "Aparecida Cristina F. V. Praxedes",
+        "nome": "APARECIDA CRISTINA F. V. PRAXEDES",
         "matricula": "4868705",
         "regional": "Oeste"
     },
     {
-        "nome": "Carla Regina  C. Rodrigues",
+        "nome": "CARLA REGINA  C. RODRIGUES",
         "matricula": "4036555",
         "regional": "Oeste"
     },
     {
-        "nome": "Carlos Eduardo França Ferreira",
+        "nome": "CARLOS EDUARDO FRANCA FERREIRA",
         "matricula": "4868681",
         "regional": "Oeste"
     },
     {
-        "nome": "Célia da Cruz Almeida",
+        "nome": "CELIA DA CRUZ ALMEIDA",
         "matricula": "4036514",
         "regional": "Oeste"
     },
     {
-        "nome": "Claudinete Maria dos Santos",
+        "nome": "CLAUDINETE MARIA DOS SANTOS",
         "matricula": "4036518",
         "regional": "Oeste"
     },
     {
-        "nome": "Delma Sônia dos Santos",
+        "nome": "DELMA SONIA DOS SANTOS",
         "matricula": "4036466",
         "regional": "Oeste"
     },
     {
-        "nome": "Dulcinéia Lopes Francisco",
+        "nome": "DULCINEIA LOPES FRANCISCO",
         "matricula": "4036554",
         "regional": "Oeste"
     },
     {
-        "nome": "Edna Aparecida Silva Aguiar",
+        "nome": "EDNA APARECIDA SILVA AGUIAR",
         "matricula": "4036324",
         "regional": "Oeste"
     },
     {
-        "nome": "Edna Maria Rodrigues da Mata",
+        "nome": "EDNA MARIA RODRIGUES DA MATA",
         "matricula": "4036321",
         "regional": "Oeste"
     },
     {
-        "nome": "Efferson João da Silva",
+        "nome": "EFFERSON JOAO DA SILVA",
         "matricula": "4927691",
         "regional": "Oeste"
     },
     {
-        "nome": "Eliane Pereira Bispo",
+        "nome": "ELIANE PEREIRA BISPO",
         "matricula": "4036415",
         "regional": "Oeste"
     },
     {
-        "nome": "Elizabet Maria Almeida",
+        "nome": "ELIZABET MARIA ALMEIDA",
         "matricula": "4036374",
         "regional": "Oeste"
     },
     {
-        "nome": "Eva Laura Feitosa",
+        "nome": "EVA LAURA FEITOSA",
         "matricula": "4868722",
         "regional": "Oeste"
     },
     {
-        "nome": "Fábio Santos Eppine",
+        "nome": "FABIO SANTOS EPPINE",
         "matricula": "4927829",
         "regional": "Oeste"
     },
     {
-        "nome": "Fátima C. de Hungria",
+        "nome": "FATIMA C. DE HUNGRIA",
         "matricula": "4927808",
         "regional": "Oeste"
     },
     {
-        "nome": "Francisca N. de Souza Belém",
+        "nome": "FRANCISCA N. DE SOUZA BELEM",
         "matricula": "4036513",
         "regional": "Oeste"
     },
     {
-        "nome": "Geisy Karine Miranda da Silva",
+        "nome": "GEISY KARINE MIRANDA DA SILVA",
         "matricula": "4927814",
         "regional": "Oeste"
     },
     {
-        "nome": "Gisele Francisca da Cruz",
+        "nome": "GISELE FRANCISCA DA CRUZ",
         "matricula": "4868648",
         "regional": "Oeste"
     },
     {
-        "nome": "Guilherme Vinicius da Silva",
+        "nome": "GUILHERME VINICIUS DA SILVA",
         "matricula": "4927696",
         "regional": "Oeste"
     },
     {
-        "nome": "Haydê Domingas de Lima",
+        "nome": "HAYDE DOMINGAS DE LIMA",
         "matricula": "4036512",
         "regional": "Oeste"
     },
     {
-        "nome": "Ivanete do Carmo Juvenal",
+        "nome": "IVANETE DO CARMO JUVENAL",
         "matricula": "4036484",
         "regional": "Oeste"
     },
     {
-        "nome": "Janaína Pacheco Cunha",
+        "nome": "JANAINA PACHECO CUNHA",
         "matricula": "4036409",
         "regional": "Oeste"
     },
     {
-        "nome": "Janete Maria de Moraes",
+        "nome": "JANETE MARIA DE MORAES",
         "matricula": "4036379",
         "regional": "Oeste"
     },
     {
-        "nome": "Jéssica de Souza Pereira",
+        "nome": "JESSICA DE SOUZA PEREIRA",
         "matricula": "4927828",
         "regional": "Oeste"
     },
     {
-        "nome": "Joanilde da Silva Leite",
+        "nome": "JOANILDE DA SILVA LEITE",
         "matricula": "4036365",
         "regional": "Oeste"
     },
     {
-        "nome": "João Batista de Paula Silva",
+        "nome": "JOAO BATISTA DE PAULA SILVA",
         "matricula": "4927685",
         "regional": "Oeste"
     },
     {
-        "nome": "Jociel Carvalho Magalhães",
+        "nome": "JOCIEL CARVALHO MAGALHAES",
         "matricula": "4036336",
         "regional": "Oeste"
     },
     {
-        "nome": "Jocilene Maria da S.e Paula",
+        "nome": "JOCILENE MARIA DA S.E PAULA",
         "matricula": "4036335",
         "regional": "Oeste"
     },
     {
-        "nome": "José Jairo da Silva",
+        "nome": "JOSE JAIRO DA SILVA",
         "matricula": "4927830",
         "regional": "Oeste"
     },
     {
-        "nome": "Joseline de Souza Leal",
+        "nome": "JOSELINE DE SOUZA LEAL",
         "matricula": "4868698",
         "regional": "Oeste"
     },
     {
-        "nome": "Juliete de Camargo",
+        "nome": "JULIETE DE CAMARGO",
         "matricula": "4868718",
         "regional": "Oeste"
     },
     {
-        "nome": "Jurandir Luiz da Costa Junior",
+        "nome": "JURANDIR LUIZ DA COSTA JUNIOR",
         "matricula": "4868699",
         "regional": "Oeste"
     },
     {
-        "nome": "Justina R. do Nascimento",
+        "nome": "JUSTINA R. DO NASCIMENTO",
         "matricula": "4036316",
         "regional": "Oeste"
     },
     {
-        "nome": "Kamilly Valmaras S. de Freitas",
+        "nome": "KAMILLY VALMARAS S. DE FREITAS",
         "matricula": "4927612",
         "regional": "Oeste"
     },
     {
-        "nome": "Karen E. de S. Gomes",
+        "nome": "KAREN E. DE S. GOMES",
         "matricula": "4868652",
         "regional": "Oeste"
     },
     {
-        "nome": "Letícia Bazze do Nascimento Babuena",
+        "nome": "LETICIA BAZZE DO NASCIMENTO BABUENA",
         "matricula": "4927773",
         "regional": "Oeste"
     },
     {
-        "nome": "Luis Henrique Barreto Lopes",
+        "nome": "LUIS HENRIQUE BARRETO LOPES",
         "matricula": "4868706",
         "regional": "Oeste"
     },
     {
-        "nome": "Luiz Cláudio Vitório Nunes",
+        "nome": "LUIZ CLAUDIO VITORIO NUNES",
         "matricula": "4036524",
         "regional": "Oeste"
     },
     {
-        "nome": "Luzia da Silva Caldas",
+        "nome": "LUZIA DA SILVA CALDAS",
         "matricula": "4036553",
         "regional": "Oeste"
     },
     {
-        "nome": "Marcia Cristina O. Lopes",
+        "nome": "MARCIA CRISTINA O. LOPES",
         "matricula": "4868640",
         "regional": "Oeste"
     },
     {
-        "nome": "Micael de Souza Silva",
+        "nome": "MICAEL DE SOUZA SILVA",
         "matricula": "4927676",
         "regional": "Oeste"
     },
     {
-        "nome": "Milena Fraga de Souza da Rosa",
+        "nome": "MILENA FRAGA DE SOUZA DA ROSA",
         "matricula": "4927640",
         "regional": "Oeste"
     },
     {
-        "nome": "Mirian Dantas de Oliveira",
+        "nome": "MIRIAN DANTAS DE OLIVEIRA",
         "matricula": "4036309",
         "regional": "Oeste"
     },
     {
-        "nome": "Mispã Dantas de Oliveira",
+        "nome": "MISPA DANTAS DE OLIVEIRA",
         "matricula": "4036303",
         "regional": "Oeste"
     },
     {
-        "nome": "Nathalie L. K. de Moraes Sousa",
+        "nome": "NATHALIE L. K. DE MORAES SOUSA",
         "matricula": "4868736",
         "regional": "Oeste"
     },
     {
-        "nome": "Nathan Espindula Beuter",
+        "nome": "NATHAN ESPINDULA BEUTER",
         "matricula": "4927664",
         "regional": "Oeste"
     },
     {
-        "nome": "Patricia de Campos Prado",
+        "nome": "PATRICIA DE CAMPOS PRADO",
         "matricula": "4868667",
         "regional": "Oeste"
     },
     {
-        "nome": "Presentina Luiza dos Santos",
+        "nome": "PRESENTINA LUIZA DOS SANTOS",
         "matricula": "4036220",
         "regional": "Oeste"
     },
     {
-        "nome": "Regina Lucia Rondon",
+        "nome": "REGINA LUCIA RONDON",
         "matricula": "4036313",
         "regional": "Oeste"
     },
     {
-        "nome": "Roberte Anders de Oliveira Arruda",
+        "nome": "ROBERTE ANDERS DE OLIVEIRA ARRUDA",
         "matricula": "4036311",
         "regional": "Oeste"
     },
     {
-        "nome": "Rosalino Gomes de Souza Junior",
+        "nome": "ROSALINO GOMES DE SOUZA JUNIOR",
         "matricula": "4036306",
         "regional": "Oeste"
     },
     {
-        "nome": "Silvana Rosa e Silva",
+        "nome": "SILVANA ROSA E SILVA",
         "matricula": "4927697",
         "regional": "Oeste"
     },
     {
-        "nome": "Solange Maria Cordeiro",
+        "nome": "SOLANGE MARIA CORDEIRO",
         "matricula": "4036242",
         "regional": "Oeste"
     },
     {
-        "nome": "Solange Moura Lima",
+        "nome": "SOLANGE MOURA LIMA",
         "matricula": "4036239",
         "regional": "Oeste"
     },
     {
-        "nome": "Solange Regina da Silva",
+        "nome": "SOLANGE REGINA DA SILVA",
         "matricula": "4868673",
         "regional": "Oeste"
     },
     {
-        "nome": "Soneilson Gomes Cordeiro",
+        "nome": "SONEILSON GOMES CORDEIRO",
         "matricula": "4868686",
         "regional": "Oeste"
     },
     {
-        "nome": "Sônia da Costa Alves Coelho",
+        "nome": "SONIA DA COSTA ALVES COELHO",
         "matricula": "4927655",
         "regional": "Oeste"
     },
     {
-        "nome": "Vera Lúcia de Castro",
+        "nome": "VERA LUCIA DE CASTRO",
         "matricula": "4036270",
         "regional": "Oeste"
     },
     {
-        "nome": "Wania Valeria Ferreira Caldas",
+        "nome": "WANIA VALERIA FERREIRA CALDAS",
         "matricula": "4036217",
         "regional": "Oeste"
     },
     {
-        "nome": "Wilson aparecido Carvalho Cutas",
+        "nome": "WILSON APARECIDO CARVALHO CUTAS",
         "matricula": "4036215",
         "regional": "Oeste"
     }

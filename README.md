@@ -1,16 +1,38 @@
-# React + Vite
+//Arquitetura Baseada em Features / Domínios
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+src/
+├── core/                        # Configurações globais e imutáveis da aplicação
+│   ├── api.js                   # Instância do Axios/Fetch apontando para o Render
+│   └── dbLocal.js               # Configuração e esquemas do Dexie (IndexedDB)
+│
+├── shared/                      # Elementos genéricos e sem regras de negócio
+│   ├── components/              # Botões, Modais estruturais, Inputs simples, Spinners
+│   └── utils/                   # Arquivos estáticos puros (dadosAgentes.js, dadosBairros.js)
+│
+├── features/                    # O coração do sistema (Dividido por contexto de negócio)
+│   │
+│   ├── auth/                    # Fluxo de Identificação Funcional
+│   │   ├── pages/               # Login.jsx, Cadastro.jsx
+│   │   └── hooks/               # useAuth.js (para gerenciar a matrícula logada)
+│   │
+│   ├── campo/                   # Universo do Agente de Campo (Foco Offline/Mobile)
+│   │   ├── pages/               # CampoMenu.jsx, ResumoSemanal.jsx
+│   │   ├── components/          # GridMatriz.jsx, SeletorFichaModal.jsx
+│   │   └── hooks/               # useBoletim.js
+│   │
+│   ├── gestao/                  # Universo Web/Desktop (Relatórios e Laboratório)
+│   │   ├── pages/               # GestaoDashboard.jsx, TecnicaDashboard.jsx
+│   │   └── components/          # TabelaLaudo.jsx, GraficoProducao.jsx
+│   │
+│   ├── ovitrampas/              # Módulo Isolado de Monitoramento de Vetores
+│   │   └── pages/               # OvitrampaDashboard.jsx
+│   │
+│   └── sync/                    # O Motor de Sincronização (O mais crítico!)
+│       ├── components/          # HeartbeatIndicator.jsx (Indicador de Wi-Fi UVZ)
+│       ├── services/            # Chamadas de PUSH e PULL em lote
+│       └── hooks/               # useSyncEngine.js (Gerencia o estado de sincronia)
+│
+├── App.css
+├── App.jsx
+├── index.css
+└── main.jsx

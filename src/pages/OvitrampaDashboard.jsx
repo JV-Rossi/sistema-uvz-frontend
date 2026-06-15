@@ -55,7 +55,7 @@ export default function OvitrampaDashboard({ setTelaAtual }) {
                     fontSize: '14px'
                 }}
             >
-                ⬅️ Voltar para o Menu
+                ⬅️ Voltar
             </button>
 
             {/* Cabeçalho da Página */}

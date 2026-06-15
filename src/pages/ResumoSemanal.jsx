@@ -17,6 +17,20 @@ export default function ResumoSemanal({ setTelaAtual }) {
     // Banco de Fichas
     const [fichasPendentes, setFichasPendentes] = useState([]);
 
+    // 🔑 CONSTANTE DE PERÍODOS OBRIGATÓRIOS (Movida para o escopo do componente)
+    const periodosObrigatorios = [
+        'seg_mat', 'seg_vesp',
+        'ter_mat', 'ter_vesp',
+        'qua_mat', 'qua_vesp',
+        'qui_mat', 'qui_vesp',
+        'sex_mat', 'sex_vesp'
+    ];
+
+    // 📊 REQUISITO MÍNIMO VISUAL: Monitora se há pelo menos 1 ficha em cada período da matriz
+    const calendarioPreenchido = periodosObrigatorios.every(periodo => 
+        matriz[periodo] && matriz[periodo].length > 0
+    );
+
     // 🔄 FUNÇÃO ISOLADA: Lê o Dexie e atualiza a tela filtrando o que já está alocado
     const carregarFichasDoCofre = async (matrizAtual) => {
         try {
@@ -136,12 +150,19 @@ export default function ResumoSemanal({ setTelaAtual }) {
 
     // 🌟 CONEXÃO COM O JAVA: Enviar a matriz para o banco (Sexta-feira definitivo)
     const handleEnviarResumoSemanal = async () => {
-        const totalImoveis = calcularTotalSemana();
-
-        if (totalImoveis === 0) {
-            alert('⚠️ Aloque pelo menos uma ficha nos dias da semana antes de enviar!');
-            return;
+        // 🛡️ O BLOQUEIO DURO: Avalia a constante reativa do escopo global
+        if (!calendarioPreenchido) {
+            alert(
+                '⚠️ BLOQUEIO DE SEGURANÇA:\n\n' +
+                'Não é possível enviar o Resumo Semanal ainda.\n' +
+                'O calendário precisa ter pelo menos 1 ficha alocada em CADA período ' +
+                '(Manhã e Tarde) de Segunda a Sexta-feira.'
+            );
+            return; // 🛑 Trava a execução aqui e não deixa disparar o fetch para o Java
         }
+
+        // Se passou pela validação acima, calcula o total e segue o fluxo normal
+        const totalImoveis = calcularTotalSemana();
 
         const payload = {
             totalImoveis: totalImoveis,
@@ -158,7 +179,7 @@ export default function ResumoSemanal({ setTelaAtual }) {
             });
 
             if (resposta.ok) {
-                alert('✅ Resumo Semanal definitivo enviado com sucesso para a Gestão!');
+                alert('✅ Resumo Semanal enviado com sucesso para a Gestão!');
                 setTelaAtual('campo_menu');
             } else {
                 alert('❌ O servidor Java encontrou um erro ao processar o resumo.');
@@ -274,7 +295,7 @@ export default function ResumoSemanal({ setTelaAtual }) {
                 ))}
             </div>
 
-            {/* 🗓️ BOTÃO 1: USO DIÁRIO (NOVO) */}
+            {/* 🗓️ BOTÃO 1: USO DIÁRIO */}
             <button
                 type="button"
                 onClick={handleSalvarEAtualizarDiario}
@@ -292,27 +313,34 @@ export default function ResumoSemanal({ setTelaAtual }) {
                     boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
                 }}
             >
-                🔄 SALVAR E ATUALIZAR PARCERIAS (USO DIÁRIO)
+                 SALVAR E ATUALIZAR 🔄
             </button>
 
-            {/* 🏁 BOTÃO 2: FECHAMENTO DEFINITIVO (SEXTA-FEIRA) */}
+            {/* 🏁 BOTÃO 2: FECHAMENTO DEFINITIVO COM ESTILO DINÂMICO ADAPTADO */}
             <button
                 onClick={handleEnviarResumoSemanal}
                 style={{
                     width: '100%',
                     padding: '15px',
-                    background: '#28a745', // Verde Conclusão
-                    color: '#fff',
-                    border: 'none',
+                    // 🎨 ALTERAÇÃO DE COR: Fica cinza escuro (#333) e muda para o Verde (#28a745) quando válido
+                    background: calendarioPreenchido ? '#28a745' : '#333', 
+                    // 🎨 TEXTO DINÂMICO: Letras cinza claro se bloqueado, brancas se ativo
+                    color: calendarioPreenchido ? '#fff' : '#aaa',
+                    border: calendarioPreenchido ? 'none' : '1px solid #444',
                     borderRadius: '6px',
-                    cursor: 'pointer',
+                    // 👆 MUDANÇA DE CURSOR: Avisa visualmente se é clicável ou não
+                    cursor: calendarioPreenchido ? 'pointer' : 'not-allowed', 
                     marginTop: '12px',
                     fontWeight: 'bold',
                     fontSize: '15px',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+                    // 🎨 OPACIDADE REQUISITADA: 0.6 quando bloqueado, 1 quando atingido os requisitos mínimos
+                    opacity: calendarioPreenchido ? 1 : 0.6,
+                    // ✨ TRANSIÇÃO SUAVE: Faz o botão "acender" gradualmente em 0.3 segundos
+                    transition: 'all 0.3s ease'
                 }}
             >
-                🚀 FINALIZAR RESUMO SEMANAL (DEFINITIVO SEXTA)
+                 FINALIZAR RESUMO SEMANAL 🚀
             </button>
 
             {/* MODAL (MENU FLUTUANTE) */}
