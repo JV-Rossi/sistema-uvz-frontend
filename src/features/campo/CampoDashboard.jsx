@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { tabelaBairros } from '../utils/dadosBairros';
-import { listaAgentes as listaAgentesOficiais } from '../utils/dadosAgentes';
-import { db } from '../services/dbLocal';
+import { tabelaBairros } from '../../shared/utils/dadosBairros';
+import { listaAgentes as listaAgentesOficiais } from '../../shared/utils/dadosAgentes';
+import { db } from '../../core/dbLocal';
 
 export default function CampoDashboard({ setTelaAtual }) {
 

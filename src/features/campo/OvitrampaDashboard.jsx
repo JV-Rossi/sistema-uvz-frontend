@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../../core/api';
 
 export default function OvitrampaDashboard({ setTelaAtual }) {
     // Dados simulados para o mockup visual

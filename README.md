@@ -36,3 +36,21 @@ src/
 ├── App.jsx
 ├── index.css
 └── main.jsx
+
+// LUPA DA ARQUITETURA
+
+features/campo/
+├── components/
+│   └── SeletorFichaModal.jsx     # Componentes menores que só essa tela usa
+│
+├── hooks/
+│   └── useResumoSemanal.js       # 🧠 O CORAÇÃO JS: Funções de clique, cálculos matemáticos,
+│                                 # chamadas ao Dexie e estados (useState/useEffect) moram aqui.
+│
+├── pages/
+│   └── ResumoSemanal.jsx         # 📺 SÓ A INTERFACE (O "HTML"): Fica um arquivo limpo, magro,
+│                                 # focado apenas em renderizar as divs, botões e tabelas.
+│
+└── styles/
+    └── ResumoSemanal.css         # 🎨 SÓ O ESTILO: Sai o CSS inline poluído e entra um arquivo limpo,
+                                  # ou o uso de CSS Modules.

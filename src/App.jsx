@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { db } from './services/dbLocal';
+import { db } from './core/dbLocal';
 import { Network } from '@capacitor/network'; // 👈 Importação do plugin de rede nativo
-import Login from './pages/Login';
-import Cadastro from './pages/Cadastro';
-import CampoMenu from './pages/CampoMenu';
-import GestaoDashboard from './pages/GestaoDashboard';
-import CampoDashboard from './pages/CampoDashboard';
-import TecnicaDashboard from './pages/TecnicaDashboard';
-import ResumoSemanal from './pages/ResumoSemanal';
-import OvitrampaDashboard from './pages/OvitrampaDashboard';
+import Login from './features/auth/Login';
+import Cadastro from './features/tecnica/Cadastro'
+import CampoMenu from './features/campo/CampoMenu';
+import GestaoDashboard from './features/gestao/GestaoDashboard';
+import CampoDashboard from './features/campo/CampoDashboard';
+import TecnicaDashboard from './features/tecnica/TecnicaDashboard';
+import ResumoSemanal from './features/campo/ResumoSemanal';
+import OvitrampaDashboard from './features/campo/OvitrampaDashboard';
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');

@@ -2,9 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App.jsx'
-import GestaoDashboard from './pages/GestaoDashboard.jsx'
-import TecnicaDashboard from './pages/TecnicaDashboard.jsx'
-import CampoDashboard from './pages/CampoDashboard.jsx'
+import GestaoDashboard from './features/gestao/GestaoDashboard.jsx';
+import TecnicaDashboard from './features/tecnica/TecnicaDashboard.jsx';
+import CampoDashboard from './features/tecnica/Cadastro.jsx';
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

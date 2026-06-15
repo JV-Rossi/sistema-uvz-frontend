@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'; // <-- CERTIFIQUE-SE DE QUE OS DOIS ESTÃO AQUI!
-import api from '../services/api';
+import api from '../../core/api';
 
 export default function TecnicaDashboard() {
     // 🔐 GUARDA DE SEGURANÇA DA URL
