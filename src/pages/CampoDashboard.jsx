@@ -164,26 +164,48 @@ export default function CampoDashboard({ setTelaAtual }) {
             return;
         }
 
-        // 1. Monta o pacote injetando a chave de quem está logado no tablet
+        // 🎯 1. TRADUTOR DE EQUIPE: Cruza os nomes digitados com as matrículas oficiais
+        // Nota: Substitua a palavra 'agentes' abaixo pelo nome do seu estado array 
+        // que guarda os nomes dos parceiros (aquele usado no seu .map dos inputs)
+        const equipeComMatriculas = agentes.map(nomeDigitado => {
+            if (!nomeDigitado || nomeDigitado.trim() === '') return null;
+
+            // Procura o parceiro na lista combinando o Nome exato + a Regional selecionada no cabeçalho
+            const correspondente = listaAgentes.find(a =>
+                a.nome.toLowerCase() === nomeDigitado.trim().toLowerCase() &&
+                a.regional.toLowerCase() === cabecalho.regional?.toLowerCase()
+            );
+
+            return {
+                nome: nomeDigitado.trim(),
+                matricula: correspondente ? correspondente.matricula : 'MATRICULA_NAO_ENCONTRADA'
+            };
+        }).filter(Boolean); // Limpa campos nulos ou vazios que o agente possa ter deixado por engano
+
+        // 2. Monta o pacote aplicando a nossa nova arquitetura baseada em Matrículas
         const payloadOffline = {
             ...cabecalho,
             imoveis: listaImoveis,
-            titular_login: localStorage.getItem('userLogin') || 'DESCONHECIDO', // 👈 Nossa arquitetura de BD
+            // Mudamos de titular_login para titular_matricula para blindar o banco contra homônimos
+            titular_matricula: localStorage.getItem('userMatricula') || 'DESCONHECIDO',
+            // Injetamos a lista de parceiros contendo [ {nome: "...", matricula: "..."}, ... ]
+            equipe_parceiros: equipeComMatriculas,
             data_registro: new Date().toISOString() // Importante para a ordenação depois
         };
 
         try {
-            // 2. 🚀 CORTAMOS A INTERNET: Dispara os dados direto para a gaveta local do Dexie
+            // 3. 🚀 CORTAMOS A INTERNET: Dispara os dados direto para a gaveta local do Dexie
             await db.fichas_soltas.add(payloadOffline);
 
-            if (payloadOffline) {
-                alert('✅ Ficha guardada na gaveta do tablet com sucesso!');
-                setListaImoveis([]); // Limpa a tela para a próxima rua
+            alert('✅ Ficha guardada na gaveta do tablet com sucesso!');
+            setListaImoveis([]); // Limpa a tela para a próxima rua
 
-                // Se a sua intenção é voltar para o menu após salvar, mantenha esta linha:
-                if (typeof setTelaAtual === 'function') {
-                    setTelaAtual('campo_menu');
-                }
+            // Se o seu estado de parceiros for p.ex. 'setAgentes', limpe-o aqui para resetar o formulário:
+            // setAgentes([]); 
+
+            // Se a sua intenção é voltar para o menu após salvar, mantenha esta linha:
+            if (typeof setTelaAtual === 'function') {
+                setTelaAtual('campo_menu');
             }
         } catch (error) {
             console.error("Erro ao salvar ficha no Dexie:", error);
@@ -385,7 +407,10 @@ export default function CampoDashboard({ setTelaAtual }) {
 
                         <datalist id="lista-agentes-oficiais">
                             {agentesFiltrados && agentesFiltrados.map((agente) => (
-                                <option key={agente.nome} value={agente.nome} />
+                                // O value preenche o input com o nome, o texto interno ajuda o agente a confirmar o crachá
+                                <option key={agente.matricula} value={agente.nome}>
+                                    Matrícula: {agente.matricula}
+                                </option>
                             ))}
                         </datalist>
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import api from '../services/api';
 
 export default function Login({ setTelaAtual, setMensagem }) {
-  const [loginUsername, setLoginUsername] = useState('');
+  const [loginMatricula, setLoginMatricula] = useState(''); // 👈 Alterado de loginUsername para loginMatricula
   const [loginPassword, setLoginPassword] = useState('');
 
   const handleLogin = async (e) => {
@@ -10,8 +10,9 @@ export default function Login({ setTelaAtual, setMensagem }) {
     setMensagem('');
 
     try {
+      // 🚀 Dispara a matrícula e a senha para validação no Spring Boot
       const response = await api.post('/usuarios/login', {
-        username: loginUsername,
+        matricula: loginMatricula,
         password: loginPassword
       });
 
@@ -19,7 +20,7 @@ export default function Login({ setTelaAtual, setMensagem }) {
         const cargoUsuario = response.data.split(":")[1];
 
         localStorage.setItem('userCargo', cargoUsuario);
-        localStorage.setItem('userLogin', loginUsername);
+        localStorage.setItem('userMatricula', loginMatricula); // 🔥 CHAVE DE OURO: Gravada para preenchimento automático das vistorias
 
         // 1. Atualiza o estado da tela localmente
         if (cargoUsuario === 'GESTAO') {
@@ -28,7 +29,7 @@ export default function Login({ setTelaAtual, setMensagem }) {
           localStorage.setItem('userCargo', 'TECNICO');
           setTelaAtual('tecnica');
         } else if (cargoUsuario === 'AGENTE_CAMPO') {
-          setTelaAtual('campo');
+          setTelaAtual('campo_menu'); // 👈 Ajustado para casar com o roteamento do seu App.jsx
         }
 
         // 2. O PULO DO GATO: Atualiza a URL do navegador e força a renderização limpa do React
@@ -36,7 +37,7 @@ export default function Login({ setTelaAtual, setMensagem }) {
         window.location.reload();
 
       } else {
-        setMensagem('❌ Usuário ou senha incorretos.');
+        setMensagem('❌ Matrícula ou senha incorretos.');
       }
     } catch (error) {
       console.error(error);
@@ -48,16 +49,20 @@ export default function Login({ setTelaAtual, setMensagem }) {
     <div style={{ maxWidth: '400px', margin: '50px auto', background: '#222', padding: '25px', borderRadius: '8px', color: '#fff' }}>
       <h2>CVSA - Sistema de Controle de Acesso</h2>
       <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        
+        {/* 💳 INPUT ADAPTADO PARA MATRÍCULA */}
         <div>
-          <label>Usuário (Login):</label>
+          <label>Matrícula (Login):</label>
           <input
             type="text"
-            value={loginUsername}
-            onChange={(e) => setLoginUsername(e.target.value)}
+            value={loginMatricula}
+            onChange={(e) => setLoginMatricula(e.target.value)}
+            placeholder="Digite sua matrícula"
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px', background: '#333', color: '#fff', border: '1px solid #444', borderRadius: '4px' }}
           />
         </div>
+
         <div>
           <label>Senha:</label>
           <input
@@ -68,10 +73,12 @@ export default function Login({ setTelaAtual, setMensagem }) {
             style={{ width: '100%', padding: '8px', marginTop: '5px', background: '#333', color: '#fff', border: '1px solid #444', borderRadius: '4px' }}
           />
         </div>
+
         <button type="submit" style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 'bold', borderRadius: '4px' }}>
           Entrar no Sistema
         </button>
       </form>
+
       <p style={{ textAlign: 'center', marginTop: '15px', color: '#ccc' }}>
         Novo por aqui?{' '}
         <button
