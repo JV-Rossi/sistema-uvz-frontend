@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import { db } from './services/dbLocal';
+import { Network } from '@capacitor/network'; // 👈 Importação do plugin de rede nativo
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import CampoMenu from './pages/CampoMenu';
@@ -32,6 +33,68 @@ function App() {
       else if (cargoSalvo === 'AGENTE_CAMPO') setTelaAtual('campo_menu'); // Direct para o Menu!
     }
   }, []);
+
+  // 🔄 OUVINTE DE REDE: Dispara a sincronização assim que o Wi-Fi conecta
+  useEffect(() => {
+    const ouvinteRede = Network.addListener('networkStatusChange', async (status) => {
+      // Executa apenas se houver conectividade e se o tipo for Wi-Fi
+      if (status.connected && status.connectionType === 'wifi') {
+        console.log('🔄 Wi-Fi detectado! Iniciando sincronização automática...');
+        await executarSincronizacaoSilenciosa();
+      }
+    });
+
+    return () => {
+      ouvinteRede.remove();
+    };
+  }, []);
+
+  // 🚀 ENGINE DE SINCRONIZAÇÃO AUTOMÁTICA (PUSH & PULL)
+  const executarSincronizacaoSilenciosa = async () => {
+    const loginAgente = localStorage.getItem('userLogin');
+    if (!loginAgente) return;
+
+    try {
+      // ========================================================
+      // ETAPA PUSH: Descarrega os malotes fechados no Dexie para o Java
+      // ========================================================
+      const resumos = await db.resumos_pendentes_envio.toArray();
+      if (resumos.length > 0) {
+        const resPush = await fetch('https://sistema-uvz-backend.onrender.com/api/resumos/lote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(resumos)
+        });
+        
+        if (resPush.ok) {
+          // Limpa a tabela de envios locais se o servidor confirmou o recebimento
+          await db.resumos_pendentes_envio.bulkDelete(resumos.map(r => r.id));
+          console.log('✅ Resumos pendentes enviados e limpos do armazenamento local.');
+        }
+      }
+
+      // ========================================================
+      // ETAPA PULL: Coleta as fichas rateadas de mutirões do servidor
+      // ========================================================
+      const resPull = await fetch(`https://sistema-uvz-backend.onrender.com/api/visitas/parceiro/${loginAgente}`);
+      if (resPull.ok) {
+        const fichasNovas = await resPull.json();
+        
+        if (fichasNovas.length > 0) {
+          // Aloca as frações da produção direto na gaveta do agente parceiro
+          await db.fichas_soltas.bulkAdd(fichasNovas);
+          console.log(`✅ ${fichasNovas.length} fichas de parceria adicionadas ao Dexie.`);
+          
+          // Confirma a baixa do lote no backend para evitar duplicidade no próximo ciclo
+          await fetch(`https://sistema-uvz-backend.onrender.com/api/visitas/parceiro/confirmar/${loginAgente}`, { 
+            method: 'POST' 
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Falha na sincronização silenciosa:', error);
+    }
+  };
 
   return (
     <div style={{ fontFamily: 'sans-serif', minHeight: '100vh' }}>
