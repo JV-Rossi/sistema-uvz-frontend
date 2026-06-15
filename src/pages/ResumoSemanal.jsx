@@ -172,6 +172,23 @@ export default function ResumoSemanal({ setTelaAtual }) {
     return (
         <div style={{ padding: '10px', background: '#111', minHeight: '100vh', color: '#fff', fontFamily: 'sans-serif' }}>
 
+            <button
+                onClick={() => setTelaAtual('campo_menu')}
+                style={{
+                    background: '#333',
+                    color: '#fff',
+                    border: '1px solid #444',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    marginBottom: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px'
+                }}
+            >⬅️ VOLTAR</button>
+
             {/* CABEÇALHO E PLACAR DA SEMANA */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', background: '#1a237e', padding: '15px', borderRadius: '8px', border: '1px solid #3949ab' }}>
                 <div>
@@ -296,14 +313,6 @@ export default function ResumoSemanal({ setTelaAtual }) {
                 }}
             >
                 🚀 FINALIZAR RESUMO SEMANAL (DEFINITIVO SEXTA)
-            </button>
-
-            {/* O seu botão de voltar existente */}
-            <button
-                onClick={() => setTelaAtual('campo_menu')}
-                style={{ width: '100%', padding: '12px', background: '#555', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', marginTop: '15px' }}
-            >
-                ⬅️ Voltar para o Menu
             </button>
 
             {/* MODAL (MENU FLUTUANTE) */}

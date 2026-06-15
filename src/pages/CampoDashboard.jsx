@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { tabelaBairros } from '../utils/dadosBairros';
-import { listaAgentesOficiais } from '../utils/dadosAgentes';
+import { listaAgentes as listaAgentesOficiais } from '../utils/dadosAgentes';
 import { db } from '../services/dbLocal';
 
 export default function CampoDashboard({ setTelaAtual }) {
@@ -273,6 +273,23 @@ export default function CampoDashboard({ setTelaAtual }) {
 
     return (
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '15px', color: '#fff', fontFamily: 'sans-serif', background: '#111', borderRadius: '10px' }}>
+
+            <button
+                onClick={() => setTelaAtual('campo_menu')}
+                style={{
+                    background: '#333',
+                    color: '#fff',
+                    border: '1px solid #444',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    marginBottom: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px'
+                }}
+            >⬅️ VOLTAR</button>
 
             <h2>📋 Novo Boletim de Campo</h2>
             <p style={{ color: '#aaa', fontSize: '14px' }}>Substituindo a Ficha Entomológica de Papel</p>
@@ -634,10 +651,6 @@ export default function CampoDashboard({ setTelaAtual }) {
             )}
 
             {mensagemEnvio && <p style={{ textAlign: 'center', color: '#ffeb3b', fontWeight: 'bold' }}>{mensagemEnvio}</p>}
-
-            <button onClick={() => setTelaAtual('campo_menu')} style={{ width: '100%', padding: '10px', background: '#555', border: 'none', color: '#fff', borderRadius: '4px', cursor: 'pointer', marginTop: '10px' }}>
-                ⬅️ Voltar para o Menu Principal
-            </button>
 
         </div>
     );
