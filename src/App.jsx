@@ -9,7 +9,7 @@ import GestaoDashboard from './features/gestao/GestaoDashboard';
 import CampoDashboard from './features/campo/CampoDashboard';
 import TecnicaDashboard from './features/tecnica/TecnicaDashboard';
 import ResumoSemanal from './features/campo/ResumoSemanal';
-import OvitrampaDashboard from './features/campo/OvitrampaDashboard';
+import Ovitrampa from './features/campo/Ovitrampa.jsx';
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');
