@@ -73,6 +73,12 @@
     color: #fff;
     outline: none;
     font-size: 14px;
+    width: 100%; /* Garante preenchimento nos formulários do modal */
+    box-sizing: border-box;
+}
+
+.input-filtro:focus {
+    border-color: #4caf50;
 }
 
 .tabela-ovitrampa {
@@ -118,8 +124,15 @@
     transition: 0.2s;
 }
 
+.btn-acao:hover {
+    background-color: #444;
+}
+
 .btn-acao.azul { background-color: #0288d1; border-color: #0288d1; }
+.btn-acao.azul:hover { background-color: #039be5; }
+
 .btn-acao.cinza { background-color: #424242; border-color: #424242; }
+.btn-acao.cinza:hover { background-color: #616161; }
 
 .btn-remover {
     background-color: #e74c3c;
@@ -130,4 +143,36 @@
     cursor: pointer;
     margin-left: 10px;
     font-size: 14px;
+}
+
+.btn-remover:hover {
+    background-color: #c0392b;
+}
+
+/* 🎯 O QUE ESTAVA FALTANDO: ESTILOS DO MODAL FLUTUANTE */
+.modal-flutuante {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1e1e1e;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    width: 90%;
+    max-width: 450px;
+    border: 1px solid #333;
+    animation: abrirModal 0.2s ease-out;
+}
+
+@keyframes abrirModal {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }
