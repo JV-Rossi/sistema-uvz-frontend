@@ -2,7 +2,7 @@ import React from 'react';
 import { useOvitrampa } from './useOvitrampa';
 import './Ovitrampa.css';
 
-export default function OvitrampaDashboard({ setTelaAtual }) {
+export default function Ovitrampa({ setTelaAtual }) {
     const {
         moradoresFiltrados,
         termoBusca, setTermoBusca,
@@ -12,7 +12,11 @@ export default function OvitrampaDashboard({ setTelaAtual }) {
         novoImovel, setNovoImovel,
         removerMorador,
         avancarCicloArmadilha,
-        handleSalvarNovoImovel
+        handleSalvarNovoImovel,
+        // 👇 Novas funções do GPS importadas do Hook
+        handlePegarGPSNovo,
+        handleAtualizarGPSMorador,
+        carregandoGPS
     } = useOvitrampa();
 
     const renderizerStatus = (status) => {
@@ -33,7 +37,7 @@ export default function OvitrampaDashboard({ setTelaAtual }) {
 
             <div className="header-ovitrampa">
                 <div>
-                    <h1 className="titulo-ovitrampa">🦟 Monitoramento de Ovitrampas</h1>
+                    <h1 className="titulo-ovitrampa">🦟 Monitoramento Ovitrampas</h1>
                     <p className="subtitulo-ovitrampa">Unidade de Vigilância em Zoonoses - Cuiabá</p>
                 </div>
                 {/* ➕ Botão configurado para abrir o formulário */}
@@ -44,22 +48,22 @@ export default function OvitrampaDashboard({ setTelaAtual }) {
 
             <div className="card-tabela">
                 <div className="barra-filtros">
-                    <input 
-                        type="text" 
-                        placeholder="🔍 Buscar por Bairro ou Nome..." 
+                    <input
+                        type="text"
+                        placeholder="🔍 Buscar por Bairro ou Nome..."
                         className="input-filtro"
                         value={termoBusca}
                         onChange={(e) => setTermoBusca(e.target.value)}
                     />
-                    <input 
-                        type="text" 
-                        placeholder="Quarteirão" 
-                        className="input-filtro" 
+                    <input
+                        type="text"
+                        placeholder="Quarteirão"
+                        className="input-filtro"
                         style={{ width: '120px' }}
                         value={filtroQuarteirao}
                         onChange={(e) => setFiltroQuarteirao(e.target.value)}
                     />
-                    <select 
+                    <select
                         className="input-filtro"
                         value={filtroStatus}
                         onChange={(e) => setFiltroStatus(e.target.value)}
@@ -74,7 +78,7 @@ export default function OvitrampaDashboard({ setTelaAtual }) {
                     <thead>
                         <tr>
                             <th>Morador</th>
-                            <th>Endereço</th>
+                            <th>Endereço & GPS</th> {/* 👈 Título atualizado */}
                             <th>Quart.</th>
                             <th>Armadilha</th>
                             <th>Status do Ciclo</th>
@@ -85,11 +89,32 @@ export default function OvitrampaDashboard({ setTelaAtual }) {
                         {moradoresFiltrados.map((m) => (
                             <tr key={m.id}>
                                 <td style={{ fontWeight: 'bold', color: '#fff' }}>{m.nome}</td>
-                                <td style={{ color: '#bbb' }}>{m.endereco}</td>
+                                <td>
+                                    <div style={{ color: '#bbb' }}>{m.endereco}</div>
+                                    {m.coordenadas ? (
+                                        <small style={{ color: '#4caf50' }}>
+                                            📍 Lat: {m.coordenadas.lat.toFixed(5)} | Lng: {m.coordenadas.lng.toFixed(5)}
+                                        </small>
+                                    ) : (
+                                        <small style={{ color: '#ff9800' }}>
+                                            ⚠️ Sem GPS registrado
+                                        </small>
+                                    )}
+                                </td>
                                 <td style={{ color: '#bbb' }}>{m.quarteirao}</td>
                                 <td style={{ color: '#4fc3f7', fontWeight: 'bold' }}>{m.armadilha}</td>
                                 <td>{renderizerStatus(m.status)}</td>
                                 <td style={{ textAlign: 'right' }}>
+
+                                    {/* 📍 BOTÃO DE ATUALIZAR GPS DIRETO NA TABELA */}
+                                    <button
+                                        onClick={() => handleAtualizarGPSMorador(m.id)}
+                                        className="btn-acao btn-acao-gps"
+                                        title="Atualizar GPS deste imóvel"
+                                    >
+                                        📍
+                                    </button>
+
                                     {m.status === 'INSTALADA' && (
                                         <button className="btn-acao" onClick={() => avancarCicloArmadilha(m.id, 'Registrar 1ª Coleta')}>📥 1ª Coleta</button>
                                     )}
@@ -113,66 +138,86 @@ export default function OvitrampaDashboard({ setTelaAtual }) {
                 </table>
             </div>
 
-            {/* 📝 MODAL DE NOVO CADASTRO (Aparece dinamicamente) */}
+            {/* 📝 MODAL DE NOVO CADASTRO (Totalmente integrado) */}
             {modalCadastroAberto && (
                 <div className="modal-flutuante" style={{ maxWidth: '450px' }}>
                     <h3 style={{ margin: '0 0 20px 0', color: '#4caf50', textAlign: 'center' }}>📝 Cadastrar Imóvel para Ovitrampa</h3>
-                    
+
                     <form onSubmit={handleSalvarNovoImovel} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         <label style={{ fontSize: '12px', color: '#aaa' }}>Nome do Morador *</label>
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             required
-                            className="input-filtro" 
+                            className="input-filtro"
                             placeholder="Ex: João da Silva"
                             value={novoImovel.nome}
-                            onChange={(e) => setNovoImovel({...novoImovel, nome: e.target.value})}
+                            onChange={(e) => setNovoImovel({ ...novoImovel, nome: e.target.value })}
                         />
 
                         <label style={{ fontSize: '12px', color: '#aaa' }}>Endereço Completo *</label>
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             required
-                            className="input-filtro" 
+                            className="input-filtro"
                             placeholder="Rua, número e bairro"
                             value={novoImovel.endereco}
-                            onChange={(e) => setNovoImovel({...novoImovel, endereco: e.target.value})}
+                            onChange={(e) => setNovoImovel({ ...novoImovel, endereco: e.target.value })}
                         />
 
                         <div style={{ display: 'flex', gap: '10px' }}>
                             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                 <label style={{ fontSize: '12px', color: '#aaa' }}>Quarteirão *</label>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     required
-                                    className="input-filtro" 
+                                    className="input-filtro"
                                     placeholder="Ex: 014B"
                                     value={novoImovel.quarteirao}
-                                    onChange={(e) => setNovoImovel({...novoImovel, quarteirao: e.target.value})}
+                                    onChange={(e) => setNovoImovel({ ...novoImovel, quarteirao: e.target.value })}
                                 />
                             </div>
                             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                 <label style={{ fontSize: '12px', color: '#aaa' }}>Cód. Armadilha (Opcional)</label>
-                                <input 
-                                    type="text" 
-                                    className="input-filtro" 
+                                <input
+                                    type="text"
+                                    className="input-filtro"
                                     placeholder="Ex: OV-200"
                                     value={novoImovel.armadilha}
-                                    onChange={(e) => setNovoImovel({...novoImovel, armadilha: e.target.value})}
+                                    onChange={(e) => setNovoImovel({ ...novoImovel, armadilha: e.target.value })}
                                 />
                             </div>
                         </div>
 
+                        {/* 📍 O BLOCO DE GPS ENTRA EXATAMENTE AQUI */}
+                        <div className="box-gps-modal">
+                            <button
+                                type="button"
+                                onClick={handlePegarGPSNovo}
+                                disabled={carregandoGPS}
+                                className="btn-gps-formulario"
+                                style={{ backgroundColor: '#1976d2' }}
+                            >
+                                {carregandoGPS ? '⏳ Buscando Satélites...' : '📍 Pegar Localização Atual'}
+                            </button>
+
+                            {novoImovel.coordenadas && (
+                                <p style={{ color: '#4caf50', fontSize: '12px', margin: '8px 0 0 0' }}>
+                                    ✅ Coordenadas travadas: {novoImovel.coordenadas.lat.toFixed(4)}, {novoImovel.coordenadas.lng.toFixed(4)}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* 🔘 BOTÕES DE SALVAR E CANCELAR DO FORMULÁRIO */}
                         <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-                            <button 
-                                type="button" 
-                                onClick={() => setModalCadastroAberto(false)} 
+                            <button
+                                type="button"
+                                onClick={() => setModalCadastroAberto(false)}
                                 style={{ flex: 1, padding: '12px', background: '#444', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
                             >
                                 Cancelar
                             </button>
-                            <button 
-                                type="submit" 
+                            <button
+                                type="submit"
                                 style={{ flex: 1, padding: '12px', background: '#4caf50', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
                             >
                                 Salvar Imóvel

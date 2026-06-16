@@ -3,10 +3,8 @@ import { useState } from 'react';
 export function useOvitrampa() {
     // 1. ESTADO DA LISTA DE IMÓVEIS
     const [moradores, setMoradores] = useState([
-        { id: 1, nome: 'Maria Oliveira', endereco: 'Rua das Flores, 105', quarteirao: '012A', armadilha: 'OV-098', status: 'INSTALADA' },
-        { id: 2, nome: 'José dos Santos', endereco: 'Av. Central, 440', quarteirao: '005', armadilha: 'OV-042', status: 'AGUARDANDO_COLETA_2' },
-        { id: 3, nome: 'Ana Souza', endereco: 'Rua Cuiabá, 12', quarteirao: '022', armadilha: 'OV-115', status: 'PRONTA_LEITURA' },
-        { id: 4, nome: 'Carlos Lima', endereco: 'Travessa 3, s/n', quarteirao: '014', armadilha: '-', status: 'SEM_ARMADILHA' },
+        { id: 1, nome: 'Maria Oliveira', endereco: 'Rua das Flores, 105', quarteirao: '012A', armadilha: 'OV-098', status: 'INSTALADA', coordenadas: null },
+        { id: 2, nome: 'José dos Santos', endereco: 'Av. Central, 440', quarteirao: '005', armadilha: 'OV-042', status: 'AGUARDANDO_COLETA_2', coordenadas: null },
     ]);
 
     // 2. ESTADOS DOS FILTROS
@@ -14,14 +12,65 @@ export function useOvitrampa() {
     const [filtroQuarteirao, setFiltroQuarteirao] = useState('');
     const [filtroStatus, setFiltroStatus] = useState('Todos os Status');
 
-    // 3. ESTADOS PARA O NOVO CADASTRO
+    // 3. ESTADOS PARA O NOVO CADASTRO E GPS
     const [modalCadastroAberto, setModalCadastroAberto] = useState(false);
     const [novoImovel, setNovoImovel] = useState({
         nome: '',
         endereco: '',
         quarteirao: '',
-        armadilha: ''
+        armadilha: '',
+        coordenadas: null // Preparado para receber o GPS
     });
+    const [carregandoGPS, setCarregandoGPS] = useState(false);
+
+    // 📍 FUNÇÃO CENTRAL DO GPS (Offline)
+    const capturarGPS = () => {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                reject("Seu dispositivo não suporta GPS.");
+                return;
+            }
+            // enableHighAccuracy: true força o uso do chip GPS físico
+            navigator.geolocation.getCurrentPosition(
+                (posicao) => {
+                    resolve({
+                        lat: posicao.coords.latitude,
+                        lng: posicao.coords.longitude
+                    });
+                },
+                (erro) => {
+                    reject(erro.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+            );
+        });
+    };
+
+    // 📍 AÇÃO: Pegar GPS no Formulário de Novo Imóvel
+    const handlePegarGPSNovo = async () => {
+        setCarregandoGPS(true);
+        try {
+            const coords = await capturarGPS();
+            setNovoImovel(prev => ({ ...prev, coordenadas: coords }));
+        } catch (erro) {
+            alert(`⚠️ Falha no GPS: Verifique se a Localização do tablet está ligada.\nErro técnico: ${erro}`);
+        } finally {
+            setCarregandoGPS(false);
+        }
+    };
+
+    // 📍 AÇÃO: Atualizar GPS de um imóvel que já está na tabela
+    const handleAtualizarGPSMorador = async (id) => {
+        try {
+            const coords = await capturarGPS();
+            setMoradores(prev => prev.map(m => 
+                m.id === id ? { ...m, coordenadas: coords } : m
+            ));
+            alert("📍 Localização do imóvel atualizada com sucesso!");
+        } catch (erro) {
+            alert("⚠️ Não foi possível capturar o GPS. Vá para uma área descoberta e tente novamente.");
+        }
+    };
 
     // 4. FUNÇÕES DE CICLO E EXCLUSÃO
     const removerMorador = (id) => {
@@ -56,26 +105,27 @@ export function useOvitrampa() {
             return;
         }
 
-        // Define o status inicial: se informou código de armadilha, entra como INSTALADA, se não, SEM_ARMADILHA
+        // Define o status inicial
         const temArmadilha = novoImovel.armadilha.trim() !== '';
         const novoRegistro = {
-            id: Date.now(), // ID temporário numérico
+            id: Date.now(),
             nome: novoImovel.nome,
             endereco: novoImovel.endereco,
             quarteirao: novoImovel.quarteirao,
             armadilha: temArmadilha ? novoImovel.armadilha : '-',
-            status: temArmadilha ? 'INSTALADA' : 'SEM_ARMADILHA'
+            status: temArmadilha ? 'INSTALADA' : 'SEM_ARMADILHA',
+            coordenadas: novoImovel.coordenadas // O GPS capturado é salvo aqui!
         };
 
         setMoradores([...moradores, novoRegistro]);
-        setModalCadastroAberto(false); // Fecha o formulário
-        setNovoImovel({ nome: '', endereco: '', quarteirao: '', armadilha: '' }); // Reseta os campos
+        setModalCadastroAberto(false);
+        setNovoImovel({ nome: '', endereco: '', quarteirao: '', armadilha: '', coordenadas: null });
     };
 
-    // 6. MOTOR DE FILTRAGEM
+    // 6. MOTOR DE FILTRAGEM (Protegido contra dados em branco)
     const moradoresFiltrados = moradores.filter(m => {
-        const bateBusca = m.endereco.toLowerCase().includes(termoBusca.toLowerCase()) || 
-                          m.nome.toLowerCase().includes(termoBusca.toLowerCase());
+        const bateBusca = m.endereco?.toLowerCase().includes(termoBusca.toLowerCase()) || 
+                          m.nome?.toLowerCase().includes(termoBusca.toLowerCase());
         const bateQuarteirao = filtroQuarteirao === '' || m.quarteirao.includes(filtroQuarteirao);
         const bateStatus = filtroStatus === 'Todos os Status' ||
                            (filtroStatus === 'Instaladas' && m.status === 'INSTALADA') ||
@@ -93,6 +143,9 @@ export function useOvitrampa() {
         novoImovel, setNovoImovel,
         removerMorador,
         avancarCicloArmadilha,
-        handleSalvarNovoImovel
+        handleSalvarNovoImovel,
+        handlePegarGPSNovo,
+        handleAtualizarGPSMorador,
+        carregandoGPS
     };
 }

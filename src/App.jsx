@@ -124,7 +124,7 @@ function App() {
       )}
 
       {telaAtual === 'ovitrampas' && (
-        <OvitrampaDashboard setTelaAtual={setTelaAtual} />
+        <Ovitrampa setTelaAtual={setTelaAtual} />
       )}
 
       {/* MENSAGEM DE STATUS */}
