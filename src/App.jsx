@@ -3,11 +3,11 @@ import './App.css';
 import { db } from './core/dbLocal';
 import { Network } from '@capacitor/network'; // 👈 Importação do plugin de rede nativo
 import Login from './features/auth/Login';
-import Cadastro from './features/tecnica/Cadastro'
+import Cadastro from './features/tecnica/CadastroUsuario.jsx'
 import CampoMenu from './features/campo/CampoMenu';
 import GestaoDashboard from './features/gestao/GestaoDashboard';
 import CampoDashboard from './features/campo/CampoDashboard';
-import TecnicaDashboard from './features/tecnica/TecnicaDashboard';
+import TecnicaDashboard from './features/tecnica/PainelTecnico.jsx';
 import ResumoSemanal from './features/campo/ResumoSemanal';
 import Ovitrampa from './features/campo/Ovitrampa.jsx';
 
