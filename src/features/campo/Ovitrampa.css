@@ -1,23 +1,12 @@
+/* =======================================================
+   1. ESTRUTURA BASE E CABEÇALHO
+   ======================================================= */
 .container-ovitrampa {
     background-color: #121212;
     color: #e0e0e0;
     min-height: 100vh;
     padding: 40px;
     font-family: system-ui, -apple-system, sans-serif;
-}
-
-.btn-voltar {
-    background: #333;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
 }
 
 .header-ovitrampa {
@@ -39,26 +28,9 @@
     font-size: 14px;
 }
 
-.btn-novo-cadastro {
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-}
-
-.card-tabela {
-    background-color: #1e1e1e;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-    border: 1px solid #333;
-}
-
+/* =======================================================
+   2. FILTROS E BARRA DE BUSCA
+   ======================================================= */
 .barra-filtros {
     display: flex;
     gap: 15px;
@@ -73,7 +45,7 @@
     color: #fff;
     outline: none;
     font-size: 14px;
-    width: 100%; /* Garante preenchimento nos formulários do modal */
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -81,23 +53,33 @@
     border-color: #4caf50;
 }
 
-.tabela-ovitrampa {
-    width: 100%;
-    border-collapse: collapse;
+/* =======================================================
+   3. BOTÕES GERAIS E BADGES (ETIQUETAS)
+   ======================================================= */
+.btn-voltar {
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
 }
 
-.tabela-ovitrampa th {
-    padding: 15px 10px;
-    border-bottom: 2px solid #333;
-    text-align: left;
-    color: #9e9e9e;
-    font-size: 13px;
-    text-transform: uppercase;
-}
-
-.tabela-ovitrampa td {
-    padding: 15px 10px;
-    border-bottom: 1px solid #2a2a2a;
+.btn-novo-cadastro {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
 .badge {
@@ -105,6 +87,7 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .badge.instalada { background: rgba(76, 175, 80, 0.2); color: #81c784; }
@@ -122,34 +105,122 @@
     font-size: 12px;
     font-weight: bold;
     transition: 0.2s;
+    white-space: nowrap;
 }
 
-.btn-acao:hover {
-    background-color: #444;
-}
-
+.btn-acao:hover { background-color: #444; }
 .btn-acao.azul { background-color: #0288d1; border-color: #0288d1; }
 .btn-acao.azul:hover { background-color: #039be5; }
-
 .btn-acao.cinza { background-color: #424242; border-color: #424242; }
 .btn-acao.cinza:hover { background-color: #616161; }
 
-.btn-remover {
-    background-color: #e74c3c;
+/* =======================================================
+   4. DESIGN DOS CARTÕES (NOVO SISTEMA EM GRID)
+   ======================================================= */
+.grid-cards-moradores {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.card-morador {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-header-morador {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.nome-morador {
+    margin: 0;
     color: #fff;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-body-morador {
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+.endereco-morador {
+    color: #bbb;
+    margin: 0 0 8px 0;
     font-size: 14px;
 }
 
-.btn-remover:hover {
-    background-color: #c0392b;
+.gps-morador {
+    margin: 0 0 12px 0;
+    font-size: 12px;
+    font-weight: 500;
 }
 
-/* 🎯 O QUE ESTAVA FALTANDO: ESTILOS DO MODAL FLUTUANTE */
+.gps-morador.ok { color: #4caf50; }
+.gps-morador.alert { color: #ff9800; }
+
+.info-secundaria-morador {
+    display: flex;
+    justify-content: space-between;
+    background-color: #2a2a2a;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #ddd;
+}
+
+.card-footer-morador {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px dashed #333;
+}
+
+.acoes-principais {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Evita que botões vazem em telas muito estreitas */
+}
+
+.btn-acao-gps {
+    background: transparent;
+    border: 1px solid #4caf50;
+    color: #4caf50;
+}
+
+.btn-acao-gps:hover { background-color: rgba(76, 175, 80, 0.1); }
+
+.btn-remover-card {
+    background: transparent;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    border-radius: 6px;
+    padding: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-remover-card:hover { background: rgba(231, 76, 60, 0.1); }
+
+/* =======================================================
+   5. MODAL DE CADASTRO E CONTROLES DE GPS
+   ======================================================= */
 .modal-flutuante {
     position: fixed;
     top: 50%;
@@ -167,24 +238,10 @@
 }
 
 @keyframes abrirModal {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -45%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
+    from { opacity: 0; transform: translate(-50%, -45%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
-/* 📍 Estilo para o texto pequeno das coordenadas na tabela */
-.tabela-ovitrampa small {
-    display: block;
-    margin-top: 4px;
-    font-weight: 500;
-}
-
-/* 📍 Estilo para o container tracejado do GPS dentro do Modal */
 .box-gps-modal {
     padding: 12px;
     background-color: #2a2a2a;
@@ -194,7 +251,6 @@
     text-align: center;
 }
 
-/* 📍 Botão de capturar GPS dentro do formulário */
 .btn-gps-formulario {
     width: 100%;
     padding: 10px;
@@ -215,15 +271,31 @@
     cursor: not-allowed;
 }
 
-/* 📍 Ajuste de botão inline (o mini-botão de GPS verde na tabela) */
-.btn-acao-gps {
-    background: transparent;
-    border: 1px solid #4caf50;
-    color: #4caf50;
-    margin-right: 8px;
-    transition: all 0.2s;
-}
+/* =======================================================
+   6. RESPONSIVIDADE PARA CELULARES
+   ======================================================= */
+@media (max-width: 768px) {
+    .container-ovitrampa {
+        padding: 15px; /* Aproveita melhor o espaço da tela */
+    }
 
-.btn-acao-gps:hover {
-    background-color: rgba(76, 175, 80, 0.1);
+    .header-ovitrampa {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .btn-novo-cadastro {
+        width: 100%;
+        text-align: center;
+    }
+
+    .barra-filtros {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .input-filtro {
+        width: 100% !important; /* Força os inputs a ocuparem a tela toda */
+    }
 }
