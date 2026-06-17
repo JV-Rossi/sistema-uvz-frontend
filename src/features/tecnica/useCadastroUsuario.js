@@ -1,41 +1,69 @@
 import { useState } from 'react';
+// 🔗 Importa a lista global de agentes utilitária
+import { listaAgentes } from '../../shared/utils/dadosAgentes'; 
 
 export function useCadastroUsuario() {
-    // 1. ESTADO UNIFICADO DO FORMULÁRIO
     const [formData, setFormData] = useState({
         nomeCompleto: '',
         email: '',
         dataNascimento: '',
         sexo: '',
+        telefone: '',
         matricula: '',
         senha: '',
-        nivelAcesso: 'agente_campo' // Padrão selecionado
+        nivelAcesso: 'agente_campo',
+        regional: ''
     });
 
-    // 2. FUNÇÃO PARA ATUALIZAR OS CAMPOS DINAMICAMENTE
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // 3. FUNÇÃO DE SALVAMENTO
-    const handleCadastrarUsuario = (e) => {
+   const handleCadastrarUsuario = (e) => {
         e.preventDefault();
         
-        // Aqui entrará a integração com o Dexie.js (banco de dados offline) em breve
-        console.log("Usuário pronto para salvar:", formData);
+        // 🧹 LIMPEZA DE DADOS: Remove acentos, cedilha e joga para maiúsculo
+        const nomeTratado = formData.nomeCompleto
+            .normalize("NFD") 
+            .replace(/[\u0300-\u036f]/g, "") 
+            .toUpperCase(); 
         
-        alert(`✅ Usuário ${formData.nomeCompleto} (Matrícula: ${formData.matricula}) cadastrado com sucesso com nível de ${formData.nivelAcesso}!`);
+        // 1. FORMATAÇÃO COMPLETA PARA O BANCO DE DADOS
+        const novoAgente = {
+            id: Date.now(), // 🔑 Essencial para chave primária no mock
+            nome: nomeTratado,
+            matricula: formData.matricula,
+            regional: formData.regional,
+            email: formData.email,
+            telefone: formData.telefone,
+            sexo: formData.sexo,
+            dataNascimento: formData.dataNascimento,
+            nivelAcesso: formData.nivelAcesso,
+            status: 'Ativo'
+        };
+
+        // 2. SINCRONIZAÇÃO COM O SEU ARQUIVO
+        if (Array.isArray(listaAgentes)) {
+            listaAgentes.push(novoAgente);
+            console.log("Novo agente inserido na listaAgentes:", listaAgentes);
+        } else {
+            console.error("Erro: listaAgentes não foi encontrada.");
+        }
         
-        // Limpa o formulário após salvar
+        alert(`✅ Usuário ${formData.nomeCompleto} cadastrado com sucesso na Regional ${formData.regional}!`);
+        
+        // 3. LIMPA O FORMULÁRIO
         setFormData({
-            nomeCompleto: '', 
-            email: '', 
-            dataNascimento: '', 
+            nomeCompleto: '',
+            email: '',
+            dataNascimento: '',
             sexo: '', 
-            matricula: '', 
-            senha: '', 
-            nivelAcesso: 'agente_campo'
+            telefone: '',
+            matricula: '',
+            senha: '',
+            nivelAcesso: 'agente_campo',
+            regional: ''
         });
     };
 

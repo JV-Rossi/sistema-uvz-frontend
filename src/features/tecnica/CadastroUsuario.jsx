@@ -53,6 +53,29 @@ export default function CadastroUsuario({ setTelaAtual }) {
                                 <option value="Outro">Outro</option>
                             </select>
                         </div>
+
+                        {/* 📱 NOVO CAMPO: TELEFONE PARA CONTATO (Ocupa a linha toda para ficar elegante) */}
+                        <div className="form-group span-2">
+                            <label>Telefone para Contato *</label>
+                            <input 
+                                type="tel" name="telefone" required
+                                placeholder="Ex: (65) 99999-9999"
+                                value={formData.telefone} onChange={handleInputChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Regional de Atuação *</label>
+                            <select name="regional" required value={formData.regional} onChange={handleInputChange}>
+                                <option value="" disabled>Selecione...</option>
+                                <option value="Norte">Norte</option>
+                                <option value="Sul">Sul</option>
+                                <option value="Leste">Leste</option>
+                                <option value="Oeste">Oeste</option>
+                                <option value="Sede/Centro">Sede/Centro</option>
+                            </select>
+                        </div>
+
                     </div>
 
                     <hr className="divisor-form" />
