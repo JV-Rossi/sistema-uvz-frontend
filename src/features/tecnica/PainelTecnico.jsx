@@ -5,7 +5,7 @@ import './PainelTecnico.css';
 export default function PainelTecnico({ setTelaAtual }) {
     // 1. Controle de qual TELA está aparecendo na direita
     const [abaAtiva, setAbaAtiva] = useState('equipe');
-    
+
     // 2. Controle de qual PASTA (setor) está aberta na esquerda
     const [pastaAberta, setPastaAberta] = useState('administrativo');
 
@@ -41,12 +41,12 @@ export default function PainelTecnico({ setTelaAtual }) {
             {/* ⬅️ BARRA LATERAL COM PASTAS */}
             <aside className="tecnico-sidebar">
                 <div className="sidebar-logo">
-                    <h2>UVZ - Cuiabá</h2>
+                    <h2>CVSA - Cuiabá</h2>
                     <span>Sistema Integrado Base</span>
                 </div>
 
                 <nav className="sidebar-menu">
-                    
+
                     {/* 📁 SETOR: ADMINISTRATIVO */}
                     <div className="menu-folder">
                         <button className="folder-btn" onClick={() => togglePasta('administrativo')}>
@@ -54,7 +54,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                         </button>
                         {pastaAberta === 'administrativo' && (
                             <div className="folder-content">
-                                <button 
+                                <button
                                     className={`menu-btn ${abaAtiva === 'equipe' ? 'ativo' : ''}`}
                                     onClick={() => setAbaAtiva('equipe')}
                                 >
@@ -72,17 +72,11 @@ export default function PainelTecnico({ setTelaAtual }) {
                         </button>
                         {pastaAberta === 'entomologia' && (
                             <div className="folder-content">
-                                <button 
+                                <button
                                     className={`menu-btn ${abaAtiva === 'laboratorio' ? 'ativo' : ''}`}
                                     onClick={() => setAbaAtiva('laboratorio')}
                                 >
                                     🔬 Lançamento de Ovos
-                                </button>
-                                <button 
-                                    className={`menu-btn ${abaAtiva === 'consultas' ? 'ativo' : ''}`}
-                                    onClick={() => setAbaAtiva('consultas')}
-                                >
-                                    🔍 Consultas & Exportação
                                 </button>
                             </div>
                         )}
@@ -95,7 +89,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                         </button>
                         {pastaAberta === 'supervisao' && (
                             <div className="folder-content">
-                                <button 
+                                <button
                                     className={`menu-btn ${abaAtiva === 'mutirao' ? 'ativo' : ''}`}
                                     onClick={() => setAbaAtiva('mutirao')}
                                 >
@@ -112,11 +106,17 @@ export default function PainelTecnico({ setTelaAtual }) {
                         </button>
                         {pastaAberta === 'responsaveis' && (
                             <div className="folder-content">
-                                <button 
+                                <button
                                     className={`menu-btn ${abaAtiva === 'dashboards' ? 'ativo' : ''}`}
                                     onClick={() => setAbaAtiva('dashboards')}
                                 >
                                     📊 Indicadores e Relatórios
+                                </button>
+                                <button
+                                    className={`menu-btn ${abaAtiva === 'consultas' ? 'ativo' : ''}`}
+                                    onClick={() => setAbaAtiva('consultas')}
+                                >
+                                    🔍 Consultas & Exportação
                                 </button>
                             </div>
                         )}
@@ -133,7 +133,7 @@ export default function PainelTecnico({ setTelaAtual }) {
 
             {/* ➡️ ÁREA DE TRABALHO (DIREITA) */}
             <main className="tecnico-conteudo">
-                
+
                 {abaAtiva === 'equipe' && (
                     <div className="modulo-card-limpo">
                         <CadastroUsuario setTelaAtual={setTelaAtual} />

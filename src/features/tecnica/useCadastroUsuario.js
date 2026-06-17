@@ -1,6 +1,4 @@
 import { useState } from 'react';
-// 🔗 Importa a lista global de agentes utilitária
-import { listaAgentes } from '../../shared/utils/dadosAgentes'; 
 
 export function useCadastroUsuario() {
     const [formData, setFormData] = useState({
@@ -15,56 +13,64 @@ export function useCadastroUsuario() {
         regional: ''
     });
 
+    // Atualiza os estados dos inputs enquanto o usuário digita
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-   const handleCadastrarUsuario = (e) => {
+    const handleCadastrarUsuario = (e) => {
         e.preventDefault();
-        
-        // 🧹 LIMPEZA DE DADOS: Remove acentos, cedilha e joga para maiúsculo
+
+        // 🧹 Limpeza de dados exigida para a UVZ
         const nomeTratado = formData.nomeCompleto
-            .normalize("NFD") 
-            .replace(/[\u0300-\u036f]/g, "") 
-            .toUpperCase(); 
-        
-        // 1. FORMATAÇÃO COMPLETA PARA O BANCO DE DADOS
-        const novoAgente = {
-            id: Date.now(), // 🔑 Essencial para chave primária no mock
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toUpperCase();
+
+        // 🔗 DADOS FORMATADOS EXATAMENTE COMO O SEU Usuario.java ESPERA
+        const usuarioParaOJava = {
             nome: nomeTratado,
             matricula: formData.matricula,
+            senha: formData.senha, // 🟢 CORRIGIDO: de 'password' para 'senha' (igual ao Java)
             regional: formData.regional,
             email: formData.email,
             telefone: formData.telefone,
             sexo: formData.sexo,
             dataNascimento: formData.dataNascimento,
-            nivelAcesso: formData.nivelAcesso,
-            status: 'Ativo'
+            status: 'Ativo',
+            // Envia a string formatada direto para o campo private String nivelAcesso;
+            nivelAcesso: formData.nivelAcesso === 'agente_campo' ? 'AGENTE_CAMPO' : formData.nivelAcesso.toUpperCase()
         };
 
-        // 2. SINCRONIZAÇÃO COM O SEU ARQUIVO
-        if (Array.isArray(listaAgentes)) {
-            listaAgentes.push(novoAgente);
-            console.log("Novo agente inserido na listaAgentes:", listaAgentes);
-        } else {
-            console.error("Erro: listaAgentes não foi encontrada.");
-        }
-        
-        alert(`✅ Usuário ${formData.nomeCompleto} cadastrado com sucesso na Regional ${formData.regional}!`);
-        
-        // 3. LIMPA O FORMULÁRIO
-        setFormData({
-            nomeCompleto: '',
-            email: '',
-            dataNascimento: '',
-            sexo: '', 
-            telefone: '',
-            matricula: '',
-            senha: '',
-            nivelAcesso: 'agente_campo',
-            regional: ''
-        });
+        // 🚀 ENDPOINT DE CONEXÃO
+        // Se for testar direto no Render: mude para 'https://seu-backend.onrender.com/api/usuarios'
+        const URL_API = 'https://sistema-uvz-backend.onrender.com/api/usuarios';
+
+        fetch(URL_API, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(usuarioParaOJava)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert(`✅ Usuário ${nomeTratado} cadastrado com sucesso e salvo no Supabase!`);
+
+                    // Limpa o formulário após o sucesso
+                    setFormData({
+                        nomeCompleto: '', email: '', dataNascimento: '', sexo: '',
+                        telefone: '', matricula: '', senha: '', nivelAcesso: 'agente_campo', regional: ''
+                    });
+                } else {
+                    alert('❌ O servidor Java recusou o cadastro. Verifique os logs do IntelliJ.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro de conexão com a API:', error);
+                alert('❌ Não foi possível conectar ao servidor Spring Boot. Ele está ligado?');
+            });
     };
 
     return {

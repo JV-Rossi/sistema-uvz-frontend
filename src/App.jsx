@@ -107,8 +107,13 @@ function App() {
         <Cadastro setTelaAtual={setTelaAtual} setMensagem={setMensagem} />
       )}
 
-      {telaAtual === 'gestao' && <GestaoDashboard />}
-      {telaAtual === 'tecnica' && <TecnicaDashboard />}
+      {telaAtual === 'tecnica' && (
+       <TecnicaDashboard setTelaAtual={setTelaAtual} />
+      )}
+
+      {telaAtual === 'gestao' && (
+        <GestaoDashboard setTelaAtual={setTelaAtual} />
+      )}
 
       {/* ROTEAMENTO DO AGENTE DE CAMPO */}
       {telaAtual === 'campo_menu' && (
