@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CadastroUsuario from '../tecnica/CadastroUsuario'; // Ajuste o caminho se necessário
+import DistribuidorTrabalho from '../tecnica/DistribuidorTrabalho';
 import './PainelTecnico.css';
 
 export default function PainelTecnico({ setTelaAtual }) {
@@ -165,12 +166,8 @@ export default function PainelTecnico({ setTelaAtual }) {
                 )}
 
                 {abaAtiva === 'mutirao' && (
-                    <div className="modulo-card">
-                        <div className="modulo-header">
-                            <h2>Distribuição de Trabalho - Mutirões</h2>
-                            <p>Organize e aloque quarteirões específicos para as equipes de campo.</p>
-                        </div>
-                        <p>Interface de mapa e alocação ativada.</p>
+                    <div className="modulo-card-limpo">
+                        <DistribuidorTrabalho setTelaAtual={setTelaAtual} />
                     </div>
                 )}
 
