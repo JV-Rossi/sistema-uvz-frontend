@@ -82,7 +82,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                    {/* 📁 SETOR: SUPERVISORES */}
+                   {/* 📁 SETOR: SUPERVISORES */}
                     <div className="menu-folder">
                         <button className="folder-btn" onClick={() => togglePasta('supervisao')}>
                             {pastaAberta === 'supervisao' ? '📂' : '📁'} Supervisores

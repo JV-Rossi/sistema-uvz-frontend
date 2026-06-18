@@ -10,6 +10,7 @@ import CampoDashboard from './features/campo/CampoDashboard';
 import TecnicaDashboard from './features/tecnica/PainelTecnico.jsx';
 import ResumoSemanal from './features/campo/ResumoSemanal';
 import Ovitrampa from './features/campo/Ovitrampa.jsx';
+import DistribuidorTrabalho from './components/DistribuidorTrabalho';
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');

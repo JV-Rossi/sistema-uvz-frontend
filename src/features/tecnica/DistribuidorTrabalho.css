@@ -1,0 +1,181 @@
+:root {
+    --verde-cuiaba: #006b3f;
+    --amarelo-cuiaba: #ffcc00;
+    --bg-light: #f4f7f6;
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px;
+    background: var(--bg-light);
+    box-sizing: border-box;
+}
+
+header h1 {
+    color: var(--verde-cuiaba);
+    border-left: 5px solid var(--amarelo-cuiaba);
+    padding-left: 15px;
+    margin-top: 0;
+}
+
+.form-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: #555;
+    text-align: left;
+}
+
+.input-group input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.resumo-calculo {
+    background: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 5px solid var(--verde-cuiaba);
+    font-size: 14px;
+    text-align: left;
+}
+
+.resumo-calculo p {
+    margin: 5px 0;
+}
+
+.highlight-verde {
+    color: var(--verde-cuiaba);
+    font-weight: bold;
+}
+
+.tabela-dengue {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.sub-header th {
+    background: #f1f1f1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.tabela-dengue td {
+    padding: 12px;
+    border: 1px solid #eee;
+    text-align: center;
+}
+
+.tabela-dengue tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.btn-add {
+    background-color: var(--verde-cuiaba);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    max-width: 400px;
+    display: block;
+    margin: 10px auto;
+    transition: 0.2s;
+}
+
+.btn-add:hover {
+    background-color: #004d2c;
+    transform: scale(1.01);
+}
+
+.btn-add:disabled {
+    background-color: #accaaf;
+    cursor: not-allowed;
+}
+
+.btn-pdf {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.btn-pdf:hover {
+    background-color: #b71c1c;
+}
+
+.btn-limpar {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.btn-limpar:hover {
+    background-color: #5a6268;
+}
+
+.view {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Regras de Impressão limpa que você criou */
+@media print {
+    .sidebar, 
+    nav,
+    .btn-add, 
+    .action-buttons,
+    .form-panel,
+    header p {
+        display: none !important;
+    }
+    .content {
+        padding: 0;
+        background: white;
+    }
+    body {
+        overflow: visible;
+    }
+    .tabela-dengue {
+        font-size: 12px;
+        width: 100%;
+    }
+}
