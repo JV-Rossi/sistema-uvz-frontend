@@ -146,7 +146,6 @@ export default function PainelTecnico({ setTelaAtual }) {
                     <div className="modulo-card">
                         <div className="modulo-header">
                             <ConsultasExportacoes setTelaAtual={setTelaAtual} />
-                            <button className="btn-excel" onClick={exportarParaExcel}>🟢 Exportar para Excel (.csv)</button>
                         </div>
                         {/* A tabela densa continua aqui... encurtada no exemplo para focar no menu */}
                         <p>Ferramenta de consultas ativada.</p>
