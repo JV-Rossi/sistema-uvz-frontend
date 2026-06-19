@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CadastroUsuario from '../tecnica/CadastroUsuario'; // Ajuste o caminho se necessário
 import DistribuidorTrabalho from '../tecnica/DistribuidorTrabalho';
+import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
 import './PainelTecnico.css';
 
 export default function PainelTecnico({ setTelaAtual }) {
@@ -144,10 +145,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {abaAtiva === 'consultas' && (
                     <div className="modulo-card">
                         <div className="modulo-header">
-                            <div>
-                                <h2>Base de Dados Integrada</h2>
-                                <p>Consulte registros e exporte para análise externa.</p>
-                            </div>
+                            <ConsultasExportacoes setTelaAtual={setTelaAtual} />
                             <button className="btn-excel" onClick={exportarParaExcel}>🟢 Exportar para Excel (.csv)</button>
                         </div>
                         {/* A tabela densa continua aqui... encurtada no exemplo para focar no menu */}
