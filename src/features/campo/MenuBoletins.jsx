@@ -3,7 +3,7 @@ import React from 'react';
 export default function MenuBoletins({ setTelaAtual }) {
   return (
     <div style={{ padding: '20px', color: '#fff', maxWidth: '600px', margin: '0 auto' }}>
-      
+
       {/* 🔙 Cabeçalho com botão de voltar */}
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px', gap: '15px' }}>
         <button
@@ -21,7 +21,7 @@ export default function MenuBoletins({ setTelaAtual }) {
 
       {/* 🔀 Opções de Boletins */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        
+
         {/* Opção 1: Rotina Normal (LIRAa/LI) */}
         <div
           onClick={() => setTelaAtual('campo_formulario_zoonoses')} // 👈 Rota do seu form de visitas normal
@@ -36,10 +36,10 @@ export default function MenuBoletins({ setTelaAtual }) {
           </div>
         </div>
 
-         {/* Opção 2: Pontos Estratégicos (Deixando a porta aberta pro futuro) */}
+        {/* Opção 2: Pontos Estratégicos (Deixando a porta aberta pro futuro) */}
         <div
-          onClick={() => alert('⏳ Formulário de Pontos Estratégicos em desenvolvimento.')}
-          style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', display: 'flex', alignItems: 'center', gap: '20px', opacity: '0.6' }}
+          onClick={() => setTelaAtual('boletim_pe')} // 👈 Rota ligada!
+          style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', display: 'flex', alignItems: 'center', gap: '20px' }}
         >
           <div style={{ fontSize: '30px', background: '#9b59b6', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>🏭</div>
           <div>

@@ -11,9 +11,10 @@ import TecnicaDashboard from './features/tecnica/PainelTecnico.jsx';
 import ResumoSemanal from './features/campo/ResumoSemanal';
 import Ovitrampa from './features/campo/Ovitrampa.jsx';
 import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
-import MenuBloqueio from './features/campo/MenuBoletins.jsx';
 import MenuBoletins from './features/campo/MenuBoletins.jsx';
 import SolicitarBloqueio from './features/campo/SolicitarBloqueio';
+import BoletimBloqueio from './features/campo/BoletimBloqueio';
+import BoletimPE from './features/campo/BoletimPE';
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');
@@ -134,6 +135,14 @@ function App() {
 
       {telaAtual === 'campo_formulario_zoonoses' && (
         <CampoDashboard setTelaAtual={setTelaAtual} />
+      )}
+
+      {telaAtual === 'boletim_bloqueio' && (
+        <BoletimBloqueio setTelaAtual={setTelaAtual} />
+      )}
+
+      {telaAtual === 'boletim_pe' && (
+        <BoletimPE setTelaAtual={setTelaAtual} />
       )}
 
       {telaAtual === 'resumo_semanal' && (
