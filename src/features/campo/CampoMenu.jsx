@@ -41,12 +41,12 @@ export default function CampoMenu({ setTelaAtual }) {
 
         {/* CARD 2: Bloqueio de foco */}
         <div
-          onClick={() => alert('⏳ Formulário do Bloqueio de foco em desenvolvimento pela T.I')}
-          style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', opacity: '0.6', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
+          onClick={() => setTelaAtual('menu_bloqueio')} // 👈 Agora ele navega para o sub-menu
+          style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
         >
           <div style={{ fontSize: '30px', background: '#2ecc71', width: '55px', height: '55px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🎯</div>
           <strong style={{ fontSize: '15px', letterSpacing: '0.5px' }}>Bloqueio de foco</strong>
-          <small style={{ color: '#aaa', fontSize: '11px' }}>Denúncia bloqueio</small>
+          <small style={{ color: '#aaa', fontSize: '11px', textAlign: 'center' }}>Solicitar ou executar</small>
         </div>
 
         {/* CARD 3: Resumo Semanal */}

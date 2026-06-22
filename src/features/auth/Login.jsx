@@ -17,24 +17,30 @@ export default function Login({ setTelaAtual, setMensagem }) {
       });
 
       if (response.data.startsWith("SUCESSO:")) {
-        const cargoUsuario = response.data.split(":")[1];
+        // Pega o cargo bruto vindo do Java (ex: "Equipe tecnica")
+        let cargoUsuario = response.data.split(":")[1].trim();
 
+        // 🔄 TRADUTOR/NORMALIZADOR: Converte o formato do Forms para o padrão do seu React
+        if (cargoUsuario === "Equipe tecnica") cargoUsuario = "EQUIPE_TECNICA";
+        if (cargoUsuario === "Agente de campo") cargoUsuario = "AGENTE_CAMPO";
+        if (cargoUsuario === "Gestão" || cargoUsuario === "Gestao") cargoUsuario = "GESTAO";
+
+        // Salva as credenciais limpas no localStorage
         localStorage.setItem('userCargo', cargoUsuario);
-        localStorage.setItem('userMatricula', loginMatricula); // 🔥 CHAVE DE OURO: Gravada para preenchimento automático das vistorias
+        localStorage.setItem('userMatricula', loginMatricula);
 
-        // 1. Atualiza o estado da tela localmente
+        // 1. Atualiza o estado da tela localmente (O React vai mudar de tela sozinho)
         if (cargoUsuario === 'GESTAO') {
           setTelaAtual('gestao');
         } else if (cargoUsuario === 'TECNICO' || cargoUsuario === 'EQUIPE_TECNICA') {
-          localStorage.setItem('userCargo', 'TECNICO');
+          localStorage.setItem('userCargo', 'TECNICO'); // Mantém o fallback que você criou
           setTelaAtual('tecnica');
         } else if (cargoUsuario === 'AGENTE_CAMPO') {
-          setTelaAtual('campo_menu'); // 👈 Ajustado para casar com o roteamento do seu App.jsx
+          setTelaAtual('campo_menu'); 
         }
 
-        // 2. O PULO DO GATO: Atualiza a URL do navegador e força a renderização limpa do React
+        // 2. 🎯 MUDANÇA CRUCIAL: Atualiza a rota interna sem dar um "F5" violento na página
         window.location.hash = '/';
-        window.location.reload();
 
       } else {
         setMensagem('❌ Matrícula ou senha incorretos.');
