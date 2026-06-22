@@ -272,7 +272,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                 }}
             >⬅️ VOLTAR</button>
 
-            <h2>📋 Boletim de Ponto Estratégico</h2>
+            <h2>🏭 Boletim de Ponto Estratégico</h2>
             <p style={{ color: '#aaa', fontSize: '14px' }}>Substituindo a Ficha Entomológica de Papel</p>
 
 
