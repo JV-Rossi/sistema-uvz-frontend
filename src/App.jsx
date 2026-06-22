@@ -14,7 +14,7 @@ import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
 import MenuBoletins from './features/campo/MenuBoletins.jsx';
 import SolicitarBloqueio from './features/campo/SolicitarBloqueio';
 import BoletimBloqueio from './features/campo/BoletimBloqueio';
-import BoletimPE from './features/campo/BoletimPE';
+import BoletimPE from './features/campo/BoletimPE.jsx';
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');
