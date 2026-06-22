@@ -179,6 +179,7 @@ export default function CampoDashboard({ setTelaAtual }) {
             imoveis: listaImoveis,
             titular_matricula: localStorage.getItem('userMatricula') || 'DESCONHECIDO',
             equipe_parceiros: equipeComMatriculas,
+            tipo_boletim: 'BLOQUEIO', // 👈 O carimbo de identificação!
             data_registro: new Date().toISOString() 
         };
 
@@ -255,7 +256,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '15px', color: '#fff', fontFamily: 'sans-serif', background: '#111', borderRadius: '10px' }}>
 
             <button
-                onClick={() => setTelaAtual('campo_menu')}
+                onClick={() => setTelaAtual('menu_boletins')}
                 style={{
                     background: '#333',
                     color: '#fff',
@@ -271,7 +272,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                 }}
             >⬅️ VOLTAR</button>
 
-            <h2>📋 Novo Boletim de Campo</h2>
+            <h2>📋 Boletim de Bloqueio</h2>
             <p style={{ color: '#aaa', fontSize: '14px' }}>Substituindo a Ficha Entomológica de Papel</p>
 
 

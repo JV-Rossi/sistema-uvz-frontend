@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 export default function SolicitarBloqueio({ setTelaAtual }) {
   // 📝 Estados para capturar os dados do formulário
@@ -8,34 +8,30 @@ export default function SolicitarBloqueio({ setTelaAtual }) {
   const [referencia, setReferencia] = useState('');
   const [telefone, setTelefone] = useState('');
 
-  // 🕵️‍♂️ Dado invisível fixo exigido pela regra de negócio
+  // 🕵️‍♂️ Dados invisíveis que vão junto com o pacote
   const assunto = 'Controle Aedes';
-
-  // ⚡ Puxa a matrícula do agente logado para poupar trabalho de digitação
-  useEffect(() => {
-    const matriculaSalva = localStorage.getItem('userMatricula');
-    if (matriculaSalva) {
-      setSolicitante(matriculaSalva);
-    }
-  }, []);
 
   const handleSolicitar = (e) => {
     e.preventDefault();
 
+    // Captura quem está logado no tablet na hora do envio
+    const matriculaAgente = localStorage.getItem('userMatricula') || 'Desconhecido';
+
     // 📦 Pacote de dados estruturado que vai para o Java/Supabase
     const payload = {
-      solicitante,
+      nome_municipe: solicitante, // O morador
       endereco,
       bairro,
       referencia,
       telefone,
-      assunto
+      assunto,
+      agente_registro: matriculaAgente // O agente que preencheu a ficha
     };
 
     // (Temporário) Apenas para você ver o pacote invisível funcionando no F12
     console.log("🚨 Disparando para o Responsável Técnico:", payload);
 
-    alert(`✅ Solicitação de bloqueio enviada!\nBairro: ${bairro}`);
+    alert(`✅ Solicitação de bloqueio registrada com sucesso!\nMorador: ${solicitante}\nBairro: ${bairro}`);
     
     // Devolve o agente para o menu principal após o envio
     setTelaAtual('campo_menu');
@@ -56,20 +52,20 @@ export default function SolicitarBloqueio({ setTelaAtual }) {
       </div>
 
       <p style={{ color: '#ccc', marginBottom: '25px', fontSize: '15px', lineHeight: '1.5' }}>
-        Preencha os dados do local. Esta notificação será enviada diretamente para a fila do Responsável Técnico.
+        Preencha os dados do local e do munícipe. Esta notificação será enviada diretamente para a triagem do Responsável Técnico.
       </p>
 
       {/* 📝 Formulário */}
       <form onSubmit={handleSolicitar} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         
-        {/* 1. Solicitante */}
+        {/* 1. Solicitante (Munícipe) */}
         <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Solicitante (Sua Matrícula):</label>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nome do Solicitante (Munícipe):</label>
           <input
             type="text"
             value={solicitante}
             onChange={(e) => setSolicitante(e.target.value)}
-            placeholder="Digite a matrícula"
+            placeholder="Ex: Maria José da Silva"
             required
             style={{ width: '100%', padding: '12px', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: '8px' }}
           />
