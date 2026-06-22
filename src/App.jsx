@@ -11,9 +11,9 @@ import TecnicaDashboard from './features/tecnica/PainelTecnico.jsx';
 import ResumoSemanal from './features/campo/ResumoSemanal';
 import Ovitrampa from './features/campo/Ovitrampa.jsx';
 import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
-import MenuBloqueio from './features/campo/MenuBloqueio';
-//import SolicitarBloqueio from './features/campo/SolicitarBloqueio'; 
-//import BoletimBloqueio from './features/campo/BoletimBloqueio';
+import MenuBloqueio from './features/campo/MenuBoletins.jsx';
+import MenuBoletins from './features/campo/MenuBoletins.jsx';
+import SolicitarBloqueio from './features/campo/SolicitarBloqueio';
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');
@@ -124,23 +124,13 @@ function App() {
         <CampoMenu setTelaAtual={setTelaAtual} />
       )}
 
-      {/* ROTEAMENTO DO AGENTE DE CAMPO */}
-      {telaAtual === 'campo_menu' && (
-        <CampoMenu setTelaAtual={setTelaAtual} />
+      {telaAtual === 'menu_boletins' && (
+        <MenuBoletins setTelaAtual={setTelaAtual} />
       )}
 
-      {/* 🎯 FLUXO DE BLOQUEIO DE FOCO */}
-      {telaAtual === 'menu_bloqueio' && (
-        <MenuBloqueio setTelaAtual={setTelaAtual} />
-      )}
-
-      {/* {telaAtual === 'solicitar_bloqueio' && (
+      {telaAtual === 'solicitar_bloqueio' && (
         <SolicitarBloqueio setTelaAtual={setTelaAtual} />
-      )} */}
-
-      {/* {telaAtual === 'boletim_bloqueio' && (
-        <BoletimBloqueio setTelaAtual={setTelaAtual} />
-      )} */}
+      )}
 
       {telaAtual === 'campo_formulario_zoonoses' && (
         <CampoDashboard setTelaAtual={setTelaAtual} />

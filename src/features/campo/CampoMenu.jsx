@@ -29,24 +29,24 @@ export default function CampoMenu({ setTelaAtual }) {
       {/* 🎛️ GRADE DE BOTÕES (MENU INSPIRADO NO SEU PRINT) */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '40px' }}>
 
-        {/* CARD 1: Boletim de campo */}
+        {/* CARD 1: Gaveta de Boletins */}
         <div
-          onClick={() => setTelaAtual('campo_formulario_zoonoses')}
-          style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', transition: '0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
-        >
-          <div style={{ fontSize: '30px', background: '#e67e22', width: '55px', height: '55px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📋</div>
-          <strong style={{ fontSize: '15px', letterSpacing: '0.5px' }}>Boletim de Campo</strong>
-          <small style={{ color: '#aaa', fontSize: '11px' }}>Trabalho de rotina</small>
-        </div>
-
-        {/* CARD 2: Bloqueio de foco */}
-        <div
-          onClick={() => setTelaAtual('menu_bloqueio')} // 👈 Agora ele navega para o sub-menu
+          onClick={() => setTelaAtual('menu_boletins')} // 👈 Abre o novo sub-menu
           style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
         >
-          <div style={{ fontSize: '30px', background: '#2ecc71', width: '55px', height: '55px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🎯</div>
-          <strong style={{ fontSize: '15px', letterSpacing: '0.5px' }}>Bloqueio de foco</strong>
-          <small style={{ color: '#aaa', fontSize: '11px', textAlign: 'center' }}>Solicitar ou executar</small>
+          <div style={{ fontSize: '30px', background: '#f39c12', width: '55px', height: '55px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📋</div>
+          <strong style={{ fontSize: '15px', letterSpacing: '0.5px' }}>Boletins</strong>
+          <small style={{ color: '#aaa', fontSize: '11px', textAlign: 'center' }}>Todos os serviços</small>
+        </div>
+
+        {/* CARD 2: Solicitar Bloqueio Rápido */}
+        <div
+          onClick={() => setTelaAtual('solicitar_bloqueio')} // 👈 Vai direto pro form de denúncia
+          style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
+        >
+          <div style={{ fontSize: '30px', background: '#e74c3c', width: '55px', height: '55px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🚨</div>
+          <strong style={{ fontSize: '15px', letterSpacing: '0.5px', textAlign: 'center' }}>Solicitar Bloqueio</strong>
+          <small style={{ color: '#aaa', fontSize: '11px', textAlign: 'center' }}>Denunciar foco</small>
         </div>
 
         {/* CARD 3: Resumo Semanal */}
