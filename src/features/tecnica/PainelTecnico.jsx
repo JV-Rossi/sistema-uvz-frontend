@@ -84,7 +84,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                   {/* 📁 SETOR: SUPERVISORES */}
+                    {/* 📁 SETOR: SUPERVISORES */}
                     <div className="menu-folder">
                         <button className="folder-btn" onClick={() => togglePasta('supervisao')}>
                             {pastaAberta === 'supervisao' ? '📂' : '📁'} Supervisores
@@ -100,6 +100,8 @@ export default function PainelTecnico({ setTelaAtual }) {
                             </div>
                         )}
                     </div>
+
+
 
                     {/* 📁 SETOR: RESPONSÁVEIS TÉCNICOS */}
                     <div className="menu-folder">
@@ -119,6 +121,76 @@ export default function PainelTecnico({ setTelaAtual }) {
                                     onClick={() => setAbaAtiva('consultas')}
                                 >
                                     🔍 Consultas & Exportação
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* 📁 SETOR: BORRIFAÇÃO */}
+                    <div className="menu-folder">
+                        <button className="folder-btn" onClick={() => togglePasta('borrifacao')}>
+                            {pastaAberta === 'borrifacao' ? '📂' : '📁'} Borrifação
+                        </button>
+                        {pastaAberta === 'borrifacao' && (
+                            <div className="folder-content">
+                                <button
+                                    className={`menu-btn ${abaAtiva === 'retirada_bti' ? 'ativo' : ''}`}
+                                    onClick={() => setAbaAtiva('retirada_bti')}
+                                >
+                                    🦟 Retirada de BTIs
+                                </button>
+                                <button
+                                    className={`menu-btn ${abaAtiva === 'estoque_borrifacao' ? 'ativo' : ''}`}
+                                    onClick={() => setAbaAtiva('estoque_borrifacao')}
+                                >
+                                    📦 Controle de Estoque
+                                </button>
+                                <button
+                                    className={`menu-btn ${abaAtiva === 'bloqueio_quimico' ? 'ativo' : ''}`}
+                                    onClick={() => setAbaAtiva('bloqueio_quimico')}
+                                >
+                                    💨 Bloqueio Químico
+                                </button>
+                                <button
+                                    className={`menu-btn ${abaAtiva === 'pe_borrifacao' ? 'ativo' : ''}`}
+                                    onClick={() => setAbaAtiva('pe_borrifacao')}
+                                >
+                                    🏭 Pontos Estratégicos (P.E)
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* 📁 SETOR: ANIMAIS DOMÉSTICOS */}
+                    <div className="menu-folder">
+                        <button className="folder-btn" onClick={() => togglePasta('animais_domesticos')}>
+                            {pastaAberta === 'animais_domesticos' ? '📂' : '📁'} Animais Domésticos
+                        </button>
+                        {pastaAberta === 'animais_domesticos' && (
+                            <div className="folder-content">
+                                <button
+                                    className={`menu-btn ${abaAtiva === 'vacinacao_animal' ? 'ativo' : ''}`}
+                                    onClick={() => setAbaAtiva('vacinacao_animal')}
+                                >
+                                    💉 Controle de Vacinação
+                                </button>
+                                <button
+                                    className={`menu-btn ${abaAtiva === 'eutanasia_animal' ? 'ativo' : ''}`}
+                                    onClick={() => setAbaAtiva('eutanasia_animal')}
+                                >
+                                    🌈 Controle de Eutanásia
+                                </button>
+                                <button
+                                    className={`menu-btn ${abaAtiva === 'leishmaniose_animal' ? 'ativo' : ''}`}
+                                    onClick={() => setAbaAtiva('leishmaniose_animal')}
+                                >
+                                    🐶 Controle de Leishmaniose
+                                </button>
+                                <button
+                                    className={`menu-btn ${abaAtiva === 'temperatura_vacinas' ? 'ativo' : ''}`}
+                                    onClick={() => setAbaAtiva('temperatura_vacinas')}
+                                >
+                                    🌡️ Temperatura de Vacinas
                                 </button>
                             </div>
                         )}

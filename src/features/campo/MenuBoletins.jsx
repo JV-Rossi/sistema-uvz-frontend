@@ -36,7 +36,7 @@ export default function MenuBoletins({ setTelaAtual }) {
           </div>
         </div>
 
-        {/* Opção 2: Pontos Estratégicos (Deixando a porta aberta pro futuro) */}
+        {/* Opção 2: Pontos Estratégicos */}
         <div
           onClick={() => setTelaAtual('boletim_pe')} // 👈 Rota ligada!
           style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', display: 'flex', alignItems: 'center', gap: '20px' }}

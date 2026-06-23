@@ -255,7 +255,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '15px', color: '#fff', fontFamily: 'sans-serif', background: '#111', borderRadius: '10px' }}>
 
             <button
-                onClick={() => setTelaAtual('campo_menu')}
+                onClick={() => setTelaAtual('menu_boletins')}
                 style={{
                     background: '#333',
                     color: '#fff',
