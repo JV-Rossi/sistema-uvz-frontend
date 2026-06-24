@@ -1,0 +1,203 @@
+/* ==========================================================================
+   LAYOUT DIVIDIDO (SPLIT SCREEN - ESTILO SUS DIGITAL)
+   ========================================================================== */
+.auth-screen {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #f4f6f9; /* Fundo de contingência */
+}
+
+/* Painel Esquerdo: Área da Foto (Oculta no mobile, brilha no Desktop) */
+.auth-side-image {
+  display: none;
+}
+
+/* Painel Direito: Área Branca onde o formulário vai morar */
+.auth-side-form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff; /* Fundo branco clínico */
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* 🖥️ REGRAS EXCLUSIVAS PARA MONITORES E TABS GRANDES */
+@media (min-width: 850px) {
+  /* Ativa a foto cobrindo o lado esquerdo da tela */
+  .auth-side-image {
+    display: block;
+    flex: 1; /* Ocupa todo o espaço restante da esquerda */
+    background-image: url('./ImagemLogin.png'); /* 👈 Referência direta à sua foto */
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+  }
+
+  /* Reduz o painel da direita para uma largura de bloco elegante */
+  .auth-side-form {
+    width: 460px;
+    flex-shrink: 0;
+    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.04); /* Sombra sutil dividindo a foto do formulário */
+  }
+}
+
+/* ==========================================================================
+   ESTRUTURA DO CARD DE AUTENTICAÇÃO (ADAPTÁVEL)
+   ========================================================================== */
+.auth-container {
+  width: 100%;
+  max-width: 360px;
+  color: #2d3748;
+  background-color: #ffffff;
+}
+
+/* No Mobile, ele se comporta como um card flutuante clássico */
+@media (max-width: 849px) {
+  .auth-container {
+    padding: 35px 30px;
+    border-radius: 12px;
+    border-top: 5px solid #0054a6;
+    box-shadow: 0 10px 25px rgba(0, 84, 166, 0.08);
+  }
+}
+
+/* No Desktop, ele se integra de forma limpa direto na folha branca lateral */
+@media (min-width: 850px) {
+  .auth-container {
+    padding: 0 10px;
+    border-top: none; /* Remove bordas duplicadas para um visual minimalista */
+  }
+}
+
+/* ==========================================================================
+   FORMULÁRIOS E CAMPOS DE ENTRADA (INPUTS ACCESSIBLE LIGHT)
+   ========================================================================== */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.auth-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px;
+  background-color: #f8fafc; /* Input levemente cinza para destacar do fundo */
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 15px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efeito de foco moderno usando a cor do SUS */
+.auth-input:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: #0054a6;
+  box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.15);
+}
+
+/* ==========================================================================
+   BOTÕES DE AÇÃO 
+   ========================================================================== */
+.auth-btn {
+  padding: 14px;
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 6px;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+}
+
+/* Botão Entrar/Enviar com azul institucional */
+.btn-submit {
+  background-color: #0054a6; 
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #003f7d; /* Tom mais escuro clássico de hover do Gov */
+  transform: translateY(-1px); /* Micro-interação moderna de subida */
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+.btn-disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   RODAPÉ E LINKS (REDUÇÃO DE RUIDO VISUAL)
+   ========================================================================== */
+.auth-footer {
+  text-align: center;
+  margin-top: 25px;
+  border-top: 1px solid #f1f5f9; /* Linha sutil separadora */
+  padding-top: 15px;
+}
+
+.auth-link {
+  background: none;
+  border: none;
+  color: #0054a6;
+  cursor: pointer;
+  text-decoration: none; /* Remove o sublinhado antigo */
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.auth-link:hover {
+  color: #002d5a;
+  text-decoration: underline; /* Sublinha só no hover para ficar elegante */
+}
+
+/* ==========================================================================
+   CAIXAS DE MENSAGENS DE ALERTA (ALTAMENTE VISÍVEIS)
+   ========================================================================== */
+.auth-message {
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Verde Saúde Suave */
+.msg-success {
+  background-color: #ecfdf5;
+  border: 1px solid #10b981;
+  color: #065f46;
+}
+
+/* Vermelho Alerta do SUS */
+.msg-erro {
+  background-color: #fef2f2;
+  border: 1px solid #ef4444;
+  color: #991b1b;
+}

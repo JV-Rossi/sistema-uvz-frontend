@@ -3,18 +3,21 @@ import './App.css';
 import { db } from './core/dbLocal';
 import { Network } from '@capacitor/network'; // 👈 Importação do plugin de rede nativo
 import Login from './features/auth/Login';
+import RecuperarSenha from './features/auth/RecuperarSenha';
 import Cadastro from './features/tecnica/CadastroUsuario.jsx'
 import MenuCampo from './features/campo/MenuCampo';
-import GestaoDashboard from './features/gestao/GestaoDashboard';
-import TecnicaDashboard from './features/tecnica/PainelTecnico.jsx';
-import ResumoSemanal from './features/campo/ResumoSemanal';
-import Ovitrampa from './features/campo/Ovitrampa.jsx';
-import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
 import MenuBoletins from './features/campo/MenuBoletins.jsx';
-import SolicitarBloqueio from './features/campo/SolicitarBloqueio';
 import BoletimRotina from './features/campo/BoletimRotina';
 import BoletimBloqueio from './features/campo/BoletimBloqueio';
 import BoletimPE from './features/campo/BoletimPE.jsx';
+import SolicitarBloqueio from './features/campo/SolicitarBloqueio';
+import ResumoSemanal from './features/campo/ResumoSemanal';
+import Ovitrampa from './features/campo/Ovitrampa.jsx';
+import GestaoDashboard from './features/gestao/GestaoDashboard';
+import TecnicaDashboard from './features/tecnica/PainelTecnico.jsx';
+import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
+
+
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');
@@ -108,6 +111,10 @@ function App() {
         <Login setTelaAtual={setTelaAtual} setMensagem={setMensagem} />
       )}
 
+      {telaAtual === 'recuperar_senha' && (
+        <RecuperarSenha setTelaAtual={setTelaAtual} />
+      )}
+
       {telaAtual === 'cadastro' && (
         <Cadastro setTelaAtual={setTelaAtual} setMensagem={setMensagem} />
       )}
@@ -134,7 +141,7 @@ function App() {
       )}
 
       {telaAtual === 'campo_formulario_zoonoses' && (
-        <BoletimRotina setTelaAtual={setTelaAtual} /> 
+        <BoletimRotina setTelaAtual={setTelaAtual} />
       )}
 
       {telaAtual === 'boletim_bloqueio' && (
