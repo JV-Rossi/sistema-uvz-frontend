@@ -3,7 +3,7 @@ import { tabelaBairros } from '../../shared/utils/dadosBairros';
 import { listaAgentes as listaAgentesOficiais } from '../../shared/utils/dadosAgentes';
 import { db } from '../../core/dbLocal';
 
-export default function CampoDashboard({ setTelaAtual }) {
+export default function BoletimRotina({ setTelaAtual }) {
 
     // 1. Puxa o nome de usuário que foi salvo no login
     const nomeLogado = localStorage.getItem('userLogin') || '';

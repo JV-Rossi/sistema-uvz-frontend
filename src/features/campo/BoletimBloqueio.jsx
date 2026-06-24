@@ -5,19 +5,18 @@ import { db } from '../../core/dbLocal';
 
 export default function CampoDashboard({ setTelaAtual }) {
 
-    // 1. Puxa o nome de usuário que foi salvo no login
+    // Puxa o nome de usuário que foi salvo no login
     const nomeLogado = localStorage.getItem('userLogin') || '';
 
     // Como padronizamos a nossa lista toda em MAIÚSCULAS, 
     // garantimos que o nome do titular também fique igual.
     const titularPadronizado = nomeLogado.toUpperCase();
-
     const [regional, setRegional] = useState('');
     const [bairroInput, setBairroInput] = useState('');
     const [dadosOcultos, setDadosOcultos] = useState(null);
     const [erroBairro, setErroBairro] = useState('');
 
-    // 2. Estados do Cabeçalho da Ficha (Sem Ciclo e Semana)
+    // 2. Estados do Cabeçalho da Ficha 
     const [headerMinimizado, setHeaderMinimizado] = useState(false);
     const [cabecalho, setCabecalho] = useState({
         regional: '',
@@ -26,27 +25,27 @@ export default function CampoDashboard({ setTelaAtual }) {
         codigo: '',
         desmembramento: '',
         data: '',
-        agentes: [titularPadronizado] // 👈 O array já nasce com o dono da conta
+        agentes: [titularPadronizado]  // O array já nasce com o dono da conta
     });
 
     const salvarBoletimOffline = async () => {
         try {
-            // 1. Montar o pacote de dados respeitando a nossa arquitetura (Chave Estrangeira do Titular)
+            // Montar o pacote de dados respeitando a nossa arquitetura
             const pacoteBoletim = {
-                titular: localStorage.getItem('userLogin') || 'DESCONHECIDO', // Apenas o Login!
+                titular: localStorage.getItem('userLogin') || 'DESCONHECIDO', 
                 bairro: cabecalho.bairro,
                 regional: cabecalho.regional,
-                // O filtro inteligente que já usamos para ignorar caixas vazias:
+                // O filtro inteligente para ignorar caixas vazias:
                 equipe_parceiros: cabecalho.agentes.filter(agente => agente && agente.trim() !== ''),
                 total_imoveis: typeof totalImoveis !== 'undefined' ? totalImoveis : 0,
                 data_registro: new Date().toISOString(), // Marca o exato segundo em que foi salvo
                 status_envio: 'pendente' // Uma flag útil para o futuro
             };
 
-            // 2. O PULO DO GATO: Guardar no cofre do Dexie
+            // Guardar no cofre do Dexie
             await db.boletins_pendentes.add(pacoteBoletim);
 
-            // 3. Feedback visual para o agente no sol quente
+            // Feedback visual para o agente
             alert('✅ Quarteirão salvo no tablet com sucesso!');
 
         } catch (error) {
@@ -55,7 +54,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         }
     };
 
-    // 1. Adicionar Colega (Blindado)
+    // Adicionar Colega
     const adicionarAgente = (e) => {
         if (e) e.preventDefault(); 
 
@@ -68,7 +67,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         });
     };
 
-    // 2. Remover Colega (Blindado)
+    // Remover Colega 
     const removerAgente = (indexParaRemover, e) => {
         if (e) e.preventDefault();
 
@@ -81,7 +80,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         });
     };
 
-    // 3. Atualizar Nome do Agente (Blindado)
+    // Atualizar Nome do Agente
     const handleNomeAgente = (index, novoNome) => {
         setCabecalho(prev => {
             const listaSegura = Array.isArray(prev.agentes) ? [...prev.agentes] : [''];
@@ -90,7 +89,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         });
     };
 
-    // 3. Estados do formulário do imóvel atual que está sendo digitado
+    // Estados do formulário do imóvel atual que está sendo digitado
     const [imovelAtual, setImovelAtual] = useState({
         quarteirao: '',
         endereco: '',
@@ -108,7 +107,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         larvicidaGrama: 0
     });
 
-    // 4. Lista de imóveis já adicionados na folha atual
+    // Lista de imóveis já adicionados na folha atual
     const [listaImoveis, setListaImoveis] = useState([]);
     const [mensagemEnvio, setMensagemEnvio] = useState('');
 
@@ -121,7 +120,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         });
     };
 
-    // 2. Função de Adicionar Imóvel Ajustada 
+    // Função de Adicionar Imóvel 
     const handleAdicionarImovel = (e) => {
         e.preventDefault();
 
@@ -157,7 +156,7 @@ export default function CampoDashboard({ setTelaAtual }) {
             return;
         }
 
-        // 🎯 1. TRADUTOR DE EQUIPE: Cruza os nomes digitados com as matrículas oficiais
+        // TRADUTOR DE EQUIPE: Cruza os nomes digitados com as matrículas oficiais
         const equipeComMatriculas = cabecalho.agentes.map(nomeDigitado => {
             if (!nomeDigitado || nomeDigitado.trim() === '') return null;
 
@@ -173,7 +172,7 @@ export default function CampoDashboard({ setTelaAtual }) {
             };
         }).filter(Boolean); // Limpa campos nulos ou vazios
 
-        // 2. Monta o pacote aplicando a nossa nova arquitetura baseada em Matrículas
+        // Monta o pacote aplicando a nossa nova arquitetura baseada em Matrículas
         const payloadOffline = {
             ...cabecalho,
             imoveis: listaImoveis,
@@ -184,7 +183,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         };
 
         try {
-            // 3. 🚀 CORTAMOS A INTERNET: Dispara os dados direto para a gaveta local do Dexie
+            // Dispara os dados direto para a gaveta local do Dexie
             await db.fichas_soltas.add(payloadOffline);
 
             alert('✅ Ficha guardada na gaveta do tablet com sucesso!');
@@ -199,7 +198,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         }
     };
 
-    // 1. O Filtro agora olha para dentro do cabecalho
+    // O Filtro agora olha para dentro do cabecalho
     const bairrosFiltrados = tabelaBairros.filter(b => b.regional === cabecalho.regional);
 
     //Filtro para agentes
@@ -210,7 +209,7 @@ export default function CampoDashboard({ setTelaAtual }) {
     const qtdAgentesValidos = cabecalho.agentes.filter
         (agente => agente && agente.trim() !== '').length;
 
-    // 2. Atualiza a Regional dentro do cabecalho com segurança
+    // Atualiza a Regional dentro do cabecalho com segurança
     const handleRegionalChange = (e) => {
         const novaRegional = e.target.value;
 
@@ -224,7 +223,7 @@ export default function CampoDashboard({ setTelaAtual }) {
         setErroBairro('');
     };
 
-    // 3. Atualiza o Bairro dentro do cabecalho e já vincula o estrato
+    // Atualiza o Bairro dentro do cabecalho e já vincula o estrato
     const handleBairroChange = (e) => {
         const valorDigitado = e.target.value;
 
@@ -561,7 +560,7 @@ export default function CampoDashboard({ setTelaAtual }) {
                         Houve Depósito Eliminado?
                     </label>
 
-                    {/* SE A CAIXA FOR MARCADA, ESSA TELA APARECE MAGICA E AUTOMATICAMENTE */}
+                    {/* SE A CAIXA FOR MARCADA, ESSA TELA APARECE AUTOMATICAMENTE */}
                     {imovelAtual.teveDepositoEliminado && (
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '15px' }}>
                             {['a2', 'b', 'c', 'd1', 'd2', 'e'].map(dep => {

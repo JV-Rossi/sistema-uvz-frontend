@@ -5,7 +5,6 @@ export const db = new Dexie('AppUVZ_OfflineDB');
 db.version(1).stores({
     // 1. A Gaveta: Guarda as fichas que o ACE fez na rua, mas ainda não botou na grade.
     fichas_soltas: '++id, titular_matricula, status_envio',
-    // 🟢 As novas gavetas para separar os trabalhos
     fichas_bloqueio: '++id, titular_matricula, status_envio',
     fichas_pe: '++id, titular_matricula, status_envio',
 

@@ -4,15 +4,15 @@ import { db } from './core/dbLocal';
 import { Network } from '@capacitor/network'; // 👈 Importação do plugin de rede nativo
 import Login from './features/auth/Login';
 import Cadastro from './features/tecnica/CadastroUsuario.jsx'
-import CampoMenu from './features/campo/CampoMenu';
+import MenuCampo from './features/campo/MenuCampo';
 import GestaoDashboard from './features/gestao/GestaoDashboard';
-import CampoDashboard from './features/campo/CampoDashboard';
 import TecnicaDashboard from './features/tecnica/PainelTecnico.jsx';
 import ResumoSemanal from './features/campo/ResumoSemanal';
 import Ovitrampa from './features/campo/Ovitrampa.jsx';
 import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
 import MenuBoletins from './features/campo/MenuBoletins.jsx';
 import SolicitarBloqueio from './features/campo/SolicitarBloqueio';
+import BoletimRotina from './features/campo/BoletimRotina';
 import BoletimBloqueio from './features/campo/BoletimBloqueio';
 import BoletimPE from './features/campo/BoletimPE.jsx';
 
@@ -70,7 +70,7 @@ function App() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(resumos)
         });
-        
+
         if (resPush.ok) {
           // Limpa a tabela de envios locais se o servidor confirmou o recebimento
           await db.resumos_pendentes_envio.bulkDelete(resumos.map(r => r.id));
@@ -84,15 +84,15 @@ function App() {
       const resPull = await fetch(`https://sistema-uvz-backend.onrender.com/api/visitas/parceiro/${loginAgente}`);
       if (resPull.ok) {
         const fichasNovas = await resPull.json();
-        
+
         if (fichasNovas.length > 0) {
           // Aloca as frações da produção direto na gaveta do agente parceiro
           await db.fichas_soltas.bulkAdd(fichasNovas);
           console.log(`✅ ${fichasNovas.length} fichas de parceria adicionadas ao Dexie.`);
-          
+
           // Confirma a baixa do lote no backend para evitar duplicidade no próximo ciclo
-          await fetch(`https://sistema-uvz-backend.onrender.com/api/visitas/parceiro/confirmar/${loginAgente}`, { 
-            method: 'POST' 
+          await fetch(`https://sistema-uvz-backend.onrender.com/api/visitas/parceiro/confirmar/${loginAgente}`, {
+            method: 'POST'
           });
         }
       }
@@ -113,7 +113,7 @@ function App() {
       )}
 
       {telaAtual === 'tecnica' && (
-       <TecnicaDashboard setTelaAtual={setTelaAtual} />
+        <TecnicaDashboard setTelaAtual={setTelaAtual} />
       )}
 
       {telaAtual === 'gestao' && (
@@ -122,7 +122,7 @@ function App() {
 
       {/* ROTEAMENTO DO AGENTE DE CAMPO */}
       {telaAtual === 'campo_menu' && (
-        <CampoMenu setTelaAtual={setTelaAtual} />
+        <MenuCampo setTelaAtual={setTelaAtual} />
       )}
 
       {telaAtual === 'menu_boletins' && (
@@ -134,7 +134,7 @@ function App() {
       )}
 
       {telaAtual === 'campo_formulario_zoonoses' && (
-        <CampoDashboard setTelaAtual={setTelaAtual} />
+        <BoletimRotina setTelaAtual={setTelaAtual} /> 
       )}
 
       {telaAtual === 'boletim_bloqueio' && (

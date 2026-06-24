@@ -2,7 +2,7 @@ import { useState } from 'react';
 import api from '../../core/api';
 
 export default function Login({ setTelaAtual, setMensagem }) {
-  const [loginMatricula, setLoginMatricula] = useState(''); // 👈 Alterado de loginUsername para loginMatricula
+  const [loginMatricula, setLoginMatricula] = useState(''); 
   const [loginPassword, setLoginPassword] = useState('');
 
   const handleLogin = async (e) => {
@@ -10,7 +10,7 @@ export default function Login({ setTelaAtual, setMensagem }) {
     setMensagem('');
 
     try {
-      // 🚀 Dispara a matrícula e a senha para validação no Spring Boot
+      // Dispara a matrícula e a senha para validação no Spring Boot
       const response = await api.post('/usuarios/login', {
         matricula: loginMatricula,
         password: loginPassword
@@ -56,7 +56,6 @@ export default function Login({ setTelaAtual, setMensagem }) {
       <h2>CVSA - Sistema de Controle de Acesso</h2>
       <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         
-        {/* 💳 INPUT ADAPTADO PARA MATRÍCULA */}
         <div>
           <label>Matrícula (Login):</label>
           <input

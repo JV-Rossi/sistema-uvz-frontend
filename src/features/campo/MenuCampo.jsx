@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function CampoMenu({ setTelaAtual }) {
+export default function MenuCampo({ setTelaAtual }) {
   const usuarioNome = localStorage.getItem('userLogin');
 
   const navigate = useNavigate(); // 👈 1. Inicializa o navigate aqui dentro
