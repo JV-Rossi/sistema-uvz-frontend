@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LAYOUT DIVIDIDO (SPLIT SCREEN - ESTILO SUS DIGITAL)
+   LAYOUT DIVIDIDO (SPLIT SCREEN - ESTILO SUS DIGITAL LISO)
    ========================================================================== */
 .auth-screen {
   display: flex;
@@ -8,47 +8,28 @@
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #f4f6f9; /* Fundo de contingência */
+  background-color: #ffffff;
 }
 
-/* Painel Esquerdo: Área da Foto (Oculta no mobile, brilha no Desktop) */
+/* Painel Esquerdo: Área da Foto (Oculta no mobile) */
 .auth-side-image {
   display: none;
 }
 
-/* Painel Direito: Área Branca onde o formulário vai morar */
+/* Painel Direito: Área do Formulário */
 .auth-side-form {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff; /* Fundo branco clínico */
+  background-color: #ffffff;
   padding: 30px;
   box-sizing: border-box;
-}
-
-/* 🖥️ REGRAS EXCLUSIVAS PARA MONITORES E TABS GRANDES */
-@media (min-width: 850px) {
-  /* Ativa a foto cobrindo o lado esquerdo da tela */
-  .auth-side-image {
-    display: block;
-    flex: 1; /* Ocupa todo o espaço restante da esquerda */
-    background-image: url('./ImagemLogin.png'); /* 👈 Referência direta à sua foto */
-    background-size: cover;
-    background-position: left center;
-    background-repeat: no-repeat;
-  }
-
-  /* Reduz o painel da direita para uma largura de bloco elegante */
-  .auth-side-form {
-    width: 460px;
-    flex-shrink: 0;
-    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.04); /* Sombra sutil dividindo a foto do formulário */
-  }
+  z-index: 1;
 }
 
 /* ==========================================================================
-   ESTRUTURA DO CARD DE AUTENTICAÇÃO (ADAPTÁVEL)
+   ESTRUTURA DO CARD DE AUTENTICAÇÃO
    ========================================================================== */
 .auth-container {
   width: 100%;
@@ -57,7 +38,7 @@
   background-color: #ffffff;
 }
 
-/* No Mobile, ele se comporta como um card flutuante clássico */
+/* 📱 REGRAS PARA CELULARES E TABLETS MENORES */
 @media (max-width: 849px) {
   .auth-container {
     padding: 35px 30px;
@@ -67,11 +48,37 @@
   }
 }
 
-/* No Desktop, ele se integra de forma limpa direto na folha branca lateral */
+/* 🖥️ REGRAS EXCLUSIVAS PARA MONITORES (DESKTOP) */
 @media (min-width: 850px) {
+  .auth-side-image {
+    display: block;
+    flex: 1;
+    
+    /* 🎯 A curva perfeita (arco suave) */
+    border-top-right-radius: 4% 50%;
+    border-bottom-right-radius: 4% 50%;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    
+    /* 📸 SOLUÇÃO DEFINITIVA: Filtro e Foto empilhados na mesma propriedade! */
+    background-image: 
+      linear-gradient(135deg, rgba(0, 68, 136, 0.4), rgba(0, 19, 37, 0.85)),
+      url('./ImagemLogin.png');
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .auth-side-form {
+    width: 480px; 
+    flex-shrink: 0;
+    padding-left: 20px;
+  }
+
+  /* Tira as bordas extras do card quando estiver no layout de tela dividida */
   .auth-container {
-    padding: 0 10px;
-    border-top: none; /* Remove bordas duplicadas para um visual minimalista */
+    padding: 0 20px;
+    border-top: none;
   }
 }
 
@@ -99,7 +106,7 @@
 .auth-input {
   width: 100%;
   padding: 12px;
-  background-color: #f8fafc; /* Input levemente cinza para destacar do fundo */
+  background-color: #f8fafc;
   color: #0f172a;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
@@ -108,7 +115,6 @@
   transition: all 0.2s ease-in-out;
 }
 
-/* Efeito de foco moderno usando a cor do SUS */
 .auth-input:focus {
   outline: none;
   background-color: #ffffff;
@@ -130,15 +136,14 @@
   transition: all 0.2s ease;
 }
 
-/* Botão Entrar/Enviar com azul institucional */
 .btn-submit {
-  background-color: #0054a6; 
+  background-color: #0054a6;
   cursor: pointer;
 }
 
 .btn-submit:hover {
-  background-color: #003f7d; /* Tom mais escuro clássico de hover do Gov */
-  transform: translateY(-1px); /* Micro-interação moderna de subida */
+  background-color: #003f7d;
+  transform: translateY(-1px);
 }
 
 .btn-submit:active {
@@ -156,7 +161,7 @@
 .auth-footer {
   text-align: center;
   margin-top: 25px;
-  border-top: 1px solid #f1f5f9; /* Linha sutil separadora */
+  border-top: 1px solid #f1f5f9;
   padding-top: 15px;
 }
 
@@ -165,7 +170,7 @@
   border: none;
   color: #0054a6;
   cursor: pointer;
-  text-decoration: none; /* Remove o sublinhado antigo */
+  text-decoration: none;
   font-size: 14px;
   font-weight: 600;
   transition: color 0.2s;
@@ -173,7 +178,7 @@
 
 .auth-link:hover {
   color: #002d5a;
-  text-decoration: underline; /* Sublinha só no hover para ficar elegante */
+  text-decoration: underline;
 }
 
 /* ==========================================================================
@@ -188,14 +193,12 @@
   font-weight: 500;
 }
 
-/* Verde Saúde Suave */
 .msg-success {
   background-color: #ecfdf5;
   border: 1px solid #10b981;
   color: #065f46;
 }
 
-/* Vermelho Alerta do SUS */
 .msg-erro {
   background-color: #fef2f2;
   border: 1px solid #ef4444;
