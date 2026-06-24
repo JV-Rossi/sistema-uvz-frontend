@@ -84,13 +84,13 @@ export default function Login({ setTelaAtual, setMensagem }) {
         </button>
       </form>
 
-      <p style={{ textAlign: 'center', marginTop: '15px', color: '#ccc' }}>
-        Novo por aqui?{' '}
+      {/* 🎯 NOVO RODAPÉ: Recuperação de Senha */}
+      <p style={{ textAlign: 'center', marginTop: '20px' }}>
         <button
-          onClick={() => { setTelaAtual('cadastro'); setMensagem(''); }}
-          style={{ background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', textDecoration: 'underline', fontWeight: 'bold' }}
+          onClick={() => { setTelaAtual('recuperar_senha'); setMensagem(''); }}
+          style={{ background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', textDecoration: 'underline', fontWeight: 'bold', fontSize: '14px' }}
         >
-          Cadastre um funcionário
+          Esqueci minha senha
         </button>
       </p>
     </div>
