@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LAYOUT DIVIDIDO (SPLIT SCREEN - ESTILO SUS DIGITAL LISO)
+   LAYOUT DIVIDIDO (SPLIT SCREEN - ESTILO SUS DIGITAL + GOV.BR)
    ========================================================================== */
 .auth-screen {
   display: flex;
@@ -9,6 +9,8 @@
   top: 0;
   left: 0;
   background-color: #ffffff;
+  /* 🏛️ Fonte Oficial Gov.br adicionada aqui */
+  font-family: "rawline", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* Painel Esquerdo: Área da Foto (Oculta no mobile) */
@@ -34,7 +36,7 @@
 .auth-container {
   width: 100%;
   max-width: 360px;
-  color: #2d3748;
+  color: #1e293b;
   background-color: #ffffff;
 }
 
@@ -43,8 +45,8 @@
   .auth-container {
     padding: 35px 30px;
     border-radius: 12px;
-    border-top: 5px solid #0054a6;
-    box-shadow: 0 10px 25px rgba(0, 84, 166, 0.08);
+    border-top: 5px solid #1351B4; /* 🏛️ Azul Oficial Gov.br */
+    box-shadow: 0 10px 25px rgba(19, 81, 180, 0.08);
   }
 }
 
@@ -52,18 +54,16 @@
 @media (min-width: 850px) {
   .auth-side-image {
     display: block;
+    flex: 0 0 60%; /* 🎯 Mantém a foto em 60% */
     
-    /* 🎯 FIXA EM 60%: Assim ela nunca vai invadir o espaço do formulário */
-    flex: 0 0 60%; 
-    
-    border-top-right-radius: 6% 30%;
-    border-bottom-right-radius: 6% 30%;
+    border-top-right-radius: 6% 50%;
+    border-bottom-right-radius: 6% 50%;
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
     
-    /* 📸 FILTRO MAIS ESCURO: Aumentei a opacidade do azul (de 0.40 para 0.60 e de 0.85 para 0.95) */
+    /* 📸 O seu filtro com a imagem (Ajustei levemente o tom pro azul Gov.br) */
     background-image: 
-      linear-gradient(135deg, rgba(0, 84, 166, 0.60), rgba(0, 26, 51, 0.95)),
-      url('./ImagemLogin.png'); /* Atualizado para o nome correto do seu arquivo! */
+      linear-gradient(135deg, rgba(19, 81, 180, 0.60), rgba(0, 26, 51, 0.95)),
+      url('./ImagemLogin.png'); 
     
     background-size: cover;
     background-position: center;
@@ -71,33 +71,34 @@
   }
 
   .auth-side-form {
-    /* 🎯 Pega o restante da tela (os 40% que sobraram) e centraliza o card no meio disso */
     flex: 1; 
     padding-left: 0; 
   }
 
-  /* Tira as bordas extras do card quando estiver no layout de tela dividida */
   .auth-container {
     padding: 0 20px;
     border-top: none;
   }
+}
 
-  .auth-title {
+/* ==========================================================================
+   ESPAÇAMENTOS DO TÍTULO E TEXTO
+   ========================================================================== */
+.auth-title {
   text-align: center;
-  margin-bottom: 25px; /* 💨 Aumentamos o respiro abaixo do título */
-  color: #0054a6;
+  margin-bottom: 25px; 
+  color: #1351B4; /* 🏛️ Azul Oficial Gov.br */
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.5px;
 }
 
 .auth-text {
   color: #64748b;
   font-size: 14px;
-  margin-bottom: 30px; /* 💨 Mais espaço entre o texto de recuperar senha e o formulário */
+  margin-bottom: 30px; 
   text-align: center;
   line-height: 1.6;
-}
 }
 
 /* ==========================================================================
@@ -106,7 +107,7 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px; 
 }
 
 .auth-group {
@@ -118,49 +119,49 @@
   font-weight: 600;
   font-size: 14px;
   color: #1e293b;
-  margin-bottom: 6px;
+  margin-bottom: 8px; 
 }
 
 .auth-input {
   width: 100%;
-  padding: 12px;
+  padding: 14px 16px; 
   background-color: #f8fafc;
   color: #0f172a;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
+  border-radius: 8px; /* 🏛️ Padrão Gov.br de Inputs */
   box-sizing: border-box;
-  font-size: 15px;
+  font-size: 16px;
   transition: all 0.2s ease-in-out;
 }
 
 .auth-input:focus {
   outline: none;
   background-color: #ffffff;
-  border-color: #0054a6;
-  box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.15);
+  border-color: #1351B4; /* 🏛️ Azul Oficial Gov.br */
+  box-shadow: 0 0 0 3px rgba(19, 81, 180, 0.15);
 }
 
 /* ==========================================================================
    BOTÕES DE AÇÃO 
    ========================================================================== */
 .auth-btn {
-  padding: 14px;
+  padding: 16px; 
   color: #ffffff;
   border: none;
   font-weight: 700;
   font-size: 15px;
-  border-radius: 6px;
-  margin-top: 8px;
+  border-radius: 100px; /* 🏛️ Padrão Pill-Shape do Gov.br */
+  margin-top: 15px; 
   transition: all 0.2s ease;
 }
 
 .btn-submit {
-  background-color: #0054a6;
+  background-color: #1351B4; /* 🏛️ Azul Oficial Gov.br */
   cursor: pointer;
 }
 
 .btn-submit:hover {
-  background-color: #003f7d;
+  background-color: #0c326f;
   transform: translateY(-1px);
 }
 
@@ -174,7 +175,7 @@
 }
 
 /* ==========================================================================
-   RODAPÉ E LINKS (REDUÇÃO DE RUIDO VISUAL)
+   RODAPÉ E LINKS
    ========================================================================== */
 .auth-footer {
   text-align: center;
@@ -186,7 +187,7 @@
 .auth-link {
   background: none;
   border: none;
-  color: #0054a6;
+  color: #1351B4; /* 🏛️ Azul Oficial Gov.br */
   cursor: pointer;
   text-decoration: none;
   font-size: 14px;
@@ -195,12 +196,12 @@
 }
 
 .auth-link:hover {
-  color: #002d5a;
+  color: #0c326f;
   text-decoration: underline;
 }
 
 /* ==========================================================================
-   CAIXAS DE MENSAGENS DE ALERTA (ALTAMENTE VISÍVEIS)
+   CAIXAS DE MENSAGENS DE ALERTA
    ========================================================================== */
 .auth-message {
   margin-top: 20px;
