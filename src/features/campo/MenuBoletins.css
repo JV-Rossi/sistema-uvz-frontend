@@ -1,0 +1,173 @@
+/* ==========================================================================
+   MENU DE BOLETINS
+   Design System Gov.br - Versão 3.7.0
+   ========================================================================== */
+
+.menu-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  /* 🏛️ Tipografia Oficial do Governo */
+  font-family: "rawline", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   CABEÇALHO E NAVEGAÇÃO
+   ========================================================================== */
+
+.header-boletins {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e2e8f0; /* Linha divisória suave */
+}
+
+/* Botão de Voltar (Padrão Secundário Gov.br - Outline/Pill-shape) */
+.btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent !important; /* 💥 Anula qualquer fundo global */
+  color: #1351B4 !important;
+  border: 2px solid #1351B4 !important;
+  border-radius: 100px !important;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none !important; /* Remove sombras cinzas indesejadas */
+}
+
+/* Força a setinha (ícone) a ficar azul também */
+.btn-voltar i {
+  color: #1351B4 !important;
+  background: transparent !important;
+  transition: all 0.2s ease;
+}
+
+/* Efeito ao passar o mouse ou tocar na tela (Preenchimento Azul) */
+.btn-voltar:hover, .btn-voltar:focus {
+  background: #1351B4 !important;
+  color: #ffffff !important; /* Texto fica branco */
+  border-color: #1351B4 !important;
+  text-decoration: none;
+  outline: none;
+}
+
+/* Setinha fica branca no hover */
+.btn-voltar:hover i, .btn-voltar:focus i {
+  color: #ffffff !important;
+}
+
+.titulos-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.titulos-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1351B4; /* 🏛️ Azul Oficial Gov.br */
+  letter-spacing: -0.5px;
+}
+
+.titulos-header p {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+}
+
+/* ==========================================================================
+   GRADE DE OPÇÕES DE BOLETINS (CARDS HORIZONTAIS)
+   ========================================================================== */
+
+.grade-boletins {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Em telas maiores (tablets deitados ou desktop), divide em 2 colunas */
+@media (min-width: 768px) {
+  .grade-boletins {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+/* Card Individual de Boletim */
+.card-boletim {
+  display: flex;
+  align-items: center; /* Centraliza o ícone com o texto */
+  gap: 16px;
+  background-color: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+/* Interação com o Card */
+.card-boletim:hover, .card-boletim:focus {
+  background-color: #f0f7ff;
+  border-color: #1351B4; /* 🏛️ Azul Oficial na borda ao focar */
+  transform: translateY(-2px);
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================================================
+   ÁREA DO ÍCONE E TEXTOS DO CARD
+   ========================================================================== */
+
+.area-icone {
+  width: 55px;
+  height: 55px;
+  flex-shrink: 0; /* Impede que o ícone seja espremido se o texto for longo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e2e8f0;
+  color: #1351B4;
+  border-radius: 50%; /* Círculo perfeito */
+  font-size: 22px;
+  transition: all 0.2s ease;
+}
+
+/* Quando passa o mouse no card, o ícone inverte as cores para chamar atenção */
+.card-boletim:hover .area-icone {
+  background-color: #1351B4;
+  color: #ffffff;
+}
+
+.conteudo-boletim {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.conteudo-boletim h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a; /* Preto alto contraste */
+}
+
+.conteudo-boletim p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.4;
+}

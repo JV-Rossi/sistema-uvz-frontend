@@ -47,7 +47,7 @@ export default function RecuperarSenha({ setTelaAtual }) {
 
                     <form onSubmit={handleRecuperar} className="auth-form">
                         <div className="auth-group">
-                            <label className="auth-label">E-mail Institucional ou Pessoal:</label>
+                            <label className="auth-label">E-mail:</label>
                             <input
                                 type="email"
                                 value={email}

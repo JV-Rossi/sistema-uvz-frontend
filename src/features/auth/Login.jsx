@@ -59,7 +59,7 @@ export default function Login({ setTelaAtual, setMensagem }) {
 
           <form onSubmit={handleLogin} className="auth-form">
             <div className="auth-group">
-              <label className="auth-label">Matrícula (Login):</label>
+              <label className="auth-label">Matrícula:</label>
               <input
                 type="text"
                 value={loginMatricula}

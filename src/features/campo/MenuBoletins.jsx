@@ -1,66 +1,87 @@
 import React from 'react';
+import './MenuBoletins.css';
 
 export default function MenuBoletins({ setTelaAtual }) {
-  return (
-    <div style={{ padding: '20px', color: '#fff', maxWidth: '600px', margin: '0 auto' }}>
+  
+  const handleKeyDown = (e, rota) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setTelaAtual(rota);
+    }
+  };
 
-      {/* 🔙 Cabeçalho com botão de voltar */}
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px', gap: '15px' }}>
+  return (
+    <div className="menu-container">
+      
+      {/* 🏛️ Cabeçalho Padrão Gov.br */}
+      <div className="header-boletins">
         <button
+          className="btn-voltar"
+          type="button"
+          aria-label="Voltar para o menu principal"
           onClick={() => setTelaAtual('campo_menu')}
-          style={{ background: '#444', color: '#fff', border: 'none', padding: '10px 15px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
         >
-          ⬅ Voltar
+          <i className="fas fa-arrow-left" aria-hidden="true"></i>
+          Voltar
         </button>
-        <h2 style={{ margin: 0 }}>Boletins de Trabalho</h2>
+        
+        <div className="titulos-header">
+          <h2>Boletins de Trabalho</h2>
+          <p>Selecione o tipo de boletim que deseja preencher</p>
+        </div>
       </div>
 
-      <p style={{ color: '#ccc', marginBottom: '25px', fontSize: '16px' }}>
-        Selecione o tipo de boletim que deseja preencher:
-      </p>
+      {/* 🏛️ Grade de Cards Horizontais */}
+      <div className="grade-boletins">
 
-      {/* 🔀 Opções de Boletins */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-
-        {/* Opção 1: Rotina Normal (LIRAa/LI) */}
+        {/* Opção 1: Rotina Normal */}
         <div
-          onClick={() => setTelaAtual('campo_formulario_zoonoses')} // 👈 Rota do seu form de visitas normal
-          style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', display: 'flex', alignItems: 'center', gap: '20px' }}
+          className="card-boletim"
+          role="button"
+          tabIndex="0"
+          onClick={() => setTelaAtual('campo_formulario_zoonoses')}
+          onKeyDown={(e) => handleKeyDown(e, 'campo_formulario_zoonoses')}
         >
-          <div style={{ fontSize: '30px', background: '#f39c12', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>📝</div>
-          <div>
-            <strong style={{ fontSize: '18px', display: 'block', marginBottom: '5px' }}>Rotina (Visita Domiciliar)</strong>
-            <small style={{ color: '#aaa', fontSize: '13px', lineHeight: '1.4', display: 'block' }}>
-              Boletim padrão para registro de visitas do ciclo normal.
-            </small>
+          <div className="area-icone">
+            <i className="fas fa-clipboard-list" aria-hidden="true"></i>
+          </div>
+          <div className="conteudo-boletim">
+            <h3>Rotina (Visita Domiciliar)</h3>
+            <p>Boletim padrão para registro de visitas do ciclo normal.</p>
           </div>
         </div>
 
         {/* Opção 2: Pontos Estratégicos */}
         <div
-          onClick={() => setTelaAtual('boletim_pe')} // 👈 Rota ligada!
-          style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', display: 'flex', alignItems: 'center', gap: '20px' }}
+          className="card-boletim"
+          role="button"
+          tabIndex="0"
+          onClick={() => setTelaAtual('boletim_pe')}
+          onKeyDown={(e) => handleKeyDown(e, 'boletim_pe')}
         >
-          <div style={{ fontSize: '30px', background: '#9b59b6', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>🏭</div>
-          <div>
-            <strong style={{ fontSize: '18px', display: 'block', marginBottom: '5px' }}>Pontos Estratégicos (PE)</strong>
-            <small style={{ color: '#aaa', fontSize: '13px', lineHeight: '1.4', display: 'block' }}>
-              Boletim quinzenal para borracharias, ferros-velhos e cemitérios.
-            </small>
+          <div className="area-icone">
+            <i className="fas fa-industry" aria-hidden="true"></i>
+          </div>
+          <div className="conteudo-boletim">
+            <h3>Pontos Estratégicos (PE)</h3>
+            <p>Boletim quinzenal para borracharias, ferros-velhos e cemitérios.</p>
           </div>
         </div>
 
         {/* Opção 3: Execução de Bloqueio */}
         <div
+          className="card-boletim"
+          role="button"
+          tabIndex="0"
           onClick={() => setTelaAtual('boletim_bloqueio')}
-          style={{ background: '#222', padding: '20px', borderRadius: '12px', cursor: 'pointer', border: '1px solid #333', display: 'flex', alignItems: 'center', gap: '20px' }}
+          onKeyDown={(e) => handleKeyDown(e, 'boletim_bloqueio')}
         >
-          <div style={{ fontSize: '30px', background: '#3498db', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>🎯</div>
-          <div>
-            <strong style={{ fontSize: '18px', display: 'block', marginBottom: '5px' }}>Execução de Bloqueio</strong>
-            <small style={{ color: '#aaa', fontSize: '13px', lineHeight: '1.4', display: 'block' }}>
-              Acessar bloqueios pendentes e registrar a execução de campo.
-            </small>
+          <div className="area-icone">
+            <i className="fas fa-bullseye" aria-hidden="true"></i>
+          </div>
+          <div className="conteudo-boletim">
+            <h3>Execução de Bloqueio</h3>
+            <p>Acessar bloqueios pendentes e registrar a execução de campo.</p>
           </div>
         </div>
 
