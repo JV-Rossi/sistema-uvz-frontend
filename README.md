@@ -1,4 +1,4 @@
-# 🦟 Sistema UVZ - Gestão de Combate a Endemias
+# 🦟 Sistema CVSA - Gestão de Vigilância em Saúde Ambiental
 
 ![Status do Projeto](https://img.shields.io/badge/Status-Em%20Desenvolvimento-green)
 ![React](https://img.shields.io/badge/Frontend-React%20%7C%20Vite-61DAFB?logo=react&logoColor=black)
@@ -70,11 +70,25 @@ O ecossistema possui interfaces adaptadas para cada perfil de uso, combinando us
 
 | Tela de Autenticação (Padrão Gov.br) | Painel Principal do Agente | Menu de Seleção de Boletins |
 | :---: | :---: | :---: |
-| ![Autenticação](docs/screenshots/login.png) | ![Painel do Agente](docs/screenshots/menu-campo.png) | ![Menu de Boletins](docs/screenshots/menu-boletins.png) |
+| ![Autenticação](docs/login.png) | ![Painel do Agente](docs/menu-campo.png) | ![Menu de Boletins](docs/menu-boletins.png) |
 
 | Formulário de Solicitação de Bloqueio | Módulo de Amostragem (Ovitrampas) |
 | :---: | :---: |
-| ![Solicitar Bloqueio](docs/screenshots/solicitar-bloqueio.png) | ![Ovitrampas e GPS](docs/screenshots/ovitrampas.png) |
+| ![Solicitar Bloqueio](docs/solicitar-bloqueio.png) | ![Ovitrampas e GPS](docs/ovitrampas.png) |
+
+### 🖥️ Nível 2 - Módulo Tático (Desktop / Laboratório e Insumos)
+*Telas densas para computadores de mesa, focadas em agilidade na digitação e controle logístico.*
+
+| Lançamento Laboratorial (Ovos) | Painel de Controle de BTI (Estoque) |
+| :---: | :---: |
+| ![Laboratório de Bancada](docs/laboratorio-ovos.png) | ![Estoque de Larvicida](docs/controle-bti.png) |
+
+### 📊 Nível 3 - Módulo Estratégico (Dashboard Executivo)
+*Painéis de BI gerenciais para tomadas de decisão rápidas e inteligência epidemiológica.*
+
+| Painel de Produtividade e KPIs | Mapa de Calor de Infestação Vetorial |
+| :---: | :---: |
+| ![Dashboard de Gestão](docs/dashboard-kpis.png) | ![Mapa Epidemiológico](docs/mapa-calor.png) |
 
 ### 🖥️ Nível 2 - Módulo Tático (Desktop / Laboratório e Insumos)
 *Telas densas para computadores de mesa, focadas em agilidade na digitação e controle logístico.*
