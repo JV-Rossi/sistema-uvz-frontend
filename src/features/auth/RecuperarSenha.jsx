@@ -80,7 +80,7 @@ export default function RecuperarSenha({ setTelaAtual }) {
                             onClick={() => { setTelaAtual('login'); setMensagem(''); }}
                             className="auth-link"
                         >
-                            ⬅️ Voltar para a tela de Login
+                             Voltar para a tela de Login
                         </button>
                     </div>
                 </div>
