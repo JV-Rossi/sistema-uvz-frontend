@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './SolicitarBloqueio.css';
 
 export default function SolicitarBloqueio({ setTelaAtual }) {
   // 📝 Estados para capturar os dados do formulário
@@ -19,16 +20,15 @@ export default function SolicitarBloqueio({ setTelaAtual }) {
 
     // 📦 Pacote de dados estruturado que vai para o Java/Supabase
     const payload = {
-      nome_municipe: solicitante, // O morador
+      nome_municipe: solicitante,
       endereco,
       bairro,
       referencia,
       telefone,
       assunto,
-      agente_registro: matriculaAgente // O agente que preencheu a ficha
+      agente_registro: matriculaAgente 
     };
 
-    // (Temporário) Apenas para você ver o pacote invisível funcionando no F12
     console.log("🚨 Disparando para o Responsável Técnico:", payload);
 
     alert(`✅ Solicitação de bloqueio registrada com sucesso!\nMorador: ${solicitante}\nBairro: ${bairro}`);
@@ -38,95 +38,103 @@ export default function SolicitarBloqueio({ setTelaAtual }) {
   };
 
   return (
-    <div style={{ padding: '20px', color: '#fff', maxWidth: '600px', margin: '0 auto' }}>
+    <div className="bloqueio-container">
       
-      {/* 🔙 Cabeçalho */}
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px', gap: '15px' }}>
+      {/* 🏛️ Cabeçalho */}
+      <div className="bloqueio-header">
         <button
+          className="btn-voltar"
+          type="button"
           onClick={() => setTelaAtual('campo_menu')}
-          style={{ background: '#444', color: '#fff', border: 'none', padding: '10px 15px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
         >
-          ⬅ Voltar
+          <i className="fas fa-arrow-left" aria-hidden="true"></i>
+          Voltar
         </button>
-        <h2 style={{ margin: 0, color: '#e74c3c' }}>🚨 Solicitar Bloqueio</h2>
+        <h2>
+          <i className="fas fa-bullhorn" aria-hidden="true"></i>
+          Solicitar Bloqueio
+        </h2>
       </div>
 
-      <p style={{ color: '#ccc', marginBottom: '25px', fontSize: '15px', lineHeight: '1.5' }}>
+      <p className="bloqueio-instrucao">
         Preencha os dados do local e do munícipe. Esta notificação será enviada diretamente para a triagem do Responsável Técnico.
       </p>
 
       {/* 📝 Formulário */}
-      <form onSubmit={handleSolicitar} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+      <form onSubmit={handleSolicitar} className="bloqueio-form">
         
-        {/* 1. Solicitante (Munícipe) */}
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nome do Solicitante (Munícipe):</label>
+        {/* 1. Solicitante */}
+        <div className="bloqueio-grupo">
+          <label htmlFor="solicitante">Nome do Solicitante (Munícipe):</label>
           <input
+            id="solicitante"
             type="text"
+            className="bloqueio-input"
             value={solicitante}
             onChange={(e) => setSolicitante(e.target.value)}
             placeholder="Ex: Maria José da Silva"
             required
-            style={{ width: '100%', padding: '12px', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: '8px' }}
           />
         </div>
 
         {/* 2. Endereço */}
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Endereço do Foco:</label>
+        <div className="bloqueio-grupo">
+          <label htmlFor="endereco">Endereço do Foco:</label>
           <input
+            id="endereco"
             type="text"
+            className="bloqueio-input"
             value={endereco}
             onChange={(e) => setEndereco(e.target.value)}
             placeholder="Ex: Rua das Flores, Lote 12"
             required
-            style={{ width: '100%', padding: '12px', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: '8px' }}
           />
         </div>
 
         {/* 3. Bairro */}
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Bairro:</label>
+        <div className="bloqueio-grupo">
+          <label htmlFor="bairro">Bairro:</label>
           <input
+            id="bairro"
             type="text"
+            className="bloqueio-input"
             value={bairro}
             onChange={(e) => setBairro(e.target.value)}
             placeholder="Ex: Jardim Aeroporto"
             required
-            style={{ width: '100%', padding: '12px', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: '8px' }}
           />
         </div>
 
         {/* 4. Referência */}
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Ponto de Referência:</label>
+        <div className="bloqueio-grupo">
+          <label htmlFor="referencia">Ponto de Referência:</label>
           <input
+            id="referencia"
             type="text"
+            className="bloqueio-input"
             value={referencia}
             onChange={(e) => setReferencia(e.target.value)}
             placeholder="Ex: Em frente à borracharia do Zé"
             required
-            style={{ width: '100%', padding: '12px', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: '8px' }}
           />
         </div>
 
         {/* 5. Telefone */}
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Telefone de Contato:</label>
+        <div className="bloqueio-grupo">
+          <label htmlFor="telefone">Telefone de Contato:</label>
           <input
+            id="telefone"
             type="tel"
+            className="bloqueio-input"
             value={telefone}
             onChange={(e) => setTelefone(e.target.value)}
             placeholder="Ex: (65) 99999-9999"
             required
-            style={{ width: '100%', padding: '12px', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: '8px' }}
           />
         </div>
 
-        <button 
-          type="submit" 
-          style={{ marginTop: '10px', background: '#e74c3c', color: '#fff', padding: '15px', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}
-        >
+        <button type="submit" className="btn-enviar-bloqueio">
+          <i className="fas fa-paper-plane" aria-hidden="true"></i>
           Enviar Solicitação
         </button>
 

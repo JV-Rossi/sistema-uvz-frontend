@@ -1,0 +1,159 @@
+/* ==========================================================================
+   SOLICITAR BLOQUEIO (FORMULÁRIO)
+   Design System Gov.br - Versão 3.7.0
+   ========================================================================== */
+
+.bloqueio-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  /* 🏛️ Tipografia Oficial */
+  font-family: "rawline", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   CABEÇALHO
+   ========================================================================== */
+
+.bloqueio-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.bloqueio-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #b71c1c; /* Mantido o vermelho alerta para o contexto de denúncia */
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Reutilizando o botão de voltar blindado contra o fundo escuro global */
+.btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent !important;
+  color: #1351B4 !important;
+  border: 2px solid #1351B4 !important;
+  border-radius: 100px !important;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+}
+
+.btn-voltar i {
+  color: #1351B4 !important;
+  background: transparent !important;
+  transition: all 0.2s ease;
+}
+
+.btn-voltar:hover, .btn-voltar:focus {
+  background: #1351B4 !important;
+  color: #ffffff !important;
+  border-color: #1351B4 !important;
+  text-decoration: none;
+  outline: none;
+}
+
+.btn-voltar:hover i, .btn-voltar:focus i {
+  color: #ffffff !important;
+}
+
+/* Texto de Instrução */
+.bloqueio-instrucao {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   FORMULÁRIO E INPUTS GOV.BR
+   ========================================================================== */
+
+.bloqueio-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bloqueio-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bloqueio-grupo label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.bloqueio-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px; /* Previne zoom no iOS */
+  font-family: inherit;
+  color: #1e293b;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+/* 🏛️ Foco Oficial Gov.br */
+.bloqueio-input:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: #1351B4; 
+  box-shadow: 0 0 0 3px rgba(19, 81, 180, 0.15);
+}
+
+.bloqueio-input::placeholder {
+  color: #94a3b8;
+}
+
+/* ==========================================================================
+   BOTÃO DE ENVIO PRIMÁRIO
+   ========================================================================== */
+
+.btn-enviar-bloqueio {
+  margin-top: 10px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #1351B4; /* 🏛️ Azul Oficial para submissão */
+  border: none;
+  border-radius: 100px; /* Formato Pílula */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-enviar-bloqueio:hover, .btn-enviar-bloqueio:focus {
+  background-color: #0c326f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(19, 81, 180, 0.2);
+  outline: none;
+}
