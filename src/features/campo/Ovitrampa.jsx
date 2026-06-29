@@ -3,7 +3,7 @@ import './Ovitrampa.css';
 
 export default function Ovitrampa({ setTelaAtual }) {
     // ==========================================
-    // 🧠 PARTE LÓGICA (CÉREBRO DO COMPONENTE)
+    // 🧠 PARTE LÓGICA (Mantida intacta)
     // ==========================================
     
     // 1. ESTADO DA LISTA DE IMÓVEIS
@@ -139,202 +139,272 @@ export default function Ovitrampa({ setTelaAtual }) {
 
     const renderizerStatus = (status) => {
         switch (status) {
-            case 'INSTALADA': return <span className="badge instalada">🟢 Instalada</span>;
-            case 'AGUARDANDO_COLETA_2': return <span className="badge aguardando">🟡 Aguardando 2ª Coleta</span>;
-            case 'PRONTA_LEITURA': return <span className="badge pronta">🔵 Pronta p/ Leitura</span>;
-            case 'SEM_ARMADILHA': return <span className="badge sem-armadilha">⚪ Sem Armadilha</span>;
-            default: return <span className="badge sem-armadilha">Desconhecido</span>;
+            case 'INSTALADA': 
+                return <span className="br-tag bg-success text-white text-weight-semi-bold"><i className="fas fa-check-circle mr-1"></i> Instalada</span>;
+            case 'AGUARDANDO_COLETA_2': 
+                return <span className="br-tag bg-warning text-dark text-weight-semi-bold"><i className="fas fa-clock mr-1"></i> 2ª Coleta</span>;
+            case 'PRONTA_LEITURA': 
+                return <span className="br-tag bg-info text-white text-weight-semi-bold"><i className="fas fa-microscope mr-1"></i> Leitura</span>;
+            case 'SEM_ARMADILHA': 
+                return <span className="br-tag bg-secondary-04 text-dark"><i className="fas fa-times-circle mr-1"></i> Sem Armadilha</span>;
+            default: 
+                return <span className="br-tag">Desconhecido</span>;
         }
     };
 
     // ==========================================
-    // 🎨 PARTE VISUAL (CORPO / JSX)
+    // 🎨 PARTE VISUAL (Padrão Gov.br)
     // ==========================================
     return (
-        <div className="container-ovitrampa">
-            <button className="btn-voltar" onClick={() => setTelaAtual('campo_menu')}>
-                ⬅️ Voltar
+        <div className="br-container-lg p-3 fundo-claro-gov">
+            
+            {/* BOTÃO VOLTAR */}
+            <button 
+                className="br-button secondary mb-4" 
+                onClick={() => setTelaAtual('campo_menu')}
+            >
+                <i className="fas fa-arrow-left mr-1"></i> Voltar
             </button>
 
-            <div className="header-ovitrampa">
+            {/* CABEÇALHO */}
+            <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
                 <div>
-                    <h1 className="titulo-ovitrampa">🦟 Monitoramento Ovitrampas</h1>
-                    <p className="subtitulo-ovitrampa">Unidade de Vigilância em Zoonoses - Cuiabá</p>
+                    <h1 className="text-up-03 text-weight-semi-bold text-primary-default mb-1">
+                        <i className="fas fa-bug mr-2"></i> Monitoramento Ovitrampas
+                    </h1>
+                    <p className="text-down-01 text-secondary-07 mb-0">Unidade de Vigilância em Zoonoses - Cuiabá</p>
                 </div>
-                <button className="btn-novo-cadastro" onClick={() => setModalCadastroAberto(true)}>
-                    ➕ Novo Cadastro de Imóvel
+                <button 
+                    className="br-button primary mt-3 mt-sm-0" 
+                    onClick={() => setModalCadastroAberto(true)}
+                >
+                    <i className="fas fa-plus mr-1"></i> Novo Imóvel
                 </button>
             </div>
 
-            {/* BARRA DE FILTROS */}
-            <div className="barra-filtros">
-                <input 
-                    type="text" 
-                    placeholder="🔍 Buscar por Bairro ou Nome..." 
-                    className="input-filtro"
-                    value={termoBusca}
-                    onChange={(e) => setTermoBusca(e.target.value)}
-                />
-                <input 
-                    type="text" 
-                    placeholder="Quarteirão" 
-                    className="input-filtro" 
-                    style={{ width: '120px' }}
-                    value={filtroQuarteirao}
-                    onChange={(e) => setFiltroQuarteirao(e.target.value)}
-                />
-                <select 
-                    className="input-filtro"
-                    value={filtroStatus}
-                    onChange={(e) => setFiltroStatus(e.target.value)}
-                >
-                    <option>Todos os Status</option>
-                    <option>Instaladas</option>
-                    <option>Prontas para Leitura</option>
-                </select>
+            {/* BARRA DE FILTROS (Estilo Card Gov.br) */}
+            <div className="br-card p-3 mb-4 bg-secondary-02">
+                <div className="row">
+                    <div className="col-12 col-md-5 mb-3 mb-md-0">
+                        <div className="br-input">
+                            <label>Buscar Morador ou Endereço</label>
+                            <input 
+                                type="text" 
+                                placeholder="Ex: Maria ou Rua das Flores..." 
+                                value={termoBusca}
+                                onChange={(e) => setTermoBusca(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="col-6 col-md-3">
+                        <div className="br-input">
+                            <label>Quarteirão</label>
+                            <input 
+                                type="text" 
+                                placeholder="Ex: 012A" 
+                                value={filtroQuarteirao}
+                                onChange={(e) => setFiltroQuarteirao(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="col-6 col-md-4">
+                        <div className="br-select w-100">
+                            <label>Status da Armadilha</label>
+                            <select 
+                                value={filtroStatus}
+                                onChange={(e) => setFiltroStatus(e.target.value)}
+                                style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+                            >
+                                <option>Todos os Status</option>
+                                <option>Instaladas</option>
+                                <option>Prontas para Leitura</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* GRID DE CARTÕES */}
-            <div className="grid-cards-moradores">
+            <div className="grid-cards-gov">
                 {moradoresFiltrados.map((m) => (
-                    <div className="card-morador" key={m.id}>
-                        <div className="card-header-morador">
-                            <h3 className="nome-morador">{m.nome}</h3>
-                            {renderizerStatus(m.status)}
-                        </div>
-
-                        <div className="card-body-morador">
-                            <p className="endereco-morador">🏠 {m.endereco}</p>
-                            
-                            {m.coordenadas ? (
-                                <p className="gps-morador ok">📍 Lat: {m.coordenadas.lat.toFixed(5)} | Lng: {m.coordenadas.lng.toFixed(5)}</p>
-                            ) : (
-                                <p className="gps-morador alert">⚠️ Sem GPS registrado</p>
-                            )}
-
-                            <div className="info-secundaria-morador">
-                                <span><strong>Quart:</strong> {m.quarteirao}</span>
-                                <span><strong>Armadilha:</strong> <span style={{color: '#4fc3f7'}}>{m.armadilha}</span></span>
+                    <div className="br-card hover card-morador-estilizado" key={m.id}>
+                        
+                        {/* CABEÇALHO DO CARD (Fundo Cinza Claro) */}
+                        <div className="br-card-header bg-secondary-02 p-3 border-bottom border-secondary-04 d-flex justify-content-between align-items-start">
+                            <div>
+                                <div className="text-weight-bold text-up-01 text-primary-default mb-1">{m.nome}</div>
+                                <div className="text-down-01 text-secondary-07">
+                                    Quart: <strong className="text-secondary-09">{m.quarteirao}</strong> &bull; Arm: <strong className="text-primary-default">{m.armadilha}</strong>
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="card-footer-morador">
-                            <div className="acoes-principais">
-                                <button 
-                                    onClick={() => handleAtualizarGPSMorador(m.id)}
-                                    className="btn-acao btn-acao-gps"
-                                    title="Atualizar GPS"
-                                >
-                                    📍 GPS
-                                </button>
-
-                                {m.status === 'INSTALADA' && (
-                                    <button className="btn-acao" onClick={() => avancarCicloArmadilha(m.id, 'Registrar 1ª Coleta')}>📥 1ª Coleta</button>
-                                )}
-                                {m.status === 'AGUARDANDO_COLETA_2' && (
-                                    <button className="btn-acao" onClick={() => avancarCicloArmadilha(m.id, 'Registrar 2ª Coleta')}>📥 2ª Coleta</button>
-                                )}
-                                {m.status === 'PRONTA_LEITURA' && (
-                                    <button className="btn-acao azul" onClick={() => avancarCicloArmadilha(m.id, 'Lançar Ovos')}>🔬 Contar Ovos</button>
-                                )}
-                                {m.status === 'SEM_ARMADILHA' && (
-                                    <button className="btn-acao cinza" onClick={() => avancarCicloArmadilha(m.id, 'Instalar Nova')}>🛠️ Instalar</button>
-                                )}
-                            </div>
-
-                            <button onClick={() => removerMorador(m.id)} className="btn-remover-card" title="Remover">
-                                🗑️
+                            <button 
+                                className="br-button circle small" 
+                                aria-label="Remover" 
+                                onClick={() => removerMorador(m.id)}
+                            >
+                                <i className="fas fa-trash-alt text-danger"></i>
                             </button>
+                        </div>
+
+                        {/* CORPO DO CARD */}
+                        <div className="br-card-content p-3">
+                            {/* Status em destaque no topo do corpo */}
+                            <div className="mb-3">
+                                {renderizerStatus(m.status)}
+                            </div>
+                            
+                            {/* SUB-CAIXA DE LOCALIZAÇÃO (O truque visual) */}
+                            <div className="caixa-localizacao-gov p-2 border rounded">
+                                <div className="d-flex align-items-start mb-2">
+                                    <i className="fas fa-map-marker-alt text-primary-default mr-2 mt-1"></i>
+                                    <span className="text-down-01 text-secondary-08 text-weight-medium">{m.endereco}</span>
+                                </div>
+                                
+                                <div>
+                                    {m.coordenadas ? (
+                                        <div className="text-down-02 text-success text-weight-semi-bold d-flex align-items-center">
+                                            <i className="fas fa-satellite-dish mr-2"></i> 
+                                            Lat: {m.coordenadas.lat.toFixed(5)} | Lng: {m.coordenadas.lng.toFixed(5)}
+                                        </div>
+                                    ) : (
+                                        <div className="text-down-02 text-warning text-weight-semi-bold d-flex align-items-center">
+                                            <i className="fas fa-exclamation-triangle mr-2"></i> Sem GPS registrado
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* RODAPÉ E BOTÕES (Alinhamento Flex perfeito) */}
+                        <div className="br-card-footer p-3 bg-secondary-01 border-top border-secondary-03 d-flex" style={{ gap: '8px' }}>
+                            <button 
+                                className="br-button secondary small flex-grow-1" 
+                                onClick={() => handleAtualizarGPSMorador(m.id)}
+                                title="Atualizar GPS"
+                            >
+                                <i className="fas fa-map-pin mr-1"></i> GPS
+                            </button>
+
+                            {m.status === 'INSTALADA' && (
+                                <button className="br-button primary small flex-grow-1" onClick={() => avancarCicloArmadilha(m.id, 'Registrar 1ª Coleta')}>
+                                    <i className="fas fa-box-open mr-1"></i> 1ª Coleta
+                                </button>
+                            )}
+                            {m.status === 'AGUARDANDO_COLETA_2' && (
+                                <button className="br-button primary small flex-grow-1" onClick={() => avancarCicloArmadilha(m.id, 'Registrar 2ª Coleta')}>
+                                    <i className="fas fa-box-open mr-1"></i> 2ª Coleta
+                                </button>
+                            )}
+                            {m.status === 'PRONTA_LEITURA' && (
+                                <button className="br-button small text-white flex-grow-1" style={{ backgroundColor: '#1351b4' }} onClick={() => avancarCicloArmadilha(m.id, 'Lançar Ovos')}>
+                                    <i className="fas fa-microscope mr-1"></i> Contar Ovos
+                                </button>
+                            )}
+                            {m.status === 'SEM_ARMADILHA' && (
+                                <button className="br-button secondary small flex-grow-1" onClick={() => avancarCicloArmadilha(m.id, 'Instalar Nova')}>
+                                    <i className="fas fa-tools mr-1"></i> Instalar
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* MODAL DE NOVO CADASTRO */}
+            {/* MODAL GOV.BR PARA NOVO CADASTRO */}
             {modalCadastroAberto && (
-                <div className="modal-flutuante" style={{ maxWidth: '450px' }}>
-                    <h3 style={{ margin: '0 0 20px 0', color: '#4caf50', textAlign: 'center' }}>📝 Cadastrar Imóvel</h3>
-
-                    <form onSubmit={handleSalvarNovoImovel} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        <label style={{ fontSize: '12px', color: '#aaa' }}>Nome do Morador *</label>
-                        <input
-                            type="text"
-                            required
-                            className="input-filtro"
-                            placeholder="Ex: João da Silva"
-                            value={novoImovel.nome}
-                            onChange={(e) => setNovoImovel({ ...novoImovel, nome: e.target.value })}
-                        />
-
-                        <label style={{ fontSize: '12px', color: '#aaa' }}>Endereço Completo *</label>
-                        <input
-                            type="text"
-                            required
-                            className="input-filtro"
-                            placeholder="Rua, número e bairro"
-                            value={novoImovel.endereco}
-                            onChange={(e) => setNovoImovel({ ...novoImovel, endereco: e.target.value })}
-                        />
-
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                <label style={{ fontSize: '12px', color: '#aaa' }}>Quarteirão *</label>
-                                <input
-                                    type="text"
-                                    required
-                                    className="input-filtro"
-                                    placeholder="Ex: 014B"
-                                    value={novoImovel.quarteirao}
-                                    onChange={(e) => setNovoImovel({ ...novoImovel, quarteirao: e.target.value })}
-                                />
-                            </div>
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                <label style={{ fontSize: '12px', color: '#aaa' }}>Cód. Armadilha (Opcional)</label>
-                                <input
-                                    type="text"
-                                    className="input-filtro"
-                                    placeholder="Ex: OV-200"
-                                    value={novoImovel.armadilha}
-                                    onChange={(e) => setNovoImovel({ ...novoImovel, armadilha: e.target.value })}
-                                />
+                <div className="br-scrim is-active" onClick={() => setModalCadastroAberto(false)}>
+                    <div className="br-modal" style={{ maxWidth: '500px' }} onClick={e => e.stopPropagation()}>
+                        <div className="br-modal-header border-bottom">
+                            <div className="br-modal-title text-up-02 text-weight-semi-bold text-primary-default">
+                                <i className="fas fa-clipboard-list mr-2"></i> Cadastrar Novo Imóvel
                             </div>
                         </div>
+                        
+                        <form onSubmit={handleSalvarNovoImovel}>
+                            <div className="br-modal-body pt-4">
+                                <div className="br-input mb-3">
+                                    <label>Nome do Morador *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder="Ex: João da Silva"
+                                        value={novoImovel.nome}
+                                        onChange={(e) => setNovoImovel({ ...novoImovel, nome: e.target.value })}
+                                    />
+                                </div>
 
-                        {/* BLOCO DE GPS */}
-                        <div className="box-gps-modal">
-                            <button 
-                                type="button" 
-                                onClick={handlePegarGPSNovo}
-                                disabled={carregandoGPS}
-                                className="btn-gps-formulario"
-                                style={{ backgroundColor: '#1976d2' }}
-                            >
-                                {carregandoGPS ? '⏳ Buscando Satélites...' : '📍 Pegar Localização Atual'}
-                            </button>
+                                <div className="br-input mb-3">
+                                    <label>Endereço Completo *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder="Rua, número e bairro"
+                                        value={novoImovel.endereco}
+                                        onChange={(e) => setNovoImovel({ ...novoImovel, endereco: e.target.value })}
+                                    />
+                                </div>
+
+                                <div className="row mb-4">
+                                    <div className="col-6">
+                                        <div className="br-input">
+                                            <label>Quarteirão *</label>
+                                            <input
+                                                type="text"
+                                                required
+                                                placeholder="Ex: 014B"
+                                                value={novoImovel.quarteirao}
+                                                onChange={(e) => setNovoImovel({ ...novoImovel, quarteirao: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="br-input">
+                                            <label>Armadilha</label>
+                                            <input
+                                                type="text"
+                                                placeholder="Opcional"
+                                                value={novoImovel.armadilha}
+                                                onChange={(e) => setNovoImovel({ ...novoImovel, armadilha: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* BLOCO DE GPS */}
+                                <div className="br-card p-3 bg-secondary-02 text-center border">
+                                    <button 
+                                        type="button" 
+                                        onClick={handlePegarGPSNovo}
+                                        disabled={carregandoGPS}
+                                        className={`br-button block ${carregandoGPS ? 'secondary' : 'primary'}`}
+                                    >
+                                        <i className={`fas ${carregandoGPS ? 'fa-spinner fa-spin' : 'fa-map-marker-alt'} mr-2`}></i>
+                                        {carregandoGPS ? 'Buscando Satélites...' : 'Capturar Coordenadas do Local'}
+                                    </button>
+                                    
+                                    {novoImovel.coordenadas && (
+                                        <p className="text-success text-weight-semi-bold text-down-01 mt-2 mb-0">
+                                            <i className="fas fa-check-circle mr-1"></i> 
+                                            Coordenadas travadas: {novoImovel.coordenadas.lat.toFixed(4)}, {novoImovel.coordenadas.lng.toFixed(4)}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
                             
-                            {novoImovel.coordenadas && (
-                                <p style={{ color: '#4caf50', fontSize: '12px', margin: '8px 0 0 0' }}>
-                                    ✅ Coordenadas travadas: {novoImovel.coordenadas.lat.toFixed(4)}, {novoImovel.coordenadas.lng.toFixed(4)}
-                                </p>
-                            )}
-                        </div>
-
-                        <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-                            <button 
-                                type="button" 
-                                onClick={() => setModalCadastroAberto(false)} 
-                                style={{ flex: 1, padding: '12px', background: '#444', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
-                            >
-                                Cancelar
-                            </button>
-                            <button 
-                                type="submit" 
-                                style={{ flex: 1, padding: '12px', background: '#4caf50', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
-                            >
-                                Salvar Imóvel
-                            </button>
-                        </div>
-                    </form>
+                            <div className="br-modal-footer justify-content-end border-top pt-3">
+                                <button 
+                                    className="br-button secondary mr-2" 
+                                    type="button" 
+                                    onClick={() => setModalCadastroAberto(false)}
+                                >
+                                    Cancelar
+                                </button>
+                                <button className="br-button primary" type="submit">
+                                    <i className="fas fa-save mr-1"></i> Salvar Imóvel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             )}
         </div>
