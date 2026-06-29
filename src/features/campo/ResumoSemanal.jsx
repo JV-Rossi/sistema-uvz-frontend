@@ -5,7 +5,7 @@ import './ResumoSemanal.css';
 
 export default function ResumoSemanal({ setTelaAtual }) {
     // ==========================================
-    // 🧠 PARTE LÓGICA (CÉREBRO DO COMPONENTE)
+    // 🧠 PARTE LÓGICA (Mantida intacta)
     // ==========================================
     const [matriz, setMatriz] = useState({
         seg_mat: [], seg_vesp: [],
@@ -24,7 +24,7 @@ export default function ResumoSemanal({ setTelaAtual }) {
         'sex_mat', 'sex_vesp'
     ];
 
-    const calendarioPreenchido = periodosObrigatorios.every(periodo => 
+    const calendarioPreenchido = periodosObrigatorios.every(periodo =>
         matriz[periodo] && matriz[periodo].length > 0
     );
 
@@ -142,7 +142,7 @@ export default function ResumoSemanal({ setTelaAtual }) {
         const totalImoveis = calcularTotalSemana();
         const payload = {
             totalImoveis: totalImoveis,
-            distribuicao: matriz 
+            distribuicao: matriz
         };
 
         try {
@@ -169,125 +169,179 @@ export default function ResumoSemanal({ setTelaAtual }) {
     const turnosVespertino = ['seg_vesp', 'ter_vesp', 'qua_vesp', 'qui_vesp', 'sex_vesp'];
 
     // ==========================================
-    // 🎨 PARTE VISUAL (CORPO / JSX)
+    // 🎨 PARTE VISUAL (Padrão Gov.br)
     // ==========================================
     return (
-        <div className="container-resumo">
-            <button className="btn-voltar" onClick={() => setTelaAtual('campo_menu')}>
-                ⬅️ VOLTAR
+        <div className="br-container-lg p-3 fundo-claro-gov">
+            {/* BOTÃO VOLTAR PADRÃO GOV.BR */}
+            <button
+                className="br-button secondary mb-3"
+                type="button"
+                onClick={() => setTelaAtual('campo_menu')}
+            >
+                <i className="fas fa-arrow-left mr-1" aria-hidden="true"></i> Voltar
             </button>
 
-            {/* CABEÇALHO E PLACAR DA SEMANA */}
-            <div className="placar-semana">
+            {/* CABEÇALHO E PLACAR DA SEMANA (Em formato de br-card) */}
+            <div className="br-card p-3 mb-4 d-flex justify-content-between align-items-center">
                 <div>
-                    <h2 style={{ margin: '0', color: '#90caf9', fontSize: '18px' }}>📅 Resumo Semanal</h2>
-                    <span style={{ fontSize: '12px', color: '#ccc' }}>Alocação de Fichas</span>
+                    <h2 className="text-up-02 text-weight-semi-bold text-primary-default mb-0">
+                        <i className="fas fa-calendar-alt mr-1"></i> Resumo Semanal
+                    </h2>
+                    <span className="text-down-01 text-secondary-06">Alocação de Fichas</span>
                 </div>
-                <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '11px', color: '#a5d6a7', fontWeight: 'bold', textTransform: 'uppercase' }}>Total Produzido</div>
-                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#fff' }}>
-                        {calcularTotalSemana()} <span style={{ fontSize: '14px', color: '#aaa', fontWeight: 'normal' }}>imóveis</span>
+                <div className="text-right">
+                    <div className="text-down-02 text-weight-semi-bold text-success text-uppercase">Total Produzido</div>
+                    <div className="text-up-05 text-weight-bold text-primary-default">
+                        {calcularTotalSemana()} <span className="text-down-01 text-secondary-06 text-weight-regular">imóveis</span>
                     </div>
                 </div>
             </div>
 
             {/* GRID DA MATRIZ */}
-            <div className="grid-matriz">
-                <div></div>
+            <div className="grid-matriz-gov">
+                <div className="grid-header-vazio"></div>
                 {diasDaSemana.map(dia => (
-                    <div key={dia} className="dia-header">{dia}</div>
+                    <div key={dia} className="dia-header text-weight-semi-bold">{dia}</div>
                 ))}
 
                 {/* LINHA MATUTINO */}
-                <div className="turno-header">☀️ Mat</div>
+                <div className="turno-header text-weight-semi-bold">
+                    <i className="fas fa-sun text-warning mr-1"></i> Mat
+                </div>
                 {turnosMatutino.map(id => (
                     <div
                         key={id}
                         onClick={() => setQuadranteAtivo(id)}
-                        className={matriz[id] && matriz[id].length > 0 ? 'quadrante-preenchido' : 'quadrante-vazio'}
+                        className={`quadrante-gov ${matriz[id] && matriz[id].length > 0 ? 'preenchido' : 'vazio'}`}
                     >
                         {matriz[id] && matriz[id].length > 0 ? (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' }}>
+                            <div className="d-flex flex-column" style={{ gap: '4px', width: '100%' }}>
                                 {matriz[id].map(ficha => (
-                                    <div key={ficha.id} className="ficha-alocada">
-                                        <div className="btn-remover-ficha" onClick={(e) => handleRemoverFicha(id, ficha, e)}>
-                                            X
-                                        </div>
-                                        <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#fff' }}>#{ficha.codigo}</span>
+                                    <div key={ficha.id} className="br-tag interactive bg-primary-light">
+                                        <span className="text-weight-semi-bold">#{ficha.codigo}</span>
+                                        <button
+                                            className="br-button circle small"
+                                            type="button"
+                                            aria-label="Remover ficha"
+                                            onClick={(e) => handleRemoverFicha(id, ficha, e)}
+                                        >
+                                            <i className="fas fa-times"></i>
+                                        </button>
                                     </div>
                                 ))}
-                                <div style={{ fontSize: '14px', textAlign: 'center', color: '#a5d6a7', marginTop: '2px' }}>+</div>
+                                <div className="text-center text-primary-default mt-1"><i className="fas fa-plus"></i></div>
                             </div>
-                        ) : '+'}
+                        ) : (
+                            <i className="fas fa-plus text-secondary-06"></i>
+                        )}
                     </div>
                 ))}
 
                 {/* LINHA VESPERTINO */}
-                <div className="turno-header">🌙 Vesp</div>
+                <div className="turno-header text-weight-semi-bold">
+                    <i className="fas fa-moon text-primary-default mr-1"></i> Vesp
+                </div>
                 {turnosVespertino.map(id => (
                     <div
                         key={id}
                         onClick={() => setQuadranteAtivo(id)}
-                        className={matriz[id] && matriz[id].length > 0 ? 'quadrante-preenchido' : 'quadrante-vazio'}
+                        className={`quadrante-gov ${matriz[id] && matriz[id].length > 0 ? 'preenchido' : 'vazio'}`}
                     >
                         {matriz[id] && matriz[id].length > 0 ? (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' }}>
+                            <div className="d-flex flex-column" style={{ gap: '4px', width: '100%' }}>
                                 {matriz[id].map(ficha => (
-                                    <div key={ficha.id} className="ficha-alocada">
-                                        <div className="btn-remover-ficha" onClick={(e) => handleRemoverFicha(id, ficha, e)}>
-                                            X
-                                        </div>
-                                        <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#fff' }}>#{ficha.codigo}</span>
+                                    <div key={ficha.id} className="br-tag interactive bg-primary-light">
+                                        <span className="text-weight-semi-bold">#{ficha.codigo}</span>
+                                        <button
+                                            className="br-button circle small"
+                                            type="button"
+                                            aria-label="Remover ficha"
+                                            onClick={(e) => handleRemoverFicha(id, ficha, e)}
+                                        >
+                                            <i className="fas fa-times"></i>
+                                        </button>
                                     </div>
                                 ))}
-                                <div style={{ fontSize: '14px', textAlign: 'center', color: '#a5d6a7', marginTop: '2px' }}>+</div>
+                                <div className="text-center text-primary-default mt-1"><i className="fas fa-plus"></i></div>
                             </div>
-                        ) : '+'}
+                        ) : (
+                            <i className="fas fa-plus text-secondary-06"></i>
+                        )}
                     </div>
                 ))}
             </div>
 
-            {/* BOTÕES DE AÇÃO */}
-            <button type="button" className="btn-acao-diaria" onClick={handleSalvarEAtualizarDiario}>
-                 SALVAR E ATUALIZAR 🔄
-            </button>
+            {/* BOTÕES DE AÇÃO (Padrão br-button block) */}
+            <div className="mt-4">
+                <button
+                    type="button"
+                    className="br-button block secondary mb-3"
+                    onClick={handleSalvarEAtualizarDiario}
+                >
+                    <i className="fas fa-sync-alt mr-2"></i> Salvar e Atualizar
+                </button>
 
-            <button
-                onClick={handleEnviarResumoSemanal}
-                className={`btn-acao-final ${calendarioPreenchido ? 'ativo' : 'bloqueado'}`}
-            >
-                 FINALIZAR RESUMO SEMANAL 🚀
-            </button>
+                <button
+                    type="button"
+                    onClick={handleEnviarResumoSemanal}
+                    className="br-button block primary"
+                    disabled={!calendarioPreenchido}
+                >
+                    <i className="fas fa-paper-plane mr-2"></i> Finalizar Resumo Semanal
+                </button>
+            </div>
 
-            {/* MODAL (MENU FLUTUANTE) */}
+            {/* MODAL GOV.BR (MENU FLUTUANTE) */}
             {quadranteAtivo && (
-                <div className="modal-flutuante">
-                    <h3 style={{ margin: '0 0 15px 0', color: '#ffb74d', fontSize: '16px', textAlign: 'center' }}>
-                        Selecionar Ficha<br />{quadranteAtivo.replace('_', ' ').toUpperCase()}
-                    </h3>
-
-                    {fichasPendentes.length === 0 ? (
-                        <p style={{ fontSize: '13px', color: '#ccc', textAlign: 'center' }}>Nenhuma ficha pendente.</p>
-                    ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '200px', overflowY: 'auto' }}>
-                            {fichasPendentes.map(ficha => (
-                                <div key={ficha.id} onClick={() => handleSelecionarFicha(ficha)} className="item-ficha-pendente">
-                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                        <strong style={{ color: '#42a5f5' }}>{ficha.numeroSequencial}ª Ficha - Sem. {ficha.semana}</strong>
-                                        <span style={{ fontSize: '12px', color: '#ffb74d' }}>Área: #{ficha.codigo}</span>
-                                    </div>
-                                    <span style={{ fontSize: '12px', color: '#aaa' }}>{ficha.imoveis ? ficha.imoveis.length : 0} imóveis</span>
-                                </div>
-                            ))}
+                <div className="br-scrim is-active" onClick={() => setQuadranteAtivo(null)}>
+                    <div className="br-modal" onClick={e => e.stopPropagation()}>
+                        <div className="br-modal-header">
+                            <div className="br-modal-title text-up-01 text-weight-semi-bold">
+                                Selecionar Ficha - {quadranteAtivo.replace('_', ' ').toUpperCase()}
+                            </div>
                         </div>
-                    )}
 
-                    <button
-                        onClick={() => setQuadranteAtivo(null)}
-                        style={{ width: '100%', padding: '10px', marginTop: '15px', background: '#d32f2f', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                    >
-                        Cancelar
-                    </button>
+                        <div className="br-modal-body">
+                            {fichasPendentes.length === 0 ? (
+                                <p className="text-center text-secondary-06">Nenhuma ficha pendente encontrada.</p>
+                            ) : (
+                                <div className="br-list" style={{ maxHeight: '250px', overflowY: 'auto' }}>
+                                    {fichasPendentes.map(ficha => (
+                                        <div
+                                            key={ficha.id}
+                                            className="br-item"
+                                            role="listitem"
+                                            onClick={() => handleSelecionarFicha(ficha)}
+                                            style={{ cursor: 'pointer', borderBottom: '1px solid #ededed' }}
+                                        >
+                                            <div className="row align-items-center">
+                                                <div className="col">
+                                                    <div className="text-weight-semi-bold text-primary-default">
+                                                        {ficha.numeroSequencial}ª Ficha - Sem. {ficha.semana}
+                                                    </div>
+                                                    <span className="text-down-01 text-secondary-06">Área: #{ficha.codigo}</span>
+                                                </div>
+                                                <div className="col-auto text-down-01 text-secondary-07">
+                                                    {ficha.imoveis ? ficha.imoveis.length : 0} imóveis
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="br-modal-footer justify-content-end">
+                            <button
+                                className="br-button secondary"
+                                type="button"
+                                onClick={() => setQuadranteAtivo(null)}
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

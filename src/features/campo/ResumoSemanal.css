@@ -1,176 +1,98 @@
-.container-resumo {
-    padding: 10px;
-    background: #111;
-    min-height: 100vh;
-    color: #fff;
-    font-family: sans-serif;
-}
+/* ==========================================
+   CSS CUSTOMIZADO - PADRÃO GOV.BR
+   ========================================== */
 
-.btn-voltar {
-    background: #333;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-}
-
-.placar-semana {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    background: #1a237e;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #3949ab;
-}
-
-.grid-matriz {
+.grid-matriz-gov {
     display: grid;
-    grid-template-columns: 80px repeat(5, 1fr);
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 20px;
+    grid-template-columns: 50px repeat(5, 1fr);
+    gap: 4px;
+    background-color: var(--color-secondary-01, #f8f8f8);
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--color-secondary-04, #ccc);
+}
+
+.grid-header-vazio {
+    background: transparent;
 }
 
 .dia-header {
-    text-align: center;
-    font-weight: bold;
-    font-size: 14px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-secondary-02, #f4f4f4);
+    color: var(--color-secondary-08, #333);
+    font-size: 12px;
+    border-radius: 4px;
+    padding: 4px 0;
 }
 
 .turno-header {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #222;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.quadrante-vazio {
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1a1a1a;
-    border: 2px dashed #333;
-    border-radius: 6px;
-    font-size: 24px;
-    color: #444;
-    cursor: pointer;
-    padding: 5px;
-}
-
-.quadrante-preenchido {
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1b5e20;
-    border: 1px solid #a5d6a7;
-    border-radius: 6px;
-    cursor: pointer;
-    padding: 5px;
-}
-
-.ficha-alocada {
-    position: relative;
-    background: #2e7d32;
-    padding: 4px;
+    background-color: var(--color-secondary-02, #f4f4f4);
+    color: var(--color-secondary-08, #333);
+    font-size: 10px;
     border-radius: 4px;
     text-align: center;
-    border: 1px solid #4caf50;
 }
 
-.btn-remover-ficha {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: #d32f2f;
-    color: #fff;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
+/* Quadrantes Interativos */
+.quadrante-gov {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    min-height: 60px;
+    border-radius: 4px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    transition: all 0.2s ease-in-out;
+    padding: 4px;
+    border: 1px dashed var(--color-secondary-04, #ccc);
 }
 
-.btn-acao-diaria {
-    width: 100%;
-    padding: 14px;
-    background: #2980b9;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 15px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+.quadrante-gov.vazio {
+    background-color: #ffffff;
 }
 
-.btn-acao-final {
-    width: 100%;
-    padding: 15px;
-    border-radius: 6px;
-    margin-top: 12px;
-    font-weight: bold;
-    font-size: 15px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
+.quadrante-gov.vazio:hover {
+    background-color: var(--color-secondary-02, #f4f4f4);
+    border-color: var(--color-primary-default, #1351b4);
 }
 
-.btn-acao-final.bloqueado {
-    background: #333;
-    color: #aaa;
-    border: 1px solid #444;
-    cursor: not-allowed;
-    opacity: 0.6;
+.quadrante-gov.preenchido {
+    background-color: var(--color-primary-pastel, #dcedff);
+    border: 1px solid var(--color-primary-default, #1351b4);
 }
 
-.btn-acao-final.ativo {
-    background: #28a745;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    opacity: 1;
-}
-
-.modal-flutuante {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #333;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.8);
-    z-index: 100;
-    width: 80%;
-    max-width: 350px;
-}
-
-.item-ficha-pendente {
-    background: #222;
-    border: 1px solid #444;
-    padding: 10px;
-    border-radius: 6px;
-    cursor: pointer;
+/* Ajustes na Tag da ficha alocada para caber no celular */
+.quadrante-gov .br-tag {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    padding: 2px 6px;
+    font-size: 10px;
+}
+
+.quadrante-gov .br-tag .br-button.circle {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: var(--color-danger, #e52207);
+    margin-left: 4px;
+}
+
+.fundo-claro-gov {
+    background-color: var(--color-secondary-01, #f8f8f8); /* Cinza clarinho do Gov.br */
+    min-height: 100vh; /* Garante que pinte a tela inteira do celular até embaixo */
+    width: 100%;
+    margin: 0;
 }
