@@ -1,0 +1,54 @@
+/* ==========================================
+   CSS ESTRUTURAL MESTRE - FORMULÁRIOS GOV.BR
+   ========================================== */
+
+.fundo-claro-gov {
+    background-color: var(--color-secondary-01, #f8f8f8) !important;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Força a cor escura de fundo do cabeçalho minimizado */
+.bg-primary-darken {
+    background-color: #0c326f !important;
+}
+
+/* Estrutura da malha quadriculada dos contadores epidemiológicos (a2, b, c...) */
+.grid-contadores-motor {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.item-contador-bloco {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px;
+    background-color: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+}
+
+/* Pastéis de feedback de domínio */
+.bg-warning-pastel {
+    background-color: #fff8e1 !important;
+}
+
+.bg-danger-pastel {
+    background-color: #ffebee !important;
+}
+
+.bg-success-pastel {
+    background-color: #e8f5e9 !important;
+}
+
+/* Responsividade para Tablets */
+@media (max-width: 576px) {
+    .grid-contadores-motor {
+        grid-template-columns: 1fr; /* Vira lista vertical única em telas muito estreitas */
+        gap: 8px;
+    }
+}
