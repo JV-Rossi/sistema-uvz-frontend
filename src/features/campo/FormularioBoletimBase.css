@@ -10,12 +10,68 @@
     box-sizing: border-box;
 }
 
-/* Força a cor escura de fundo do cabeçalho minimizado */
-.bg-primary-darken {
-    background-color: #0c326f !important;
+/* ==========================================
+   CLASSES VISUAIS EXTRAÍDAS DO JSX
+   ========================================== */
+
+/* Cabeçalho e Títulos */
+.titulo-boletim-base {
+    border-left: 5px solid #1351b4;
 }
 
-/* Estrutura da malha quadriculada dos contadores epidemiológicos (a2, b, c...) */
+.cabecalho-minimizado {
+    background-color: #0c326f !important;
+    cursor: pointer;
+    border: none !important;
+    border-radius: 8px !important;
+}
+
+.cabecalho-minimizado-texto {
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.cabecalho-minimizado-destaque {
+    color: #ffb74d;
+}
+
+.cabecalho-minimizado-acao {
+    color: #ffb74d;
+    font-size: 14px;
+}
+
+/* Blocos de Feedback Visual (Pastéis) */
+.bg-warning-pastel {
+    background-color: #fff8e1 !important;
+}
+
+.bg-danger-pastel {
+    background-color: #ffebee !important;
+}
+
+.bg-success-pastel {
+    background-color: #e8f5e9 !important;
+}
+
+/* Bordas de Destaque Laterais e Superiores */
+.card-larvicida {
+    border-left: 5px solid #ffb74d !important;
+}
+
+.card-eliminacao {
+    border-left: 5px solid #ef5350 !important;
+}
+
+.card-resumo-sucesso {
+    border-top: 4px solid #107e3e !important;
+}
+
+.card-ultimo-imovel {
+    background-color: #e8f5e9;
+    border-color: #c8e6c9;
+}
+
+/* Malha de Contadores (a2, b, c...) */
 .grid-contadores-motor {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -32,23 +88,59 @@
     border-radius: 4px;
 }
 
-/* Pastéis de feedback de domínio */
-.bg-warning-pastel {
-    background-color: #fff8e1 !important;
+.botoes-contador-gap {
+    gap: 6px;
 }
 
-.bg-danger-pastel {
-    background-color: #ffebee !important;
+/* Formulários Internos */
+.textarea-observacao {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    padding: 8px;
+    resize: vertical;
 }
 
-.bg-success-pastel {
-    background-color: #e8f5e9 !important;
+.btn-salvar-imovel {
+    border-color: #e67e22 !important;
+    color: #e67e22 !important;
 }
 
-/* Responsividade para Tablets */
+/* Modais e Listas com Rolagem */
+.modal-revisao-gov {
+    max-width: 600px;
+    max-height: 90vh;
+}
+
+.lista-modal-scroll {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.lista-resumo-scroll {
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+.marcador-lista-resumo {
+    font-size: 8px;
+}
+
+/* Etiquetas (Tags) de Revisão Blindadas */
+.container-tags-revisao {
+    gap: 6px;
+}
+
+.tag-revisao-clara {
+    background-color: #e6e6e6 !important;
+    color: #333333 !important;
+    font-weight: bold !important;
+}
+
+/* Responsividade para Tablets e Celulares */
 @media (max-width: 576px) {
     .grid-contadores-motor {
-        grid-template-columns: 1fr; /* Vira lista vertical única em telas muito estreitas */
+        grid-template-columns: 1fr;
         gap: 8px;
     }
 }

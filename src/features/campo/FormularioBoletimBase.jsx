@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { tabelaBairros } from '../../shared/utils/dadosBairros';
 import { listaAgentes as listaAgentesOficiais } from '../../shared/utils/dadosAgentes';
 import { db } from '../../core/dbLocal';
 import './FormularioBoletimBase.css';
+import { Dialog } from '@capacitor/dialog';
 
 export default function FormularioBoletimBase({
     titulo,
@@ -10,7 +11,7 @@ export default function FormularioBoletimBase({
     tipoBoletim, // 'ROTINA', 'PE' ou 'BLOQUEIO'
     setTelaAtual,
     opcoesCategoriasCustomizadas, // Se passado, substitui as categorias padrão
-    exibirCamposExtra // Para futuras expansões se houver campos exclusivos de uma stack
+    exibirCamposExtra // Para futuras expansões
 }) {
 
     // ==========================================
@@ -18,6 +19,9 @@ export default function FormularioBoletimBase({
     // ==========================================
     const nomeLogado = localStorage.getItem('userLogin') || '';
     const titularPadronizado = nomeLogado.toUpperCase();
+
+    const [listaImoveis, setListaImoveis] = useState([]);
+    const [modalRevisaoAberto, setModalRevisaoAberto] = useState(false);
 
     const [headerMinimizado, setHeaderMinimizado] = useState(false);
     const [erroBairro, setErroBairro] = useState('');
@@ -45,8 +49,6 @@ export default function FormularioBoletimBase({
         observacao: '',
         larvicidaGrama: 0
     });
-
-    const [listaImoveis, setListaImoveis] = useState([]);
 
     // ==========================================
     // ⚙️ INTERAÇÕES E MANIPULAÇÕES DE FLUXO
@@ -109,6 +111,20 @@ export default function FormularioBoletimBase({
         }));
     };
 
+    // Função para remover um imóvel específico da folha antes de enviar
+    const handleRemoverImovel = (indexParaRemover) => {
+        const confirmacao = window.confirm("Tem certeza que deseja apagar este imóvel da ficha?");
+        if (!confirmacao) return;
+
+        const novaLista = listaImoveis.filter((_, index) => index !== indexParaRemover);
+
+        setListaImoveis(novaLista);
+
+        if (novaLista.length === 0) {
+            setModalRevisaoAberto(false);
+        }
+    };
+
     const handleFinalizarEEnviar = async () => {
         if (listaImoveis.length === 0) {
             alert('⚠️ Adicione pelo menos um imóvel antes de finalizar o boletim!');
@@ -150,6 +166,16 @@ export default function FormularioBoletimBase({
         }
     };
 
+    const traduzirVisita = (status) => {
+        if (!status) return 'Desconhecido';
+        // Remove espaços em branco acidentais e garante que está tudo maiúsculo para comparar
+        const s = status.trim().toUpperCase();
+        if (s === 'NAO' || s === 'NÃO') return 'Normal';
+        if (s === 'RECUSADO') return 'Recusada';
+        if (s === 'FECHADO') return 'Fechada';
+        return status;
+    };
+
     const bairrosFiltrados = tabelaBairros.filter(b => b.regional === cabecalho.regional);
     const agentesFiltrados = listaAgentesOficiais.filter(a => a.regional === cabecalho.regional);
     const qtdAgentesValidos = cabecalho.agentes.filter(a => a && a.trim() !== '').length;
@@ -163,7 +189,7 @@ export default function FormularioBoletimBase({
             </button>
 
             {/* TÍTULO CORPORATIVO */}
-            <div className="mb-4 p-3 bg-white shadow-sm rounded" style={{ borderLeft: '5px solid #1351b4' }}>
+            <div className="mb-4 p-3 bg-white shadow-sm rounded titulo-boletim-base">
                 <h1 className="text-up-03 text-weight-bold text-primary-default mb-2">{titulo}</h1>
                 <p className="text-base text-secondary-08 text-weight-medium mb-0">{subtitulo}</p>
             </div>
@@ -280,15 +306,14 @@ export default function FormularioBoletimBase({
             ) : (
                 // --- MODO MINIMIZADO ---
                 <div
-                    className="br-card p-3 mb-4 d-flex justify-content-between align-items-center shadow-sm"
-                    style={{ backgroundColor: '#0c326f', cursor: 'pointer', border: 'none', borderRadius: '8px' }}
+                    className="br-card p-3 mb-4 d-flex justify-content-between align-items-center shadow-sm cabecalho-minimizado"
                     onClick={() => setHeaderMinimizado(false)}
                 >
-                    <span className="text-weight-semi-bold" style={{ color: '#ffffff', fontSize: '15px' }}>
-                        <i className="fas fa-map-pin mr-2" style={{ color: '#ffb74d' }}></i>
+                    <span className="text-weight-semi-bold cabecalho-minimizado-texto">
+                        <i className="fas fa-map-pin mr-2 cabecalho-minimizado-destaque"></i>
                         {cabecalho.bairro || 'Sem Bairro'} | Qtd ACE: {qtdAgentesValidos}
                     </span>
-                    <span className="text-weight-bold" style={{ color: '#ffb74d', fontSize: '14px' }}>
+                    <span className="text-weight-bold cabecalho-minimizado-acao">
                         Alterar <i className="fas fa-edit ml-1"></i>
                     </span>
                 </div>
@@ -373,7 +398,7 @@ export default function FormularioBoletimBase({
                         {['a2', 'b', 'c', 'd1', 'd2', 'e'].map(dep => (
                             <div key={dep} className="item-contador-bloco">
                                 <span className="text-weight-bold text-uppercase text-secondary-08">{dep}:</span>
-                                <div className="d-flex align-items-center" style={{ gap: '6px' }}>
+                                <div className="d-flex align-items-center botoes-contador-gap">
                                     <button className="br-button circle secondary small" type="button" onClick={() => alterarContador(dep, '-')}><i className="fas fa-minus"></i></button>
                                     <span className="text-weight-bold text-center px-2" style={{ minWidth: '24px' }}>{imovelAtual[dep]}</span>
                                     <button className="br-button circle secondary small" type="button" onClick={() => alterarContador(dep, '+')}><i className="fas fa-plus"></i></button>
@@ -385,7 +410,7 @@ export default function FormularioBoletimBase({
 
                 {/* ENGENHARIA DE TRATAMENTO QUÍMICO (LARVICIDA) */}
                 {imovelAtual.a2 > 0 && (
-                    <div className="br-card p-3 mb-3 bg-warning-pastel border border-warning" style={{ borderLeft: '5px solid #ffb74d !important' }}>
+                    <div className="br-card p-3 mb-3 bg-warning-pastel border border-warning card-larvicida">
                         <div className="text-weight-bold text-down-01 text-warning mb-1">
                             <i className="fas fa-flask mr-1"></i> Tratamento Focal Vinculado (Depósito A2)
                         </div>
@@ -401,12 +426,12 @@ export default function FormularioBoletimBase({
                 )}
 
                 {/* SEÇÃO DE ELIMINAÇÃO FÍSICA */}
-                <div className="p-3 border rounded mb-3 bg-danger-pastel border-danger" style={{ borderLeft: '5px solid #ef5350 !important' }}>
+                <div className="p-3 border rounded mb-3 bg-danger-pastel border-danger card-eliminacao">
                     <div className="br-checkbox">
                         <input
                             id="check-eliminados" type="checkbox"
                             checked={imovelAtual.teveDepositoEliminado}
-                            onChange={(e) => setCabecalho && setImovelAtual({ ...imovelAtual, teveDepositoEliminado: e.target.checked })}
+                            onChange={(e) => setImovelAtual({ ...imovelAtual, teveDepositoEliminado: e.target.checked })}
                         />
                         <label htmlFor="check-eliminados" className="text-weight-bold text-danger">Houve Depósitos Eliminados na Visita?</label>
                     </div>
@@ -418,7 +443,7 @@ export default function FormularioBoletimBase({
                                 return (
                                     <div key={depElim} className="item-contador-bloco text-danger">
                                         <span className="text-weight-bold text-uppercase">{dep}:</span>
-                                        <div className="d-flex align-items-center" style={{ gap: '6px' }}>
+                                        <div className="d-flex align-items-center botoes-contador-gap">
                                             <button className="br-button circle secondary small text-danger" type="button" onClick={() => alterarContador(depElim, '-')}><i className="fas fa-minus"></i></button>
                                             <span className="text-weight-bold text-center px-2" style={{ minWidth: '24px' }}>{imovelAtual[depElim]}</span>
                                             <button className="br-button circle secondary small text-danger" type="button" onClick={() => alterarContador(depElim, '+')}><i className="fas fa-plus"></i></button>
@@ -434,36 +459,146 @@ export default function FormularioBoletimBase({
                 <div className="br-input mb-3">
                     <label>Observações do Imóvel (Opcional)</label>
                     <textarea
+                        className="textarea-observacao"
                         rows="2" placeholder="Ex: Cão bravo, imóvel fechado para imobiliária, foco destruído..."
                         value={imovelAtual.observacao}
                         onChange={e => setImovelAtual({ ...imovelAtual, observacao: e.target.value })}
-                        style={{ border: '1px solid #ccc', borderRadius: '4px', width: '100%', padding: '8px' }}
                     />
                 </div>
 
-                <button className="br-button secondary block text-weight-bold" type="button" onClick={handleAdicionarImovel} style={{ borderColor: '#e67e22', color: '#e67e22' }}>
+                <button className="br-button secondary block text-weight-bold btn-salvar-imovel" type="button" onClick={handleAdicionarImovel}>
                     <i className="fas fa-plus-circle mr-1"></i> Salvar Imóvel na Ficha
                 </button>
             </div>
 
-            {/* ================= BLOCÃO 3: REVISÃO DA FOLHA DO DIA ================= */}
+            {/* ================= BLOCÃO 3: ÚLTIMO IMÓVEL SALVO ================= */}
             {listaImoveis.length > 0 && (
-                <div className="br-card p-3 mb-4 border-success" style={{ borderTop: '4px solid #107e3e !important' }}>
-                    <div className="text-weight-bold text-up-01 text-success mb-2">
-                        <i className="fas fa-folder-open mr-2"></i> 3. Resumo da Ficha Atual ({listaImoveis.length} imóveis)
-                    </div>
-                    <div className="p-2 border rounded bg-secondary-01 mb-3" style={{ maxHeight: '160px', overflowY: 'auto' }}>
-                        {listaImoveis.map((imv, idx) => (
-                            <div key={idx} className="py-1 text-down-01 border-bottom border-secondary-03 text-secondary-08">
-                                <i className="fas fa-circle text-primary-default mr-1" style={{ fontSize: '8px' }}></i>
-                                Qrt <strong>{imv.quarteirao}</strong> &bull; {imv.endereco}, Nº {imv.numero} ({imv.tipo}) &bull; Recipientes: {imv.a2 + imv.b + imv.c + imv.d1 + imv.d2 + imv.e} vistos.
-                            </div>
-                        ))}
+                <div className="br-card p-3 mb-4 border-success card-resumo-sucesso">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <div className="text-weight-bold text-up-01 text-success">
+                            <i className="fas fa-check-circle mr-2"></i> Último Imóvel Salvo
+                        </div>
+                        <div className="br-tag bg-success text-white text-weight-bold">
+                            Total: {listaImoveis.length}
+                        </div>
                     </div>
 
-                    <button className="br-button primary block bg-success text-white border-success text-weight-bold" type="button" onClick={handleFinalizarEEnviar}>
-                        <i className="fas fa-save mr-2"></i> FINALIZAR E SALVAR BOLETIM DA RUA
+                    {/* Exibe apenas a posição mais recente do array */}
+                    <div className="p-3 border rounded mb-3 card-ultimo-imovel">
+                        {(() => {
+                            const ultimoIndex = listaImoveis.length - 1;
+                            const ultimo = listaImoveis[ultimoIndex];
+                            return (
+                                <div className="d-flex justify-content-between align-items-start">
+                                    <div className="text-secondary-08">
+                                        <div className="text-weight-bold text-up-01 mb-1">
+                                            Qrt {ultimo.quarteirao} - {ultimo.endereco}, Nº {ultimo.numero}
+                                        </div>
+                                        <div className="text-down-01 d-flex flex-wrap container-tags-revisao">
+                                            <span><i className="fas fa-home mr-1 text-primary-default"></i> {ultimo.tipo}</span>
+                                            <span>
+                                                <i className="fas fa-clipboard-check mr-1 text-success"></i>
+                                                Visita: {traduzirVisita(ultimo.pendencia)}
+                                            </span>
+                                            <span><i className="fas fa-search mr-1 text-warning"></i> Inspecionados: {ultimo.a2 + ultimo.b + ultimo.c + ultimo.d1 + ultimo.d2 + ultimo.e}</span>
+                                        </div>
+                                    </div>
+                                    <button
+                                        className="br-button circle small bg-white border ml-2"
+                                        type="button"
+                                        title="Apagar este imóvel"
+                                        onClick={() => handleRemoverImovel(ultimoIndex)}
+                                    >
+                                        <i className="fas fa-trash-alt text-danger"></i>
+                                    </button>
+                                </div>
+                            )
+                        })()}
+                    </div>
+
+                    <button
+                        className="br-button primary block bg-success text-white border-success text-weight-bold"
+                        type="button"
+                        onClick={() => setModalRevisaoAberto(true)}
+                    >
+                        <i className="fas fa-list-ol mr-2"></i> REVISAR E FINALIZAR BOLETIM
                     </button>
+                </div>
+            )}
+
+            {/* ================= MODAL GOV.BR PARA REVISÃO ================= */}
+            {modalRevisaoAberto && (
+                <div className="br-scrim is-active" onClick={() => setModalRevisaoAberto(true)}>
+                    <div className="br-modal modal-revisao-gov" onClick={e => e.stopPropagation()}>
+
+                        <div className="br-modal-header border-bottom">
+                            <div className="br-modal-title text-up-02 text-weight-semi-bold text-success">
+                                <i className="fas fa-clipboard-list mr-2"></i> Revisão do Boletim
+                            </div>
+                        </div>
+
+                        <div className="br-modal-body pt-3 pb-3">
+                            <p className="text-secondary-07 text-down-01 mb-3">
+                                Confira a lista dos <strong>{listaImoveis.length}</strong> imóveis registrados antes de fechar a folha da rua.
+                            </p>
+
+                            <div className="br-list lista-modal-scroll">
+                                {listaImoveis.map((imv, idx) => (
+                                    <div key={idx} className="br-item py-2 border-bottom">
+                                        <div className="row align-items-center w-100 m-0">
+                                            <div className="col-auto pl-0">
+                                                <span className="br-tag bg-secondary-03 text-weight-bold text-secondary-08">{idx + 1}</span>
+                                            </div>
+                                            <div className="col pl-0 pr-1">
+                                                <div className="text-weight-semi-bold text-primary-default text-down-01">
+                                                    Qrt {imv.quarteirao} &bull; {imv.endereco}, Nº {imv.numero}
+                                                </div>
+                                                <div className="text-down-02 mt-1 d-flex flex-wrap container-tags-revisao">
+                                                    <span className="br-tag small tag-revisao-clara">{imv.tipo}</span>
+                                                    <span className="br-tag small tag-revisao-clara">
+                                                        Visita: {traduzirVisita(imv.pendencia)}
+                                                    </span>
+                                                    <span className="br-tag small tag-revisao-clara">
+                                                        Insp: {imv.a2 + imv.b + imv.c + imv.d1 + imv.d2 + imv.e}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="col-auto px-0">
+                                                <button
+                                                    className="br-button circle small"
+                                                    type="button"
+                                                    title="Excluir imóvel"
+                                                    onClick={() => handleRemoverImovel(idx)}
+                                                >
+                                                    <i className="fas fa-trash-alt text-danger"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* RODAPÉ DO MODAL — AÇÕES */}
+                        <div className="br-modal-footer d-flex justify-content-between gap-2 pt-3 border-top">
+                            <button
+                                className="br-button secondary"
+                                type="button"
+                                onClick={() => setModalRevisaoAberto(false)}
+                            >
+                                <i className="fas fa-arrow-left mr-1"></i> Voltar
+                            </button>
+
+                            <button
+                                className="br-button primary bg-success text-white border-success text-weight-bold"
+                                type="button"
+                                onClick={handleFinalizarEEnviar}
+                            >
+                                <i className="fas fa-check-circle mr-1"></i> Confirmar e Enviar
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
             )}
         </div>
