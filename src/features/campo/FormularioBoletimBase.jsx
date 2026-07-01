@@ -220,7 +220,7 @@ export default function FormularioBoletimBase({
 
                         <div className="col-12 col-sm-4 mb-3">
                             <div className="br-input">
-                                <label>Bairro / Localidade</label>
+                                <label>Bairro</label>
                                 <input
                                     type="text"
                                     list="bairros-motor"
@@ -246,7 +246,7 @@ export default function FormularioBoletimBase({
                     <div className="row mb-3">
                         <div className="col-6">
                             <div className="br-input">
-                                <label>Código Ficha</label>
+                                <label>Código</label>
                                 <input type="text" placeholder="Ex: 282" value={cabecalho.codigo} onChange={e => setCabecalho({ ...cabecalho, codigo: e.target.value })} />
                             </div>
                         </div>
@@ -334,7 +334,7 @@ export default function FormularioBoletimBase({
                     </div>
                     <div className="col-8 mb-3">
                         <div className="br-input">
-                            <label>Logradouro / Endereço</label>
+                            <label>Endereço</label>
                             <input type="text" placeholder="Ex: Rua Cuiabá" value={imovelAtual.endereco} onChange={e => setImovelAtual({ ...imovelAtual, endereco: e.target.value })} />
                         </div>
                     </div>
@@ -379,7 +379,7 @@ export default function FormularioBoletimBase({
                     </div>
                     <div className="col-6">
                         <div className="br-select w-100">
-                            <label>Situação / Visita</label>
+                            <label>Situação da Visita</label>
                             <select value={imovelAtual.pendencia} onChange={e => setImovelAtual({ ...imovelAtual, pendencia: e.target.value })}>
                                 <option value="NAO">Normal (Trabalhado)</option>
                                 <option value="RECUSADO">Recusado (REC)</option>
