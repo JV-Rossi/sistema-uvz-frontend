@@ -1,0 +1,9 @@
+/* src/shared/assets/rawline.css */
+
+/* Importa uma fonte alternativa ultraestável e idêntica visualmente caso queira manter o carregamento web seguro */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Aplica a fonte ao sistema de forma inteligente */
+body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Rawline', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}

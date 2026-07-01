@@ -47,8 +47,14 @@ export default function FormularioBoletimBase({
         teveDepositoEliminado: false,
         a2_elim: 0, b_elim: 0, c_elim: 0, d1_elim: 0, d2_elim: 0, e_elim: 0,
         observacao: '',
-        larvicidaGrama: 0
+        larvicidaGrama: 0,
+        coletas: [],
+        teveColeta: false
     });
+
+    // Estados locais temporários apenas para capturar o que o ACE digita no tubito atual antes de clicar em "+"
+    const [tuboInput, setTuboInput] = useState('');
+    const [tipoDepositoTubo, setTipoDepositoTubo] = useState('A1');
 
     // ==========================================
     // ⚙️ INTERAÇÕES E MANIPULAÇÕES DE FLUXO
@@ -107,7 +113,8 @@ export default function FormularioBoletimBase({
             teveDepositoEliminado: false,
             a2_elim: 0, b_elim: 0, c_elim: 0, d1_elim: 0, d2_elim: 0, e_elim: 0,
             observacao: '',
-            larvicidaGrama: 0
+            larvicidaGrama: 0,
+            coletas: []
         }));
     };
 
@@ -179,6 +186,36 @@ export default function FormularioBoletimBase({
     const bairrosFiltrados = tabelaBairros.filter(b => b.regional === cabecalho.regional);
     const agentesFiltrados = listaAgentesOficiais.filter(a => a.regional === cabecalho.regional);
     const qtdAgentesValidos = cabecalho.agentes.filter(a => a && a.trim() !== '').length;
+
+    // LÓGICA DE ADIÇÃO E REMOÇÃO DE TUBOS DE COLETA
+    const handleAdicionarTubo = (e) => {
+        e.preventDefault();
+        if (!tuboInput.trim()) {
+            alert('⚠️ Digite o número ou código do tubo de coleta!');
+            return;
+        }
+
+        // Verifica se o agente já adicionou esse mesmo tubo neste imóvel
+        if (imovelAtual.coletas.some(c => c.numeroTubo === tuboInput.trim())) {
+            alert('⚠️ Este número de tubo já foi adicionado para este imóvel!');
+            return;
+        }
+
+        setImovelAtual(prev => ({
+            ...prev,
+            coletas: [...prev.coletas, { numeroTubo: tuboInput.trim(), deposito: tipoDepositoTubo }]
+        }));
+
+        // Limpa o campo do número do tubo para o próximo
+        setTuboInput('');
+    };
+
+    const handleRemoverTubo = (indexParaRemover) => {
+        setImovelAtual(prev => ({
+            ...prev,
+            coletas: prev.coletas.filter((_, idx) => idx !== indexParaRemover)
+        }));
+    };
 
     return (
         <div className="br-container-lg p-3 fundo-claro-gov">
@@ -455,6 +492,104 @@ export default function FormularioBoletimBase({
                     )}
                 </div>
 
+                {/* ================= SEÇÃO EXCLUSIVA DO LIRA: CONTROLE DE COLETAS ================= */}
+                {tipoBoletim === 'LIRA' && (
+                    <div
+                        className="p-3 border rounded mb-3"
+                        style={{
+                            borderLeft: '4px solid #1351b4',
+                            /* Fica com um fundo azul bem clarinho quando marcado, igual o vermelho */
+                            backgroundColor: imovelAtual.teveColeta ? '#f4f9ff' : '#ffffff'
+                        }}
+                    >
+                        {/* GATILHO - CHECKBOX */}
+                        <div className="br-checkbox">
+                            <input
+                                id="checkbox-teve-coleta"
+                                type="checkbox"
+                                checked={imovelAtual.teveColeta}
+                                onChange={e => {
+                                    const marcado = e.target.checked;
+                                    setImovelAtual(prev => ({
+                                        ...prev,
+                                        teveColeta: marcado,
+                                        coletas: marcado ? prev.coletas : []
+                                    }));
+                                }}
+                            />
+                            <label
+                                htmlFor="checkbox-teve-coleta"
+                                className="text-weight-bold m-0"
+                                style={{ color: '#1351b4', cursor: 'pointer' }}
+                            >
+                                Houve Coleta de Larvas na Visita?
+                            </label>
+                        </div>
+
+                        {/* ÁREA DOS TUBOS (ABRE DENTRO DO MESMO CARD, MANTENDO A LINHA CONTÍNUA) */}
+                        {imovelAtual.teveColeta && (
+                            <div className="mt-3 pt-3 animate__animated animate__fadeInFast" style={{ borderTop: '1px solid #bbdefb' }}>
+                                <div className="text-weight-bold mb-2" style={{ color: '#1351b4' }}>
+                                    <i className="fas fa-vial mr-1"></i> Coleta de Larvas (Laboratório / LIRAa)
+                                </div>
+
+                                {/* Inputs para nova coleta */}
+                                <div className="row align-items-end mb-3">
+                                    <div className="col-5">
+                                        <div className="br-input small">
+                                            <label>Nº do Tubo</label>
+                                            <input
+                                                type="text"
+                                                placeholder="Ex: 01A"
+                                                value={tuboInput}
+                                                onChange={e => setTuboInput(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-5">
+                                        <div className="br-select w-100 small">
+                                            <label>Depósito Origem</label>
+                                            <select value={tipoDepositoTubo} onChange={e => setTipoDepositoTubo(e.target.value)}>
+                                                <option value="A1">A1</option>
+                                                <option value="A2">A2</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D1">D1</option>
+                                                <option value="D2">D2</option>
+                                                <option value="E">E</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-2 pl-0">
+                                        <button className="br-button primary circle small block w-100" type="button" onClick={handleAdicionarTubo} title="Adicionar tubo">
+                                            <i className="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Listagem de tubos */}
+                                {imovelAtual.coletas.length > 0 ? (
+                                    <div className="p-2 border rounded bg-white">
+                                        <div className="text-down-02 text-secondary-06 text-weight-medium mb-1">Tubos vinculados a esta casa:</div>
+                                        <div className="d-flex flex-wrap" style={{ gap: '6px' }}>
+                                            {imovelAtual.coletas.map((col, idx) => (
+                                                <span key={idx} className="br-tag small tag-tubo-lira d-flex align-items-center">
+                                                    🧪 Tubo {col.numeroTubo} ({col.deposito})
+                                                    <i className="fas fa-times ml-2 text-danger" style={{ cursor: 'pointer' }} onClick={() => handleRemoverTubo(idx)}></i>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <p className="text-down-02 text-danger text-weight-medium m-0">
+                                        <i className="fas fa-exclamation-triangle mr-1"></i> Nenhuma amostra coletada neste imóvel ainda.
+                                    </p>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 {/* OBSERVAÇÕES */}
                 <div className="br-input mb-3">
                     <label>Observações do Imóvel (Opcional)</label>
@@ -562,6 +697,16 @@ export default function FormularioBoletimBase({
                                                         Insp: {imv.a2 + imv.b + imv.c + imv.d1 + imv.d2 + imv.e}
                                                     </span>
                                                 </div>
+
+                                                {imv.coletas && imv.coletas.length > 0 && (
+                                                    <div className="mt-1 d-flex flex-wrap" style={{ gap: '4px', paddingLeft: '2px' }}>
+                                                        {imv.coletas.map((c, tIdx) => (
+                                                            <span key={tIdx} className="br-tag small bg-primary-lighten text-white text-weight-bold" style={{ fontSize: '10px', backgroundColor: '#1351b4' }}>
+                                                                🧪 Tubo: {c.numeroTubo} ({c.deposito})
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="col-auto px-0">
                                                 <button
@@ -579,9 +724,9 @@ export default function FormularioBoletimBase({
                             </div>
                         </div>
 
-                      {/* RODAPÉ DO MODAL — AÇÕES */}
-                        <div 
-                            className="br-modal-footer d-flex flex-wrap justify-content-between pt-3 border-top" 
+                        {/* RODAPÉ DO MODAL — AÇÕES */}
+                        <div
+                            className="br-modal-footer d-flex flex-wrap justify-content-between pt-3 border-top"
                             style={{ gap: '12px' }}
                         >
                             <button

@@ -6,6 +6,7 @@ import GestaoDashboard from './features/gestao/GestaoDashboard.jsx';
 import TecnicaPainel from './features/tecnica/PainelTecnico.jsx';
 import CampoDashboard from './features/tecnica/CadastroUsuario.jsx';
 import './index.css'
+import './shared/assets/rawline.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

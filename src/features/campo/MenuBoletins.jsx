@@ -85,6 +85,23 @@ export default function MenuBoletins({ setTelaAtual }) {
           </div>
         </div>
 
+        {/* 👇 NOVA Opção 4: Levantamento LIRAa 👇 */}
+        <div
+          className="card-boletim"
+          role="button"
+          tabIndex="0"
+          onClick={() => setTelaAtual('boletim_lira')}
+          onKeyDown={(e) => handleKeyDown(e, 'boletim_lira')}
+        >
+          <div className="area-icone">
+            <i className="fas fa-vial" aria-hidden="true"></i>
+          </div>
+          <div className="conteudo-boletim">
+            <h3>Levantamento LIRAa</h3>
+            <p>Iniciar amostragem estatística e registrar tubos de coleta de larvas.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   );
