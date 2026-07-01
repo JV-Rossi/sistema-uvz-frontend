@@ -521,7 +521,7 @@ export default function FormularioBoletimBase({
                         type="button"
                         onClick={() => setModalRevisaoAberto(true)}
                     >
-                        <i className="fas fa-list-ol mr-2"></i> REVISAR E FINALIZAR BOLETIM
+                        <i className="fas fa-list-ol mr-2"></i> REVISAR E FINALIZAR
                     </button>
                 </div>
             )}
@@ -579,10 +579,13 @@ export default function FormularioBoletimBase({
                             </div>
                         </div>
 
-                        {/* RODAPÉ DO MODAL — AÇÕES */}
-                        <div className="br-modal-footer d-flex justify-content-between gap-2 pt-3 border-top">
+                      {/* RODAPÉ DO MODAL — AÇÕES */}
+                        <div 
+                            className="br-modal-footer d-flex flex-wrap justify-content-between pt-3 border-top" 
+                            style={{ gap: '12px' }}
+                        >
                             <button
-                                className="br-button secondary"
+                                className="br-button secondary flex-grow-1"
                                 type="button"
                                 onClick={() => setModalRevisaoAberto(false)}
                             >
@@ -590,7 +593,7 @@ export default function FormularioBoletimBase({
                             </button>
 
                             <button
-                                className="br-button primary bg-success text-white border-success text-weight-bold"
+                                className="br-button primary bg-success text-white border-success text-weight-bold flex-grow-1"
                                 type="button"
                                 onClick={handleFinalizarEEnviar}
                             >

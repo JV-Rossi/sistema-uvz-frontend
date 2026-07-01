@@ -10,6 +10,7 @@ import MenuBoletins from './features/campo/MenuBoletins.jsx';
 import BoletimRotina from './features/campo/BoletimRotina';
 import BoletimBloqueio from './features/campo/BoletimBloqueio';
 import BoletimPE from './features/campo/BoletimPE.jsx';
+import BoletimLira from './features/campo/BoletimLira.jsx';
 import SolicitarBloqueio from './features/campo/SolicitarBloqueio';
 import ResumoSemanal from './features/campo/ResumoSemanal';
 import Ovitrampa from './features/campo/Ovitrampa.jsx';
@@ -150,6 +151,10 @@ function App() {
 
       {telaAtual === 'boletim_pe' && (
         <BoletimPE setTelaAtual={setTelaAtual} />
+      )}
+
+       {telaAtual === 'boletim_lira' && (
+        <BoletimLira setTelaAtual={setTelaAtual} />
       )}
 
       {telaAtual === 'resumo_semanal' && (
