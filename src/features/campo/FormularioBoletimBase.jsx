@@ -500,7 +500,7 @@ export default function FormularioBoletimBase({
                 </div>
 
                 {/* ================= SEÇÃO EXCLUSIVA DO LIRA: CONTROLE DE COLETAS ================= */}
-                {tipoBoletim === 'LIRA' && (
+                {(tipoBoletim === 'LIRA' || tipoBoletim === 'PE') && (
                     <div
                         className="p-3 border rounded mb-3"
                         style={{

@@ -157,3 +157,46 @@
     padding: 4px 8px !important;
     gap: 4px;
 }
+
+/* 1. Remove o visual padrão "Windows 98" e cria a nova caixa base */
+.br-checkbox input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #1351b4; /* Azul padrão do seu layout */
+    border-radius: 6px; /* Aqui tiramos o "quadradão" deixando os cantos arredondados */
+    background-color: #ffffff;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease-in-out; /* Deixa a mudança de cor suave */
+    outline: none;
+    margin: 0;
+    margin-right: 8px; /* Espacinho entre a caixa e o texto */
+    vertical-align: middle;
+}
+
+/* 2. Efeito ao passar o mouse (Hover) */
+.br-checkbox input[type="checkbox"]:hover {
+    background-color: #f4f9ff;
+    border-color: #0c326f;
+}
+
+/* 3. O que acontece quando ele é MARCADO (Fundo azul) */
+.br-checkbox input[type="checkbox"]:checked {
+    background-color: #1351b4;
+    border-color: #1351b4;
+}
+
+/* 4. Desenhando o "V" (Checkmark) branco usando CSS */
+.br-checkbox input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 7px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg); /* Gira a linha para formar o "V" */
+}

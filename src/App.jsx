@@ -14,8 +14,8 @@ import BoletimLira from './features/campo/BoletimLira.jsx';
 import SolicitarBloqueio from './features/campo/SolicitarBloqueio';
 import ResumoSemanal from './features/campo/ResumoSemanal';
 import Ovitrampa from './features/campo/Ovitrampa.jsx';
-import GestaoDashboard from './features/gestao/GestaoDashboard';
-import TecnicaDashboard from './features/tecnica/PainelTecnico.jsx';
+import PainelGestao from './features/gestao/PainelGestao.jsx';
+import PainelTecnico from './features/tecnica/PainelTecnico.jsx';
 import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
 
 
