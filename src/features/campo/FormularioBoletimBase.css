@@ -200,3 +200,45 @@
     border-width: 0 2px 2px 0;
     transform: rotate(45deg); /* Gira a linha para formar o "V" */
 }
+
+/* ========================================================
+   ESTILIZAÇÃO MODERNA PARA LISTAS SUSPENSAS (SELECTS)
+======================================================== */
+
+/* Remove o visual padrão do navegador e aplica o estilo limpo */
+.br-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 10px 36px 10px 16px; /* Espaçamento interno (o 36px na direita é para dar espaço para a setinha) */
+    font-size: 14px;
+    font-family: 'Rawline', 'Inter', sans-serif;
+    color: #333333;
+    background-color: #ffffff;
+    border: 1px solid #888888; /* Borda neutra inicial */
+    border-radius: 4px; /* Cantos levemente arredondados */
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    /* Aqui desenhamos uma setinha azul customizada usando SVG direto no CSS (sem precisar de arquivos externos) */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231351b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+/* Efeito ao passar o mouse ou ao clicar (foco) */
+.br-select select:hover,
+.br-select select:focus {
+    border-color: #1351b4; /* Fica azul */
+    box-shadow: 0 0 0 2px rgba(19, 81, 180, 0.2); /* Cria uma sombra azul suave em volta */
+}
+
+/* Estilo para quando o campo estiver desabilitado/bloqueado */
+.br-select select:disabled {
+    background-color: #f4f4f4;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

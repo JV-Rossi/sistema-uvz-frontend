@@ -4,6 +4,7 @@ import { listaAgentes as listaAgentesOficiais } from '../../shared/utils/dadosAg
 import { db } from '../../core/dbLocal';
 import './FormularioBoletimBase.css';
 import { Dialog } from '@capacitor/dialog';
+import Select from 'react-select';
 
 export default function FormularioBoletimBase({
     titulo,
@@ -185,10 +186,40 @@ export default function FormularioBoletimBase({
         return status;
     };
 
+    // ==========================================
+    // 🔍 FILTROS E PREPARAÇÃO PARA O REACT-SELECT
+    // ==========================================
     const bairrosFiltrados = tabelaBairros.filter(b => b.regional === cabecalho.regional);
     const agentesFiltrados = listaAgentesOficiais.filter(a => a.regional === cabecalho.regional);
     const qtdAgentesValidos = cabecalho.agentes.filter(a => a && a.trim() !== '').length;
 
+    // Converte as listas filtradas para o formato exigido pelo react-select
+    const opcoesBairros = bairrosFiltrados.map(b => ({
+        value: b.nome,
+        label: b.nome
+    }));
+
+    const opcoesAgentes = agentesFiltrados.map(a => ({
+        value: a.nome,
+        label: `${a.nome} - ${a.matricula}`
+    }));
+
+    // Estilos para evitar zoom no celular e sobreposição
+    const mobileSelectStyles = {
+        control: (base) => ({
+            ...base,
+            minHeight: '40px',
+            fontSize: '16px'
+        }),
+        menu: (base) => ({
+            ...base,
+            zIndex: 9999
+        })
+    };
+
+    // ==========================================
+    // 🧪 MANIPULAÇÃO DE TUBOS E COLETAS
+    // ==========================================
     const handleAdicionarTubo = (e) => {
         e.preventDefault();
         if (!tuboInput.trim()) {
@@ -263,19 +294,24 @@ export default function FormularioBoletimBase({
                         </div>
 
                         <div className="col-12 col-sm-4 mb-3">
-                            <div className="br-input">
-                                <label>Bairro</label>
-                                <input
-                                    type="text"
-                                    list="bairros-motor"
+                            <div className="br-input w-100">
+                                <label style={{ display: 'block', marginBottom: '4px' }}>Bairro</label>
+                                {/* IMPLEMENTAÇÃO REACT-SELECT PARA BAIRROS */}
+                                <Select
+                                    options={opcoesBairros}
+                                    // O value precisa encontrar o objeto correspondente na lista
+                                    value={opcoesBairros.find(opt => opt.value === cabecalho.bairro) || null}
+                                    onChange={(selectedOption) => {
+                                        // selectedOption pode ser null se o usuário limpar o campo
+                                        setCabecalho({ ...cabecalho, bairro: selectedOption ? selectedOption.value : '' })
+                                    }}
+                                    isDisabled={!cabecalho.regional}
                                     placeholder={cabecalho.regional ? "🔍 Buscar bairro..." : "Escolha a Regional"}
-                                    disabled={!cabecalho.regional}
-                                    value={cabecalho.bairro}
-                                    onChange={(e) => setCabecalho({ ...cabecalho, bairro: e.target.value })}
+                                    isClearable={true}
+                                    isSearchable={true}
+                                    styles={mobileSelectStyles}
+                                    noOptionsMessage={() => "Nenhum bairro encontrado"}
                                 />
-                                <datalist id="bairros-motor">
-                                    {bairrosFiltrados.map(b => <option key={b.nome} value={b.nome} />)}
-                                </datalist>
                             </div>
                         </div>
 
@@ -310,13 +346,19 @@ export default function FormularioBoletimBase({
                             if (index === 0) return null; // Oculta o titular logado da edição direta
                             return (
                                 <div key={index} className="d-flex align-items-center mb-2" style={{ gap: '8px' }}>
-                                    <div className="br-input flex-grow-1">
-                                        <input
-                                            type="text"
-                                            list="agentes-motor"
+                                    <div className="flex-grow-1">
+                                        {/* IMPLEMENTAÇÃO REACT-SELECT PARA AGENTES */}
+                                        <Select
+                                            options={opcoesAgentes}
+                                            value={opcoesAgentes.find(opt => opt.value === agente) || null}
+                                            onChange={(selectedOption) => {
+                                                handleNomeAgente(index, selectedOption ? selectedOption.value : '')
+                                            }}
                                             placeholder="Nome do ACE Parceiro"
-                                            value={agente}
-                                            onChange={(e) => handleNomeAgente(index, e.target.value)}
+                                            isClearable={true}
+                                            isSearchable={true}
+                                            styles={mobileSelectStyles}
+                                            noOptionsMessage={() => "Agente não encontrado"}
                                         />
                                     </div>
                                     <button className="br-button circle small" type="button" onClick={(e) => removerAgente(index, e)}>
@@ -325,9 +367,6 @@ export default function FormularioBoletimBase({
                                 </div>
                             );
                         })}
-                        <datalist id="agentes-motor">
-                            {agentesFiltrados.map(a => <option key={a.matricula} value={a.nome}>{a.matricula}</option>)}
-                        </datalist>
 
                         <button className="br-button secondary small block mt-2" type="button" onClick={adicionarAgente}>
                             <i className="fas fa-user-plus mr-1"></i> Vincular Colega à Equipe
@@ -349,6 +388,7 @@ export default function FormularioBoletimBase({
 
             ) : (
                 // --- MODO MINIMIZADO ---
+                // (Pode manter o seu código do modo minimizado intacto aqui)
                 <div
                     className="br-card p-3 mb-4 d-flex justify-content-between align-items-center shadow-sm cabecalho-minimizado"
                     onClick={() => setHeaderMinimizado(false)}
