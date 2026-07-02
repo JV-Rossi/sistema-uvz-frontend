@@ -2,9 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App.jsx'
-import GestaoDashboard from './features/gestao/GestaoDashboard.jsx';
+import PainelGestao from './features/gestao/PainelGestao.jsx';
 import TecnicaPainel from './features/tecnica/PainelTecnico.jsx';
-import CampoDashboard from './features/tecnica/CadastroUsuario.jsx';
+import MenuCampo from './features/tecnica/CadastroUsuario.jsx';
 import './index.css'
 import './shared/assets/rawline.css';
 
@@ -16,9 +16,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />} />
         
         {/* Rotas específicas para cada nível de acesso */}
-        <Route path="/dashboard-gestao" element={<GestaoDashboard />} />
+        <Route path="/painel-gestao" element={<PainelGestao />} />
         <Route path="/painel-tecnica" element={<TecnicaPainel />} />
-        <Route path="/dashboard-campo" element={<CampoDashboard />} />
+        <Route path="/painel-campo" element={<MenuCampo />} />
       </Routes>
     </Router>
   </React.StrictMode>,

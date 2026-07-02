@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../../core/api';
 
-export default function GestaoDashboard() {
+export default function PainelGestao() {
     // 🔐 GUARDA DE SEGURANÇA DA URL
     const cargoLogado = localStorage.getItem('userCargo');
     const usuarioNome = localStorage.getItem('userLogin');

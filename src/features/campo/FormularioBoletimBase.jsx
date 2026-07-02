@@ -52,9 +52,11 @@ export default function FormularioBoletimBase({
         teveColeta: false
     });
 
-    // Estados locais temporários apenas para capturar o que o ACE digita no tubito atual antes de clicar em "+"
-    const [tuboInput, setTuboInput] = useState('');
-    const [tipoDepositoTubo, setTipoDepositoTubo] = useState('A1');
+    // Estados locais temporários para o tubo atual antes de clicar em "+"
+    const [tuboInput, setTuboInput] = useState(''); // Refere-se ao Nº da Amostra
+    const [tipoDepositoTubo, setTipoDepositoTubo] = useState('A2'); // Ajustado conforme a etiqueta
+    const [larvasInput, setLarvasInput] = useState('');
+    const [pupasInput, setPupasInput] = useState('');
 
     // ==========================================
     // ⚙️ INTERAÇÕES E MANIPULAÇÕES DE FLUXO
@@ -187,27 +189,32 @@ export default function FormularioBoletimBase({
     const agentesFiltrados = listaAgentesOficiais.filter(a => a.regional === cabecalho.regional);
     const qtdAgentesValidos = cabecalho.agentes.filter(a => a && a.trim() !== '').length;
 
-    // LÓGICA DE ADIÇÃO E REMOÇÃO DE TUBOS DE COLETA
     const handleAdicionarTubo = (e) => {
         e.preventDefault();
         if (!tuboInput.trim()) {
-            alert('⚠️ Digite o número ou código do tubo de coleta!');
+            alert('⚠️ Digite o Nº da Amostra (Tubo)!');
             return;
         }
 
-        // Verifica se o agente já adicionou esse mesmo tubo neste imóvel
         if (imovelAtual.coletas.some(c => c.numeroTubo === tuboInput.trim())) {
-            alert('⚠️ Este número de tubo já foi adicionado para este imóvel!');
+            alert('⚠️ Esta amostra já foi adicionada para este imóvel!');
             return;
         }
 
         setImovelAtual(prev => ({
             ...prev,
-            coletas: [...prev.coletas, { numeroTubo: tuboInput.trim(), deposito: tipoDepositoTubo }]
+            coletas: [...prev.coletas, {
+                numeroTubo: tuboInput.trim(),
+                deposito: tipoDepositoTubo,
+                larvas: larvasInput === '' ? 0 : parseInt(larvasInput, 10),
+                pupas: pupasInput === '' ? 0 : parseInt(pupasInput, 10)
+            }]
         }));
 
-        // Limpa o campo do número do tubo para o próximo
+        // Limpa os campos para o próximo tubo
         setTuboInput('');
+        setLarvasInput('');
+        setPupasInput('');
     };
 
     const handleRemoverTubo = (indexParaRemover) => {
@@ -533,22 +540,22 @@ export default function FormularioBoletimBase({
                                     <i className="fas fa-vial mr-1"></i> Coleta de Larvas (Laboratório / LIRAa)
                                 </div>
 
-                                {/* Inputs para nova coleta */}
+                                {/* Inputs para nova coleta - Refletindo a Etiqueta da Entomologia */}
                                 <div className="row align-items-end mb-3">
-                                    <div className="col-5">
+                                    <div className="col-sm-3 col-6 mb-2">
                                         <div className="br-input small">
-                                            <label>Nº do Tubo</label>
+                                            <label>Nº Amostra</label>
                                             <input
                                                 type="text"
-                                                placeholder="Ex: 01A"
+                                                placeholder="Ex: 01"
                                                 value={tuboInput}
                                                 onChange={e => setTuboInput(e.target.value)}
                                             />
                                         </div>
                                     </div>
-                                    <div className="col-5">
+                                    <div className="col-sm-3 col-6 mb-2">
                                         <div className="br-select w-100 small">
-                                            <label>Depósito Origem</label>
+                                            <label>Depósito</label>
                                             <select value={tipoDepositoTubo} onChange={e => setTipoDepositoTubo(e.target.value)}>
                                                 <option value="A1">A1</option>
                                                 <option value="A2">A2</option>
@@ -560,21 +567,45 @@ export default function FormularioBoletimBase({
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="col-2 pl-0">
-                                        <button className="br-button primary circle small block w-100" type="button" onClick={handleAdicionarTubo} title="Adicionar tubo">
+                                    <div className="col-sm-2 col-4 mb-2">
+                                        <div className="br-input small">
+                                            <label>Larvas</label>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                placeholder="0"
+                                                value={larvasInput}
+                                                onChange={e => setLarvasInput(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-2 col-4 mb-2">
+                                        <div className="br-input small">
+                                            <label>Pupas</label>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                placeholder="0"
+                                                value={pupasInput}
+                                                onChange={e => setPupasInput(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-2 col-4 mb-2 pl-0">
+                                        <button className="br-button primary circle small block w-100" type="button" onClick={handleAdicionarTubo} title="Adicionar amostra">
                                             <i className="fas fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
 
-                                {/* Listagem de tubos */}
+                                {/* Listagem de amostras vinculadas ao imóvel */}
                                 {imovelAtual.coletas.length > 0 ? (
                                     <div className="p-2 border rounded bg-white">
-                                        <div className="text-down-02 text-secondary-06 text-weight-medium mb-1">Tubos vinculados a esta casa:</div>
+                                        <div className="text-down-02 text-secondary-06 text-weight-medium mb-1">Amostras vinculadas a esta casa:</div>
                                         <div className="d-flex flex-wrap" style={{ gap: '6px' }}>
                                             {imovelAtual.coletas.map((col, idx) => (
                                                 <span key={idx} className="br-tag small tag-tubo-lira d-flex align-items-center">
-                                                    🧪 Tubo {col.numeroTubo} ({col.deposito})
+                                                    🧪 Amostra: {col.numeroTubo} | Dep: {col.deposito} | L: {col.larvas} | P: {col.pupas}
                                                     <i className="fas fa-times ml-2 text-danger" style={{ cursor: 'pointer' }} onClick={() => handleRemoverTubo(idx)}></i>
                                                 </span>
                                             ))}
@@ -582,7 +613,7 @@ export default function FormularioBoletimBase({
                                     </div>
                                 ) : (
                                     <p className="text-down-02 text-danger text-weight-medium m-0">
-                                        <i className="fas fa-exclamation-triangle mr-1"></i> Nenhuma amostra coletada neste imóvel ainda.
+                                        <i className="fas fa-exclamation-triangle mr-1"></i> Nenhuma amostra registrada neste imóvel ainda.
                                     </p>
                                 )}
                             </div>
