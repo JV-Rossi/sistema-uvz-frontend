@@ -39,20 +39,31 @@ export default function PainelTecnico({ setTelaAtual }) {
 
     return (
         <div className="tecnico-container ds-gov-layout">
-            
+
             {/* ⬅️ BARRA LATERAL (Padrão br-menu do GovBR) */}
             <aside className="tecnico-sidebar br-menu">
-                <div className="sidebar-logo p-3 border-bottom">
-                    <h2 className="text-weight-semi-bold mb-0">CVSA - Cuiabá</h2>
-                    <span className="text-small">Sistema Integrado Base</span>
-                </div>
+
+                {/* Bloco do Logo Alinhado e Clicável */}
+                <button
+                    className="sidebar-logo-btn"
+                    onClick={() => {
+                        setAbaAtiva('inicio');   // Reseta para a tela vazia/profissional
+                        setPastaAberta(null);    // Fecha todas as pastas
+                    }}
+                    title="Ir para o início"
+                >
+                    <div className="logo-container">
+                        <h2 className="text-weight-semi-bold mb-0">CVSA - Cuiabá</h2>
+                        <span className="text-small text-muted">Sistema Integrado Base</span>
+                    </div>
+                </button>
 
                 <nav className="sidebar-menu mt-3">
 
                     {/* 📁 SETOR: ADMINISTRATIVO */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'administrativo' ? 'active' : ''}`} onClick={() => togglePasta('administrativo')}>
-                            <i className={`fas ${pastaAberta === 'administrativo' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            <i className={`fas ${pastaAberta === 'administrativo' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Administrativo
                             <i className={`fas ${pastaAberta === 'administrativo' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
@@ -71,7 +82,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                     {/* 📁 SETOR: ENTOMOLOGIA (Laboratório) */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'entomologia' ? 'active' : ''}`} onClick={() => togglePasta('entomologia')}>
-                            <i className={`fas ${pastaAberta === 'entomologia' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            <i className={`fas ${pastaAberta === 'entomologia' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Entomologia
                             <i className={`fas ${pastaAberta === 'entomologia' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
@@ -90,7 +101,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                     {/* 📁 SETOR: SUPERVISORES */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'supervisao' ? 'active' : ''}`} onClick={() => togglePasta('supervisao')}>
-                            <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Supervisores
                             <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
@@ -109,7 +120,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                     {/* 📁 SETOR: RESPONSÁVEIS TÉCNICOS */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'responsaveis' ? 'active' : ''}`} onClick={() => togglePasta('responsaveis')}>
-                            <i className={`fas ${pastaAberta === 'responsaveis' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            <i className={`fas ${pastaAberta === 'responsaveis' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Resp. Técnicos
                             <i className={`fas ${pastaAberta === 'responsaveis' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
@@ -134,7 +145,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                     {/* 📁 SETOR: BORRIFAÇÃO */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'borrifacao' ? 'active' : ''}`} onClick={() => togglePasta('borrifacao')}>
-                            <i className={`fas ${pastaAberta === 'borrifacao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            <i className={`fas ${pastaAberta === 'borrifacao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Borrifação
                             <i className={`fas ${pastaAberta === 'borrifacao' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
@@ -159,7 +170,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                     {/* 📁 SETOR: ANIMAIS DOMÉSTICOS */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'animais_domesticos' ? 'active' : ''}`} onClick={() => togglePasta('animais_domesticos')}>
-                            <i className={`fas ${pastaAberta === 'animais_domesticos' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            <i className={`fas ${pastaAberta === 'animais_domesticos' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Animais Domésticos
                             <i className={`fas ${pastaAberta === 'animais_domesticos' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>

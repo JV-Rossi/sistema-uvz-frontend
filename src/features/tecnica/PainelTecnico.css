@@ -24,21 +24,40 @@
     box-shadow: 2px 0 5px rgba(0,0,0,0.05);
 }
 
-.sidebar-logo {
-    padding: 24px;
+/* 🟢 NOVO: Botão invisível do Logo perfeitamente alinhado */
+.sidebar-logo-btn {
+    width: 100%;
+    background: transparent;
+    border: none;
     border-bottom: 1px solid #E6E6E6;
-    background-color: #FFFFFF;
+    padding: 24px 24px; /* Casado perfeitamente com o limite horizontal interno */
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: block;
+    box-sizing: border-box;
 }
 
-.sidebar-logo h2 {
+.sidebar-logo-btn:hover {
+    background-color: #F4F8FB; /* Feedback de clique discreto padrão GovBR */
+}
+
+/* Container interno para organizar os textos */
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.logo-container h2 {
     color: #1351B4; /* Azul Primário GovBR */
     margin: 0;
     font-size: 20px;
     font-weight: 600;
 }
 
-.sidebar-logo span {
-    font-size: 14px;
+.logo-container span {
+    font-size: 13px;
     color: #555555;
     font-weight: 400;
 }

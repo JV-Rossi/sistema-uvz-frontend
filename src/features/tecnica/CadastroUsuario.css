@@ -3,11 +3,16 @@
    ======================================================= */
 .container-cadastro-user {
     color: #333333;
-    /* A fonte Rawline/Raleway é importada globalmente no projeto */
+    padding-right: 40px;  /* 🌟 Garante o recuo de segurança no canto direito */
+    padding-left: 8px;    /* Margem sutil na esquerda em relação à sidebar */
+    padding-top: 8px;     /* Alinha o topo com o menu lateral */
+    box-sizing: border-box;
 }
 
 .form-wrapper {
     max-width: 800px;
+    width: 100%;          /* 🌟 Força o formulário a respeitar o limite máximo elegantemente */
+    margin-right: auto;   /* Mantém o alinhamento fluído */
 }
 
 .sessao-titulo {
