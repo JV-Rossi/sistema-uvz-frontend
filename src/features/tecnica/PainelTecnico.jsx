@@ -89,10 +89,17 @@ export default function PainelTecnico({ setTelaAtual }) {
                         {pastaAberta === 'entomologia' && (
                             <div className="folder-content pl-3">
                                 <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'laboratorio' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('laboratorio')}
+                                    className={`menu-btn br-button block ${abaAtiva === 'laboratorio-ovos' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('laboratorio-ovos')}
                                 >
                                     <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Lançamento de Ovos
+                                </button>
+                                {/* 🟢 ADICIONADO: Aba de Larvas */}
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'laboratorio-larvas' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('laboratorio-larvas')}
+                                >
+                                    <i className="fas fa-vial mr-2" aria-hidden="true"></i> Análise de Larvas (Tubitos)
                                 </button>
                             </div>
                         )}
@@ -264,6 +271,12 @@ export default function PainelTecnico({ setTelaAtual }) {
                         <div className="card-content p-3">
                             <p>Gráficos e relatórios entrarão aqui.</p>
                         </div>
+                    </div>
+                )}
+
+                {abaAtiva === 'laboratorio-larvas' && (
+                    <div className="br-card">
+                        <AnaliseLarvas setTelaAtual={setTelaAtual} />
                     </div>
                 )}
 
