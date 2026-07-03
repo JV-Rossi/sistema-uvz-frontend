@@ -1,43 +1,22 @@
-/* Variáveis de paleta escura combinando com a Sidebar */
-:root {
-    --dark-bg-main: #141416;
-    --dark-bg-card: #1f2023;
-    --dark-bg-input: #2a2b2f;
-    --green-vibrant: #4ade80;
-    --green-deep: #166534;
-    --text-white: #f3f4f6;
-    --text-muted: #9ca3af;
-    --border-dark: #2e3035;
-}
-
+/* =======================================================
+   DISTRIBUIDOR DE TRABALHO (Padrão GovBR)
+   ======================================================= */
 .distribuidor-content {
-    flex: 1;
-    background-color: var(--dark-bg-main);
-    padding: 30px;
-    min-height: 100vh;
-    box-sizing: border-box;
-    color: var(--text-white);
+    width: 100%;
+    color: #333333;
+    animation: fadeIn 0.3s ease;
 }
 
-.distribuidor-header h1 {
-    color: var(--text-white);
-    font-size: 28px;
-    margin-bottom: 5px;
-    font-weight: 700;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.distribuidor-header p {
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-top: 0;
-    margin-bottom: 25px;
-}
-
-/* Layout flexível dividido */
+/* Layout flexível dividido (Formulário na Esquerda, Resultado na Direita) */
 .layout-split {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 24px;
 }
 
 @media (min-width: 1024px) {
@@ -45,266 +24,111 @@
         flex-direction: row;
         align-items: flex-start;
     }
-    .panel-dark-form { flex: 1; }
-    .panel-dark-results { flex: 1.2; }
+    .layout-split > form { 
+        flex: 1; 
+    }
+    .layout-split > .bg-light-blue { 
+        flex: 1.2; 
+    }
 }
 
-/* Painel de formulário escuro */
-.panel-dark-form {
-    background-color: var(--dark-bg-card);
-    border: 1px solid var(--border-dark);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+/* =======================================================
+   ESTILOS DE UTILIDADE E TEXTO (GovBR)
+   ======================================================= */
+.text-primary { color: #1351B4 !important; }
+.text-success { color: #168821 !important; }
+.text-muted { color: #777777 !important; }
+.text-white { color: #FFFFFF !important; }
+
+.text-small { font-size: 12px; }
+.text-large { font-size: 28px; line-height: 1.2; }
+.text-uppercase { text-transform: uppercase; letter-spacing: 0.5px; }
+
+.text-weight-bold { font-weight: 700; }
+.text-weight-semi-bold { font-weight: 600; }
+
+.d-block { display: block; }
+
+.bg-light-blue {
+    background-color: #F4F8FB !important; /* Azul muito claro para destacar o resultado */
+    border: 1px solid #D1E4F9;
 }
 
-.form-section {
-    margin-bottom: 25px;
+.bg-primary {
+    background-color: #1351B4 !important;
 }
 
-.form-section h4 {
-    margin: 0 0 8px 0;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-muted);
-}
-
-.divider {
-    border: 0;
-    height: 1px;
-    background: var(--border-dark);
-    margin-bottom: 15px;
-}
-
-.input-field-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-}
-
-.input-field-group label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-white);
-    margin-bottom: 6px;
-    text-align: left;
-}
-
-.input-field-group input {
-    background-color: var(--dark-bg-input);
-    border: 1px solid var(--border-dark);
-    color: var(--text-white);
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.input-field-group input:focus {
-    outline: none;
-    border-color: var(--green-vibrant);
-    box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.2);
-}
-
-/* Botão principal */
-.btn-submit-vibrant {
-    background: linear-gradient(135deg, #22c55e, #15803d);
-    color: white;
-    border: none;
-    padding: 14px;
-    width: 100%;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 15px;
+/* =======================================================
+   BOTÕES SECUNDÁRIOS E TAGS
+   ======================================================= */
+.br-button.secondary {
+    background-color: #FFFFFF;
+    color: #1351B4;
+    border: 1px solid #1351B4;
+    padding: 12px 24px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
-}
-
-.btn-submit-vibrant:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-}
-
-.btn-submit-vibrant:disabled {
-    background: #4b5563;
-    color: #9ca3af;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-/* Painel de Resultados */
-.panel-dark-results {
-    background-color: var(--dark-bg-card);
-    border: 1px solid var(--border-dark);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Layout de cartões de estatísticas */
-.stats-badge-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-@media (min-width: 480px) {
-    .stats-badge-container { grid-template-columns: 1fr 1fr; }
-}
-
-.stat-card {
-    background-color: var(--dark-bg-input);
-    border: 1px solid var(--border-dark);
-    padding: 12px 16px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
-
-.border-top-green {
-    border-top: 3px solid var(--green-vibrant);
-}
-
-.stat-grid-mini {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.stat-subcard {
-    background-color: var(--dark-bg-input);
-    border: 1px solid var(--border-dark);
-    padding: 10px;
-    border-radius: 6px;
-    font-size: 13px;
-    text-align: left;
-}
-
-.stat-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-}
-
-.stat-value {
+    font-weight: 600;
     font-size: 16px;
-    font-weight: 700;
-    margin-top: 4px;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.green-neon { color: var(--green-vibrant); }
-.green-neon-soft { color: #86efac; font-weight: 600; }
-.highlight-text { text-transform: uppercase; color: #fff; }
+.br-button.secondary:hover {
+    background-color: #F4F8FB;
+}
 
-/* Tabela escura de dados */
-.tabela-dengue-dark {
+.br-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* =======================================================
+   PAINEL DE ESTATÍSTICAS (Resultados)
+   ======================================================= */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.stat-box {
+    background-color: #FFFFFF;
+    border: 1px solid #E6E6E6;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.stat-box.border-success {
+    border-bottom: 4px solid #168821; /* Faixa verde indicando a Meta Ideal */
+}
+
+.table-responsive {
+    overflow-x: auto;
     width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    margin-top: 15px;
 }
 
-.tabela-dengue-dark th {
-    background-color: var(--dark-bg-input);
-    color: var(--text-muted);
-    padding: 12px;
-    font-weight: 600;
-    border-bottom: 2px solid var(--border-dark);
-    text-transform: uppercase;
-    font-size: 11px;
-}
-
-.tabela-dengue-dark td {
-    padding: 14px 12px;
-    border-bottom: 1px solid var(--border-dark);
-    color: var(--text-white);
-    text-align: center;
-}
-
-.tabela-dengue-dark tr:hover {
-    background-color: rgba(255, 255, 255, 0.02);
-}
-
-.text-dimmed { color: var(--text-muted); }
-
-.agent-count-pill {
-    background-color: rgba(74, 222, 128, 0.1);
-    color: var(--green-vibrant);
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-weight: bold;
-}
-
-/* Fileira de botões de ações */
-.panel-actions-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 25px;
-}
-
-.btn-action-grey {
-    background-color: #374151;
-    color: var(--text-white);
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn-action-grey:hover { background-color: #4b5563; }
-
-.btn-action-print {
-    background-color: #b91c1c;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn-action-print:hover { background-color: #991b1b; }
-
-.calc-error-msg {
-    color: #f87171;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-/* 🖨️ REGRAS EXCLUSIVAS DE IMPRESSÃO (Converte o layout para folha branca limpa) */
+/* 🖨️ REGRAS EXCLUSIVAS DE IMPRESSÃO (Folha Branca Oficial) */
 @media print {
-    /* Oculta tudo que não faz parte do resultado do relatório */
+    /* Esconde menu, botões e formulários de pesquisa */
     .tecnico-sidebar, 
-    .sidebar-supervisor,
-    .panel-dark-form,
-    .panel-actions-row,
-    .distribuidor-header p,
+    form,
+    .form-actions,
     header p {
         display: none !important;
     }
 
-    /* Redefine os containers principais para ocupar o papel inteiro em branco */
+    /* Redefine os containers principais para economizar tinta e ocupar o papel */
     body, 
+    .tecnico-container,
     .distribuidor-content, 
-    .panel-dark-results, 
-    .tecnico-content {
+    .bg-light-blue,
+    .tecnico-conteudo {
         background: white !important;
         color: black !important;
         padding: 0 !important;
@@ -313,49 +137,52 @@
         border: none !important;
     }
 
-    .distribuidor-header h1 {
+    header h1 {
         color: black !important;
-        font-size: 22px;
-        border-bottom: 2px solid #000;
-        padding-bottom: 5px;
+        font-size: 24px !important;
+        border-bottom: 2px solid #000 !important;
+        padding-bottom: 10px;
     }
 
-    /* Ajusta os cartões de dados para o papel */
-    .stats-badge-container {
+    /* Ajusta as estatísticas para alinhar na folha A4 */
+    .stats-grid {
+        display: grid !important;
         grid-template-columns: 1fr 1fr 1fr !important;
-        margin-bottom: 20px;
+        gap: 15px;
     }
 
-    .stat-card, .stat-subcard {
-        background: #f3f4f6 !important;
-        border: 1px solid #ccc !important;
-        color: black !important;
+    .stat-box {
+        border: 1px solid #000 !important;
+        background: #fff !important;
     }
 
-    .stat-value, .green-neon, .green-neon-soft {
-        color: black !important;
+    .stat-box span {
+        color: #000 !important;
     }
 
-    /* Configuração da tabela para impressão limpa */
-    .tabela-dengue-dark {
+    /* Configuração da tabela para impressão nítida */
+    .tabela-tecnica-dt {
+        border: 1px solid #000 !important;
         margin-top: 20px;
-        font-size: 12px;
     }
 
-    .tabela-dengue-dark th {
-        background-color: #e5e7eb !important;
+    .tabela-tecnica-dt th {
+        background-color: #EEE !important;
         color: black !important;
         border-bottom: 2px solid black !important;
+        border-right: 1px solid #000 !important;
     }
 
-    .tabela-dengue-dark td {
+    .tabela-tecnica-dt td {
         color: black !important;
-        border-bottom: 1px solid #ccc !important;
+        border-bottom: 1px solid #CCC !important;
+        border-right: 1px solid #CCC !important;
     }
 
-    .agent-count-pill {
+    .br-tag {
+        border: 1px solid #000;
+        color: #000 !important;
         background: none !important;
-        color: black !important;
         padding: 0 !important;
     }
 }
