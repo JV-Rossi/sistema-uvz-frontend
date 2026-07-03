@@ -6,6 +6,7 @@
     padding-right: 40px;  /* 🌟 Garante o recuo de segurança no canto direito */
     padding-left: 8px;    /* Margem sutil na esquerda em relação à sidebar */
     padding-top: 8px;     /* Alinha o topo com o menu lateral */
+    padding-bottom: 8px;  /* Espaço inferior para evitar corte de conteúdo */
     box-sizing: border-box;
 }
 
