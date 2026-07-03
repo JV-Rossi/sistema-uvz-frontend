@@ -5,15 +5,14 @@ import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
 import './PainelTecnico.css';
 
 export default function PainelTecnico({ setTelaAtual }) {
-    // 1. Controle de qual TELA está aparecendo na direita
-    const [abaAtiva, setAbaAtiva] = useState('equipe');
+    // 1. Controle de TELA: Inicia na tela de 'inicio' (vazia/profissional)
+    const [abaAtiva, setAbaAtiva] = useState('inicio');
 
-    // 2. Controle de qual PASTA (setor) está aberta na esquerda
-    const [pastaAberta, setPastaAberta] = useState('administrativo');
+    // 2. Controle de PASTA: Inicia como 'null' (todas fechadas)
+    const [pastaAberta, setPastaAberta] = useState(null);
 
     // Função que abre e fecha as pastas do menu
     const togglePasta = (nomeDaPasta) => {
-        // Se clicar na pasta que já está aberta, ela fecha. Senão, abre a nova.
         setPastaAberta(pastaAberta === nomeDaPasta ? null : nomeDaPasta);
     };
 
@@ -39,46 +38,50 @@ export default function PainelTecnico({ setTelaAtual }) {
     };
 
     return (
-        <div className="tecnico-container">
-            {/* ⬅️ BARRA LATERAL COM PASTAS */}
-            <aside className="tecnico-sidebar">
-                <div className="sidebar-logo">
-                    <h2>CVSA - Cuiabá</h2>
-                    <span>Sistema Integrado Base</span>
+        <div className="tecnico-container ds-gov-layout">
+            
+            {/* ⬅️ BARRA LATERAL (Padrão br-menu do GovBR) */}
+            <aside className="tecnico-sidebar br-menu">
+                <div className="sidebar-logo p-3 border-bottom">
+                    <h2 className="text-weight-semi-bold mb-0">CVSA - Cuiabá</h2>
+                    <span className="text-small">Sistema Integrado Base</span>
                 </div>
 
-                <nav className="sidebar-menu">
+                <nav className="sidebar-menu mt-3">
 
                     {/* 📁 SETOR: ADMINISTRATIVO */}
                     <div className="menu-folder">
-                        <button className="folder-btn" onClick={() => togglePasta('administrativo')}>
-                            {pastaAberta === 'administrativo' ? '📂' : '📁'} Administrativo
+                        <button className={`folder-btn br-button block ${pastaAberta === 'administrativo' ? 'active' : ''}`} onClick={() => togglePasta('administrativo')}>
+                            <i className={`fas ${pastaAberta === 'administrativo' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            Administrativo
+                            <i className={`fas ${pastaAberta === 'administrativo' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
                         {pastaAberta === 'administrativo' && (
-                            <div className="folder-content">
+                            <div className="folder-content pl-3">
                                 <button
-                                    className={`menu-btn ${abaAtiva === 'equipe' ? 'ativo' : ''}`}
+                                    className={`menu-btn br-button block ${abaAtiva === 'equipe' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('equipe')}
                                 >
-                                    👤 Cadastro de Equipe
+                                    <i className="fas fa-users mr-2" aria-hidden="true"></i> Cadastro de Equipe
                                 </button>
-                                {/* Espaço para futuras ferramentas administrativas (ex: controle de frota) */}
                             </div>
                         )}
                     </div>
 
                     {/* 📁 SETOR: ENTOMOLOGIA (Laboratório) */}
                     <div className="menu-folder">
-                        <button className="folder-btn" onClick={() => togglePasta('entomologia')}>
-                            {pastaAberta === 'entomologia' ? '📂' : '📁'} Entomologia
+                        <button className={`folder-btn br-button block ${pastaAberta === 'entomologia' ? 'active' : ''}`} onClick={() => togglePasta('entomologia')}>
+                            <i className={`fas ${pastaAberta === 'entomologia' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            Entomologia
+                            <i className={`fas ${pastaAberta === 'entomologia' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
                         {pastaAberta === 'entomologia' && (
-                            <div className="folder-content">
+                            <div className="folder-content pl-3">
                                 <button
-                                    className={`menu-btn ${abaAtiva === 'laboratorio' ? 'ativo' : ''}`}
+                                    className={`menu-btn br-button block ${abaAtiva === 'laboratorio' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('laboratorio')}
                                 >
-                                    🔬 Lançamento de Ovos
+                                    <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Lançamento de Ovos
                                 </button>
                             </div>
                         )}
@@ -86,41 +89,43 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                     {/* 📁 SETOR: SUPERVISORES */}
                     <div className="menu-folder">
-                        <button className="folder-btn" onClick={() => togglePasta('supervisao')}>
-                            {pastaAberta === 'supervisao' ? '📂' : '📁'} Supervisores
+                        <button className={`folder-btn br-button block ${pastaAberta === 'supervisao' ? 'active' : ''}`} onClick={() => togglePasta('supervisao')}>
+                            <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            Supervisores
+                            <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
                         {pastaAberta === 'supervisao' && (
-                            <div className="folder-content">
+                            <div className="folder-content pl-3">
                                 <button
-                                    className={`menu-btn ${abaAtiva === 'mutirao' ? 'ativo' : ''}`}
+                                    className={`menu-btn br-button block ${abaAtiva === 'mutirao' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('mutirao')}
                                 >
-                                    📋 Distribuição de Mutirão
+                                    <i className="fas fa-clipboard-list mr-2" aria-hidden="true"></i> Distribuição de Mutirão
                                 </button>
                             </div>
                         )}
                     </div>
 
-
-
                     {/* 📁 SETOR: RESPONSÁVEIS TÉCNICOS */}
                     <div className="menu-folder">
-                        <button className="folder-btn" onClick={() => togglePasta('responsaveis')}>
-                            {pastaAberta === 'responsaveis' ? '📂' : '📁'} Resp. Técnicos
+                        <button className={`folder-btn br-button block ${pastaAberta === 'responsaveis' ? 'active' : ''}`} onClick={() => togglePasta('responsaveis')}>
+                            <i className={`fas ${pastaAberta === 'responsaveis' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            Resp. Técnicos
+                            <i className={`fas ${pastaAberta === 'responsaveis' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
                         {pastaAberta === 'responsaveis' && (
-                            <div className="folder-content">
+                            <div className="folder-content pl-3">
                                 <button
-                                    className={`menu-btn ${abaAtiva === 'dashboards' ? 'ativo' : ''}`}
+                                    className={`menu-btn br-button block ${abaAtiva === 'dashboards' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('dashboards')}
                                 >
-                                    📊 Indicadores e Relatórios
+                                    <i className="fas fa-chart-pie mr-2" aria-hidden="true"></i> Indicadores e Relatórios
                                 </button>
                                 <button
-                                    className={`menu-btn ${abaAtiva === 'consultas' ? 'ativo' : ''}`}
+                                    className={`menu-btn br-button block ${abaAtiva === 'consultas' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('consultas')}
                                 >
-                                    🔍 Consultas & Exportação
+                                    <i className="fas fa-search mr-2" aria-hidden="true"></i> Consultas & Exportação
                                 </button>
                             </div>
                         )}
@@ -128,34 +133,24 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                     {/* 📁 SETOR: BORRIFAÇÃO */}
                     <div className="menu-folder">
-                        <button className="folder-btn" onClick={() => togglePasta('borrifacao')}>
-                            {pastaAberta === 'borrifacao' ? '📂' : '📁'} Borrifação
+                        <button className={`folder-btn br-button block ${pastaAberta === 'borrifacao' ? 'active' : ''}`} onClick={() => togglePasta('borrifacao')}>
+                            <i className={`fas ${pastaAberta === 'borrifacao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            Borrifação
+                            <i className={`fas ${pastaAberta === 'borrifacao' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
                         {pastaAberta === 'borrifacao' && (
-                            <div className="folder-content">
-                                <button
-                                    className={`menu-btn ${abaAtiva === 'retirada_bti' ? 'ativo' : ''}`}
-                                    onClick={() => setAbaAtiva('retirada_bti')}
-                                >
-                                    🦟 Retirada de BTIs
+                            <div className="folder-content pl-3">
+                                <button className={`menu-btn br-button block ${abaAtiva === 'retirada_bti' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('retirada_bti')}>
+                                    <i className="fas fa-spray-can mr-2" aria-hidden="true"></i> Retirada de BTIs
                                 </button>
-                                <button
-                                    className={`menu-btn ${abaAtiva === 'estoque_borrifacao' ? 'ativo' : ''}`}
-                                    onClick={() => setAbaAtiva('estoque_borrifacao')}
-                                >
-                                    📦 Controle de Estoque
+                                <button className={`menu-btn br-button block ${abaAtiva === 'estoque_borrifacao' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('estoque_borrifacao')}>
+                                    <i className="fas fa-box mr-2" aria-hidden="true"></i> Controle de Estoque
                                 </button>
-                                <button
-                                    className={`menu-btn ${abaAtiva === 'bloqueio_quimico' ? 'ativo' : ''}`}
-                                    onClick={() => setAbaAtiva('bloqueio_quimico')}
-                                >
-                                    💨 Bloqueio Químico
+                                <button className={`menu-btn br-button block ${abaAtiva === 'bloqueio_quimico' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('bloqueio_quimico')}>
+                                    <i className="fas fa-shield-alt mr-2" aria-hidden="true"></i> Bloqueio Químico
                                 </button>
-                                <button
-                                    className={`menu-btn ${abaAtiva === 'pe_borrifacao' ? 'ativo' : ''}`}
-                                    onClick={() => setAbaAtiva('pe_borrifacao')}
-                                >
-                                    🏭 Pontos Estratégicos (P.E)
+                                <button className={`menu-btn br-button block ${abaAtiva === 'pe_borrifacao' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('pe_borrifacao')}>
+                                    <i className="fas fa-map-marker-alt mr-2" aria-hidden="true"></i> Pontos Estratégicos (P.E)
                                 </button>
                             </div>
                         )}
@@ -163,34 +158,24 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                     {/* 📁 SETOR: ANIMAIS DOMÉSTICOS */}
                     <div className="menu-folder">
-                        <button className="folder-btn" onClick={() => togglePasta('animais_domesticos')}>
-                            {pastaAberta === 'animais_domesticos' ? '📂' : '📁'} Animais Domésticos
+                        <button className={`folder-btn br-button block ${pastaAberta === 'animais_domesticos' ? 'active' : ''}`} onClick={() => togglePasta('animais_domesticos')}>
+                            <i className={`fas ${pastaAberta === 'animais_domesticos' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i> 
+                            Animais Domésticos
+                            <i className={`fas ${pastaAberta === 'animais_domesticos' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
                         {pastaAberta === 'animais_domesticos' && (
-                            <div className="folder-content">
-                                <button
-                                    className={`menu-btn ${abaAtiva === 'vacinacao_animal' ? 'ativo' : ''}`}
-                                    onClick={() => setAbaAtiva('vacinacao_animal')}
-                                >
-                                    💉 Controle de Vacinação
+                            <div className="folder-content pl-3">
+                                <button className={`menu-btn br-button block ${abaAtiva === 'vacinacao_animal' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('vacinacao_animal')}>
+                                    <i className="fas fa-syringe mr-2" aria-hidden="true"></i> Controle de Vacinação
                                 </button>
-                                <button
-                                    className={`menu-btn ${abaAtiva === 'eutanasia_animal' ? 'ativo' : ''}`}
-                                    onClick={() => setAbaAtiva('eutanasia_animal')}
-                                >
-                                    🌈 Controle de Eutanásia
+                                <button className={`menu-btn br-button block ${abaAtiva === 'eutanasia_animal' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('eutanasia_animal')}>
+                                    <i className="fas fa-book-dead mr-2" aria-hidden="true"></i> Controle de Eutanásia
                                 </button>
-                                <button
-                                    className={`menu-btn ${abaAtiva === 'leishmaniose_animal' ? 'ativo' : ''}`}
-                                    onClick={() => setAbaAtiva('leishmaniose_animal')}
-                                >
-                                    🐶 Controle de Leishmaniose
+                                <button className={`menu-btn br-button block ${abaAtiva === 'leishmaniose_animal' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('leishmaniose_animal')}>
+                                    <i className="fas fa-dog mr-2" aria-hidden="true"></i> Controle de Leishmaniose
                                 </button>
-                                <button
-                                    className={`menu-btn ${abaAtiva === 'temperatura_vacinas' ? 'ativo' : ''}`}
-                                    onClick={() => setAbaAtiva('temperatura_vacinas')}
-                                >
-                                    🌡️ Temperatura de Vacinas
+                                <button className={`menu-btn br-button block ${abaAtiva === 'temperatura_vacinas' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('temperatura_vacinas')}>
+                                    <i className="fas fa-thermometer-half mr-2" aria-hidden="true"></i> Temperatura de Vacinas
                                 </button>
                             </div>
                         )}
@@ -198,55 +183,76 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                 </nav>
 
-                <div className="sidebar-saida">
-                    <button className="btn-logout" onClick={() => setTelaAtual('login')}>
-                        🚪 Sair do Sistema
+                <div className="sidebar-saida mt-auto p-3 border-top">
+                    <button className="br-button danger block" onClick={() => setTelaAtual('login')}>
+                        <i className="fas fa-sign-out-alt mr-2" aria-hidden="true"></i> Sair do Sistema
                     </button>
                 </div>
             </aside>
 
             {/* ➡️ ÁREA DE TRABALHO (DIREITA) */}
-            <main className="tecnico-conteudo">
+            <main className="tecnico-conteudo p-4">
 
+                {/* TELA INICIAL (Boas-vindas GovBR) */}
+                {abaAtiva === 'inicio' && (
+                    <div className="br-message is-info mt-5" role="alert">
+                        <div className="icon">
+                            <i className="fas fa-info-circle fa-lg" aria-hidden="true"></i>
+                        </div>
+                        <div className="content" aria-label="Informação.">
+                            <span className="message-title text-weight-semi-bold">Bem-vindo(a) ao Painel da Equipe Técnica.</span>
+                            <span className="message-body">
+                                {' '}Utilize o menu lateral para acessar os módulos de Entomologia, Supervisão e ferramentas administrativas. O sistema de monitoramento está operando normalmente.
+                            </span>
+                        </div>
+                    </div>
+                )}
+
+                {/* DEMAIS TELAS MANTIDAS */}
                 {abaAtiva === 'equipe' && (
-                    <div className="modulo-card-limpo">
+                    <div className="br-card">
                         <CadastroUsuario setTelaAtual={setTelaAtual} />
                     </div>
                 )}
 
                 {abaAtiva === 'consultas' && (
-                    <div className="modulo-card">
-                        <div className="modulo-header">
+                    <div className="br-card">
+                        <div className="card-header border-bottom p-3">
                             <ConsultasExportacoes setTelaAtual={setTelaAtual} />
                         </div>
-                        {/* A tabela densa continua aqui... encurtada no exemplo para focar no menu */}
-                        <p>Ferramenta de consultas ativada.</p>
+                        <div className="card-content p-3">
+                            <p>Ferramenta de consultas ativada.</p>
+                        </div>
                     </div>
                 )}
 
                 {abaAtiva === 'laboratorio' && (
-                    <div className="modulo-card">
-                        <div className="modulo-header">
-                            <h2>Laboratório - Contagem de Ovos</h2>
-                            <p>Insira os resultados microscópicos das palhetas recolhidas no campo.</p>
+                    <div className="br-card">
+                        <div className="card-header border-bottom p-3">
+                            <h2 className="text-weight-semi-bold">Laboratório - Contagem de Ovos</h2>
+                            <p className="text-small mb-0">Insira os resultados microscópicos das palhetas recolhidas no campo.</p>
                         </div>
-                        <p>Formulário de lançamento de ovos ativado.</p>
+                        <div className="card-content p-3">
+                            <p>Formulário de lançamento de ovos ativado.</p>
+                        </div>
                     </div>
                 )}
 
                 {abaAtiva === 'mutirao' && (
-                    <div className="modulo-card-limpo">
+                    <div className="br-card">
                         <DistribuidorTrabalho setTelaAtual={setTelaAtual} />
                     </div>
                 )}
 
                 {abaAtiva === 'dashboards' && (
-                    <div className="modulo-card">
-                        <div className="modulo-header">
-                            <h2>Painel da Responsabilidade Técnica</h2>
-                            <p>Visão consolidada dos índices de infestação do município.</p>
+                    <div className="br-card">
+                        <div className="card-header border-bottom p-3">
+                            <h2 className="text-weight-semi-bold">Painel da Responsabilidade Técnica</h2>
+                            <p className="text-small mb-0">Visão consolidada dos índices de infestação do município.</p>
                         </div>
-                        <p>Gráficos e relatórios entrarão aqui.</p>
+                        <div className="card-content p-3">
+                            <p>Gráficos e relatórios entrarão aqui.</p>
+                        </div>
                     </div>
                 )}
 

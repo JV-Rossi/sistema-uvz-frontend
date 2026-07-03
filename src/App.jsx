@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import { db } from './core/dbLocal';
-import { Network } from '@capacitor/network'; // 👈 Importação do plugin de rede nativo
+import { Network } from '@capacitor/network'; 
 import Login from './features/auth/Login';
 import RecuperarSenha from './features/auth/RecuperarSenha';
 import Cadastro from './features/tecnica/CadastroUsuario.jsx'
