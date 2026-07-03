@@ -45,7 +45,8 @@ function App() {
 
   // 🔄 OUVINTE DE REDE: Dispara a sincronização assim que o Wi-Fi conecta
   useEffect(() => {
-    const ouvinteRede = Network.addListener('networkStatusChange', async (status) => {
+    // 1. Guardamos a Promise retornada pelo Capacitor
+    const ouvinteRedePromise = Network.addListener('networkStatusChange', async (status) => {
       // Executa apenas se houver conectividade e se o tipo for Wi-Fi
       if (status.connected && status.connectionType === 'wifi') {
         console.log('🔄 Wi-Fi detectado! Iniciando sincronização automática...');
@@ -53,8 +54,13 @@ function App() {
       }
     });
 
+    // 2. No cleanup (desmontagem), resolvemos a Promise e então aplicamos o remove() no handle correto
     return () => {
-      ouvinteRede.remove();
+      ouvinteRedePromise.then(handle => {
+        if (handle) {
+          handle.remove();
+        }
+      });
     };
   }, []);
 
@@ -121,11 +127,11 @@ function App() {
       )}
 
       {telaAtual === 'tecnica' && (
-        <TecnicaDashboard setTelaAtual={setTelaAtual} />
+        <PainelTecnico setTelaAtual={setTelaAtual} />
       )}
 
       {telaAtual === 'gestao' && (
-        <GestaoDashboard setTelaAtual={setTelaAtual} />
+        <PainelGestao setTelaAtual={setTelaAtual} />
       )}
 
       {/* ROTEAMENTO DO AGENTE DE CAMPO */}
@@ -153,7 +159,7 @@ function App() {
         <BoletimPE setTelaAtual={setTelaAtual} />
       )}
 
-       {telaAtual === 'boletim_lira' && (
+      {telaAtual === 'boletim_lira' && (
         <BoletimLira setTelaAtual={setTelaAtual} />
       )}
 
