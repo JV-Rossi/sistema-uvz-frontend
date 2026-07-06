@@ -96,7 +96,7 @@ export default function ResumoSemanal({ setTelaAtual }) {
                     dadosEnvio.titularMatricula = dadosEnvio.titularMatricula || matricula;
 
                     // Dispara para o endpoint POST do seu VisitaController
-                    const responsePost = await api.post('/visitas', dadosEnvio);
+                    const responsePost = await api.post('/visitas/lote', dadosEnvio);
 
                     if (responsePost.status === 200 || responsePost.status === 201) {
                         // 🔥 ESSENCIAL: Deleta a ficha provisória local. 
