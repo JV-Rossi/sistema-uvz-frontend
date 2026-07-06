@@ -17,6 +17,7 @@ export default function ResumoSemanal({ setTelaAtual }) {
 
     const [quadranteAtivo, setQuadranteAtivo] = useState(null);
     const [fichasPendentes, setFichasPendentes] = useState([]);
+    const matriculaLogada = localStorage.getItem('userMatricula') || "00000000";
 
     const periodosObrigatorios = [
         'seg_mat', 'seg_vesp', 'ter_mat', 'ter_vesp',
@@ -81,26 +82,37 @@ export default function ResumoSemanal({ setTelaAtual }) {
             // 🚀 FASE 1: PUSH (Enviar a produção offline do Tablet para a Nuvem)
             // =================================================================
             const todasAsFichasLocais = await db.fichas_soltas.toArray();
-
-            // Filtra as fichas que foram geradas offline neste tablet (não sincronizadas)
             const fichasParaSubir = todasAsFichasLocais.filter(ficha => !ficha.sincronizado);
 
             if (fichasParaSubir.length > 0) {
                 console.log(`📤 Encontradas ${fichasParaSubir.length} fichas offline. Iniciando upload da equipe...`);
 
                 for (const ficha of fichasParaSubir) {
-                    // Desestrutura para remover o ID temporário do Dexie e a flag de controle
-                    const { id, sincronizado, ...dadosEnvio } = ficha;
 
-                    // Garante que a matrícula de quem coletou permaneça intacta no lote
-                    dadosEnvio.titularMatricula = dadosEnvio.titularMatricula || matricula;
+                    // 🎯 MAPEAMENTO CORRETÍSSIMO PARA O JAVA (Casando as chaves e tratando nulos)
+                    const payloadValido = {
+                        bairro: ficha.bairro || "Não informado",
+                        codigo: ficha.codigo || "0",
+                        zona: ficha.zona || "0",
+                        regional: ficha.regional || ficha.distrito || "Não informada",
+                        ciclo: ficha.ciclo || "1",
+                        semana: ficha.semana || "1",
 
-                    // Dispara para o endpoint POST do seu VisitaController
-                    const responsePost = await api.post('/visitas/lote', dadosEnvio);
+                        // 🎯 Envia em ambos os formatos para blindar a desserialização do DTO Java:
+                        titularMatricula: matricula,
+                        titular_matricula: matricula,
+
+                        tipoBoletim: ficha.tipoBoletim || ficha.tipo_boletim || "Rotina (ACE)",
+                        equipeParceiros: ficha.equipeParceiros || ficha.equipe_parceiros || [],
+                        imoveis: ficha.imoveis || []
+                    };
+
+                    console.log("📦 Enviando lote corrigido para a API:", payloadValido);
+
+                    // Dispara para o endpoint de LOTE do seu VisitaController
+                    const responsePost = await api.post('/visitas/lote', payloadValido);
 
                     if (responsePost.status === 200 || responsePost.status === 201) {
-                        // 🔥 ESSENCIAL: Deleta a ficha provisória local. 
-                        // Como ela foi salva na nuvem, vamos baixar a cópia oficial com ID do banco logo abaixo.
                         await db.fichas_soltas.delete(ficha.id);
                     }
                 }

@@ -164,7 +164,10 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
                                     amostrasAguardando.map((amostra) => (
                                         <tr key={amostra.id}>
                                             <td className="font-weight-bold id-amostra-destaque">{amostra.id}</td>
-                                            <td>{amostra.agente}</td>
+
+                                            {/* 🎯 CORREÇÃO: Puxa a matrícula direto do objeto da amostra */}
+                                            <td>{amostra.titularMatricula || amostra.titular_matricula || "Não informado"}</td>
+
                                             <td>{amostra.distrito}</td>
                                             <td>{amostra.tipoTrabalho}</td>
                                             <td>{amostra.dataColeta}</td>
