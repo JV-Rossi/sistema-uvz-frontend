@@ -77,25 +77,66 @@ export default function ResumoSemanal({ setTelaAtual }) {
         }
 
         try {
-            console.log(`🔄 [Uso Diário] Buscando fichas e parcerias no servidor para: ${matricula}`);
-            const response = await api.get(`/visitas/agente/${matricula}`);
-            const visitasServidor = response.data;
+            // =================================================================
+            // 🚀 FASE 1: PUSH (Enviar a produção offline do Tablet para a Nuvem)
+            // =================================================================
+            const todasAsFichasLocais = await db.fichas_soltas.toArray();
 
-            if (visitasServidor.length === 0) {
-                alert('💡 Nenhuma ficha nova ou espelho encontrada para você no servidor hoje.');
-                return;
+            // Filtra as fichas que foram geradas offline neste tablet (não sincronizadas)
+            const fichasParaSubir = todasAsFichasLocais.filter(ficha => !ficha.sincronizado);
+
+            if (fichasParaSubir.length > 0) {
+                console.log(`📤 Encontradas ${fichasParaSubir.length} fichas offline. Iniciando upload da equipe...`);
+
+                for (const ficha of fichasParaSubir) {
+                    // Desestrutura para remover o ID temporário do Dexie e a flag de controle
+                    const { id, sincronizado, ...dadosEnvio } = ficha;
+
+                    // Garante que a matrícula de quem coletou permaneça intacta no lote
+                    dadosEnvio.titularMatricula = dadosEnvio.titularMatricula || matricula;
+
+                    // Dispara para o endpoint POST do seu VisitaController
+                    const responsePost = await api.post('/visitas', dadosEnvio);
+
+                    if (responsePost.status === 200 || responsePost.status === 201) {
+                        // 🔥 ESSENCIAL: Deleta a ficha provisória local. 
+                        // Como ela foi salva na nuvem, vamos baixar a cópia oficial com ID do banco logo abaixo.
+                        await db.fichas_soltas.delete(ficha.id);
+                    }
+                }
             }
 
-            await db.fichas_soltas.bulkPut(visitasServidor);
+            // =================================================================
+            // 🔄 FASE 2: PULL (Baixar a produção da dupla vinculada ao Servidor)
+            // =================================================================
+            console.log(`📥 Sincronizando e baixando produção da equipe para a matrícula: ${matricula}`);
+
+            // Esse endpoint chama o seu método findByAgenteVinculado(matricula) no Java
+            const responseGet = await api.get(`/visitas/agente/${matricula}`);
+            const visitasServidor = responseGet.data;
+
+            if (visitasServidor.length > 0) {
+                // Injeta a flag sincronizado: true em todas as fichas vindas da nuvem 
+                // para que o tablet saiba que elas já estão salvas e não tente reenviá-las
+                const visitasProntas = visitasServidor.map(visita => ({
+                    ...visita,
+                    sincronizado: true
+                }));
+
+                // Alimenta/atualiza o Dexie local do agente logado atual com a base da nuvem
+                await db.fichas_soltas.bulkPut(visitasProntas);
+            }
+
+            // Recarrega o cofre na tela para renderizar os blocos atualizados na matriz semanal
             await carregarFichasDoCofre();
 
-            alert(`✅ Sincronização diária concluída! ${visitasServidor.length} fichas mapeadas e prontas para alocação.`);
+            alert(`✅ Sincronização de Equipe concluída!\n\n• Sua produção offline foi descarregada no banco central.\n• ${visitasServidor.length} fichas atualizadas da dupla foram sincronizadas neste aparelho.`);
+
         } catch (error) {
-            console.error("Erro no combo diário:", error);
-            alert('❌ Falha ao sincronizar. As fichas alocadas continuam seguras no tablet, mas certifique-se de estar no Wi-Fi da UVZ para baixar o trabalho dos parceiros.');
+            console.error("Erro no fluxo híbrido de sincronização de equipe:", error);
+            alert('❌ Falha ao conectar com o servidor do Render. Suas fichas offline continuam seguras no tablet. Certifique-se de ter sinal de internet para atualizar a produção da dupla.');
         }
     };
-
     const handleSelecionarFicha = (fichaEscolhida) => {
         const novaMatriz = {
             ...matriz,
