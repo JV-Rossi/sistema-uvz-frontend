@@ -539,127 +539,125 @@ export default function FormularioBoletimBase({
                     )}
                 </div>
 
-                {/* ================= SEÇÃO EXCLUSIVA DO LIRA: CONTROLE DE COLETAS ================= */}
-                {(tipoBoletim === 'LIRA' || tipoBoletim === 'PE') && (
-                    <div
-                        className="p-3 border rounded mb-3"
-                        style={{
-                            borderLeft: '4px solid #1351b4',
-                            /* Fica com um fundo azul bem clarinho quando marcado, igual o vermelho */
-                            backgroundColor: imovelAtual.teveColeta ? '#f4f9ff' : '#ffffff'
-                        }}
-                    >
-                        {/* GATILHO - CHECKBOX */}
-                        <div className="br-checkbox">
-                            <input
-                                id="checkbox-teve-coleta"
-                                type="checkbox"
-                                checked={imovelAtual.teveColeta}
-                                onChange={e => {
-                                    const marcado = e.target.checked;
-                                    setImovelAtual(prev => ({
-                                        ...prev,
-                                        teveColeta: marcado,
-                                        coletas: marcado ? prev.coletas : []
-                                    }));
-                                }}
-                            />
-                            <label
-                                htmlFor="checkbox-teve-coleta"
-                                className="text-weight-bold m-0"
-                                style={{ color: '#1351b4', cursor: 'pointer' }}
-                            >
-                                Houve Coleta de Larvas na Visita?
-                            </label>
-                        </div>
-
-                        {/* ÁREA DOS TUBOS (ABRE DENTRO DO MESMO CARD, MANTENDO A LINHA CONTÍNUA) */}
-                        {imovelAtual.teveColeta && (
-                            <div className="mt-3 pt-3 animate__animated animate__fadeInFast" style={{ borderTop: '1px solid #bbdefb' }}>
-                                <div className="text-weight-bold mb-2" style={{ color: '#1351b4' }}>
-                                    <i className="fas fa-vial mr-1"></i> Coleta de Larvas (Laboratório / LIRAa)
-                                </div>
-
-                                {/* Inputs para nova coleta - Refletindo a Etiqueta da Entomologia */}
-                                <div className="row align-items-end mb-3">
-                                    <div className="col-sm-3 col-6 mb-2">
-                                        <div className="br-input small">
-                                            <label>Nº Amostra</label>
-                                            <input
-                                                type="text"
-                                                placeholder="Ex: 01"
-                                                value={tuboInput}
-                                                onChange={e => setTuboInput(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-3 col-6 mb-2">
-                                        <div className="br-select w-100 small">
-                                            <label>Depósito</label>
-                                            <select value={tipoDepositoTubo} onChange={e => setTipoDepositoTubo(e.target.value)}>
-                                                <option value="A1">A1</option>
-                                                <option value="A2">A2</option>
-                                                <option value="B">B</option>
-                                                <option value="C">C</option>
-                                                <option value="D1">D1</option>
-                                                <option value="D2">D2</option>
-                                                <option value="E">E</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-2 col-4 mb-2">
-                                        <div className="br-input small">
-                                            <label>Larvas</label>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                placeholder="0"
-                                                value={larvasInput}
-                                                onChange={e => setLarvasInput(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-2 col-4 mb-2">
-                                        <div className="br-input small">
-                                            <label>Pupas</label>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                placeholder="0"
-                                                value={pupasInput}
-                                                onChange={e => setPupasInput(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-2 col-4 mb-2 pl-0">
-                                        <button className="br-button primary circle small block w-100" type="button" onClick={handleAdicionarTubo} title="Adicionar amostra">
-                                            <i className="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Listagem de amostras vinculadas ao imóvel */}
-                                {imovelAtual.coletas.length > 0 ? (
-                                    <div className="p-2 border rounded bg-white">
-                                        <div className="text-down-02 text-secondary-06 text-weight-medium mb-1">Amostras vinculadas a esta casa:</div>
-                                        <div className="d-flex flex-wrap" style={{ gap: '6px' }}>
-                                            {imovelAtual.coletas.map((col, idx) => (
-                                                <span key={idx} className="br-tag small tag-tubo-lira d-flex align-items-center">
-                                                    🧪 Amostra: {col.numeroTubo} | Dep: {col.deposito} | L: {col.larvas} | P: {col.pupas}
-                                                    <i className="fas fa-times ml-2 text-danger" style={{ cursor: 'pointer' }} onClick={() => handleRemoverTubo(idx)}></i>
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <p className="text-down-02 text-danger text-weight-medium m-0">
-                                        <i className="fas fa-exclamation-triangle mr-1"></i> Nenhuma amostra registrada neste imóvel ainda.
-                                    </p>
-                                )}
-                            </div>
-                        )}
+                {/* ================= SEÇÃO: CONTROLE DE COLETAS (GERAL) ================= */}
+                <div
+                    className="p-3 border rounded mb-3"
+                    style={{
+                        borderLeft: '4px solid #1351b4',
+                        /* Fica com um fundo azul bem clarinho quando marcado, igual o vermelho */
+                        backgroundColor: imovelAtual.teveColeta ? '#f4f9ff' : '#ffffff'
+                    }}
+                >
+                    {/* GATILHO - CHECKBOX */}
+                    <div className="br-checkbox">
+                        <input
+                            id="checkbox-teve-coleta"
+                            type="checkbox"
+                            checked={imovelAtual.teveColeta}
+                            onChange={e => {
+                                const marcado = e.target.checked;
+                                setImovelAtual(prev => ({
+                                    ...prev,
+                                    teveColeta: marcado,
+                                    coletas: marcado ? prev.coletas : []
+                                }));
+                            }}
+                        />
+                        <label
+                            htmlFor="checkbox-teve-coleta"
+                            className="text-weight-bold m-0"
+                            style={{ color: '#1351b4', cursor: 'pointer' }}
+                        >
+                            Houve Coleta de Larvas na Visita?
+                        </label>
                     </div>
-                )}
+
+                    {/* ÁREA DOS TUBOS (ABRE DENTRO DO MESMO CARD, MANTENDO A LINHA CONTÍNUA) */}
+                    {imovelAtual.teveColeta && (
+                        <div className="mt-3 pt-3 animate__animated animate__fadeInFast" style={{ borderTop: '1px solid #bbdefb' }}>
+                            <div className="text-weight-bold mb-2" style={{ color: '#1351b4' }}>
+                                <i className="fas fa-vial mr-1"></i> Coleta de Larvas (Laboratório / Entomologia)
+                            </div>
+
+                            {/* Inputs para nova coleta - Refletindo a Etiqueta da Entomologia */}
+                            <div className="row align-items-end mb-3">
+                                <div className="col-sm-3 col-6 mb-2">
+                                    <div className="br-input small">
+                                        <label>Nº Amostra</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Ex: 01"
+                                            value={tuboInput}
+                                            onChange={e => setTuboInput(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-sm-3 col-6 mb-2">
+                                    <div className="br-select w-100 small">
+                                        <label>Depósito</label>
+                                        <select value={tipoDepositoTubo} onChange={e => setTipoDepositoTubo(e.target.value)}>
+                                            <option value="A1">A1</option>
+                                            <option value="A2">A2</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                            <option value="D1">D1</option>
+                                            <option value="D2">D2</option>
+                                            <option value="E">E</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="col-sm-2 col-4 mb-2">
+                                    <div className="br-input small">
+                                        <label>Larvas</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            placeholder="0"
+                                            value={larvasInput}
+                                            onChange={e => setLarvasInput(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-sm-2 col-4 mb-2">
+                                    <div className="br-input small">
+                                        <label>Pupas</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            placeholder="0"
+                                            value={pupasInput}
+                                            onChange={e => setPupasInput(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-sm-2 col-4 mb-2 pl-0">
+                                    <button className="br-button primary circle small block w-100" type="button" onClick={handleAdicionarTubo} title="Adicionar amostra">
+                                        <i className="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Listagem de amostras vinculadas ao imóvel */}
+                            {imovelAtual.coletas.length > 0 ? (
+                                <div className="p-2 border rounded bg-white">
+                                    <div className="text-down-02 text-secondary-06 text-weight-medium mb-1">Amostras vinculadas a esta casa:</div>
+                                    <div className="d-flex flex-wrap" style={{ gap: '6px' }}>
+                                        {imovelAtual.coletas.map((col, idx) => (
+                                            <span key={idx} className="br-tag small tag-tubo-lira d-flex align-items-center">
+                                                🧪 Amostra: {col.numeroTubo} | Dep: {col.deposito} | L: {col.larvas} | P: {col.pupas}
+                                                <i className="fas fa-times ml-2 text-danger" style={{ cursor: 'pointer' }} onClick={() => handleRemoverTubo(idx)}></i>
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            ) : (
+                                <p className="text-down-02 text-danger text-weight-medium m-0">
+                                    <i className="fas fa-exclamation-triangle mr-1"></i> Nenhuma amostra registrada neste imóvel ainda.
+                                </p>
+                            )}
+                        </div>
+                    )}
+                </div>
 
                 {/* OBSERVAÇÕES */}
                 <div className="br-input mb-3">

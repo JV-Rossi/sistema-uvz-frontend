@@ -1,34 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AnaliseLarvas.css';
 
-export default function AnaliseLarvas({ setAbaAtiva }) {
-    // 📝 Dados mocados atualizados com Bairro e Tipo de Depósito
-    const [amostrasAguardando, setAmostrasAguardando] = useState([
-        { id: "AMO-2026-089", agente: "Carlos Silva", distrito: "Norte", bairro: "CPA I", tipoTrabalho: "LIRAa", tipoDeposito: "A2", dataColeta: "02/07/2026" },
-        { id: "AMO-2026-090", agente: "Ana Maria", distrito: "Leste", bairro: "Pedra 90", tipoTrabalho: "P.E. (Ponto Estratégico)", tipoDeposito: "B", dataColeta: "03/07/2026" },
-        { id: "AMO-2026-091", agente: "Carlos Silva", distrito: "Oeste", bairro: "Goiabeiras", tipoTrabalho: "Rotina (ACE)", tipoDeposito: "D1", dataColeta: "03/07/2026" }
-    ]);
+// 🌐 Configuração adaptativa da URL da API (Local vs Produção no Render)
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8080'
+    : 'https://sistema-uvz-backend.onrender.com';
 
+export default function AnaliseLarvas({ setAbaAtiva }) {
+    const [amostrasAguardando, setAmostrasAguardando] = useState([]);
+    const [carregando, setCarregando] = useState(true);
     const [amostraSelecionada, setAmostraSelecionada] = useState(null);
 
-    // Estado do formulário adaptado com outrosEspecificar como string
+    // Estado do formulário de laudo técnico
     const [laudo, setLaudo] = useState({
         aegyptiLarvas: 0,
         aegyptiPupas: 0,
         albopictusLarvas: 0,
         albopictusPupas: 0,
-        outrosEspecificar: '', // Alterado para campo de texto livre
+        outrosEspecificar: '',
         resultadoFinal: 'POSITIVO',
         laboratorista: ''
     });
+
+    // 🔄 Efeito para buscar as amostras assim que o componente é montado
+    useEffect(() => {
+        carregarAmostrasPendentes();
+    }, []);
+
+    // 📥 Busca os tubos pendentes do backend e aplana a estrutura relacional do Java
+    const carregarAmostrasPendentes = async () => {
+        try {
+            setCarregando(true);
+            const response = await fetch(`${API_BASE_URL}/api/amostras/pendentes`);
+            if (!response.ok) throw new Error('Falha ao obter dados do servidor da UVZ.');
+
+            const dadosDoBanco = await response.json();
+
+            // 🛠️ Mapeamento corrigido para refletir exatamente os atributos de Visita.java
+            const amostrasFormatadas = dadosDoBanco.map(tubo => {
+                // Monta uma string bonita para o imóvel juntando número e complemento (se houver)
+                const numImovel = tubo.visita?.numero || "S/N";
+                const compImovel = tubo.visita?.complemento ? ` (${tubo.visita.complemento})` : "";
+
+                return {
+                    id: tubo.id,
+                    agente: tubo.visita?.titularMatricula || "Não informado", // 👈 Casado com titularMatricula
+                    distrito: tubo.visita?.regional || "Não informado",       // 👈 Casado com regional
+                    bairro: tubo.visita?.bairro || "Não informado",
+                    rua: tubo.visita?.endereco || "Não informado",           // 👈 Casado com endereco
+                    imovel: `${numImovel}${compImovel}`,                     // 👈 Concatenado número + comp.
+                    tipoTrabalho: tubo.visita?.tipoBoletim || "Rotina (ACE)", // 👈 Casado com tipoBoletim
+                    tipoDeposito: tubo.deposito,
+                    dataColeta: tubo.visita?.dataVisita
+                        ? new Date(tubo.visita.dataVisita).toLocaleDateString('pt-BR')
+                        : "---"
+                };
+            });
+
+            setAmostrasAguardando(amostrasFormatadas);
+        } catch (error) {
+            console.error("Erro na comunicação com a API:", error);
+            setAmostrasAguardando([]);
+        } finally {
+            setCarregando(false);
+        }
+    };
 
     const handleInputChange = (field, val, isNumeric = true) => {
         const value = isNumeric ? (parseInt(val) || 0) : val;
 
         setLaudo(prev => {
             const novo = { ...prev, [field]: value };
-
-            // O cálculo automático de positividade agora foca estritamente nos vetores alvo
             if (isNumeric) {
                 const totalVetores = novo.aegyptiLarvas + novo.aegyptiPupas + novo.albopictusLarvas + novo.albopictusPupas;
                 novo.resultadoFinal = totalVetores > 0 ? 'POSITIVO' : 'NEGATIVO';
@@ -37,22 +79,43 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
         });
     };
 
-    const salvarAnalise = (e) => {
+    // 💾 Persiste o laudo técnico preenchido no banco de dados via Spring Boot
+    const salvarAnalise = async (e) => {
         e.preventDefault();
-        alert(`Laudo da Amostra ${amostraSelecionada.id} salvo com sucesso no sistema da UVZ!`);
-        setAmostrasAguardando(prev => prev.filter(a => a.id !== amostraSelecionada.id));
-        setAmostraSelecionada(null);
 
-        // Limpa o formulário para a próxima triagem
-        setLaudo({
-            aegyptiLarvas: 0,
-            aegyptiPupas: 0,
-            albopictusLarvas: 0,
-            albopictusPupas: 0,
-            outrosEspecificar: '',
-            resultadoFinal: 'POSITIVO',
-            laboratorista: ''
-        });
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/amostras/${amostraSelecionada.id}/laudo`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(laudo),
+            });
+
+            if (response.ok) {
+                alert(`Laudo da Amostra ${amostraSelecionada.id} salvo com sucesso no sistema central da UVZ!`);
+
+                // Remove localmente para sumir da listagem da bancada
+                setAmostrasAguardando(prev => prev.filter(a => a.id !== amostraSelecionada.id));
+                setAmostraSelecionada(null);
+
+                // Reseta os campos do formulário para o próximo exame
+                setLaudo({
+                    aegyptiLarvas: 0,
+                    aegyptiPupas: 0,
+                    albopictusLarvas: 0,
+                    albopictusPupas: 0,
+                    outrosEspecificar: '',
+                    resultadoFinal: 'POSITIVO',
+                    laboratorista: ''
+                });
+            } else {
+                alert('Erro ao processar e salvar o laudo no servidor.');
+            }
+        } catch (error) {
+            console.error("Falha de rede ao enviar laudo:", error);
+            alert('Não foi possível conectar ao servidor do Render. Verifique a API.');
+        }
     };
 
     return (
@@ -87,9 +150,15 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {amostrasAguardando.length === 0 ? (
+                                {carregando ? (
                                     <tr>
-                                        <td colSpan="7" className="txt-center text-muted py-4">Nenhuma amostra pendente de análise no momento.</td>
+                                        <td colSpan="6" className="txt-center py-4">
+                                            <i className="fas fa-spinner fa-spin mr-2"></i> Conectando à bancada digital da UVZ...
+                                        </td>
+                                    </tr>
+                                ) : amostrasAguardando.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="6" className="txt-center text-muted py-4">Nenhuma amostra pendente de análise no momento.</td>
                                     </tr>
                                 ) : (
                                     amostrasAguardando.map((amostra) => (
@@ -131,6 +200,8 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
                             <div><strong>Coletado por:</strong> {amostraSelecionada.agente}</div>
                             <div><strong>Distrito:</strong> {amostraSelecionada.distrito}</div>
                             <div><strong>Bairro:</strong> {amostraSelecionada.bairro}</div>
+                            <div><strong>Rua:</strong> {amostraSelecionada.rua}</div>
+                            <div><strong>Imóvel:</strong> {amostraSelecionada.imovel}</div>
                             <div><strong>Tipo de Trabalho:</strong> {amostraSelecionada.tipoTrabalho}</div>
                             <div><strong>Tipo de Depósito:</strong> {amostraSelecionada.tipoDeposito}</div>
                         </div>
@@ -162,7 +233,7 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
                             <div className="form-group p-3 span-2 card-especie-grupo">
                                 <h4 className="titulo-especie-outros">Outras Ocorrências</h4>
                                 <div className="form-group mt-2">
-                                    <label className="text-small d-block mb-1">Especificar:</label>
+                                    <label className="text-small d-block mb-1">Especificar achados microscópicos:</label>
                                     <input
                                         type="text"
                                         className="br-input"
