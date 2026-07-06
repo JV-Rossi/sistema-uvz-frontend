@@ -1,61 +1,76 @@
 import React, { useState } from 'react';
+import './AnaliseLarvas.css';
 
-export default function AnaliseLarvas() {
-    // Dados mocados simulando o que veio dos agentes de campo via API
-    const [tubitosAguardando, setTubitosAguardando] = useState([
-        { id: "TUB-2026-001", agente: "Carlos Silva", bairro: "CPA IV", quarteirao: "12A", dataColeta: "02/07/2026", imovel: "Nº 142" },
-        { id: "TUB-2026-002", agente: "Ana Maria", bairro: "Alvorada", quarteirao: "05", dataColeta: "03/07/2026", imovel: "Nº 88 (Oficina)" },
-        { id: "TUB-2026-003", agente: "Carlos Silva", bairro: "CPA IV", quarteirao: "14", dataColeta: "03/07/2026", imovel: "Nº 19" }
+export default function AnaliseLarvas({ setAbaAtiva }) {
+    // 📝 Dados mocados atualizados com Bairro e Tipo de Depósito
+    const [amostrasAguardando, setAmostrasAguardando] = useState([
+        { id: "AMO-2026-089", agente: "Carlos Silva", distrito: "Norte", bairro: "CPA I", tipoTrabalho: "LIRAa", tipoDeposito: "A2", dataColeta: "02/07/2026" },
+        { id: "AMO-2026-090", agente: "Ana Maria", distrito: "Leste", bairro: "Pedra 90", tipoTrabalho: "P.E. (Ponto Estratégico)", tipoDeposito: "B", dataColeta: "03/07/2026" },
+        { id: "AMO-2026-091", agente: "Carlos Silva", distrito: "Oeste", bairro: "Goiabeiras", tipoTrabalho: "Rotina (ACE)", tipoDeposito: "D1", dataColeta: "03/07/2026" }
     ]);
 
-    const [tubitoSelecionado, setTubitoSelecionado] = useState(null);
+    const [amostraSelecionada, setAmostraSelecionada] = useState(null);
 
-    // Estado do formulário de análise técnica laboratorial
+    // Estado do formulário adaptado com outrosEspecificar como string
     const [laudo, setLaudo] = useState({
         aegyptiLarvas: 0,
         aegyptiPupas: 0,
         albopictusLarvas: 0,
         albopictusPupas: 0,
-        outrosLarvas: 0,
-        outrosPupas: 0,
-        resultadoFinal: 'POSITIVO' // POSITIVO / NEGATIVO
+        outrosEspecificar: '', // Alterado para campo de texto livre
+        resultadoFinal: 'POSITIVO',
+        laboratorista: ''
     });
 
-    const handleInputChange = (field, val) => {
-        const num = parseInt(val) || 0;
+    const handleInputChange = (field, val, isNumeric = true) => {
+        const value = isNumeric ? (parseInt(val) || 0) : val;
+
         setLaudo(prev => {
-            const novo = { ...prev, [field]: num };
-            // Lógica inteligente: se somar qualquer vetor de vetor biológico > 0, vira POSITIVO automaticamente
-            const totalVetores = novo.aegyptiLarvas + novo.aegyptiPupas + novo.albopictusLarvas + novo.albopictusPupas + novo.outrosLarvas + novo.outrosPupas;
-            novo.resultadoFinal = totalVetores > 0 ? 'POSITIVO' : 'NEGATIVO';
+            const novo = { ...prev, [field]: value };
+
+            // O cálculo automático de positividade agora foca estritamente nos vetores alvo
+            if (isNumeric) {
+                const totalVetores = novo.aegyptiLarvas + novo.aegyptiPupas + novo.albopictusLarvas + novo.albopictusPupas;
+                novo.resultadoFinal = totalVetores > 0 ? 'POSITIVO' : 'NEGATIVO';
+            }
             return novo;
         });
     };
 
     const salvarAnalise = (e) => {
         e.preventDefault();
-        alert(`Laudo do Tubito ${tubitoSelecionado.id} salvo com sucesso no banco de dados da UVZ!`);
-        // Remove da lista de pendências local após processado
-        setTubitosAguardando(prev => prev.filter(t => t.id !== tubitoSelecionado.id));
-        setTubitoSelecionado(null);
+        alert(`Laudo da Amostra ${amostraSelecionada.id} salvo com sucesso no sistema da UVZ!`);
+        setAmostrasAguardando(prev => prev.filter(a => a.id !== amostraSelecionada.id));
+        setAmostraSelecionada(null);
+
+        // Limpa o formulário para a próxima triagem
+        setLaudo({
+            aegyptiLarvas: 0,
+            aegyptiPupas: 0,
+            albopictusLarvas: 0,
+            albopictusPupas: 0,
+            outrosEspecificar: '',
+            resultadoFinal: 'POSITIVO',
+            laboratorista: ''
+        });
     };
 
     return (
         <div className="container-cadastro-user">
             {/* 🔬 Cabeçalho da Bancada */}
-            <header className="pb-3 mb-4 border-bottom">
-                <h1 className="text-weight-semi-bold mb-1" style={{ color: '#1351B4' }}>
-                    <i className="fas fa-vials mr-2"></i> Laboratório de Entomologia — Vetores
+            <header className="pb-3 mb-4 border-bottom header-bancada">
+                <h1 className="text-weight-semi-bold mb-1 titulo-laboratorio">
+                    <i className="fas fa-vials mr-2" aria-hidden="true"></i> Laboratório de Entomologia — Vetores
                 </h1>
                 <p className="mb-0 text-muted">Recebimento, triagem e lançamento de exames microscópicos de amostras de larvas/pupas.</p>
             </header>
 
-            {!tubitoSelecionado ? (
+            {!amostraSelecionada ? (
                 /* 📨 TELA 1: LISTAGEM DE NOTIFICAÇÕES RECEBIDAS DE CAMPO */
                 <div>
-                    <div className="br-card p-3 mb-3" style={{ backgroundColor: '#F4F8FB', borderLeft: '4px solid #1351B4' }}>
-                        <p className="mb-0 font-weight-bold" style={{ color: '#1351B4' }}>
-                            <i className="fas fa-bell mr-2"></i> Notificações de Campo: {tubitosAguardando.length} tubito(s) aguardando análise entomológica.
+                    <div className="br-card p-3 mb-3 card-alerta-notificacao">
+                        <p className="mb-0 font-weight-bold">
+                            <i className="fas fa-bell mr-2" aria-hidden="true"></i> Notificações de Campo: {amostrasAguardando.length} amostra(s) aguardando análise entomológica.
                         </p>
                     </div>
 
@@ -63,34 +78,33 @@ export default function AnaliseLarvas() {
                         <table className="tabela-tecnica">
                             <thead>
                                 <tr>
-                                    <th>Cód. Tubito</th>
+                                    <th>Cód. Amostra</th>
                                     <th>Agente de Campo</th>
-                                    <th>Localidade / Bairro</th>
-                                    <th>Imóvel / Quadra</th>
+                                    <th>Distrito</th>
+                                    <th>Tipo de Trabalho</th>
                                     <th>Data Coleta</th>
                                     <th className="txt-center">Ação</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {tubitosAguardando.length === 0 ? (
+                                {amostrasAguardando.length === 0 ? (
                                     <tr>
-                                        <td colSpan="6" className="txt-center text-muted py-4">Nenhum tubito pendente de análise no momento.</td>
+                                        <td colSpan="7" className="txt-center text-muted py-4">Nenhuma amostra pendente de análise no momento.</td>
                                     </tr>
                                 ) : (
-                                    tubitosAguardando.map((tubito) => (
-                                        <tr key={tubito.id}>
-                                            <td className="font-weight-bold" style={{ color: '#1351B4' }}>{tubito.id}</td>
-                                            <td>{tubito.agente}</td>
-                                            <td>{tubito.bairro}</td>
-                                            <td>{tubito.imovel} (Qdr. {tubito.quarteirao})</td>
-                                            <td>{tubito.dataColeta}</td>
+                                    amostrasAguardando.map((amostra) => (
+                                        <tr key={amostra.id}>
+                                            <td className="font-weight-bold id-amostra-destaque">{amostra.id}</td>
+                                            <td>{amostra.agente}</td>
+                                            <td>{amostra.distrito}</td>
+                                            <td>{amostra.tipoTrabalho}</td>
+                                            <td>{amostra.dataColeta}</td>
                                             <td className="txt-center">
-                                                <button 
-                                                    className="br-button primary" 
-                                                    style={{ borderRadius: '4px', padding: '6px 12px', fontSize: '13px' }}
-                                                    onClick={() => setTubitoSelecionado(tubito)}
+                                                <button
+                                                    className="br-button primary btn-tabela-analisar"
+                                                    onClick={() => setAmostraSelecionada(amostra)}
                                                 >
-                                                    <i className="fas fa-microscope mr-1"></i> Analisar Amostra
+                                                    <i className="fas fa-microscope mr-1" aria-hidden="true"></i> Analisar Amostra
                                                 </button>
                                             </td>
                                         </tr>
@@ -101,32 +115,34 @@ export default function AnaliseLarvas() {
                     </div>
                 </div>
             ) : (
-                /* 🔬 TELA 2: FORMULÁRIO DE LAUDO DO TUBITO SELECIONADO */
+                /* 🔬 TELA 2: FORMULÁRIO DE LAUDO DA AMOSTRA SELECIONADA */
                 <div className="form-wrapper">
-                    <button 
-                        className="toggle-avancado-btn mb-3" 
-                        onClick={() => setTubitoSelecionado(null)}
-                        style={{ border: 'none', background: 'none', color: '#1351B4', cursor: 'pointer', fontWeight: 'bold' }}
+                    <button
+                        className="toggle-avancado-btn mb-3 btn-voltar-painel"
+                        onClick={() => setAmostraSelecionada(null)}
                     >
-                        <i className="fas fa-arrow-left mr-2"></i> Voltar para a lista de tubitos
+                        <i className="fas fa-arrow-left mr-2" aria-hidden="true"></i> Voltar para a lista de amostras
                     </button>
 
-                    <div className="br-card p-3 mb-4" style={{ backgroundColor: '#F8F9FA', border: '1px solid #CCCCCC' }}>
-                        <h4 className="text-primary mb-2">Amostra sob Análise: <strong>{tubitoSelecionado.id}</strong></h4>
-                        <div className="grid-form" style={{ gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', fontSize: '14px' }}>
-                            <div><strong>Coletado por:</strong> {tubitoSelecionado.agente}</div>
-                            <div><strong>Localização:</strong> {tubitoSelecionado.bairro}</div>
-                            <div><strong>Ponto:</strong> {tubitoSelecionado.imovel} (Q. {tubitoSelecionado.quarteirao})</div>
+                    <div className="br-card p-3 mb-4 card-informacao-amostra">
+                        <h4 className="text-primary mb-2">Amostra sob Análise: <strong>{amostraSelecionada.id}</strong></h4>
+
+                        <div className="grid-info-amostra">
+                            <div><strong>Coletado por:</strong> {amostraSelecionada.agente}</div>
+                            <div><strong>Distrito:</strong> {amostraSelecionada.distrito}</div>
+                            <div><strong>Bairro:</strong> {amostraSelecionada.bairro}</div>
+                            <div><strong>Tipo de Trabalho:</strong> {amostraSelecionada.tipoTrabalho}</div>
+                            <div><strong>Tipo de Depósito:</strong> {amostraSelecionada.tipoDeposito}</div>
                         </div>
                     </div>
 
                     <form onSubmit={salvarAnalise} className="form-cadastro-equipe">
-                        <div className="sessao-titulo mb-3">Discriminação de Espécies (Contagem Microscópica)</div>
-                        
+                        <div className="sessao-titulo mb-3">Discriminação de Espécies</div>
+
                         <div className="grid-form mb-4">
                             {/* Bloco Aedes Aegypti */}
-                            <div className="form-group p-3" style={{ border: '1px solid #CCCCCC', borderRadius: '4px', backgroundColor: '#FAFAFA' }}>
-                                <h4 style={{ color: '#0C326F', borderBottom: '2px solid #1351B4', paddingBottom: '4px' }}>Aedes aegypti</h4>
+                            <div className="form-group p-3 card-especie-grupo">
+                                <h4 className="titulo-especie-aedes">Aedes aegypti</h4>
                                 <label className="mt-2">Qtd. Larvas:</label>
                                 <input type="number" min="0" className="br-input" value={laudo.aegyptiLarvas} onChange={(e) => handleInputChange('aegyptiLarvas', e.target.value)} />
                                 <label className="mt-2">Qtd. Pupas:</label>
@@ -134,8 +150,8 @@ export default function AnaliseLarvas() {
                             </div>
 
                             {/* Bloco Aedes Albopictus */}
-                            <div className="form-group p-3" style={{ border: '1px solid #CCCCCC', borderRadius: '4px', backgroundColor: '#FAFAFA' }}>
-                                <h4 style={{ color: '#0C326F', borderBottom: '2px solid #1351B4', paddingBottom: '4px' }}>Aedes albopictus</h4>
+                            <div className="form-group p-3 card-especie-grupo">
+                                <h4 className="titulo-especie-aedes">Aedes albopictus</h4>
                                 <label className="mt-2">Qtd. Larvas:</label>
                                 <input type="number" min="0" className="br-input" value={laudo.albopictusLarvas} onChange={(e) => handleInputChange('albopictusLarvas', e.target.value)} />
                                 <label className="mt-2">Qtd. Pupas:</label>
@@ -143,45 +159,54 @@ export default function AnaliseLarvas() {
                             </div>
 
                             {/* Bloco Outros */}
-                            <div className="form-group p-3" style={{ border: '1px solid #CCCCCC', borderRadius: '4px', backgroundColor: '#FAFAFA' }} className="span-2">
-                                <h4 style={{ color: '#555555', borderBottom: '2px solid #888888', paddingBottom: '4px' }}>Outras Espécies (Culex / etc)</h4>
-                                <div className="grid-form">
-                                    <div className="form-group">
-                                        <label>Qtd. Larvas:</label>
-                                        <input type="number" min="0" className="br-input" value={laudo.outrosLarvas} onChange={(e) => handleInputChange('outrosLarvas', e.target.value)} />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Qtd. Pupas:</label>
-                                        <input type="number" min="0" className="br-input" value={laudo.outrosPupas} onChange={(e) => handleInputChange('outrosPupas', e.target.value)} />
-                                    </div>
+                            <div className="form-group p-3 span-2 card-especie-grupo">
+                                <h4 className="titulo-especie-outros">Outras Ocorrências</h4>
+                                <div className="form-group mt-2">
+                                    <label className="text-small d-block mb-1">Especificar:</label>
+                                    <input
+                                        type="text"
+                                        className="br-input"
+                                        placeholder="Ex: Presença de larvas de Culex"
+                                        value={laudo.outrosEspecificar}
+                                        onChange={(e) => handleInputChange('outrosEspecificar', e.target.value, false)}
+                                    />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Resultado Final Consolidado */}
-                        <div className="form-group mb-4">
-                            <label className="font-weight-bold">Conclusão Analítica do Laudo:</label>
-                            <select 
-                                className="br-select" 
-                                value={laudo.resultadoFinal} 
-                                onChange={(e) => setLaudo(prev => ({ ...prev, resultadoFinal: e.target.value }))}
-                                style={{
-                                    backgroundColor: laudo.resultadoFinal === 'POSITIVO' ? '#FFF3E0' : '#E3F2FD',
-                                    color: laudo.resultadoFinal === 'POSITIVO' ? '#E65100' : '#1351B4',
-                                    fontWeight: 'bold',
-                                    border: laudo.resultadoFinal === 'POSITIVO' ? '2px solid #FFCC80' : '2px solid #85B4F2'
-                                }}
-                            >
-                                <option value="POSITIVO">⚠️ AMBOSTRE/LAUDO POSITIVO PARA VETORES</option>
-                                <option value="NEGATIVO">✅ AMOSTRA NEGATIVA (SEM FOCO VIVO)</option>
-                            </select>
+                        {/* BLOCO DE FINALIZAÇÃO E ASSINATURA TÉCNICA */}
+                        <div className="sessao-titulo mb-3">Encerramento do Laudo Técnico</div>
+                        <div className="grid-form mb-4 generic-grid-2-cols">
+                            <div className="form-group">
+                                <label className="font-weight-bold">Laboratorista Responsável:</label>
+                                <input
+                                    type="text"
+                                    className="br-input"
+                                    placeholder="Digite seu nome completo para assinatura"
+                                    value={laudo.laboratorista}
+                                    onChange={(e) => handleInputChange('laboratorista', e.target.value, false)}
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="font-weight-bold">Conclusão Analítica do Laudo:</label>
+                                <select
+                                    className={`br-select select-laudo-conclusao ${laudo.resultadoFinal === 'POSITIVO' ? 'is-positivo' : 'is-negativo'}`}
+                                    value={laudo.resultadoFinal}
+                                    onChange={(e) => handleInputChange('resultadoFinal', e.target.value, false)}
+                                >
+                                    <option value="POSITIVO">⚠️ LAUDO POSITIVO PARA VETORES</option>
+                                    <option value="NEGATIVO">✅ AMOSTRA NEGATIVA</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div className="form-actions" style={{ display: 'flex', gap: '12px' }}>
+                        <div className="form-actions botoes-acoes-laudo">
                             <button type="submit" className="br-button primary block-mobile">
-                                <i className="fas fa-check-circle mr-2"></i> Finalizar e Emitir Laudo
+                                <i className="fas fa-check-circle mr-2" aria-hidden="true"></i> Finalizar e Emitir Laudo
                             </button>
-                            <button type="button" className="br-button secondary block-mobile" onClick={() => setTubitoSelecionado(null)} style={{ backgroundColor: '#fff', color: '#333', border: '1px solid #888' }}>
+                            <button type="button" className="br-button secondary block-mobile btn-cancelar-laudo" onClick={() => setAmostraSelecionada(null)}>
                                 Cancelar
                             </button>
                         </div>

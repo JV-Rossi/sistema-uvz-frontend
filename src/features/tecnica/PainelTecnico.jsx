@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CadastroUsuario from '../tecnica/CadastroUsuario'; // Ajuste o caminho se necessário
 import DistribuidorTrabalho from '../tecnica/DistribuidorTrabalho';
 import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
+import AnaliseLarvas from './AnaliseLarvas';
 import './PainelTecnico.css';
 
 export default function PainelTecnico({ setTelaAtual }) {
@@ -99,7 +100,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                                     className={`menu-btn br-button block ${abaAtiva === 'laboratorio-larvas' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('laboratorio-larvas')}
                                 >
-                                    <i className="fas fa-vial mr-2" aria-hidden="true"></i> Análise de Larvas (Tubitos)
+                                    <i className="fas fa-vial mr-2" aria-hidden="true"></i> Análise de Larvas 
                                 </button>
                             </div>
                         )}
@@ -276,7 +277,8 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                 {abaAtiva === 'laboratorio-larvas' && (
                     <div className="br-card">
-                        <AnaliseLarvas setTelaAtual={setTelaAtual} />
+                        {/* Passando setAbaAtiva para o componente conseguir voltar para 'inicio' se precisar */}
+                        <AnaliseLarvas setAbaAtiva={setAbaAtiva} />
                     </div>
                 )}
 

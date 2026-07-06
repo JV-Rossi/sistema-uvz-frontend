@@ -1,0 +1,137 @@
+/* =======================================================
+   BANCADA DE ENTOMOLOGIA — ESTILOS GOVBR 3.7.0
+   ======================================================= */
+
+.titulo-laboratorio {
+    color: #1351B4; /* Azul Oficial */
+}
+
+/* Card de Alerta de Notificações Recebidas */
+.card-alerta-notificacao {
+    background-color: #F4F8FB;
+    border-left: 4px solid #1351B4;
+}
+
+.card-alerta-notificacao p {
+    color: #1351B4;
+}
+
+/* Destaques na Tabela de Triagem */
+.id-amostra-destaque {
+    color: #1351B4;
+}
+
+.btn-tabela-analisar {
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* Formulário de Laudo e Botão Voltar */
+.btn-voltar-painel {
+    border: none;
+    background: none;
+    color: #1351B4;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-voltar-painel:hover {
+    color: #0C326F;
+    text-decoration: underline;
+}
+
+/* Card superior com detalhes da amostra */
+.card-informacao-amostra {
+    background-color: #F8F9FA;
+    border: 1px solid #CCCCCC;
+}
+
+.grid-info-amostra {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    font-size: 14px;
+}
+
+/* Blocos de Espécies do Vetor */
+.card-especie-grupo {
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    background-color: #FAFAFA;
+}
+
+.titulo-especie-aedes {
+    color: #0C326F;
+    border-bottom: 2px solid #1351B4;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.titulo-especie-outros {
+    color: #555555;
+    border-bottom: 2px solid #888888;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+/* Grid de finalização para alinhamento duplo */
+.generic-grid-2-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* =======================================================
+   SELECT DINÂMICO DE CONCLUSÃO (ALERTAS ACESSÍVEIS)
+   ======================================================= */
+.select-laudo-conclusao {
+    font-weight: bold;
+    transition: all 0.2s ease;
+    
+    /* 🌟 CORREÇÃO DO CORTE DE TEXTO: */
+    height: 40px;                  /* Mantém a altura idêntica ao input ao lado */
+    box-sizing: border-box;        /* Garante que a borda não esmague o conteúdo */
+    padding-top: 0 !important;     /* Zera o preenchimento superior que empurra o texto */
+    padding-bottom: 0 !important;  /* Zera o preenchimento inferior */
+    line-height: 36px;             /* Centraliza o texto verticalmente no espaço interno */
+}
+
+.select-laudo-conclusao.is-positivo {
+    background-color: #FFF3E0;
+    color: #E65100;
+    border: 2px solid #FFCC80;
+}
+
+.select-laudo-conclusao.is-negativo {
+    background-color: #E3F2FD;
+    color: #1351B4;
+    border: 2px solid #85B4F2;
+}
+
+/* Rodapé de Ações */
+.botoes-acoes-laudo {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-cancelar-laudo {
+    background-color: #FFFFFF;
+    color: #333333;
+    border: 1px solid #888888;
+}
+
+.btn-cancelar-laudo:hover {
+    background-color: #F4F4F4;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .grid-info-amostra,
+    .generic-grid-2-cols {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
