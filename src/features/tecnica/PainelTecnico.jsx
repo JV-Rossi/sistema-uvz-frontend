@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CadastroUsuario from '../tecnica/CadastroUsuario'; // Ajuste o caminho se necessário
+import CadastroUsuario from '../tecnica/CadastroUsuario'; 
 import GerenciarUsuarios from './GerenciarUsuarios';
 import DistribuidorTrabalho from '../tecnica/DistribuidorTrabalho';
 import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
@@ -103,7 +103,6 @@ export default function PainelTecnico({ setTelaAtual }) {
                                 >
                                     <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Lançamento de Ovos
                                 </button>
-                                {/* 🟢 ADICIONADO: Aba de Larvas */}
                                 <button
                                     className={`menu-btn br-button block ${abaAtiva === 'laboratorio-larvas' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('laboratorio-larvas')}
@@ -220,7 +219,7 @@ export default function PainelTecnico({ setTelaAtual }) {
             {/* ➡️ ÁREA DE TRABALHO (DIREITA) */}
             <main className="tecnico-conteudo p-4">
 
-                {/* TELA INICIAL (Boas-vindas GovBR) */}
+                {/* TELA INICIAL */}
                 {abaAtiva === 'inicio' && (
                     <div className="br-message is-info mt-5" role="alert">
                         <div className="icon">
@@ -235,20 +234,19 @@ export default function PainelTecnico({ setTelaAtual }) {
                     </div>
                 )}
 
-                {/* DEMAIS TELAS MANTIDAS */}
+                {/* CADASTRO DE USUÁRIO */}
                 {abaAtiva === 'equipe' && (
                     <div className="br-card">
                         <CadastroUsuario setTelaAtual={setTelaAtual} />
                     </div>
                 )}
 
-                {/* DEMAIS TELAS MANTIDAS */}
+                {/* 🎯 GERENCIAR USUÁRIOS: Totalmente livre e fluida */}
                 {abaAtiva === 'gerenciar-equipe' && (
-                    <div className="br-card">
-                        <GerenciarUsuarios setTelaAtual={setTelaAtual} />
-                    </div>
+                    <GerenciarUsuarios setTelaAtual={setTelaAtual} />
                 )}
 
+                {/* CONSULTAS */}
                 {abaAtiva === 'consultas' && (
                     <div className="br-card">
                         <div className="card-header border-bottom p-3">
@@ -260,6 +258,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                     </div>
                 )}
 
+                {/* LABORATÓRIO OVOS */}
                 {abaAtiva === 'laboratorio' && (
                     <div className="br-card">
                         <div className="card-header border-bottom p-3">
@@ -272,12 +271,14 @@ export default function PainelTecnico({ setTelaAtual }) {
                     </div>
                 )}
 
+                {/* MUTIRÃO */}
                 {abaAtiva === 'mutirao' && (
                     <div className="br-card">
                         <DistribuidorTrabalho setTelaAtual={setTelaAtual} />
                     </div>
                 )}
 
+                {/* DASHBOARDS */}
                 {abaAtiva === 'dashboards' && (
                     <div className="br-card">
                         <div className="card-header border-bottom p-3">
@@ -290,9 +291,9 @@ export default function PainelTecnico({ setTelaAtual }) {
                     </div>
                 )}
 
+                {/* LABORATÓRIO LARVAS */}
                 {abaAtiva === 'laboratorio-larvas' && (
                     <div className="br-card">
-                        {/* Passando setAbaAtiva para o componente conseguir voltar para 'inicio' se precisar */}
                         <AnaliseLarvas setAbaAtiva={setAbaAtiva} />
                     </div>
                 )}

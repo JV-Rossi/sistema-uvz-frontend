@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../core/api';
-import './GerenciarUsuarios.css'; // 🎯 ADICIONADO: Importação da folha de estilos dedicada
+import './GerenciarUsuarios.css';
 
 export default function GerenciarUsuarios() {
     const [usuarios, setUsuarios] = useState([]);
     const [carregando, setCarregando] = useState(true);
     const [usuarioEmEdicao, setUsuarioEmEdicao] = useState(null);
 
-    // Estado do formulário com TODOS os campos mapeados do cadastro
+    // 🎯 NOVO: Estado para armazenar o texto da barra de pesquisa
+    const [termoBusca, setTermoBusca] = useState('');
+
     const [formulario, setFormulario] = useState({
         nomeCompleto: '',
         dataNascimento: '',
@@ -15,7 +17,7 @@ export default function GerenciarUsuarios() {
         telefone: '',
         regional: '',
         email: '',
-        password: '', // Nova senha (opcional)
+        password: '',
         nivelAcesso: ''
     });
 
@@ -26,7 +28,7 @@ export default function GerenciarUsuarios() {
     const carregarUsuarios = async () => {
         try {
             setCarregando(true);
-            const response = await api.get('/usuarios'); 
+            const response = await api.get('/usuarios');
             setUsuarios(response.data);
         } catch (error) {
             console.error("Erro ao carregar usuários administrativo:", error);
@@ -35,11 +37,18 @@ export default function GerenciarUsuarios() {
         }
     };
 
-    // ✏️ Ao clicar em alterar, injeta todos os dados originais do Supabase no formulário
+    // 🎯 NOVO: Lógica que filtra a lista original baseada no que foi digitado (Nome ou Matrícula)
+    const usuariosFiltrados = usuarios.filter((user) => {
+        const busca = termoBusca.toLowerCase();
+        const nome = user.nome ? user.nome.toLowerCase() : '';
+        const matricula = user.matricula ? String(user.matricula) : '';
+
+        return nome.includes(busca) || matricula.includes(busca);
+    });
+
     const iniciarEdicao = (usuario) => {
         setUsuarioEmEdicao(usuario);
-        
-        // Padroniza o nível de acesso para lowercase para casar com os inputs de rádio
+
         const nivelFormatado = usuario.nivelAcesso ? usuario.nivelAcesso.toLowerCase() : 'agente_campo';
 
         setFormulario({
@@ -49,7 +58,7 @@ export default function GerenciarUsuarios() {
             telefone: usuario.telefone || '',
             regional: usuario.regional || '',
             email: usuario.email || '',
-            password: '', // Senha sempre vazia por padrão por segurança
+            password: '',
             nivelAcesso: nivelFormatado
         });
     };
@@ -63,7 +72,7 @@ export default function GerenciarUsuarios() {
         e.preventDefault();
         try {
             const response = await api.put(`/usuarios/${usuarioEmEdicao.matricula}`, formulario);
-            
+
             if (response.status === 200 || response.status === 204) {
                 alert(`Cadastro de ${formulario.nomeCompleto} atualizado com sucesso no Supabase!`);
                 setUsuarioEmEdicao(null);
@@ -76,7 +85,7 @@ export default function GerenciarUsuarios() {
     };
 
     return (
-        <div className="container-cadastro-user painel-administrative-largo">
+        <div>
             <header className="pb-3 mb-4 border-bottom header-bancada">
                 <h1 className="text-weight-semi-bold mb-1 titulo-laboratorio" style={{ color: '#1351B4' }}>
                     <i className="fas fa-users-cog mr-2" aria-hidden="true"></i> Administração — Gerenciamento de Equipe
@@ -85,53 +94,76 @@ export default function GerenciarUsuarios() {
             </header>
 
             {!usuarioEmEdicao ? (
-                /* 📋 VISÃO 1: TABELA DE FUNCIONÁRIOS */
-                <div className="tabela-scroll-container">
-                    <table className="tabela-tecnica">
-                        <thead>
-                            <tr>
-                                <th>Matrícula</th>
-                                <th>Nome Completo</th>
-                                <th>Regional</th>
-                                <th>Nível de Acesso</th>
-                                <th className="txt-center">Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {carregando ? (
+                <div className="painel-administrative-largo">
+                    {/* 🎯 BARRA DE PESQUISA CORRIGIDA (Sem bordas duplas) */}
+                    <div className="container-busca-servidor">
+                        <div className="wrapper-busca">
+                            <i className="fas fa-search icone-lupa" aria-hidden="true"></i>
+                            <input
+                                id="buscaServidor"
+                                type="text"
+                                className="br-input"
+                                placeholder="Buscar por Nome ou Matrícula..."
+                                value={termoBusca}
+                                onChange={(e) => setTermoBusca(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                    {/* 📋 VISÃO 1: TABELA DE FUNCIONÁRIOS */}
+                    <div className="tabela-scroll-container">
+                        <table className="tabela-tecnica">
+                            <thead>
                                 <tr>
-                                    <td colSpan="5" className="txt-center py-4">
-                                        <i className="fas fa-spinner fa-spin mr-2"></i> Consultando base de servidores da nuvem...
-                                    </td>
+                                    <th>Matrícula</th>
+                                    <th>Nome Completo</th>
+                                    <th>Regional</th>
+                                    <th>Nível de Acesso</th>
+                                    <th className="txt-center">Ação</th>
                                 </tr>
-                            ) : usuarios.length === 0 ? (
-                                <tr>
-                                    <td colSpan="5" className="txt-center text-muted py-4">Nenhum usuário localizado.</td>
-                                </tr>
-                            ) : (
-                                usuarios.map((user) => (
-                                    <tr key={user.matricula}>
-                                        <td className="font-weight-bold id-amostra-destaque">{user.matricula}</td>
-                                        <td>{user.nome}</td>
-                                        <td>{user.regional || '---'}</td>
-                                        <td>
-                                            <span className={`badge-cargo ${user.nivelAcesso}`}>
-                                                {user.nivelAcesso?.replace('_', ' ')}
-                                            </span>
-                                        </td>
-                                        <td className="txt-center">
-                                            <button
-                                                className="br-button secondary small btn-tabela-analisar"
-                                                onClick={() => iniciarEdicao(user)}
-                                            >
-                                                <i className="fas fa-user-edit mr-1" aria-hidden="true"></i> Alterar Cadastro
-                                            </button>
+                            </thead>
+                            <tbody>
+                                {carregando ? (
+                                    <tr>
+                                        <td colSpan="5" className="txt-center py-4">
+                                            <i className="fas fa-spinner fa-spin mr-2"></i> Consultando base de servidores da nuvem...
                                         </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ) : usuariosFiltrados.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="5" className="txt-center text-muted py-4">
+                                            {/* Mensagem dinâmica caso a pesquisa não encontre ninguém */}
+                                            {termoBusca !== ''
+                                                ? `Nenhum servidor encontrado para "${termoBusca}".`
+                                                : "Nenhum usuário localizado no banco de dados."}
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    /* 🎯 MUDANÇA: Agora o map roda em cima de usuariosFiltrados, e não da lista original */
+                                    usuariosFiltrados.map((user) => (
+                                        <tr key={user.matricula}>
+                                            <td className="font-weight-bold id-amostra-destaque">{user.matricula}</td>
+                                            <td>{user.nome}</td>
+                                            <td>{user.regional || '---'}</td>
+                                            <td>
+                                                <span className={`badge-cargo ${user.nivelAcesso}`}>
+                                                    {user.nivelAcesso?.replace('_', ' ')}
+                                                </span>
+                                            </td>
+                                            <td className="txt-center">
+                                                <button
+                                                    className="br-button secondary small btn-tabela-analisar"
+                                                    onClick={() => iniciarEdicao(user)}
+                                                >
+                                                    <i className="fas fa-user-edit mr-1" aria-hidden="true"></i> Alterar Cadastro
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             ) : (
                 /* 📝 VISÃO 2: FORMULÁRIO DE ALTERAÇÃO COMPLETA (ESPELHO DO CADASTRO) */
@@ -141,22 +173,22 @@ export default function GerenciarUsuarios() {
                     </button>
 
                     <form onSubmit={handleSalvarAlteracao}>
-                        
+
                         {/* SEÇÃO 1: Informações Pessoais */}
                         <h3 className="sessao-titulo text-weight-semi-bold mt-0 mb-3">Informações Pessoais</h3>
                         <div className="grid-form">
                             <div className="form-group span-2">
                                 <label htmlFor="nomeCompleto">Nome Completo <span className="text-danger">*</span></label>
-                                <input 
-                                    id="nomeCompleto" className="br-input" type="text" 
+                                <input
+                                    id="nomeCompleto" className="br-input" type="text"
                                     name="nomeCompleto" required value={formulario.nomeCompleto} onChange={handleInputChange}
                                 />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="dataNascimento">Data de Nascimento <span className="text-danger">*</span></label>
-                                <input 
-                                    id="dataNascimento" className="br-input" type="date" 
+                                <input
+                                    id="dataNascimento" className="br-input" type="date"
                                     name="dataNascimento" required value={formulario.dataNascimento} onChange={handleInputChange}
                                 />
                             </div>
@@ -172,8 +204,8 @@ export default function GerenciarUsuarios() {
 
                             <div className="form-group span-2">
                                 <label htmlFor="telefone">Telefone para Contato <span className="text-danger">*</span></label>
-                                <input 
-                                    id="telefone" className="br-input" type="tel" 
+                                <input
+                                    id="telefone" className="br-input" type="tel"
                                     name="telefone" required value={formulario.telefone} onChange={handleInputChange}
                                 />
                             </div>
@@ -197,24 +229,24 @@ export default function GerenciarUsuarios() {
                         <div className="grid-form">
                             <div className="form-group span-2">
                                 <label htmlFor="email">E-mail <span className="text-danger">*</span></label>
-                                <input 
-                                    id="email" className="br-input" type="email" 
+                                <input
+                                    id="email" className="br-input" type="email"
                                     name="email" required value={formulario.email} onChange={handleInputChange}
                                 />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="matricula">Matrícula (Login - Imutável)</label>
-                                <input 
-                                    id="matricula" className="br-input" type="text" 
+                                <input
+                                    id="matricula" className="br-input" type="text"
                                     disabled value={usuarioEmEdicao.matricula} style={{ backgroundColor: '#f0f0f0', cursor: 'not-allowed' }}
                                 />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="password">Alterar Senha (Opcional)</label>
-                                <input 
-                                    id="password" className="br-input" type="password" 
+                                <input
+                                    id="password" className="br-input" type="password"
                                     name="password" placeholder="Deixe em branco para manter a atual"
                                     value={formulario.password} onChange={handleInputChange} minLength="6"
                                 />
@@ -224,23 +256,23 @@ export default function GerenciarUsuarios() {
                                 <label>Nível de Acesso <span className="text-danger">*</span></label>
                                 <div className="radio-group mt-2">
                                     <div className="br-radio">
-                                        <input 
+                                        <input
                                             id="acesso-agente" type="radio" name="nivelAcesso" value="agente_campo"
-                                            checked={formulario.nivelAcesso === 'agente_campo'} onChange={handleInputChange} 
+                                            checked={formulario.nivelAcesso === 'agente_campo'} onChange={handleInputChange}
                                         />
                                         <label htmlFor="acesso-agente">Agente de Campo</label>
                                     </div>
                                     <div className="br-radio">
-                                        <input 
+                                        <input
                                             id="acesso-tecnico" type="radio" name="nivelAcesso" value="tecnico"
-                                            checked={formulario.nivelAcesso === 'tecnico'} onChange={handleInputChange} 
+                                            checked={formulario.nivelAcesso === 'tecnico'} onChange={handleInputChange}
                                         />
                                         <label htmlFor="acesso-tecnico">Técnico</label>
                                     </div>
                                     <div className="br-radio">
-                                        <input 
+                                        <input
                                             id="acesso-gestao" type="radio" name="nivelAcesso" value="gestao"
-                                            checked={formulario.nivelAcesso === 'gestao'} onChange={handleInputChange} 
+                                            checked={formulario.nivelAcesso === 'gestao'} onChange={handleInputChange}
                                         />
                                         <label htmlFor="acesso-gestao">Gestão</label>
                                     </div>
