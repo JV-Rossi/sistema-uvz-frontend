@@ -98,7 +98,7 @@ export default function ResumoSemanal({ setTelaAtual }) {
                         ciclo: ficha.ciclo || "1",
                         semana: ficha.semana || "1",
 
-                        // 🎯 Envia em ambos os formatos para blindar a desserialização do DTO Java:
+                        // 💥 AQUI ESTÁ O PULO DO GATO: Injeta a matrícula salva no login automaticamente!
                         titularMatricula: matricula,
                         titular_matricula: matricula,
 

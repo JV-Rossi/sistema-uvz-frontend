@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AnaliseLarvas.css';
+import { listaAgentes as listaAgentesOficiais } from '../../shared/utils/dadosAgentes.js';
 
 // 🌐 Configuração adaptativa da URL da API (Local vs Produção no Render)
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -27,6 +28,20 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
         carregarAmostrasPendentes();
     }, []);
 
+    // 🎯 FUNÇÃO AUXILIAR: Converte a matrícula para o Nome Real
+    const obterNomeAgente = (matriculaOuTexto) => {
+        if (!matriculaOuTexto || matriculaOuTexto === 'Não informado') {
+            return 'Não informado';
+        }
+
+        const encontrado = listaAgentesOficiais.find(
+            a => a.matricula == matriculaOuTexto || a.value == matriculaOuTexto
+        );
+
+        // Se achar o objeto, joga o Nome na tela. Se não achar, mantém o número da matrícula.
+        return encontrado?.nome || encontrado?.label || matriculaOuTexto;
+    };
+
     // 📥 Busca os tubos pendentes do backend e aplana a estrutura relacional do Java
     const carregarAmostrasPendentes = async () => {
         try {
@@ -44,7 +59,7 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
 
                 return {
                     id: tubo.id,
-                    agente: tubo.visita?.titularMatricula || "Não informado", // 👈 Casado com titularMatricula
+                    agente: tubo.visita?.titularMatricula || "Não informado", // 👈 Guarda a matrícula bruta vinda do banco
                     distrito: tubo.visita?.regional || "Não informado",       // 👈 Casado com regional
                     bairro: tubo.visita?.bairro || "Não informado",
                     rua: tubo.visita?.endereco || "Não informado",           // 👈 Casado com endereco
@@ -93,7 +108,7 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
             });
 
             if (response.ok) {
-                alert(`Laudo da Amostra ${amostraSelecionada.id} salvo com sucesso no sistema central da UVZ!`);
+                alert(`Laudo da Amostra ${amostraSelecionada.id} saved com sucesso no sistema central da UVZ!`);
 
                 // Remove localmente para sumir da listagem da bancada
                 setAmostrasAguardando(prev => prev.filter(a => a.id !== amostraSelecionada.id));
@@ -165,8 +180,8 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
                                         <tr key={amostra.id}>
                                             <td className="font-weight-bold id-amostra-destaque">{amostra.id}</td>
 
-                                            {/* 🎯 CORREÇÃO: Puxa a matrícula direto do objeto da amostra */}
-                                            <td>{amostra.titularMatricula || amostra.titular_matricula || "Não informado"}</td>
+                                            {/* 🎯 TRADUÇÃO: Mostra o nome do agente por extenso na tabela */}
+                                            <td>{obterNomeAgente(amostra.agente)}</td>
 
                                             <td>{amostra.distrito}</td>
                                             <td>{amostra.tipoTrabalho}</td>
@@ -200,7 +215,8 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
                         <h4 className="text-primary mb-2">Amostra sob Análise: <strong>{amostraSelecionada.id}</strong></h4>
 
                         <div className="grid-info-amostra">
-                            <div><strong>Coletado por:</strong> {amostraSelecionada.agente}</div>
+                            {/* 🎯 TRADUÇÃO: Mostra o nome do agente por extenso também na ficha detalhada */}
+                            <div><strong>Coletado por:</strong> {obterNomeAgente(amostraSelecionada.agente)}</div>
                             <div><strong>Distrito:</strong> {amostraSelecionada.distrito}</div>
                             <div><strong>Bairro:</strong> {amostraSelecionada.bairro}</div>
                             <div><strong>Rua:</strong> {amostraSelecionada.rua}</div>
@@ -253,6 +269,7 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
                         <div className="grid-form mb-4 generic-grid-2-cols">
                             <div className="form-group">
                                 <label className="font-weight-bold">Laboratorista Responsável:</label>
+                                {/* 🎯 CORREÇÃO: Tag corrigida para <input /> com fechamento perfeito */}
                                 <input
                                     type="text"
                                     className="br-input"
@@ -274,6 +291,15 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
                                     <option value="NEGATIVO">✅ AMOSTRA NEGATIVA</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div className="form-actions botoes-acoes-laudo">
+                            <button type="submit" className="br-button primary block-mobile">
+                                <i className="fas fa-check-circle mr-2" aria-hidden="true"></i> Finalizar e Emitir Laudo
+                            </button>
+                            <button type="button" className="br-button secondary block-mobile btn-cancelar-laudo" onClick={() => setAmostraSelecionada(null)}>
+                                Cancelar
+                            </button>
                         </div>
 
                         <div className="form-actions botoes-acoes-laudo">
