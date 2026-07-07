@@ -186,3 +186,39 @@
         padding: 0 !important;
     }
 }
+
+/* =========================================
+   REGRAS DE IMPRESSÃO (Ctrl + P)
+   ========================================= */
+
+@media screen {
+    .mostrar-na-impressao {
+        display: none !important;
+    }
+}
+
+@media print {
+    .ocultar-na-impressao {
+        display: none !important;
+    }
+    
+    /* Mostra elementos de bloco (divs, ul) */
+    div.mostrar-na-impressao, ul.mostrar-na-impressao {
+        display: block !important;
+    }
+
+    /* Mostra elementos de texto inline (como spans) */
+    span.mostrar-na-impressao {
+        display: inline !important;
+    }
+
+    .br-card {
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    /* Evita que a linha de uma equipe seja cortada ao meio se a folha acabar */
+    tr {
+        page-break-inside: avoid;
+    }
+}
