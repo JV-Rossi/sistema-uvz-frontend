@@ -1508,5 +1508,10 @@ export const listaAgentes = [
         "nome": "WILSON APARECIDO CARVALHO CUTAS",
         "matricula": "4036215",
         "regional": "Oeste"
+    },
+    {
+        "nome": "JOAO LESTRANGE DEVAUX",
+        "matricula": "49276932",
+        "regional": "Sul"
     }
 ];

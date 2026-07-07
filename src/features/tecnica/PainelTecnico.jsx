@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CadastroUsuario from '../tecnica/CadastroUsuario'; // Ajuste o caminho se necessário
+import GerenciarUsuarios from './GerenciarUsuarios';
 import DistribuidorTrabalho from '../tecnica/DistribuidorTrabalho';
 import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
 import AnaliseLarvas from './AnaliseLarvas';
@@ -74,7 +75,14 @@ export default function PainelTecnico({ setTelaAtual }) {
                                     className={`menu-btn br-button block ${abaAtiva === 'equipe' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('equipe')}
                                 >
-                                    <i className="fas fa-users mr-2" aria-hidden="true"></i> Cadastro de Equipe
+                                    <i className="fas fa-user-plus mr-2" aria-hidden="true"></i> Cadastro de Equipe
+                                </button>
+
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'gerenciar-equipe' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('gerenciar-equipe')}
+                                >
+                                    <i className="fas fa-user-edit mr-2" aria-hidden="true"></i> Gerenciar Usuários
                                 </button>
                             </div>
                         )}
@@ -100,7 +108,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                                     className={`menu-btn br-button block ${abaAtiva === 'laboratorio-larvas' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('laboratorio-larvas')}
                                 >
-                                    <i className="fas fa-vial mr-2" aria-hidden="true"></i> Análise de Larvas 
+                                    <i className="fas fa-vial mr-2" aria-hidden="true"></i> Análise de Larvas
                                 </button>
                             </div>
                         )}
@@ -231,6 +239,13 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {abaAtiva === 'equipe' && (
                     <div className="br-card">
                         <CadastroUsuario setTelaAtual={setTelaAtual} />
+                    </div>
+                )}
+
+                {/* DEMAIS TELAS MANTIDAS */}
+                {abaAtiva === 'gerenciar-equipe' && (
+                    <div className="br-card">
+                        <GerenciarUsuarios setTelaAtual={setTelaAtual} />
                     </div>
                 )}
 

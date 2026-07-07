@@ -301,15 +301,6 @@ export default function AnaliseLarvas({ setAbaAtiva }) {
                                 Cancelar
                             </button>
                         </div>
-
-                        <div className="form-actions botoes-acoes-laudo">
-                            <button type="submit" className="br-button primary block-mobile">
-                                <i className="fas fa-check-circle mr-2" aria-hidden="true"></i> Finalizar e Emitir Laudo
-                            </button>
-                            <button type="button" className="br-button secondary block-mobile btn-cancelar-laudo" onClick={() => setAmostraSelecionada(null)}>
-                                Cancelar
-                            </button>
-                        </div>
                     </form>
                 </div>
             )}
