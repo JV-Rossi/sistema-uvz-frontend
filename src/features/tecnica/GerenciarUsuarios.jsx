@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../core/api';
+import './GerenciarUsuarios.css'; // 🎯 ADICIONADO: Importação da folha de estilos dedicada
 
 export default function GerenciarUsuarios() {
     const [usuarios, setUsuarios] = useState([]);
@@ -75,7 +76,7 @@ export default function GerenciarUsuarios() {
     };
 
     return (
-        <div className="container-cadastro-user">
+        <div className="container-cadastro-user painel-administrative-largo">
             <header className="pb-3 mb-4 border-bottom header-bancada">
                 <h1 className="text-weight-semi-bold mb-1 titulo-laboratorio" style={{ color: '#1351B4' }}>
                     <i className="fas fa-users-cog mr-2" aria-hidden="true"></i> Administração — Gerenciamento de Equipe
