@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import OrdemServico from './OrdemServico';
 import CadastroUsuario from '../tecnica/CadastroUsuario';
 import GerenciarUsuarios from './GerenciarUsuarios';
 import DistribuidorTrabalho from '../tecnica/DistribuidorTrabalho';
@@ -70,8 +71,17 @@ export default function PainelTecnico({ setTelaAtual }) {
                             Administrativo
                             <i className={`fas ${pastaAberta === 'administrativo' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
+
                         {pastaAberta === 'administrativo' && (
                             <div className="folder-content pl-3">
+
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'ordem-servico' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('ordem-servico')}
+                                >
+                                    <i className="fas fa-headset mr-2" aria-hidden="true"></i> Ordem de Serviço
+                                </button>
+
                                 <button
                                     className={`menu-btn br-button block ${abaAtiva === 'equipe' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('equipe')}
@@ -85,6 +95,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                                 >
                                     <i className="fas fa-user-edit mr-2" aria-hidden="true"></i> Gerenciar Usuários
                                 </button>
+
                             </div>
                         )}
                     </div>
@@ -240,6 +251,13 @@ export default function PainelTecnico({ setTelaAtual }) {
                                 {' '}Utilize o menu lateral para acessar os módulos de Entomologia, Supervisão e ferramentas administrativas. O sistema de monitoramento está operando normalmente.
                             </span>
                         </div>
+                    </div>
+                )}
+
+                {/* ORDEM DE SERVIÇO */}
+                {abaAtiva === 'ordem-servico' && (
+                    <div className="br-card">
+                        <OrdemServico setAbaAtiva={setAbaAtiva} />
                     </div>
                 )}
 

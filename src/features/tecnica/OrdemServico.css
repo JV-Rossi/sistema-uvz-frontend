@@ -1,0 +1,168 @@
+/* =========================================
+   ESTILOS DA ORDEM DE SERVIÇO (REFINADO)
+   ========================================= */
+
+/* Fundo suave para não cansar a vista e destacar o form */
+.os-wrapper {
+    background-color: #f4f6f9; 
+    padding: 1.5rem;
+    border-radius: 8px;
+    min-height: 100%;
+}
+
+.os-content {
+    width: 100%;
+    max-width: 1000px; /* Um pouco mais estreito para ficar elegante */
+    margin: 0 auto;
+}
+
+.os-header {
+    margin-bottom: 2rem;
+}
+
+.os-title {
+    color: #1351B4;
+    margin-bottom: 0.5rem;
+}
+
+.os-subtitle {
+    color: #6c757d;
+    margin: 0;
+}
+
+/* -----------------------------------------
+   CARTÃO PRINCIPAL (Sem borda dura)
+----------------------------------------- */
+.os-main-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef0f2;
+    padding: 2.5rem;
+}
+
+.os-section-title {
+    color: #1351B4;
+    font-size: 1.15rem;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f0f2f5;
+}
+
+.os-section-title:first-child {
+    margin-top: 0;
+}
+
+/* -----------------------------------------
+   GRIDS DO FORMULÁRIO
+----------------------------------------- */
+.os-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.os-grid-full {
+    grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+    .os-grid {
+        grid-template-columns: 1fr;
+    }
+    .os-grid-full {
+        grid-column: span 1;
+    }
+}
+
+/* -----------------------------------------
+   LEISHMANIOSE: AMBIENTE E ANIMAIS
+----------------------------------------- */
+.leish-subcard {
+    background-color: #f8f9fa; /* Fundo cinza super claro */
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.animal-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e4e7eb;
+    overflow: hidden;
+}
+
+.animal-card-header {
+    background-color: #f1f4f9;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e4e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.animal-card-body {
+    padding: 1.5rem;
+}
+
+.sintomas-container {
+    background-color: #fcfcfc;
+    border-radius: 6px;
+    padding: 1.25rem;
+    border: 1px dashed #ced4da;
+    margin-top: 1.5rem;
+}
+
+/* =========================================
+   CORREÇÃO DA DUPLA BORDA E SELETORES
+   ========================================= */
+
+/* 1. Remove a borda apenas da caixa externa (Wrapper) */
+.os-wrapper .br-input,
+.os-wrapper .br-textarea {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* 2. Aplica a borda única diretamente nos inputs, textareas e selects */
+.os-wrapper input:not([type="checkbox"]):not([type="radio"]),
+.os-wrapper select,
+.os-wrapper .br-select,
+.os-wrapper textarea {
+    border: 1px solid #a8b2bb !important; /* Cinza suave */
+    border-radius: 4px !important;
+    padding: 0.6rem 0.75rem !important;
+    background-color: #fff !important;
+    margin-top: 0.4rem !important; /* Respiro da label */
+    width: 100%;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease-in-out;
+    color: #333 !important;
+    
+    /* Garante que o ícone do select nativo não seja coberto */
+    appearance: auto !important; 
+    -webkit-appearance: auto !important;
+}
+
+/* 3. Efeito de Foco (Acessibilidade) */
+.os-wrapper input:not([type="checkbox"]):not([type="radio"]):focus,
+.os-wrapper select:focus,
+.os-wrapper .br-select:focus,
+.os-wrapper textarea:focus {
+    border-color: #1351B4 !important;
+    box-shadow: 0 0 0 3px rgba(19, 81, 180, 0.2) !important;
+}
+
+/* 4. Estilo da Label */
+.os-wrapper label {
+    font-weight: 600 !important;
+    color: #444 !important;
+    display: block !important;
+}
