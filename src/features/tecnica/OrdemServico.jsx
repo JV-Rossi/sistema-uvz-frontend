@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './OrdemServico.css';
 import FormLeishmaniose from './FormLeishmaniose';
+import FormBloqueio from './FormBloqueio';
 
 export default function OrdemServico() {
     const [dataSolicitacao, setDataSolicitacao] = useState('');
@@ -15,8 +16,8 @@ export default function OrdemServico() {
     const [descricao, setDescricao] = useState('');
 
     const [ambienteLeish, setAmbienteLeish] = useState({
-        outrosAnimais: '', qtdCaes: '', qtdGatos: '', pessoasCasa: '', possuiMuro: '', 
-        arvoreFrutifera: false, galinheiro: false, matoAlto: false, coletaLixo: false, 
+        outrosAnimais: '', qtdCaes: '', qtdGatos: '', pessoasCasa: '', possuiMuro: '',
+        arvoreFrutifera: false, galinheiro: false, matoAlto: false, coletaLixo: false,
         esgotoTratado: false, localCaes: '', teveLeishmaniose: '', qtdLeishmaniose: ''
     });
     const [animaisLeish, setAnimaisLeish] = useState([]);
@@ -36,11 +37,12 @@ export default function OrdemServico() {
             { id: 'inspecao_terreno', label: 'Inspeção em Terreno Baldio / Acúmulo de Lixo' },
             { id: 'bloqueio_quimico', label: 'Solicitação de Fumacê (UBV)' }
         ],
-        sinantropicos: [
-            { id: 'visita_escorpiao', label: 'Visita Zoosanitária - Escorpião / Aranha' },
-            { id: 'visita_morcego', label: 'Visita Zoosanitária - Morcegos' },
+       sinantropicos: [
             { id: 'visita_pombo', label: 'Visita Zoosanitária - Pombos' },
-            { id: 'visita_roedor', label: 'Visita Zoosanitária - Roedores' }
+            { id: 'visita_escorpiao', label: 'Visita Zoosanitária - Escorpiões' },
+            { id: 'visita_caramujo', label: 'Visita Zoosanitária - Caramujos' },
+            { id: 'visita_barbeiro', label: 'Visita Zoosanitária - Barbeiros' },
+            { id: 'visita_outros_sinantropicos', label: 'Visita Zoosanitária - Outros' }
         ],
         animais_domesticos: [
             { id: 'teste_leishmaniose', label: 'Solicitação de Teste Rápido para Leishmaniose' },
@@ -56,7 +58,7 @@ export default function OrdemServico() {
         if (servicoSolicitado !== 'teste_leishmaniose') {
             setAnimaisLeish([]);
         } else if (animaisLeish.length === 0) {
-            adicionarAnimal(); 
+            adicionarAnimal();
         }
     }, [servicoSolicitado]);
 
@@ -82,8 +84,8 @@ export default function OrdemServico() {
         setOrigem(''); setNomeMunicipe(''); setTelefone(''); setDistrito(''); setBairro(''); setEndereco('');
         setSetorDestino(''); setServicoSolicitado(''); setDescricao('');
         setAmbienteLeish({
-            outrosAnimais: '', qtdCaes: '', qtdGatos: '', pessoasCasa: '', possuiMuro: '', 
-            arvoreFrutifera: false, galinheiro: false, matoAlto: false, coletaLixo: false, 
+            outrosAnimais: '', qtdCaes: '', qtdGatos: '', pessoasCasa: '', possuiMuro: '',
+            arvoreFrutifera: false, galinheiro: false, matoAlto: false, coletaLixo: false,
             esgotoTratado: false, localCaes: '', teveLeishmaniose: '', qtdLeishmaniose: ''
         });
         setAnimaisLeish([]); setErro('');
@@ -112,6 +114,11 @@ export default function OrdemServico() {
         }
     };
 
+    // Estado do Bloqueio
+    const [dadosBloqueio, setDadosBloqueio] = useState({
+        referencia: '', paciente: '', suspeita: '', dataSintomas: ''
+    });
+
     return (
         <div className="os-wrapper">
             <main className="os-content">
@@ -124,7 +131,7 @@ export default function OrdemServico() {
                 {erro && <div className="br-message is-danger mb-4"><div className="icon"><i className="fas fa-times-circle fa-lg"></i></div><div className="content"><span className="message-body">{erro}</span></div></div>}
 
                 <form onSubmit={handleSubmit} className="os-main-card">
-                    
+
                     <h3 className="text-weight-semi-bold os-section-title">1. Dados do Solicitante</h3>
                     <div className="os-grid">
                         <div className="br-input"><label>Data da Solicitação <span className="text-danger">*</span></label><input type="date" value={dataSolicitacao} onChange={(e) => setDataSolicitacao(e.target.value)} /></div>
@@ -168,12 +175,21 @@ export default function OrdemServico() {
                         </div>
                     </div>
 
+                    {/* INJEÇÃO: LEISHMANIOSE */}
                     {servicoSolicitado === 'teste_leishmaniose' && (
-                        <FormLeishmaniose 
+                        <FormLeishmaniose
                             ambienteLeish={ambienteLeish} setAmbienteLeish={setAmbienteLeish}
-                            animaisLeish={animaisLeish} adicionarAnimal={adicionarAnimal} 
-                            removerAnimal={removerAnimal} handleAnimalChange={handleAnimalChange} 
+                            animaisLeish={animaisLeish} adicionarAnimal={adicionarAnimal}
+                            removerAnimal={removerAnimal} handleAnimalChange={handleAnimalChange}
                             handleCheckboxArray={handleCheckboxArray}
+                        />
+                    )}
+
+                    {/* INJEÇÃO: BLOQUEIO DE FOCO */}
+                    {servicoSolicitado === 'bloqueio_foco' && (
+                        <FormBloqueio
+                            dadosBloqueio={dadosBloqueio}
+                            setDadosBloqueio={setDadosBloqueio}
                         />
                     )}
 
