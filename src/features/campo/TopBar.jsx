@@ -17,10 +17,10 @@ export default function TopBar() {
   const [notificacoes, setNotificacoes] = useState([
     {
       id: 1,
-      remetente: 'Nathan Beuter (Coordenação)',
+      remetente: 'Supervisão UVZ',
       tipo: 'delegacao',
-      titulo: 'Bloqueio de Foco Urgente',
-      mensagem: 'Foi detectado um alto índice de infestação. Realizar bloqueio imediato com bomba costal no quarteirão 45 (Bairro Centro). Favor reportar ao finalizar.',
+      titulo: 'Bloqueio de Foco para o dia 12/07/2026',
+      mensagem: 'Foi detectado um alto índice de infestação. Realizar bloqueio no dia 12/07/2026 no quarteirão 45 (Bairro Centro). Equipe: Anadir, Jussara e Alessandra',
       data: '08/07/2026, 08:30',
       status: 'pendente'
     },
@@ -28,8 +28,8 @@ export default function TopBar() {
       id: 2,
       remetente: 'Supervisão UVZ',
       tipo: 'aviso',
-      titulo: 'Abastecimento de Larvicida',
-      mensagem: 'O estoque de Natular DT foi reabastecido. Favor passar na base da UVZ no final do turno para retirar sua cota da semana.',
+      titulo: 'Encontro do P.A. de Campo',
+      mensagem: 'O próximo P.A do distrito será realizado na próxima sexta-feira, 10/07, às 13:30, na sede da UVZ. Comparecer com uniforme',
       data: '07/07/2026, 16:45',
       status: 'pendente'
     },
@@ -192,3 +192,4 @@ export default function TopBar() {
     </div>
   );
 }
+
