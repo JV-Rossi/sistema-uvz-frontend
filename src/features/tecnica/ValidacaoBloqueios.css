@@ -1,0 +1,90 @@
+/* =========================================
+   ESTILOS GERAIS DA TELA DE VALIDAÇÃO
+   ========================================= */
+
+.validacao-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.validacao-header {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.validacao-title {
+    color: #1351B4;
+    margin-bottom: 0.25rem;
+}
+
+.validacao-subtitle {
+    color: #555;
+    margin: 0;
+}
+
+/* =========================================
+   BOTÕES E ABAS
+   ========================================= */
+.validacao-filtros {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.acoes-botoes-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* =========================================
+   TABELA (Complementos ao GovBR)
+   ========================================= */
+.tabela-validacao-container {
+    background-color: #ffffff;
+    width: 100%;
+}
+
+/* Ajustes de alinhamento para a br-table do GovBR */
+.tabela-validacao th, 
+.tabela-validacao td {
+    vertical-align: middle !important;
+}
+
+.tabela-validacao th.col-data { width: 10%; }
+.tabela-validacao th.col-agente { width: 15%; }
+.tabela-validacao th.col-endereco { width: 25%; }
+.tabela-validacao th.col-sintoma { width: 25%; } 
+.tabela-validacao th.col-acoes { width: 25%; text-align: center; }
+
+.col-acoes-center {
+    text-align: center;
+}
+
+/* =========================================
+   ESTADOS VAZIOS E LOADING
+   ========================================= */
+.validacao-empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #666;
+    background-color: #f8f9fa;
+}
+
+.validacao-empty-icon {
+    font-size: 3rem;
+    color: #198754;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.validacao-loading {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #666;
+}

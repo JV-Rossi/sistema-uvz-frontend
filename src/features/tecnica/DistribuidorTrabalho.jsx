@@ -147,6 +147,43 @@ export default function DistribuidorTrabalho() {
         setBuscas({});
     };
 
+    // --- FUNÇÃO PARA EXPORTAR PARA EXCEL (CSV) ---
+    const exportarParaExcel = () => {
+        // Adiciona o BOM (\uFEFF) para o Excel reconhecer os acentos (UTF-8) corretamente
+        let csvContent = "\uFEFF";
+
+        // Cabeçalho da tabela (usando ponto e vírgula como separador padrão no Brasil)
+        csvContent += "Equipe;Quarteirões;Total Imóveis;Meta (Agentes);Média Real;Agentes Selecionados\n";
+
+        // Preenche as linhas com os dados
+        resultados.forEach(item => {
+            const equipe = `Equipe ${item.equipe}`;
+            const quarteiroes = item.quarteiroes;
+            const totalImoveis = item.totalImoveis;
+            const meta = item.qtdAgentes;
+            const media = item.mediaReal;
+
+            // Pega os agentes daquela equipe e junta com vírgula. 
+            // Usa aspas duplas ao redor para evitar que nomes com ponto-e-vírgula quebrem a coluna
+            const agentes = selecaoAgentes[item.equipe] || [];
+            const agentesStr = `"${agentes.join(", ")}"`;
+
+            // Monta a linha do CSV
+            csvContent += `${equipe};${quarteiroes};${totalImoveis};${meta};${media};${agentesStr}\n`;
+        });
+
+        // Cria o arquivo e dispara o download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        // O nome do arquivo terá o nome do bairro
+        link.setAttribute("download", `Escala_Mutirao_${bairro.replace(/ /g, '_')}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <main className="distribuidor-content">
 
@@ -299,7 +336,10 @@ export default function DistribuidorTrabalho() {
                                         <th style={{ width: '10%' }}>Meta (Qtd)</th>
                                         {/* A classe ocultar-na-impressao entra aqui */}
                                         <th className="ocultar-na-impressao" style={{ width: '10%' }}>Média Real</th>
-                                        <th style={{ width: '45%' }}>Seleção de Agentes (Busca)</th>
+                                        <th style={{ width: '45%' }}>
+                                            <span className="ocultar-na-impressao">Seleção de Agentes (Busca)</span>
+                                            <span className="mostrar-na-impressao">Agentes Selecionados</span>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -402,18 +442,18 @@ export default function DistribuidorTrabalho() {
                                                     </div>
 
                                                     {/* ==========================================
-                                                        VISÃO DE IMPRESSÃO (Oculta na Tela) 
-                                                     ========================================== */}
+                                                    VISÃO DE IMPRESSÃO (Oculta na Tela) 
+                                                    ========================================== */}
                                                     <div className="mostrar-na-impressao">
-                                                        <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+                                                        <ul style={{ padding: 0, margin: '0 0 0 18px' }}>
                                                             {(selecaoAgentes[item.equipe] || []).length > 0 ? (
                                                                 (selecaoAgentes[item.equipe] || []).map(nome => (
-                                                                    <li key={`print-${nome}`} style={{ fontSize: '14px', marginBottom: '4px', color: '#000' }}>
-                                                                        • {nome}
+                                                                    <li key={`print-${nome}`} style={{ fontSize: '13px', marginBottom: '4px', color: '#000', listStyleType: 'disc' }}>
+                                                                        {nome}
                                                                     </li>
                                                                 ))
                                                             ) : (
-                                                                <li style={{ fontSize: '14px', color: '#666', fontStyle: 'italic' }}>
+                                                                <li style={{ fontSize: '13px', color: '#666', fontStyle: 'italic', listStyleType: 'none', marginLeft: '-18px' }}>
                                                                     Nenhum agente alocado
                                                                 </li>
                                                             )}
@@ -428,9 +468,14 @@ export default function DistribuidorTrabalho() {
                         </div>
 
                         <div className="form-actions mt-4 pt-3 border-top d-flex gap-3 ocultar-na-impressao">
+                            <button onClick={exportarParaExcel} className="br-button success text-white" style={{ backgroundColor: '#198754', borderColor: '#198754' }}>
+                                <i className="fas fa-file-excel mr-2" aria-hidden="true"></i> Exportar para Excel
+                            </button>
+
                             <button onClick={() => window.print()} className="br-button primary">
                                 <i className="fas fa-print mr-2" aria-hidden="true"></i> Imprimir Escala
                             </button>
+                            
                             <button onClick={limparCalculadora} className="br-button secondary">
                                 <i className="fas fa-eraser mr-2" aria-hidden="true"></i> Limpar Simulação
                             </button>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import CadastroUsuario from '../tecnica/CadastroUsuario'; 
+import CadastroUsuario from '../tecnica/CadastroUsuario';
 import GerenciarUsuarios from './GerenciarUsuarios';
 import DistribuidorTrabalho from '../tecnica/DistribuidorTrabalho';
 import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
 import AnaliseLarvas from './AnaliseLarvas';
+import ValidacaoBloqueios from './ValidacaoBloqueios'; // Importação do componente ValidacaoBloqueios
 import './PainelTecnico.css';
 
 export default function PainelTecnico({ setTelaAtual }) {
@@ -147,11 +148,19 @@ export default function PainelTecnico({ setTelaAtual }) {
                                 >
                                     <i className="fas fa-chart-pie mr-2" aria-hidden="true"></i> Indicadores e Relatórios
                                 </button>
+
                                 <button
                                     className={`menu-btn br-button block ${abaAtiva === 'consultas' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('consultas')}
                                 >
                                     <i className="fas fa-search mr-2" aria-hidden="true"></i> Consultas & Exportação
+                                </button>
+
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'validacao-bloqueios' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('validacao-bloqueios')}
+                                >
+                                    <i className="fas fa-shield-alt mr-2" aria-hidden="true"></i> Validação de Bloqueios
                                 </button>
                             </div>
                         )}
@@ -275,6 +284,12 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {abaAtiva === 'mutirao' && (
                     <div className="br-card">
                         <DistribuidorTrabalho setTelaAtual={setTelaAtual} />
+                    </div>
+                )}
+
+                {abaAtiva === 'validacao-bloqueios' && (
+                    <div className="br-card">
+                        <ValidacaoBloqueios setAbaAtiva={setAbaAtiva} />
                     </div>
                 )}
 
