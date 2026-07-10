@@ -35,12 +35,12 @@ export default function MenuCampo({ setTelaAtual }) {
           <small className="card-subtitulo">Todos os serviços</small>
         </div>
 
-        <div className="card-menu" onClick={() => setTelaAtual('solicitar_bloqueio')}>
+        <div className="card-menu" onClick={() => setTelaAtual('solicitacao_campo')}>
           <div className="card-icone icone-vermelho">
             <i className="fas fa-bullhorn"></i>
           </div>
-          <strong className="card-titulo">Solicitar Bloqueio</strong>
-          <small className="card-subtitulo">Denunciar foco</small>
+          <strong className="card-titulo">Solicitação</strong>
+          <small className="card-subtitulo">Solicitar Ordem de Serviço</small>
         </div>
 
         <div className="card-menu" onClick={() => setTelaAtual('resumo_semanal')}>

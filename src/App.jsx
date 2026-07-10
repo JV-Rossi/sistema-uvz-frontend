@@ -11,7 +11,7 @@ import BoletimRotina from './features/campo/BoletimRotina';
 import BoletimBloqueio from './features/campo/BoletimBloqueio';
 import BoletimPE from './features/campo/BoletimPE.jsx';
 import BoletimLira from './features/campo/BoletimLira.jsx';
-import SolicitarBloqueio from './features/campo/SolicitarBloqueio';
+import SolicitacaoCampo from './features/campo/SolicitacaoCampo.jsx';
 import ResumoSemanal from './features/campo/ResumoSemanal';
 import Ovitrampa from './features/campo/Ovitrampa.jsx';
 import PainelGestao from './features/gestao/PainelGestao.jsx';
@@ -148,8 +148,8 @@ function App() {
         <MenuBoletins setTelaAtual={setTelaAtual} />
       )}
 
-      {telaAtual === 'solicitar_bloqueio' && (
-        <SolicitarBloqueio setTelaAtual={setTelaAtual} />
+      {telaAtual === 'solicitacao_campo' && (
+        <SolicitacaoCampo setTelaAtual={setTelaAtual} />
       )}
 
       {telaAtual === 'campo_formulario_zoonoses' && (
