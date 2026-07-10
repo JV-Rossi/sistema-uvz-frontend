@@ -21,7 +21,7 @@ export default function MenuCampo({ setTelaAtual }) {
 
       <div className="cabecalho-menu">
         <h1>Painel do Agente</h1>
-        <p>Selecione o serviço para abertura de boletim</p>
+        <p>Selecione o serviço necessário para continuar</p>
       </div>
 
       {/* 🎛️ GRADE DE SERVIÇOS */}
@@ -32,7 +32,7 @@ export default function MenuCampo({ setTelaAtual }) {
             <i className="fas fa-clipboard-list"></i>
           </div>
           <strong className="card-titulo">Boletins</strong>
-          <small className="card-subtitulo">Todos os serviços</small>
+          <small className="card-subtitulo">Todos os Boletins</small>
         </div>
 
         <div className="card-menu" onClick={() => setTelaAtual('solicitacao_campo')}>

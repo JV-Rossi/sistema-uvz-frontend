@@ -1,0 +1,267 @@
+.sup-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Rawline', sans-serif;
+}
+
+.sup-header h1 {
+  color: #0056b3;
+  font-size: 24px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sup-header p {
+  color: #4a5568;
+  font-size: 14px;
+  margin: 0 0 20px 0;
+}
+
+/* SISTEMA DE ABAS */
+.sup-abas {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.sup-aba {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #718096;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+
+.sup-aba.ativa {
+  color: #0056b3;
+  border-bottom-color: #0056b3;
+}
+
+/* FEEDBACK */
+.sup-alerta-sucesso {
+  background-color: #c6f6d5;
+  color: #22543d;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* GRADE DE CARDS */
+.sup-grade-demandas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.sup-card-demanda {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.sup-card-badges {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.badge-distrito {
+  background-color: #edf2f7;
+  color: #2d3748;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.badge-doenca {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.badge-doenca.dengue { background-color: #fed7d7; color: #9b2c2c; }
+.badge-doenca.zika { background-color: #feebc8; color: #9c4221; }
+.badge-doenca.chikungunya { background-color: #e2f8ff; color: #2b6cb0; }
+
+.sup-card-corpo h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #1a202c;
+}
+
+.sup-txt-endereco {
+  font-size: 13px;
+  color: #4a5568;
+  margin: 0 0 6px 0;
+}
+
+.sup-txt-detalhe {
+  font-size: 13px;
+  color: #2d3748;
+  font-weight: 500;
+  margin: 0 0 12px 0;
+}
+
+.sup-card-corpo small {
+  font-size: 11px;
+  color: #a0aec0;
+}
+
+.sup-card-acao {
+  margin-top: 16px;
+}
+
+.btn-programar {
+  width: 100%;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-programar:hover {
+  background-color: #004494;
+}
+
+/* MODAL OPERACIONAL */
+.sup-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.sup-modal-card {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.sup-modal-header {
+  background-color: #0056b3;
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sup-modal-header h3 { margin: 0; font-size: 16px; }
+
+.sup-btn-fechar {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.sup-modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sup-resumo-localizacao {
+  background-color: #f7fafc;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border-left: 4px solid #3182ce;
+  font-size: 13px;
+}
+.sup-resumo-localizacao p { margin: 4px 0; color: #4a5568; }
+
+.sup-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sup-form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.sup-form-group input, .sup-form-group textarea {
+  padding: 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.sup-form-linha-dupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.sup-input-dica {
+  font-size: 11px;
+  color: #a0aec0;
+}
+
+.obrigatorio { color: #e53e3e; }
+
+.sup-modal-footer {
+  padding: 16px 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-cancelar {
+  background: none;
+  border: 1px solid #cbd5e0;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-confirmar-escala {
+  background-color: #38a169;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-confirmar-escala:hover { background-color: #2f855a; }
+.sup-loading, .sup-vazio { text-align: center; padding: 40px; color: #a0aec0; }

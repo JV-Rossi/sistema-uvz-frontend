@@ -9,6 +9,11 @@ export default function ValidacaoBloqueios() {
 
     const [filtroStatus, setFiltroStatus] = useState('pendente');
 
+    // Estados para o controle do Modal de Recusa
+    const [modalRecusaAberto, setModalRecusaAberto] = useState(false);
+    const [solicitacaoParaRecusar, setSolicitacaoParaRecusar] = useState(null);
+    const [justificativa, setJustificativa] = useState('');
+
     useEffect(() => {
         buscarSolicitacoes();
     }, [filtroStatus]);
@@ -17,7 +22,6 @@ export default function ValidacaoBloqueios() {
         setLoading(true);
         setErro('');
         try {
-            // Simulando o delay do banco de dados com a nova estrutura de Sintomas
             setTimeout(() => {
                 const dadosSimulados = [
                     { id: 1, data: '08/07/2026', agente: 'JOAO VITOR ROSSI', bairro: 'ALPHAVILLE I', endereco: 'Rua das Orquídeas, Qd 5, Lt 12', suspeita: 'Dengue', dataSintomas: '02/07/2026', status: 'pendente' },
@@ -33,39 +37,40 @@ export default function ValidacaoBloqueios() {
         }
     };
 
-    // 🔴 1. Ação: Recusar
-    const handleRecusar = async (id) => {
-        const justificativa = window.prompt("Motivo da recusa (será enviado ao agente):");
-        if (justificativa === null) return; 
+    // 🔴 1. Ação: Abrir janela de Recusa
+    const handleAbrirRecusa = (solicitacao) => {
+        setSolicitacaoParaRecusar(solicitacao);
+        setJustificativa('');
+        setModalRecusaAberto(true);
+    };
+
+    // Envio do Relatório de Recusa
+    const handleConfirmarRecusa = async (e) => {
+        e.preventDefault();
+        if (!justificativa.trim()) return;
 
         try {
-            setSucesso(`Solicitação #${id} recusada. O agente será notificado.`);
-            setSolicitacoes(prev => prev.filter(s => s.id !== id));
-            setTimeout(() => setSucesso(''), 3000);
+            // Aqui futuramente você enviará a justificativa para a sua API/Banco de dados
+            setSucesso(`Solicitação #${solicitacaoParaRecusar.id} recusada com sucesso. Relatório enviado ao agente.`);
+            setSolicitacoes(prev => prev.filter(s => s.id !== solicitacaoParaRecusar.id));
+            
+            // Fecha o modal e limpa os estados
+            setModalRecusaAberto(false);
+            setSolicitacaoParaRecusar(null);
+            setJustificativa('');
+
+            setTimeout(() => setSucesso(''), 4000);
         } catch (err) {
-            setErro("Erro ao recusar a solicitação.");
+            setErro("Erro ao processar a recusa da solicitação.");
         }
     };
 
-    // 🔵 2. Ação: Delegar apenas para Supervisor
-    const handleDelegarSupervisor = async (id) => {
-        if (!window.confirm("Deseja aprovar e DELEGAR PARA O SUPERVISOR o bloqueio deste imóvel?")) return;
-
-        try {
-            setSucesso(`Solicitação #${id} delegada ao Supervisor. Bloqueio Mecânico autorizado.`);
-            setSolicitacoes(prev => prev.filter(s => s.id !== id));
-            setTimeout(() => setSucesso(''), 3000);
-        } catch (err) {
-            setErro("Erro ao processar a delegação.");
-        }
-    };
-
-    // 🟢 3. Ação: Delegar para Supervisor + Borrifação
+    // 🟢 2. Ação: Delegar para Supervisor + Borrifação
     const handleDelegarBorrifacao = async (id) => {
         if (!window.confirm("Deseja aprovar e DELEGAR PARA SUPERVISOR + BORRIFAÇÃO (Bloqueio Mecânico e Químico)?")) return;
 
         try {
-            setSucesso(`Solicitação #${id} delegada à equipe de campo e borrifadores.`);
+            setSucesso(`Solicitação #${id} aprovada e delegada à equipe de campo e borrifadores.`);
             setSolicitacoes(prev => prev.filter(s => s.id !== id));
             setTimeout(() => setSucesso(''), 3000);
         } catch (err) {
@@ -73,7 +78,6 @@ export default function ValidacaoBloqueios() {
         }
     };
 
-    // Função auxiliar para definir a cor da tag dependendo da doença
     const getCorSuspeita = (doenca) => {
         if (doenca === 'Dengue') return 'bg-danger text-white';
         if (doenca === 'Zika') return 'bg-warning text-dark';
@@ -141,8 +145,7 @@ export default function ValidacaoBloqueios() {
                         <p>Não há solicitações pendentes para validação no momento.</p>
                     </div>
                 ) : (
-                    <div className="br-table" data-search="data-search" data-selection="data-selection">
-                        <div className="table-header"></div>
+                    <div className="br-table">
                         <table>
                             <thead className="tabela-validacao">
                                 <tr>
@@ -163,11 +166,9 @@ export default function ValidacaoBloqueios() {
                                             <span className="text-small text-muted">{item.endereco}</span>
                                         </td>
                                         <td data-th="Sintoma">
-                                            {/* Tag dinâmica baseada na doença */}
                                             <span className={`br-tag mb-1 ${getCorSuspeita(item.suspeita)}`}>
                                                 Suspeita: {item.suspeita}
                                             </span>
-                                            {/* Data do início dos sintomas */}
                                             <p className="mb-0 text-small mt-1">
                                                 <strong>Início dos Sintomas:</strong> {item.dataSintomas}
                                             </p>
@@ -176,28 +177,19 @@ export default function ValidacaoBloqueios() {
                                             {filtroStatus === 'pendente' ? (
                                                 <div className="acoes-botoes-container">
                                                     
-                                                    {/* BOTÃO: RECUSAR */}
+                                                    {/* BOTÃO 1: RECUSAR (ABRE RELATÓRIO) */}
                                                     <button 
                                                         className="br-button danger circle small" 
-                                                        title="Recusar Solicitação"
-                                                        onClick={() => handleRecusar(item.id)}
+                                                        title="Recusar e Gerar Relatório"
+                                                        onClick={() => handleAbrirRecusa(item)}
                                                     >
                                                         <i className="fas fa-times"></i>
                                                     </button>
                                                     
-                                                    {/* BOTÃO: DELEGAR PARA SUPERVISOR */}
-                                                    <button 
-                                                        className="br-button primary circle small" 
-                                                        title="Delegar p/ Supervisor (Bloqueio Mecânico)"
-                                                        onClick={() => handleDelegarSupervisor(item.id)}
-                                                    >
-                                                        <i className="fas fa-user-check"></i>
-                                                    </button>
-
-                                                    {/* BOTÃO: DELEGAR PARA SUPERVISOR + BORRIFAÇÃO */}
+                                                    {/* BOTÃO 2: DELEGAR PARA SUPERVISOR + BORRIFAÇÃO */}
                                                     <button 
                                                         className="br-button success circle small" 
-                                                        title="Delegar p/ Sup + Borrifação (Químico)"
+                                                        title="Delegar p/ Supervisor + Borrifação"
                                                         onClick={() => handleDelegarBorrifacao(item.id)}
                                                     >
                                                         <i className="fas fa-spray-can"></i>
@@ -215,6 +207,61 @@ export default function ValidacaoBloqueios() {
                     </div>
                 )}
             </div>
+
+            {/* 🟢 MODAL DA JANELA DE RELATÓRIO DE RECUSA */}
+            {modalRecusaAberto && solicitacaoParaRecusar && (
+                <div className="modal-recusa-overlay">
+                    <div className="modal-recusa-card">
+                        <div className="modal-recusa-header">
+                            <h3><i className="fas fa-file-alt mr-2"></i> Relatório de Recusa de Bloqueio</h3>
+                            <button className="btn-fechar-modal" onClick={() => setModalRecusaAberto(false)}>
+                                <i className="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <form onSubmit={handleConfirmarRecusa}>
+                            <div className="modal-recusa-body">
+                                <div className="info-solicitacao-recusa">
+                                    <p><strong>Solicitação:</strong> #{solicitacaoParaRecusar.id}</p>
+                                    <p><strong>Agente:</strong> {solicitacaoParaRecusar.agente}</p>
+                                    <p><strong>Localidade:</strong> {solicitacaoParaRecusar.bairro} - {solicitacaoParaRecusar.endereco}</p>
+                                </div>
+
+                                <div className="form-group-recusa">
+                                    <label htmlFor="justificativaTexto">
+                                        Justificativa Técnica do Motivo da Recusa <span className="obrigatorio">*</span>
+                                    </label>
+                                    <textarea
+                                        id="justificativaTexto"
+                                        rows="5"
+                                        value={justificativa}
+                                        onChange={(e) => setJustificativa(e.target.value)}
+                                        placeholder="Digite detalhadamente o parecer técnico do porquê este bloqueio foi recusado (ex: Fora do prazo epidemiológico, endereço duplicado, etc)..."
+                                        required
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <div className="modal-recusa-footer">
+                                <button 
+                                    type="button" 
+                                    className="br-button secondary" 
+                                    onClick={() => setModalRecusaAberto(false)}
+                                >
+                                    Cancelar
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    className="br-button danger"
+                                    disabled={!justificativa.trim()}
+                                >
+                                    <i className="fas fa-paper-plane mr-2"></i> Confirmar e Emitir Recusa
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </main>
     );
 }

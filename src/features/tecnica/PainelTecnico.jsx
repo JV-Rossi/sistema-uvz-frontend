@@ -3,6 +3,7 @@ import OrdemServico from './OrdemServico';
 import CadastroUsuario from '../tecnica/CadastroUsuario';
 import GerenciarUsuarios from './GerenciarUsuarios';
 import DistribuidorTrabalho from '../tecnica/DistribuidorTrabalho';
+import ProgramacaoBloqueios from './ProgramacaoBloqueios';
 import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
 import AnaliseLarvas from './AnaliseLarvas';
 import ValidacaoBloqueios from './ValidacaoBloqueios'; // Importação do componente ValidacaoBloqueios
@@ -132,13 +133,22 @@ export default function PainelTecnico({ setTelaAtual }) {
                             Supervisores
                             <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
+
                         {pastaAberta === 'supervisao' && (
                             <div className="folder-content pl-3">
+                                {/* Botão Existente */}
                                 <button
                                     className={`menu-btn br-button block ${abaAtiva === 'mutirao' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('mutirao')}
                                 >
                                     <i className="fas fa-clipboard-list mr-2" aria-hidden="true"></i> Distribuição de Mutirão
+                                </button>
+
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'programacao_bloqueios' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('programacao-bloqueios')}
+                                >
+                                    <i className="fas fa-calendar-alt mr-2" aria-hidden="true"></i> Planejamento de Bloqueios
                                 </button>
                             </div>
                         )}
@@ -302,6 +312,13 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {abaAtiva === 'mutirao' && (
                     <div className="br-card">
                         <DistribuidorTrabalho setTelaAtual={setTelaAtual} />
+                    </div>
+                )}
+
+                {/* PROGRAMAÇÃO DE BLOQUEIOS */}
+                {abaAtiva === 'programacao-bloqueios' && (
+                    <div className="br-card">
+                        <ProgramacaoBloqueios setTelaAtual={setTelaAtual} />
                     </div>
                 )}
 

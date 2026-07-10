@@ -3,7 +3,7 @@ import './OrdemServico.css';
 import FormLeishmaniose from './FormLeishmaniose';
 import FormBloqueio from './FormBloqueio';
 
-export default function OrdemServico() {
+export default function OrdemServico({ setTelaAtual }) {
     const [dataSolicitacao, setDataSolicitacao] = useState('');
     const [origem, setOrigem] = useState('');
     const [nomeMunicipe, setNomeMunicipe] = useState('');

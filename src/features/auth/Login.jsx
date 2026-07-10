@@ -17,14 +17,22 @@ export default function Login({ setTelaAtual, setMensagem }) {
       });
 
       if (response.data.startsWith("SUCESSO:")) {
-        let cargoUsuario = response.data.split(":")[1].trim();
+        // Divide a resposta usando o ":" como separador
+        // Exemplo esperado do Java: "SUCESSO: Agente de campo: Carlos Alberto"
+        const partesResposta = response.data.split(":");
+        
+        let cargoUsuario = partesResposta[1].trim();
+        // Pega o nome na 3ª posição (índice 2). Se não vier, usa 'Agente' como fallback.
+        let nomeUsuario = partesResposta.length > 2 ? partesResposta[2].trim() : "Agente";
 
         if (cargoUsuario === "Equipe tecnica") cargoUsuario = "EQUIPE_TECNICA";
         if (cargoUsuario === "Agente de campo") cargoUsuario = "AGENTE_CAMPO";
         if (cargoUsuario === "Gestão" || cargoUsuario === "Gestao") cargoUsuario = "GESTAO";
 
+        // 💾 SALVANDO NO LOCAL STORAGE PARA USO OFFLINE NO DEXIE
         localStorage.setItem('userCargo', cargoUsuario);
         localStorage.setItem('userMatricula', loginMatricula);
+        localStorage.setItem('userName', nomeUsuario); // 👈 Aqui gravamos o nome!
 
         if (cargoUsuario === 'GESTAO') {
           setTelaAtual('gestao');

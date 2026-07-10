@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './TopBar.css';
 
 export default function TopBar() {
-  const usuarioNome = localStorage.getItem('userLogin');
+  // 💾 Ajustado para pegar a chave 'userName' vinda do novo fluxo do seu Login.js
+  const usuarioNome = localStorage.getItem('userName');
   const primeiroNome = usuarioNome ? usuarioNome.split(' ')[0] : 'Agente';
   
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -12,8 +13,7 @@ export default function TopBar() {
   
   const notificacoesRef = useRef(null);
 
-  // Estado das notificações (Simulando banco de dados)
-  // Status possíveis: 'pendente' (nova), 'ciente' (lida/em andamento), 'historico' (resolvida/vencida)
+  // Estado das notificações (Simulando banco de dados local/Dexie futuramente)
   const [notificacoes, setNotificacoes] = useState([
     {
       id: 1,
@@ -67,14 +67,15 @@ export default function TopBar() {
     return () => document.removeEventListener("mousedown", handleClickFora);
   }, [notificacoesRef]);
 
-  // Ações do Agente
+  // Ações do Agente (Atualizando a lista E o modal aberto simultaneamente)
   const handleDarCiencia = (id) => {
     setNotificacoes(notificacoes.map(n => n.id === id ? { ...n, status: 'ciente' } : n));
+    setNotificacaoAberta(prev => prev ? { ...prev, status: 'ciente' } : null);
   };
 
   const handleConcluir = (id) => {
     setNotificacoes(notificacoes.map(n => n.id === id ? { ...n, status: 'historico' } : n));
-    setNotificacaoAberta(null); // Fecha o modal após concluir
+    setNotificacaoAberta(null); // Fecha o modal após concluir e manda pro histórico
   };
 
   const getIconeNotificacao = (tipo) => {
@@ -155,7 +156,7 @@ export default function TopBar() {
         )}
       </div>
 
-      {/* 🟢 MODAL DE DETALHAMENTO DA NOTIFICAÇÃO (Abre ao clicar na lista) */}
+      {/* 🟢 MODAL DE DETALHAMENTO DA NOTIFICAÇÃO */}
       {notificacaoAberta && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -192,4 +193,3 @@ export default function TopBar() {
     </div>
   );
 }
-

@@ -17,6 +17,7 @@ import Ovitrampa from './features/campo/Ovitrampa.jsx';
 import PainelGestao from './features/gestao/PainelGestao.jsx';
 import PainelTecnico from './features/tecnica/PainelTecnico.jsx';
 import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
+import ProgramacaoBloqueios from './features/tecnica/ProgramacaoBloqueios';
 import GerenciarUsuarios from './features/tecnica/GerenciarUsuarios'; 
 
 
@@ -129,6 +130,10 @@ function App() {
 
       {telaAtual === 'gerenciar_equipe' && (
         <GerenciarUsuarios setTelaAtual={setTelaAtual} />
+      )}
+
+      {telaAtual === 'programacao_bloqueios' && (
+        <ProgramacaoBloqueios setTelaAtual={setTelaAtual} />
       )}
 
       {telaAtual === 'tecnica' && (
