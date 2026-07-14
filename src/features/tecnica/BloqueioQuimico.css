@@ -193,6 +193,67 @@
   background-color: #004494;
 }
 
+/* -------------------------------------------
+   AÇÕES DUPLAS NO CARD (Executado vs Não Realizado)
+---------------------------------------------*/
+.bq-botoes-acao-dupla {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.bq-botoes-acao-dupla .btn-executar {
+  flex: 1;
+  background-color: #38a169;
+  padding: 10px 6px;
+  font-size: 13px;
+}
+
+.bq-botoes-acao-dupla .btn-executar:hover {
+  background-color: #2f855a;
+}
+
+.btn-nao-realizado {
+  flex: 1;
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  padding: 10px 6px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-nao-realizado:hover {
+  background-color: #c53030;
+}
+
+/* -------------------------------------------
+   ESTILO DO CARD "NÃO REALIZADO" (NA ABA CONCLUÍDOS)
+---------------------------------------------*/
+.bq-boletim-resumo.cancelado {
+  background-color: #fff5f5;
+  border: 1px dashed #feb2b2;
+}
+
+.bq-boletim-resumo.cancelado h4 {
+  color: #c53030;
+}
+
+.bq-divisor-card.cancelado {
+  border-top: 1px dashed #fc8181;
+}
+
+.bq-boletim-resumo.cancelado p {
+  color: #742a2a;
+}
+
+.bq-data-envio.cancelado {
+  color: #e53e3e;
+}
+
 /* MODAL DE BOLETIM TÉCNICO LARGO */
 .bq-modal-overlay {
   position: fixed;
@@ -485,7 +546,7 @@
 /* Destaque no Card Concluído */
 .bq-destaque-consumo {
   background-color: #fff5f5;
-  color: #c53030 !important; /* Sobrescreve a cor verde padrão do card */
+  color: #c53030 !important;
   padding: 4px 8px;
   border-radius: 4px;
   display: inline-block;
@@ -494,4 +555,31 @@
 
 .bq-destaque-consumo i {
   color: #c53030;
+}
+
+/* -------------------------------------------
+   ESTILO DO MODAL DE CANCELAMENTO / NÃO REALIZADO
+---------------------------------------------*/
+.cancelamento-header {
+  background-color: #e53e3e; /* Vermelho alerta */
+}
+
+.cancelamento-resumo {
+  border-left: 4px solid #e53e3e;
+  background-color: #fff5f5;
+}
+
+.btn-confirmar-cancelamento {
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-confirmar-cancelamento:hover {
+  background-color: #c53030;
 }
