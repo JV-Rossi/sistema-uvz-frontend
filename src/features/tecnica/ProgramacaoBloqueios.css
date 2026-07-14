@@ -20,12 +20,23 @@
   margin: 0 0 20px 0;
 }
 
-/* SISTEMA DE ABAS */
+/* -------------------------------------------
+   NOVA TOOLBAR (Abas à esquerda, Filtro à direita)
+---------------------------------------------*/
+.sup-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 20px;
+  padding-bottom: 0;
+}
+
+/* SISTEMA DE ABAS (Integrado na Toolbar) */
 .sup-abas {
   display: flex;
   gap: 10px;
-  border-bottom: 2px solid #e2e8f0;
-  margin-bottom: 20px;
+  margin-bottom: -2px; /* Faz a borda ativa sobrepor a linha da toolbar */
 }
 
 .sup-aba {
@@ -44,7 +55,40 @@
   border-bottom-color: #0056b3;
 }
 
-/* FEEDBACK */
+/* ESTILO DO FILTRO (Integrado na Toolbar) */
+.sup-filtros-container {
+  padding-bottom: 8px; /* Alinhar visualmente com as abas */
+  display: flex;
+  align-items: center;
+}
+
+.sup-filtro-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a5568;
+  margin-right: 8px;
+}
+
+.sup-select-filtro {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
+  font-size: 13px;
+  color: #2d3748;
+  background-color: white;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.sup-select-filtro:focus {
+  border-color: #3182ce;
+  box-shadow: 0 0 0 1px #3182ce;
+}
+
+/* -------------------------------------------
+   FEEDBACK E GRADES
+---------------------------------------------*/
 .sup-alerta-sucesso {
   background-color: #c6f6d5;
   color: #22543d;
@@ -57,13 +101,15 @@
   gap: 8px;
 }
 
-/* GRADE DE CARDS */
 .sup-grade-demandas {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
 }
 
+/* -------------------------------------------
+   CARDS DE DEMANDAS E DETALHES INTERNOS
+---------------------------------------------*/
 .sup-card-demanda {
   background: white;
   border: 1px solid #e2e8f0;
@@ -120,15 +166,41 @@
   margin: 0 0 12px 0;
 }
 
-.sup-card-corpo small {
+.sup-data-rt {
   font-size: 11px;
   color: #a0aec0;
+}
+
+/* Novos Detalhes do Card para a Aba de "Já Programados" */
+.sup-divisor-card {
+  border: 0;
+  border-top: 1px dashed #cbd5e0;
+  margin: 12px 0;
+}
+
+.sup-detalhes-agendados {
+  background-color: #f7fafc;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.sup-detalhe-agendamento {
+  margin: 5px 0;
+  font-size: 13px;
+  color: #4a5568;
+}
+
+.sup-detalhe-agendamento i {
+  color: #3182ce;
+  width: 18px;
 }
 
 .sup-card-acao {
   margin-top: 16px;
 }
 
+/* Botões do Card */
 .btn-programar {
   width: 100%;
   background-color: #0056b3;
@@ -140,12 +212,42 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+.btn-programar:hover { background-color: #004494; }
 
-.btn-programar:hover {
-  background-color: #004494;
+.sup-botoes-acoes-programados {
+  display: flex;
+  gap: 8px;
+  width: 100%;
 }
 
-/* MODAL OPERACIONAL */
+.btn-imprimir {
+  flex: 1;
+  background-color: #38a169;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-imprimir:hover { background-color: #2f855a; }
+
+.btn-cancelar-agendamento {
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-cancelar-agendamento:hover { background-color: #c53030; }
+
+/* -------------------------------------------
+   MODAL OPERACIONAL (Mantido 100%)
+---------------------------------------------*/
 .sup-modal-overlay {
   position: fixed;
   top: 0;
@@ -264,4 +366,5 @@
 }
 
 .btn-confirmar-escala:hover { background-color: #2f855a; }
+
 .sup-loading, .sup-vazio { text-align: center; padding: 40px; color: #a0aec0; }

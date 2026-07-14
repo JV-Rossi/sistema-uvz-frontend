@@ -7,6 +7,7 @@ import ProgramacaoBloqueios from './ProgramacaoBloqueios';
 import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
 import AnaliseLarvas from './AnaliseLarvas';
 import ValidacaoBloqueios from './ValidacaoBloqueios'; // Importação do componente ValidacaoBloqueios
+import BloqueioQuimico from './BloqueioQuimico'; 
 import './PainelTecnico.css';
 
 export default function PainelTecnico({ setTelaAtual }) {
@@ -325,6 +326,12 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {abaAtiva === 'validacao-bloqueios' && (
                     <div className="br-card">
                         <ValidacaoBloqueios setAbaAtiva={setAbaAtiva} />
+                    </div>
+                )}
+
+                {abaAtiva === 'bloqueio_quimico' && (
+                    <div className="br-card">
+                        <BloqueioQuimico setAbaAtiva={setAbaAtiva} />
                     </div>
                 )}
 

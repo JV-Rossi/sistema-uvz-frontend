@@ -1,0 +1,497 @@
+.bq-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Rawline', sans-serif;
+}
+
+.bq-header h1 {
+  color: #0056b3;
+  font-size: 24px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bq-header p {
+  color: #4a5568;
+  font-size: 14px;
+  margin: 0 0 20px 0;
+}
+
+/* SISTEMA DE ABAS */
+.bq-abas {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.bq-aba {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #718096;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+
+.bq-aba.ativa {
+  color: #0056b3;
+  border-bottom-color: #0056b3;
+}
+
+/* FEEDBACK */
+.bq-alerta-sucesso {
+  background-color: #c6f6d5;
+  color: #22543d;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* GRADE DE CARDS */
+.bq-grade-demandas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.bq-card-demanda {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.bq-card-badges {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.badge-distrito {
+  background-color: #edf2f7;
+  color: #2d3748;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.badge-doenca {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.badge-doenca.dengue { background-color: #fed7d7; color: #9b2c2c; }
+.badge-doenca.zika { background-color: #feebc8; color: #9c4221; }
+.badge-doenca.chikungunya { background-color: #e2f8ff; color: #2b6cb0; }
+
+.bq-card-corpo h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #1a202c;
+}
+
+.bq-txt-endereco {
+  font-size: 13px;
+  color: #4a5568;
+  margin: 0 0 6px 0;
+}
+
+.bq-txt-detalhe {
+  font-size: 13px;
+  color: #2d3748;
+  font-weight: 500;
+  margin: 0 0 12px 0;
+}
+
+.bq-info-escala {
+  background-color: #f7fafc;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.bq-info-escala p {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #4a5568;
+}
+
+.bq-info-escala i {
+  color: #0056b3;
+  width: 16px;
+}
+
+/* EXIBIÇÃO DE DADOS DO NOVO BOLETIM */
+.bq-boletim-resumo {
+  background-color: #f0fdf4;
+  border: 1px dashed #bbf7d0;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+.bq-divisor-card {
+  border: 0;
+  border-top: 1px dashed #cbd5e0;
+  margin: 10px 0;
+}
+
+.bq-boletim-resumo h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #166534;
+}
+
+.bq-boletim-dados p {
+  font-size: 12px;
+  margin: 5px 0;
+  color: #14532d;
+}
+
+.bq-data-envio {
+  display: block;
+  font-size: 10px;
+  color: #38a169;
+  margin-top: 8px;
+  text-align: right;
+}
+
+.bq-card-acao {
+  margin-top: 16px;
+}
+
+.btn-executar {
+  width: 100%;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-executar:hover {
+  background-color: #004494;
+}
+
+/* MODAL DE BOLETIM TÉCNICO LARGO */
+.bq-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.bq-modal-card {
+  background: white;
+  width: 90%;
+  max-width: 520px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+/* Altera a largura máxima do modal para caber a tabela */
+.bq-modal-card.bq-modal-largo {
+  max-width: 800px;
+}
+
+.bq-modal-header {
+  background-color: #0056b3;
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bq-modal-header h3 { margin: 0; font-size: 16px; }
+
+.bq-btn-fechar {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Habilita barra de rolagem vertical interna se o modal ficar comprido */
+.bq-modal-body.select-scroll {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.bq-resumo-localizacao {
+  background-color: #f7fafc;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border-left: 4px solid #0056b3;
+  font-size: 13px;
+}
+.bq-resumo-localizacao p { margin: 4px 0; color: #4a5568; }
+
+.bq-subtitulo-form {
+  font-size: 13px;
+  font-weight: bold;
+  color: #0056b3;
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 4px;
+  margin-top: 10px;
+}
+
+/* Subtítulo especial com botão ao lado */
+.bq-subtitulo-form-tabela {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #0056b3;
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 4px;
+  margin-top: 15px;
+}
+
+.btn-adicionar-linha {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s;
+}
+
+.btn-adicionar-linha:hover {
+  background-color: #004494;
+}
+
+.bq-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bq-form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.bq-form-group input, .bq-form-group select, .bq-form-group textarea {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.bq-form-linha-dupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.bq-form-linha-tripla {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.bq-input-dica {
+  font-size: 11px;
+  color: #a0aec0;
+  margin-top: -3px;
+}
+
+.obrigatorio { color: #e53e3e; }
+
+/* -------------------------------------------
+   TABELA DINÂMICA DE QUARTEIRÕES (DENTRO MODAL)
+---------------------------------------------*/
+.bq-tabela-dinamica-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-bottom: 10px;
+  background-color: white;
+}
+
+.bq-tabela-boletim {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 600px;
+}
+
+.bq-tabela-boletim th {
+  background-color: #f8f9fa;
+  color: #4a5568;
+  padding: 8px 10px;
+  font-weight: bold;
+  text-align: left;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.bq-tabela-boletim td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.bq-tabela-boletim input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.bq-tabela-boletim input:focus {
+  border-color: #0056b3;
+  outline: none;
+}
+
+.col-remover {
+  width: 50px;
+  text-align: center;
+}
+
+.btn-remover-linha {
+  background: none;
+  border: none;
+  color: #e53e3e;
+  cursor: pointer;
+  padding: 6px;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.btn-remover-linha:hover {
+  color: #9b2c2c;
+}
+
+/* -------------------------------------------
+   FOOTER E DEMAIS CONFIGURAÇÕES
+---------------------------------------------*/
+.bq-modal-footer {
+  padding: 16px 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-cancelar {
+  background: none;
+  border: 1px solid #cbd5e0;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-confirmar-boletim {
+  background-color: #38a169;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-confirmar-boletim:hover { background-color: #2f855a; }
+.bq-loading, .bq-vazio { text-align: center; padding: 40px; color: #a0aec0; }
+
+/* PAINEL DE CÁLCULO INTELIGENTE */
+.bq-painel-calculo {
+  background-color: #ebf8ff;
+  border: 1px solid #90cdf4;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bq-calculo-item {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: #2c5282;
+}
+
+.bq-calculo-item span {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.bq-calculo-item strong {
+  font-size: 18px;
+  color: #2b6cb0;
+}
+
+.bq-calculo-item.destaque {
+  text-align: right;
+}
+
+.bq-calculo-item.destaque strong {
+  color: #e53e3e; /* Vermelho para chamar atenção do gasto do insumo caro */
+}
+
+/* Espaçador de margem */
+.mt-10 {
+  margin-top: 10px;
+}
+
+/* Destaque no Card Concluído */
+.bq-destaque-consumo {
+  background-color: #fff5f5;
+  color: #c53030 !important; /* Sobrescreve a cor verde padrão do card */
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 6px !important;
+}
+
+.bq-destaque-consumo i {
+  color: #c53030;
+}

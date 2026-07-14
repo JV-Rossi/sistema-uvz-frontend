@@ -217,3 +217,187 @@
   font-size: 14px;
   font-weight: 600;
 }
+
+/* Toolbar de Filtros (Abas na esquerda e Distrito na direita) */
+.validacao-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 12px;
+}
+
+.validacao-filtros {
+    display: flex;
+    gap: 10px;
+}
+
+.validacao-distrito-container {
+    display: flex;
+    align-items: center;
+}
+
+.validacao-distrito-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-right: 8px;
+}
+
+.validacao-select-filtro {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e0;
+    font-size: 13px;
+    color: #2d3748;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.validacao-select-filtro:focus {
+    border-color: #3182ce;
+}
+
+/* Badge de Distrito dentro da Célula de Endereço */
+.badge-distrito-tabela {
+    background-color: #ebf8ff;
+    color: #2b6cb0;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Flex Helper */
+.gap-2 { gap: 8px; }
+.mb-1 { margin-bottom: 4px; }
+
+/* ==========================================================================
+   NOVO MODAL DE CONFIRMAÇÃO DE DELEGAÇÃO
+   ========================================================================== */
+.modal-delegar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3500;
+}
+
+.modal-delegar-card {
+    background: white;
+    width: 90%;
+    max-width: 520px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    overflow: hidden;
+    animation: zoomInRecusa 0.2s ease-out;
+}
+
+.modal-delegar-header {
+    background-color: #2f855a; /* Verde focado em sucesso/aprovação */
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-delegar-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.modal-delegar-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Box de Alerta visual amarelo de cuidado */
+.alerta-delegacao {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #fffaf0;
+    border-left: 4px solid #dd6b20;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.alerta-delegacao i {
+    color: #dd6b20;
+    font-size: 20px;
+}
+
+.alerta-delegacao p {
+    margin: 0;
+    font-size: 12.5px;
+    color: #7b341e;
+    line-height: 1.4;
+}
+
+/* Informações do Bloco Técnico do Modal */
+.info-solicitacao-delegar {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    padding: 14px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.info-solicitacao-delegar p {
+    margin: 6px 0;
+    color: #4a5568;
+}
+
+.info-solicitacao-delegar p strong {
+    color: #2d3748;
+}
+
+.pergunta-confirmacao {
+    text-align: center;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 10px 0 0 0;
+    font-size: 14px;
+}
+
+.modal-delegar-footer {
+    padding: 16px 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* Ajuste nos botões de modal */
+.modal-delegar-footer .br-button {
+    padding: 10px 18px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.modal-delegar-footer .br-button.success {
+    background-color: #38a169;
+    color: white;
+    border: none;
+    transition: background 0.2s;
+}
+
+.modal-delegar-footer .br-button.success:hover {
+    background-color: #2f855a;
+}
