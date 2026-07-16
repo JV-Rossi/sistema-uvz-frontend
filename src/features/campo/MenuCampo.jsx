@@ -35,7 +35,7 @@ export default function MenuCampo({ setTelaAtual }) {
           <small className="card-subtitulo">Todos os Boletins</small>
         </div>
 
-        <div className="card-menu" onClick={() => setTelaAtual('solicitacao_campo')}>
+        <div className="card-menu" onClick={() => setTelaAtual('campo_formulario')}>
           <div className="card-icone icone-vermelho">
             <i className="fas fa-bullhorn"></i>
           </div>

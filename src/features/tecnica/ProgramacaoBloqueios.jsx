@@ -15,45 +15,52 @@ export default function ProgramacaoBloqueios() {
   // Campos do formulário
   const [dataAgendada, setDataAgendada] = useState('');
   const [horarioAgendado, setHorarioAgendado] = useState('');
-  const [equipeEscalada, setEquipeEscalada] = useState('');
+  const [equipeEscalada, setEquipeEscalada] = useState(''); // Representa a Equipe de Vistoria/Foco
   const [nomeSupervisor, setNomeSupervisor] = useState('');
 
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
+      // 🟢 CORREÇÃO: Mock de dados atualizado com Quarteirão, Zona e Paciente
       const dadosIniciais = [
         { 
           id: 101, 
           dataValidacao: '09/07/2026', 
+          paciente: 'MARIA DA SILVA',
           bairro: 'ALPHAVILLE I', 
           distrito: 'DIS. NORTE', 
+          quarteirao: 12,
+          zona: 'URBANA',
           endereco: 'Rua das Orquídeas, Qd 5, Lt 12', 
           suspeita: 'Dengue', 
-          tipoBloqueio: 'Mecânico + Químico (Borrifação)',
           status: 'pendente' 
         },
         { 
           id: 102, 
           dataValidacao: '09/07/2026', 
+          paciente: 'ROBERTO CARLOS',
           bairro: 'COND. ATHENAS', 
           distrito: 'DIS. SUL', 
+          quarteirao: 5,
+          zona: 'URBANA',
           endereco: 'Casa 45', 
           suspeita: 'Zika', 
-          tipoBloqueio: 'Mecânico + Químico (Borrifação)',
           status: 'pendente' 
         },
         { 
           id: 103, 
           dataValidacao: '08/07/2026', 
+          paciente: 'ANA JULIA',
           bairro: 'CENTRO', 
           distrito: 'DIS. LESTE', 
+          quarteirao: 8,
+          zona: 'URBANA',
           endereco: 'Av. Mato Grosso, 1500', 
           suspeita: 'Chikungunya', 
-          tipoBloqueio: 'Mecânico + Químico (Borrifação)',
           status: 'programado',
           dataExecucao: '2026-07-15',
           horaExecucao: '07:30',
-          equipe: 'Carlos Souza, Marcos Lima',
+          equipe: 'Carlos Souza, Marcos Lima', // Equipe de Foco atribuída
           supervisorResponsavel: 'PEDRO ALMEIDA'
         }
       ];
@@ -62,7 +69,6 @@ export default function ProgramacaoBloqueios() {
     }, 600);
   }, []);
 
-  // Lógica de filtro corrigida (agora compara singular com singular!)
   const demandasFiltradas = demandas.filter(demanda => {
     const atendeAba = demanda.status === filtroAbas;
     const atendeDistrito = filtroDistrito === 'TODOS' || demanda.distrito === filtroDistrito;
@@ -126,7 +132,6 @@ export default function ProgramacaoBloqueios() {
         <p>Painel do Supervisor: Distribuição de equipes, rotas de borrifação e cronogramas operacionais.</p>
       </header>
 
-      {/* TOOLBAR: Alinha abas e filtros perfeitamente na mesma linha */}
       <div className="sup-toolbar">
         <div className="sup-abas">
           <button 
@@ -186,8 +191,10 @@ export default function ProgramacaoBloqueios() {
               
               <div className="sup-card-corpo">
                 <h3>{demanda.bairro}</h3>
-                <p className="sup-txt-endereco"><strong>Endereço:</strong> {demanda.endereco}</p>
-                <p className="sup-txt-detalhe"><strong>Tipo Solicitado:</strong> {demanda.tipoBloqueio}</p>
+                
+                {/* 🟢 CORREÇÃO: Inclusão do Paciente e Quarteirão no card */}
+                <p className="sup-txt-endereco"><strong>Paciente:</strong> {demanda.paciente}</p>
+                <p className="sup-txt-endereco"><strong>Local:</strong> Quart. {demanda.quarteirao} - {demanda.endereco}</p>
                 
                 {demanda.status === 'pendente' ? (
                   <small className="sup-data-rt">Validado pelo RT em: {demanda.dataValidacao}</small>
@@ -198,7 +205,7 @@ export default function ProgramacaoBloqueios() {
                       <i className="fas fa-calendar-day"></i> <strong>Data:</strong> {demanda.dataExecucao.split('-').reverse().join('/')} às {demanda.horaExecucao}
                     </p>
                     <p className="sup-detalhe-agendamento">
-                      <i className="fas fa-users"></i> <strong>Equipe:</strong> {demanda.equipe}
+                      <i className="fas fa-users"></i> <strong>Equipe Foco:</strong> {demanda.equipe}
                     </p>
                     <p className="sup-detalhe-agendamento">
                       <i className="fas fa-user-shield"></i> <strong>Resp.:</strong> {demanda.supervisorResponsavel}
@@ -242,8 +249,8 @@ export default function ProgramacaoBloqueios() {
             <form onSubmit={handleSalvarProgramacao}>
               <div className="sup-modal-body">
                 <div className="sup-resumo-localizacao">
-                  <p><strong>Local:</strong> {demandaSelecionada.bairro} ({demandaSelecionada.distrito})</p>
-                  <p><strong>Alvo:</strong> Bloqueio Químico para Suspeita de {demandaSelecionada.suspeita}</p>
+                  <p><strong>Paciente:</strong> {demandaSelecionada.paciente} (Suspeita: {demandaSelecionada.suspeita})</p>
+                  <p><strong>Local:</strong> Quart. {demandaSelecionada.quarteirao}, {demandaSelecionada.bairro} ({demandaSelecionada.distrito})</p>
                 </div>
 
                 <div className="sup-form-group">
@@ -269,7 +276,8 @@ export default function ProgramacaoBloqueios() {
                 </div>
 
                 <div className="sup-form-group">
-                  <label>Agentes Escalados (Borrifadores) <span className="obrigatorio">*</span></label>
+                  {/* 🟢 CORREÇÃO: Texto alterado para Equipe de Vistoria de Foco */}
+                  <label>Agentes Escalados (Equipe de Bloqueio de Foco) <span className="obrigatorio">*</span></label>
                   <textarea 
                     rows="3"
                     placeholder="Ex: Anadir dos Santos, Jussara Ramos..."
@@ -277,7 +285,7 @@ export default function ProgramacaoBloqueios() {
                     onChange={(e) => setEquipeEscalada(e.target.value)}
                     required
                   ></textarea>
-                  <small className="sup-input-dica">Insira os nomes dos ACEs separados por vírgula.</small>
+                  <small className="sup-input-dica">Insira os nomes dos agentes que farão a vistoria e eliminação focal.</small>
                 </div>
               </div>
 

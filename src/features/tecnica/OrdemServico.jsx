@@ -8,9 +8,15 @@ export default function OrdemServico({ setTelaAtual }) {
     const [origem, setOrigem] = useState('');
     const [nomeMunicipe, setNomeMunicipe] = useState('');
     const [telefone, setTelefone] = useState('');
+    
+    // 🟢 NOVOS CAMPOS CARTOGRÁFICOS ALINHADOS COM O BACKEND
     const [distrito, setDistrito] = useState('');
     const [bairro, setBairro] = useState('');
+    const [quarteirao, setQuarteirao] = useState('');
+    const [zona, setZona] = useState('');
+    const [desmembramento, setDesmembramento] = useState('');
     const [endereco, setEndereco] = useState('');
+    
     const [setorDestino, setSetorDestino] = useState('');
     const [servicoSolicitado, setServicoSolicitado] = useState('');
     const [descricao, setDescricao] = useState('');
@@ -69,8 +75,11 @@ export default function OrdemServico({ setTelaAtual }) {
             sintomas: [], feridas: [], outrosSintomas: ''
         }]);
     };
+    
     const removerAnimal = (id) => setAnimaisLeish(animaisLeish.filter(animal => animal.id !== id));
+    
     const handleAnimalChange = (id, campo, valor) => setAnimaisLeish(animaisLeish.map(a => a.id === id ? { ...a, [campo]: valor } : a));
+    
     const handleCheckboxArray = (id, tipoArray, item, isChecked) => {
         setAnimaisLeish(animaisLeish.map(a => {
             if (a.id !== id) return a;
@@ -81,7 +90,9 @@ export default function OrdemServico({ setTelaAtual }) {
     const limparFormulario = () => {
         const hoje = new Date().toISOString().split('T')[0];
         setDataSolicitacao(hoje);
-        setOrigem(''); setNomeMunicipe(''); setTelefone(''); setDistrito(''); setBairro(''); setEndereco('');
+        setOrigem(''); setNomeMunicipe(''); setTelefone(''); 
+        setDistrito(''); setBairro(''); setEndereco('');
+        setQuarteirao(''); setZona(''); setDesmembramento(''); // 🟢 Limpa novos campos
         setSetorDestino(''); setServicoSolicitado(''); setDescricao('');
         setAmbienteLeish({
             outrosAnimais: '', qtdCaes: '', qtdGatos: '', pessoasCasa: '', possuiMuro: '',
@@ -89,6 +100,7 @@ export default function OrdemServico({ setTelaAtual }) {
             esgotoTratado: false, localCaes: '', teveLeishmaniose: '', qtdLeishmaniose: ''
         });
         setAnimaisLeish([]); setErro('');
+        setDadosBloqueio({ referencia: '', paciente: '', suspeita: '', dataSintomas: '' });
     };
 
     const handleSubmit = async (e) => {
@@ -102,8 +114,9 @@ export default function OrdemServico({ setTelaAtual }) {
         }
 
         try {
+            // Aqui futuramente entrará o Axios/Fetch chamando o Spring Boot
             setTimeout(() => {
-                setSucesso(`O.S. registrada com sucesso! Encaminhada para: ${setorDestino.toUpperCase()}.`);
+                setSucesso(`O.S. registrada com sucesso! Encaminhada para o RT de ${setorDestino.toUpperCase()}.`);
                 limparFormulario();
                 setLoading(false);
                 setTimeout(() => setSucesso(''), 5000);
@@ -114,7 +127,7 @@ export default function OrdemServico({ setTelaAtual }) {
         }
     };
 
-    // Estado do Bloqueio
+    // Estado do Bloqueio (Passado para o FormBloqueio)
     const [dadosBloqueio, setDadosBloqueio] = useState({
         referencia: '', paciente: '', suspeita: '', dataSintomas: ''
     });
@@ -132,25 +145,69 @@ export default function OrdemServico({ setTelaAtual }) {
 
                 <form onSubmit={handleSubmit} className="os-main-card">
 
-                    <h3 className="text-weight-semi-bold os-section-title">1. Dados do Solicitante</h3>
+                    <h3 className="text-weight-semi-bold os-section-title">1. Dados do Solicitante / Paciente</h3>
                     <div className="os-grid">
-                        <div className="br-input"><label>Data da Solicitação <span className="text-danger">*</span></label><input type="date" value={dataSolicitacao} onChange={(e) => setDataSolicitacao(e.target.value)} /></div>
+                        <div className="br-input">
+                            <label>Data da Solicitação <span className="text-danger">*</span></label>
+                            <input type="date" value={dataSolicitacao} onChange={(e) => setDataSolicitacao(e.target.value)} />
+                        </div>
                         <div className="br-input">
                             <label>Canal de Atendimento <span className="text-danger">*</span></label>
                             <select className="br-select" value={origem} onChange={(e) => setOrigem(e.target.value)}>
-                                <option value="">Selecione...</option><option value="presencial">Presencial (Balcão)</option><option value="telefone">Telefone</option><option value="whatsapp">WhatsApp</option>
+                                <option value="">Selecione...</option>
+                                <option value="presencial">Presencial (Balcão)</option>
+                                <option value="telefone">Telefone</option>
+                                <option value="whatsapp">WhatsApp</option>
                             </select>
                         </div>
-                        <div className="br-input os-grid-full"><label>Nome do Munícipe <span className="text-danger">*</span></label><input type="text" value={nomeMunicipe} onChange={(e) => setNomeMunicipe(e.target.value)} /></div>
-                        <div className="br-input"><label>Telefone para Contato</label><input type="tel" value={telefone} onChange={(e) => setTelefone(e.target.value)} /></div>
+                        
+                        <div className="br-input os-grid-full">
+                            <label>Nome do Munícipe / Solicitante <span className="text-danger">*</span></label>
+                            <input type="text" placeholder="Nome completo" value={nomeMunicipe} onChange={(e) => setNomeMunicipe(e.target.value)} />
+                        </div>
+                        
+                        <div className="br-input">
+                            <label>Telefone para Contato</label>
+                            <input type="tel" placeholder="(65) 99999-9999" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+                        </div>
+                        
                         <div className="br-input">
                             <label>Distrito <span className="text-danger">*</span></label>
                             <select className="br-select" value={distrito} onChange={(e) => setDistrito(e.target.value)}>
-                                <option value="">Selecione...</option><option value="norte">Norte</option><option value="sul">Sul</option><option value="leste">Leste</option><option value="oeste">Oeste</option><option value="rural">Zona Rural</option>
+                                <option value="">Selecione...</option>
+                                <option value="DIS. NORTE">Norte</option>
+                                <option value="DIS. SUL">Sul</option>
+                                <option value="DIS. LESTE">Leste</option>
+                                <option value="DIS. OESTE">Oeste</option>
+                                <option value="ZONA RURAL">Zona Rural</option>
                             </select>
                         </div>
-                        <div className="br-input"><label>Bairro <span className="text-danger">*</span></label><input type="text" value={bairro} onChange={(e) => setBairro(e.target.value)} /></div>
-                        <div className="br-input"><label>Endereço Completo</label><input type="text" value={endereco} onChange={(e) => setEndereco(e.target.value)} /></div>
+                        
+                        <div className="br-input">
+                            <label>Bairro <span className="text-danger">*</span></label>
+                            <input type="text" placeholder="Nome do Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} />
+                        </div>
+
+                        {/* 🟢 NOVOS CAMPOS DE LOCALIDADE */}
+                        <div className="br-input">
+                            <label>Quarteirão</label>
+                            <input type="number" placeholder="Nº (Opcional na Recepção)" value={quarteirao} onChange={(e) => setQuarteirao(e.target.value)} />
+                        </div>
+
+                        <div className="br-input">
+                            <label>Zona</label>
+                            <input type="text" placeholder="Urbana / Rural" value={zona} onChange={(e) => setZona(e.target.value)} />
+                        </div>
+                        
+                        <div className="br-input">
+                            <label>Desmembramento</label>
+                            <input type="text" placeholder="Código" value={desmembramento} onChange={(e) => setDesmembramento(e.target.value)} />
+                        </div>
+
+                        <div className="br-input os-grid-full">
+                            <label>Endereço Completo (Rua, Número, Referência)</label>
+                            <input type="text" placeholder="Endereço da ocorrência" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
+                        </div>
                     </div>
 
                     <h3 className="text-weight-semi-bold os-section-title">2. Direcionamento e Serviço</h3>

@@ -8,7 +8,7 @@ export default function ValidacaoBloqueios() {
     const [sucesso, setSucesso] = useState('');
 
     const [filtroStatus, setFiltroStatus] = useState('pendente');
-    const [filtroDistrito, setFiltroDistrito] = useState('TODOS'); // Estado para o filtro de distrito
+    const [filtroDistrito, setFiltroDistrito] = useState('TODOS'); 
 
     // Estados para o controle do Modal de Recusa
     const [modalRecusaAberto, setModalRecusaAberto] = useState(false);
@@ -28,11 +28,11 @@ export default function ValidacaoBloqueios() {
         setErro('');
         try {
             setTimeout(() => {
-                // Mock de dados atualizado incluindo o Distrito correspondente a cada bairro
+                // 🟢 CORREÇÃO: Mock de dados atualizado com Quarteirão, Zona, Telefone e Paciente
                 const dadosSimulados = [
-                    { id: 1, data: '08/07/2026', agente: 'JOAO VITOR ROSSI', bairro: 'ALPHAVILLE I', distrito: 'DIS. NORTE', endereco: 'Rua das Orquídeas, Qd 5, Lt 12', suspeita: 'Dengue', dataSintomas: '02/07/2026', status: 'pendente' },
-                    { id: 2, data: '08/07/2026', agente: 'CAMILA BENEDITA', bairro: 'COND. ATHENAS', distrito: 'DIS. SUL', endereco: 'Casa 45', suspeita: 'Zika', dataSintomas: '05/07/2026', status: 'pendente' },
-                    { id: 3, data: '07/07/2026', agente: 'HELIO SIMIAO', bairro: 'BRASIL 21', distrito: 'DIS. LESTE', endereco: 'Rua B, Qd 2, Lt 8', suspeita: 'Chikungunya', dataSintomas: '04/07/2026', status: 'pendente' },
+                    { id: 1, data: '16/07/2026', agente: 'JOAO VITOR ROSSI', paciente: 'MARIA DA SILVA', telefone: '(65) 99999-1111', bairro: 'ALPHAVILLE I', quarteirao: 12, zona: 'URBANA', desmembramento: '', distrito: 'DIS. NORTE', endereco: 'Rua das Orquídeas, Qd 5, Lt 12', suspeita: 'Dengue', dataSintomas: '12/07/2026', status: 'pendente' },
+                    { id: 2, data: '16/07/2026', agente: 'CAMILA BENEDITA', paciente: 'ROBERTO CARLOS', telefone: '', bairro: 'COND. ATHENAS', quarteirao: 5, zona: 'URBANA', desmembramento: 'A', distrito: 'DIS. SUL', endereco: 'Casa 45', suspeita: 'Zika', dataSintomas: '14/07/2026', status: 'pendente' },
+                    { id: 3, data: '15/07/2026', agente: 'HELIO SIMIAO', paciente: 'ANA JULIA', telefone: '(65) 98888-2222', bairro: 'BRASIL 21', quarteirao: 8, zona: 'PERIURBANA', desmembramento: '', distrito: 'DIS. LESTE', endereco: 'Rua B, Qd 2, Lt 8', suspeita: 'Chikungunya', dataSintomas: '10/07/2026', status: 'pendente' },
                 ];
                 setSolicitacoes(filtroStatus === 'pendente' ? dadosSimulados : []);
                 setLoading(false);
@@ -43,19 +43,16 @@ export default function ValidacaoBloqueios() {
         }
     };
 
-    // Filtra as solicitações na listagem de acordo com o distrito selecionado
     const solicitacoesFiltradas = solicitacoes.filter(item => {
         return filtroDistrito === 'TODOS' || item.distrito === filtroDistrito;
     });
 
-    // 🔴 1. Ação: Abrir janela de Recusa
     const handleAbrirRecusa = (solicitacao) => {
         setSolicitacaoParaRecusar(solicitacao);
         setJustificativa('');
         setModalRecusaAberto(true);
     };
 
-    // Envio do Relatório de Recusa
     const handleConfirmarRecusa = async (e) => {
         e.preventDefault();
         if (!justificativa.trim()) return;
@@ -74,13 +71,11 @@ export default function ValidacaoBloqueios() {
         }
     };
 
-    // 🟢 2. Ação: Abrir modal de Confirmação para Delegar
     const handleAbrirDelegacao = (solicitacao) => {
         setSolicitacaoParaDelegar(solicitacao);
         setModalDelegarAberto(true);
     };
 
-    // Confirmação final da Delegação dentro do modal
     const handleConfirmarDelegacao = async () => {
         if (!solicitacaoParaDelegar) return;
 
@@ -116,7 +111,6 @@ export default function ValidacaoBloqueios() {
                 </p>
             </header>
 
-            {/* BARRA DE FERRAMENTAS: Abas à esquerda e seletor de Distrito à direita */}
             <div className="validacao-toolbar">
                 <div className="validacao-filtros">
                     <button 
@@ -165,7 +159,6 @@ export default function ValidacaoBloqueios() {
                 </div>
             )}
 
-            {/* TABELA DE SOLICITAÇÕES */}
             <div className="br-card p-4 tabela-validacao-container">
                 <h3 className="text-weight-semi-bold mb-4 text-primary">
                     Solicitações {filtroStatus === 'pendente' ? 'Aguardando Avaliação' : 'Avaliadas'}
@@ -189,8 +182,8 @@ export default function ValidacaoBloqueios() {
                                 <tr>
                                     <th className="col-data" scope="col">Data</th>
                                     <th className="col-agente" scope="col">Agente Solicitante</th>
-                                    <th className="col-endereco" scope="col">Endereço (Imóvel)</th>
-                                    <th className="col-sintoma" scope="col">Sintoma</th>
+                                    <th className="col-endereco" scope="col">Localidade</th>
+                                    <th className="col-sintoma" scope="col">Dados do Caso</th>
                                     <th className="col-acoes" scope="col">Ação do Resp. Técnico</th>
                                 </tr>
                             </thead>
@@ -199,28 +192,37 @@ export default function ValidacaoBloqueios() {
                                     <tr key={item.id}>
                                         <td data-th="Data">{item.data}</td>
                                         <td data-th="Agente Solicitante" className="text-weight-semi-bold">{item.agente}</td>
-                                        <td data-th="Endereço">
+                                        
+                                        {/* 🟢 CORREÇÃO: Coluna de Localidade com Quarteirão e Zona */}
+                                        <td data-th="Localidade">
                                             <div className="d-flex align-items-center gap-2 mb-1">
                                                 <span className="text-weight-bold">{item.bairro}</span>
-                                                <span className="badge-distrito-tabela">
-                                                    {item.distrito}
-                                                </span>
+                                                <span className="badge-distrito-tabela">{item.distrito}</span>
                                             </div>
-                                            <span className="text-small text-muted">{item.endereco}</span>
+                                            <span className="d-block text-small text-muted">{item.endereco}</span>
+                                            <span className="d-block text-small text-muted mt-1">
+                                                <i className="fas fa-map-signs mr-1"></i> Quart: {item.quarteirao} 
+                                                {item.zona && ` | Zona: ${item.zona}`}
+                                                {item.desmembramento && ` | Desm: ${item.desmembramento}`}
+                                            </span>
                                         </td>
-                                        <td data-th="Sintoma">
+                                        
+                                        {/* 🟢 CORREÇÃO: Coluna de Sintoma exibindo o Paciente */}
+                                        <td data-th="Dados do Caso">
                                             <span className={`br-tag mb-1 ${getCorSuspeita(item.suspeita)}`}>
                                                 Suspeita: {item.suspeita}
                                             </span>
                                             <p className="mb-0 text-small mt-1">
-                                                <strong>Início dos Sintomas:</strong> {item.dataSintomas}
+                                                <strong>Munícipe:</strong> {item.paciente}
+                                            </p>
+                                            <p className="mb-0 text-small">
+                                                <strong>Início Sintomas:</strong> {item.dataSintomas}
                                             </p>
                                         </td>
+                                        
                                         <td data-th="Ação" className="col-acoes-center">
                                             {filtroStatus === 'pendente' ? (
                                                 <div className="acoes-botoes-container">
-                                                    
-                                                    {/* BOTÃO 1: RECUSAR (ABRE RELATÓRIO) */}
                                                     <button 
                                                         className="br-button danger circle small" 
                                                         title="Recusar e Gerar Relatório"
@@ -228,8 +230,6 @@ export default function ValidacaoBloqueios() {
                                                     >
                                                         <i className="fas fa-times"></i>
                                                     </button>
-                                                    
-                                                    {/* BOTÃO 2: ABRIR CONFIRMAÇÃO DE DELEGAÇÃO */}
                                                     <button 
                                                         className="br-button success circle small" 
                                                         title="Delegar p/ Supervisor + Borrifação"
@@ -237,7 +237,6 @@ export default function ValidacaoBloqueios() {
                                                     >
                                                         <i className="fas fa-spray-can"></i>
                                                     </button>
-
                                                 </div>
                                             ) : (
                                                 <span className="text-muted text-small text-uppercase">Já avaliado</span>
@@ -266,8 +265,8 @@ export default function ValidacaoBloqueios() {
                             <div className="modal-recusa-body">
                                 <div className="info-solicitacao-recusa">
                                     <p><strong>Solicitação:</strong> #{solicitacaoParaRecusar.id}</p>
-                                    <p><strong>Agente:</strong> {solicitacaoParaRecusar.agente}</p>
-                                    <p><strong>Localidade:</strong> {solicitacaoParaRecusar.bairro} ({solicitacaoParaRecusar.distrito}) - {solicitacaoParaRecusar.endereco}</p>
+                                    <p><strong>Paciente:</strong> {solicitacaoParaRecusar.paciente}</p>
+                                    <p><strong>Localidade:</strong> Quart. {solicitacaoParaRecusar.quarteirao}, {solicitacaoParaRecusar.bairro} ({solicitacaoParaRecusar.distrito})</p>
                                 </div>
 
                                 <div className="form-group-recusa">
@@ -279,25 +278,17 @@ export default function ValidacaoBloqueios() {
                                         rows="5"
                                         value={justificativa}
                                         onChange={(e) => setJustificativa(e.target.value)}
-                                        placeholder="Digite detalhadamente o parecer técnico do porquê este bloqueio foi recusado (ex: Fora do prazo epidemiológico, endereço duplicado, etc)..."
+                                        placeholder="Digite detalhadamente o parecer técnico do porquê este bloqueio foi recusado..."
                                         required
                                     ></textarea>
                                 </div>
                             </div>
 
                             <div className="modal-recusa-footer">
-                                <button 
-                                    type="button" 
-                                    className="br-button secondary" 
-                                    onClick={() => setModalRecusaAberto(false)}
-                                >
+                                <button type="button" className="br-button secondary" onClick={() => setModalRecusaAberto(false)}>
                                     Cancelar
                                 </button>
-                                <button 
-                                    type="submit" 
-                                    className="br-button danger"
-                                    disabled={!justificativa.trim()}
-                                >
+                                <button type="submit" className="br-button danger" disabled={!justificativa.trim()}>
                                     <i className="fas fa-paper-plane mr-2"></i> Confirmar e Emitir Recusa
                                 </button>
                             </div>
@@ -306,7 +297,7 @@ export default function ValidacaoBloqueios() {
                 </div>
             )}
 
-            {/* 🟢 NOVO MODAL: JANELA DE CONFIRMAÇÃO DE DELEGAÇÃO */}
+            {/* 🟢 MODAL DE CONFIRMAÇÃO DE DELEGAÇÃO */}
             {modalDelegarAberto && solicitacaoParaDelegar && (
                 <div className="modal-delegar-overlay">
                     <div className="modal-delegar-card">
@@ -324,9 +315,11 @@ export default function ValidacaoBloqueios() {
                             </div>
 
                             <div className="info-solicitacao-delegar">
-                                <p><strong>Código da Solicitação:</strong> #{solicitacaoParaDelegar.id}</p>
+                                <p><strong>Código da O.S.:</strong> #{solicitacaoParaDelegar.id}</p>
                                 <p><strong>Agente Solicitante:</strong> {solicitacaoParaDelegar.agente}</p>
-                                <p><strong>Bairro / Distrito:</strong> {solicitacaoParaDelegar.bairro} ({solicitacaoParaDelegar.distrito})</p>
+                                {/* 🟢 CORREÇÃO: Exibição completa no modal do RT */}
+                                <p><strong>Paciente Notificado:</strong> {solicitacaoParaDelegar.paciente}</p>
+                                <p><strong>Localidade:</strong> {solicitacaoParaDelegar.bairro} ({solicitacaoParaDelegar.distrito}) - Quart. {solicitacaoParaDelegar.quarteirao}</p>
                                 <p><strong>Endereço:</strong> {solicitacaoParaDelegar.endereco}</p>
                                 <p><strong>Suspeita Epidemiológica:</strong> 
                                     <span className={`br-tag ml-2 ${getCorSuspeita(solicitacaoParaDelegar.suspeita)}`}>
@@ -339,18 +332,10 @@ export default function ValidacaoBloqueios() {
                         </div>
 
                         <div className="modal-delegar-footer">
-                            <button 
-                                type="button" 
-                                className="br-button secondary" 
-                                onClick={() => setModalDelegarAberto(false)}
-                            >
+                            <button type="button" className="br-button secondary" onClick={() => setModalDelegarAberto(false)}>
                                 Cancelar
                             </button>
-                            <button 
-                                type="button" 
-                                className="br-button success"
-                                onClick={handleConfirmarDelegacao}
-                            >
+                            <button type="button" className="br-button success" onClick={handleConfirmarDelegacao}>
                                 <i className="fas fa-check-circle mr-2"></i> Sim, Confirmar Delegação
                             </button>
                         </div>

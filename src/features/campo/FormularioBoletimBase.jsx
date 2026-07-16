@@ -10,6 +10,7 @@ export default function FormularioBoletimBase({
     titulo,
     subtitulo,
     tipoBoletim, // 'ROTINA', 'PE' ou 'BLOQUEIO'
+    solicitacaoId, 
     setTelaAtual,
     opcoesCategoriasCustomizadas, // Se passado, substitui as categorias padrão
     exibirCamposExtra // Para futuras expansões
@@ -154,6 +155,7 @@ export default function FormularioBoletimBase({
         }).filter(Boolean);
 
         const payloadOffline = {
+            id: tipoBoletim === 'BLOQUEIO' ? solicitacaoId : null, // 🟢 2. Vincula o ID da O.S. se for bloqueio
             ...cabecalho,
             tipo_boletim: tipoBoletim,
             imoveis: listaImoveis,

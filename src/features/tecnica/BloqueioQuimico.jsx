@@ -22,8 +22,9 @@ export default function BloqueioQuimico() {
     const [dataRealizacao, setDataRealizacao] = useState('');
     const [equipeBorrifacao, setEquipeBorrifacao] = useState('');
 
+    // 🟢 CORREÇÃO: Adicionado o campo "combustivel" de volta ao estado inicial
     const [linhasQuarteirao, setLinhasQuarteirao] = useState([
-        { id: 1, numeroQuarteirao: '', imoveisBloqueados: '', tempoAplicacao: '', mlMinuto: '' }
+        { id: 1, numeroQuarteirao: '', imoveisBloqueados: '', tempoAplicacao: '', mlMinuto: '', combustivel: '' }
     ]);
 
     useEffect(() => {
@@ -33,11 +34,15 @@ export default function BloqueioQuimico() {
     const buscarBloqueiosProgramados = () => {
         setLoading(true);
         setTimeout(() => {
+            // 🟢 CORREÇÃO: Mock atualizado com Paciente, Quarteirão e Zona
             const dadosSupervisor = [
                 {
                     id: 101,
+                    paciente: 'MARIA DA SILVA',
                     bairro: 'ALPHAVILLE I',
                     distrito: 'DIS. NORTE',
+                    quarteirao: 12,
+                    zona: 'URBANA',
                     endereco: 'Rua das Orquídeas, Qd 5, Lt 12',
                     suspeita: 'Dengue',
                     tipoBloqueio: 'Mecânico + Químico (Borrifação)',
@@ -48,8 +53,11 @@ export default function BloqueioQuimico() {
                 },
                 {
                     id: 102,
+                    paciente: 'ROBERTO CARLOS',
                     bairro: 'COND. ATHENAS',
                     distrito: 'DIS. SUL',
+                    quarteirao: 5,
+                    zona: 'URBANA',
                     endereco: 'Casa 45',
                     suspeita: 'Zika',
                     tipoBloqueio: 'Mecânico + Químico (Borrifação)',
@@ -72,12 +80,12 @@ export default function BloqueioQuimico() {
         const hoje = new Date().toISOString().split('T')[0];
         setDataRealizacao(hoje);
         setEquipeBorrifacao('');
-        setLinhasQuarteirao([{ id: Date.now(), numeroQuarteirao: '', imoveisBloqueados: '', tempoAplicacao: '', mlMinuto: '' }]);
+        setLinhasQuarteirao([{ id: Date.now(), numeroQuarteirao: '', imoveisBloqueados: '', tempoAplicacao: '', mlMinuto: '', combustivel: '' }]);
         setModalAberto(true);
     };
 
     const handleAdicionarLinha = () => {
-        setLinhasQuarteirao([...linhasQuarteirao, { id: Date.now(), numeroQuarteirao: '', imoveisBloqueados: '', tempoAplicacao: '', mlMinuto: '' }]);
+        setLinhasQuarteirao([...linhasQuarteirao, { id: Date.now(), numeroQuarteirao: '', imoveisBloqueados: '', tempoAplicacao: '', mlMinuto: '', combustivel: '' }]);
     };
 
     const handleRemoverLinha = (id) => {
@@ -192,7 +200,6 @@ export default function BloqueioQuimico() {
         return b.status === 'executado' || b.status === 'nao_realizado';
     });
 
-    // Quantidade para os badges das abas
     const qtdPendentes = bloqueios.filter(b => b.status === 'programado').length;
     const qtdConcluidos = bloqueios.filter(b => b.status === 'executado' || b.status === 'nao_realizado').length;
 
@@ -244,7 +251,9 @@ export default function BloqueioQuimico() {
 
                             <div className="bq-card-corpo">
                                 <h3>{bloqueio.bairro}</h3>
-                                <p className="bq-txt-endereco"><strong>Endereço Alvo:</strong> {bloqueio.endereco}</p>
+                                {/* 🟢 CORREÇÃO: Exibe o paciente e o quarteirão no Card */}
+                                <p className="bq-txt-endereco"><strong>Paciente:</strong> {bloqueio.paciente}</p>
+                                <p className="bq-txt-endereco"><strong>Local:</strong> Quart. {bloqueio.quarteirao} - {bloqueio.endereco}</p>
 
                                 {bloqueio.status === 'programado' && (
                                     <div className="bq-info-escala">
@@ -318,7 +327,8 @@ export default function BloqueioQuimico() {
                             <div className="bq-modal-body select-scroll">
 
                                 <div className="bq-resumo-localizacao">
-                                    <p><strong>Bairro:</strong> {bloqueioSelecionado.bairro} ({bloqueioSelecionado.distrito})</p>
+                                    <p><strong>Paciente Notificado:</strong> {bloqueioSelecionado.paciente}</p>
+                                    <p><strong>Localidade:</strong> Quart. {bloqueioSelecionado.quarteirao}, {bloqueioSelecionado.bairro} ({bloqueioSelecionado.distrito})</p>
                                     <p><strong>Endereço de Referência:</strong> {bloqueioSelecionado.endereco}</p>
                                 </div>
 
@@ -367,6 +377,7 @@ export default function BloqueioQuimico() {
                                                 <th>Imóveis Bloqueados <span className="obrigatorio">*</span></th>
                                                 <th>Tempo Aplic. (Min) <span className="obrigatorio">*</span></th>
                                                 <th>Vazão (ml/min) <span className="obrigatorio">*</span></th>
+                                                <th>Combustível Gasto</th>
                                                 <th className="col-remover">Ação</th>
                                             </tr>
                                         </thead>
@@ -384,6 +395,9 @@ export default function BloqueioQuimico() {
                                                     </td>
                                                     <td>
                                                         <input type="number" placeholder="Ex: 1000" value={linha.mlMinuto} onChange={(e) => handleAlterarLinha(linha.id, 'mlMinuto', e.target.value)} required />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" placeholder="Ex: 300ml" value={linha.combustivel} onChange={(e) => handleAlterarLinha(linha.id, 'combustivel', e.target.value)} />
                                                     </td>
                                                     <td className="col-remover">
                                                         <button type="button" className="btn-remover-linha" onClick={() => handleRemoverLinha(linha.id)} title="Remover quarteirão">
@@ -448,7 +462,8 @@ export default function BloqueioQuimico() {
                             <div className="bq-modal-body">
 
                                 <div className="bq-resumo-localizacao cancelamento-resumo">
-                                    <p><strong>Bairro:</strong> {bloqueioSelecionado.bairro}</p>
+                                    <p><strong>Paciente Notificado:</strong> {bloqueioSelecionado.paciente}</p>
+                                    <p><strong>Localidade:</strong> Quart. {bloqueioSelecionado.quarteirao}, {bloqueioSelecionado.bairro} ({bloqueioSelecionado.distrito})</p>
                                     <p><strong>Endereço Alvo:</strong> {bloqueioSelecionado.endereco}</p>
                                 </div>
 
