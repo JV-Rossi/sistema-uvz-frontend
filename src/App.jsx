@@ -17,6 +17,7 @@ import Ovitrampa from './features/campo/Ovitrampa.jsx';
 import PainelGestao from './features/gestao/PainelGestao.jsx';
 import PainelTecnico from './features/tecnica/PainelTecnico.jsx';
 import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
+import GeradorReuniaoSemanal from './features/tecnica/GeradorReuniaoSemanal';
 import ProgramacaoBloqueios from './features/tecnica/ProgramacaoBloqueios';
 import GerenciarUsuarios from './features/tecnica/GerenciarUsuarios'; 
 

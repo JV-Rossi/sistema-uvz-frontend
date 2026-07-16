@@ -4,10 +4,11 @@ import CadastroUsuario from '../tecnica/CadastroUsuario';
 import GerenciarUsuarios from './GerenciarUsuarios';
 import DistribuidorTrabalho from '../tecnica/DistribuidorTrabalho';
 import ProgramacaoBloqueios from './ProgramacaoBloqueios';
+import GeradorReuniaoSemanal from './GeradorReuniaoSemanal';
 import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
 import AnaliseLarvas from './AnaliseLarvas';
 import ValidacaoBloqueios from './ValidacaoBloqueios'; // Importação do componente ValidacaoBloqueios
-import BloqueioQuimico from './BloqueioQuimico'; 
+import BloqueioQuimico from './BloqueioQuimico';
 import './PainelTecnico.css';
 
 export default function PainelTecnico({ setTelaAtual }) {
@@ -137,7 +138,7 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                         {pastaAberta === 'supervisao' && (
                             <div className="folder-content pl-3">
-                                {/* Botão Existente */}
+                                {/* Botão Existente 1 */}
                                 <button
                                     className={`menu-btn br-button block ${abaAtiva === 'mutirao' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('mutirao')}
@@ -145,11 +146,21 @@ export default function PainelTecnico({ setTelaAtual }) {
                                     <i className="fas fa-clipboard-list mr-2" aria-hidden="true"></i> Distribuição de Mutirão
                                 </button>
 
+                                {/* Botão Existente 2 */}
                                 <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'programacao_bloqueios' ? 'active text-primary' : ''}`}
+                                    className={`menu-btn br-button block ${abaAtiva === 'programacao-bloqueios' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('programacao-bloqueios')}
                                 >
                                     <i className="fas fa-calendar-alt mr-2" aria-hidden="true"></i> Planejamento de Bloqueios
+                                </button>
+
+                                {/* NOVO BOTÃO CORRIGIDO: Agora altera abaAtiva de forma integrada e ganha destaque de seleção */}
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'reuniao-semanal' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('reuniao-semanal')}
+                                >
+                                    <i className="fas fa-file-powerpoint mr-2 text-danger" aria-hidden="true"></i>
+                                    Reunião Semanal (PPTX)
                                 </button>
                             </div>
                         )}
@@ -279,7 +290,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                     </div>
                 )}
 
-                {/* 🎯 GERENCIAR USUÁRIOS: Totalmente livre e fluida */}
+                {/* 🎯 GERENCIAR USUÁRIOS */}
                 {abaAtiva === 'gerenciar-equipe' && (
                     <GerenciarUsuarios setTelaAtual={setTelaAtual} />
                 )}
@@ -323,12 +334,21 @@ export default function PainelTecnico({ setTelaAtual }) {
                     </div>
                 )}
 
+                {/* REUNIÃO SEMANAL INTEGRADA NA ÁREA DE TRABALHO */}
+                {abaAtiva === 'reuniao-semanal' && (
+                    <div className="br-card">
+                        <GeradorReuniaoSemanal />
+                    </div>
+                )}
+
+                {/* VALIDAÇÃO DE BLOQUEIOS */}
                 {abaAtiva === 'validacao-bloqueios' && (
                     <div className="br-card">
                         <ValidacaoBloqueios setAbaAtiva={setAbaAtiva} />
                     </div>
                 )}
 
+                {/* BLOQUEIO QUÍMICO */}
                 {abaAtiva === 'bloqueio_quimico' && (
                     <div className="br-card">
                         <BloqueioQuimico setAbaAtiva={setAbaAtiva} />
