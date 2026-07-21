@@ -8,6 +8,7 @@ import GeradorReuniaoSemanal from './GeradorReuniaoSemanal';
 import ConsultasExportacoes from '../tecnica/ConsultasExportacoes';
 import AnaliseLarvas from './AnaliseLarvas';
 import ValidacaoBloqueios from './ValidacaoBloqueios'; // Importação do componente ValidacaoBloqueios
+import ValidacaoSinantropia from './ValidacaoSinantropia';
 import BloqueioQuimico from './BloqueioQuimico';
 import './PainelTecnico.css';
 
@@ -195,6 +196,14 @@ export default function PainelTecnico({ setTelaAtual }) {
                                 >
                                     <i className="fas fa-shield-alt mr-2" aria-hidden="true"></i> Validação de Bloqueios
                                 </button>
+
+                                {/* 🟢 NOVO BOTÃO: VALIDAÇÃO SINANTROPIA */}
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'validacao-sinantropia' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('validacao-sinantropia')}
+                                >
+                                    <i className="fas fa-bug mr-2" aria-hidden="true"></i> Validação Sinantropia
+                                </button>
                             </div>
                         )}
                     </div>
@@ -342,10 +351,13 @@ export default function PainelTecnico({ setTelaAtual }) {
                 )}
 
                 {/* VALIDAÇÃO DE BLOQUEIOS */}
-                {abaAtiva === 'validacao-bloqueios' && (
-                    <div className="br-card">
-                        <ValidacaoBloqueios setAbaAtiva={setAbaAtiva} />
-                    </div>
+                {abaAtiva === 'validacao-bloqueios' &&
+                    <ValidacaoBloqueios setAbaAtiva={setAbaAtiva} />
+                }
+
+                {/* VALIDAÇÃO DE SINANTROPIA */}
+                {abaAtiva === 'validacao-sinantropia' && (
+                    <ValidacaoSinantropia setAbaAtiva={setAbaAtiva} />
                 )}
 
                 {/* BLOQUEIO QUÍMICO */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './ValidacaoBloqueios.css';
+import './ValidacaoBloqueios.css'; // Reutiliza a estilização de tabelas e modais
 
-export default function ValidacaoBloqueios() {
+export default function ValidacaoSinantropia() {
     const [solicitacoes, setSolicitacoes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState('');
@@ -10,12 +10,12 @@ export default function ValidacaoBloqueios() {
     const [filtroStatus, setFiltroStatus] = useState('pendente');
     const [filtroDistrito, setFiltroDistrito] = useState('TODOS'); 
 
-    // Estados para o controle do Modal de Recusa
+    // Controle do Modal de Recusa
     const [modalRecusaAberto, setModalRecusaAberto] = useState(false);
     const [solicitacaoParaRecusar, setSolicitacaoParaRecusar] = useState(null);
     const [justificativa, setJustificativa] = useState('');
 
-    // Estados para o controle do Modal de Confirmação de Delegação
+    // Controle do Modal de Delegação para Equipe
     const [modalDelegarAberto, setModalDelegarAberto] = useState(false);
     const [solicitacaoParaDelegar, setSolicitacaoParaDelegar] = useState(null);
 
@@ -28,17 +28,62 @@ export default function ValidacaoBloqueios() {
         setErro('');
         try {
             setTimeout(() => {
-                // 🟢 CORREÇÃO: Mock de dados atualizado com Quarteirão, Zona, Telefone e Paciente
+                // Mock de solicitações de Visita Zoosanitária (Sinantropia)
                 const dadosSimulados = [
-                    { id: 1, data: '16/07/2026', agente: 'JOAO VITOR ROSSI', paciente: 'MARIA DA SILVA', telefone: '(65) 99999-1111', bairro: 'ALPHAVILLE I', quarteirao: 12, zona: 'URBANA', desmembramento: '', distrito: 'DIS. NORTE', endereco: 'Rua das Orquídeas, Qd 5, Lt 12', suspeita: 'Dengue', dataSintomas: '12/07/2026', status: 'pendente' },
-                    { id: 2, data: '16/07/2026', agente: 'CAMILA BENEDITA', paciente: 'ROBERTO CARLOS', telefone: '', bairro: 'COND. ATHENAS', quarteirao: 5, zona: 'URBANA', desmembramento: 'A', distrito: 'DIS. SUL', endereco: 'Casa 45', suspeita: 'Zika', dataSintomas: '14/07/2026', status: 'pendente' },
-                    { id: 3, data: '15/07/2026', agente: 'HELIO SIMIAO', paciente: 'ANA JULIA', telefone: '(65) 98888-2222', bairro: 'BRASIL 21', quarteirao: 8, zona: 'PERIURBANA', desmembramento: '', distrito: 'DIS. LESTE', endereco: 'Rua B, Qd 2, Lt 8', suspeita: 'Chikungunya', dataSintomas: '10/07/2026', status: 'pendente' },
+                    { 
+                        id: 101, 
+                        data: '20/07/2026', 
+                        atendente: 'RECEPÇÃO UVZ', 
+                        municipe: 'CARLOS EDUARDO', 
+                        telefone: '(65) 99222-3333', 
+                        bairro: 'CPA II', 
+                        quarteirao: 14, 
+                        zona: 'URBANA', 
+                        distrito: 'DIS. NORTE', 
+                        endereco: 'Rua 14, nº 210', 
+                        tipoImovel: 'Residencial',
+                        referencia: 'Próximo à praça cultural', 
+                        acaoEspecie: 'Barbeiro', 
+                        status: 'pendente' 
+                    },
+                    { 
+                        id: 102, 
+                        data: '21/07/2026', 
+                        atendente: 'RECEPÇÃO UVZ', 
+                        municipe: 'MARIA AUXILIADORA', 
+                        telefone: '(65) 98111-4444', 
+                        bairro: 'TIJUCAL', 
+                        quarteirao: 5, 
+                        zona: 'URBANA', 
+                        distrito: 'DIS. SUL', 
+                        endereco: 'Av. Espigão, nº 50', 
+                        tipoImovel: 'Comercial',
+                        referencia: 'Ao lado da farmácia', 
+                        acaoEspecie: 'Escorpião', 
+                        status: 'pendente' 
+                    },
+                    { 
+                        id: 103, 
+                        data: '21/07/2026', 
+                        atendente: 'TELEFONE/CENTRAL', 
+                        municipe: 'ESCOLA M. PEDRO SAES', 
+                        telefone: '(65) 3617-0000', 
+                        bairro: 'DOM AQUINO', 
+                        quarteirao: 8, 
+                        zona: 'URBANA', 
+                        distrito: 'DIS. LESTE', 
+                        endereco: 'Rua Comendador Henrique, s/n', 
+                        tipoImovel: 'Órgão público',
+                        referencia: 'Esquina com a Dom Bosco', 
+                        acaoEspecie: 'Morcego', 
+                        status: 'pendente' 
+                    },
                 ];
                 setSolicitacoes(filtroStatus === 'pendente' ? dadosSimulados : []);
                 setLoading(false);
             }, 800);
         } catch (err) {
-            setErro("Erro ao carregar as solicitações.");
+            setErro("Erro ao carregar as solicitações de visita.");
             setLoading(false);
         }
     };
@@ -58,7 +103,7 @@ export default function ValidacaoBloqueios() {
         if (!justificativa.trim()) return;
 
         try {
-            setSucesso(`Solicitação #${solicitacaoParaRecusar.id} recusada com sucesso. Relatório enviado ao agente.`);
+            setSucesso(`Solicitação #${solicitacaoParaRecusar.id} recusada com sucesso. Justificativa registrada.`);
             setSolicitacoes(prev => prev.filter(s => s.id !== solicitacaoParaRecusar.id));
             
             setModalRecusaAberto(false);
@@ -80,7 +125,7 @@ export default function ValidacaoBloqueios() {
         if (!solicitacaoParaDelegar) return;
 
         try {
-            setSucesso(`Solicitação #${solicitacaoParaDelegar.id} aprovada e delegada à equipe de campo e borrifadores.`);
+            setSucesso(`Solicitação #${solicitacaoParaDelegar.id} aprovada! Encaminhada para a equipe de Entomologia / Campo.`);
             setSolicitacoes(prev => prev.filter(s => s.id !== solicitacaoParaDelegar.id));
             
             setModalDelegarAberto(false);
@@ -88,26 +133,30 @@ export default function ValidacaoBloqueios() {
             
             setTimeout(() => setSucesso(''), 3000);
         } catch (err) {
-            setErro("Erro ao processar a delegação com borrifação.");
+            setErro("Erro ao processar o encaminhamento para a equipe.");
         }
     };
 
-    const getCorSuspeita = (doenca) => {
-        if (doenca === 'Dengue') return 'bg-danger text-white';
-        if (doenca === 'Zika') return 'bg-warning text-dark';
-        if (doenca === 'Chikungunya') return 'bg-info text-white';
-        return 'bg-secondary text-white';
+    const getCorEspecie = (especie) => {
+        switch (especie) {
+            case 'Barbeiro': return 'bg-danger text-white';
+            case 'Escorpião': return 'bg-warning text-dark';
+            case 'Morcego': return 'bg-dark text-white';
+            case 'Caramujo': return 'bg-info text-white';
+            case 'Pombo': return 'bg-secondary text-white';
+            default: return 'bg-primary text-white';
+        }
     };
 
     return (
         <main className="validacao-content">
             <header className="validacao-header">
                 <h1 className="text-weight-semi-bold validacao-title">
-                    <i className="fas fa-shield-alt mr-2" aria-hidden="true"></i>
-                    Validação de Bloqueios
+                    <i className="fas fa-bug mr-2" aria-hidden="true"></i>
+                    Validação de Visitas Zoosanitárias (Sinantropia)
                 </h1>
                 <p className="validacao-subtitle">
-                    Painel do Responsável Técnico para avaliação epidemiológica de solicitações do campo.
+                    Painel do Responsável Técnico para triagem, aceite e encaminhamento de chamados de sinantrópicos para as equipes de campo/entomologia.
                 </p>
             </header>
 
@@ -161,63 +210,66 @@ export default function ValidacaoBloqueios() {
 
             <div className="br-card p-4 tabela-validacao-container">
                 <h3 className="text-weight-semi-bold mb-4 text-primary">
-                    Solicitações {filtroStatus === 'pendente' ? 'Aguardando Avaliação' : 'Avaliadas'}
+                    Solicitações {filtroStatus === 'pendente' ? 'Aguardando Avaliação do R.T.' : 'Avaliadas'}
                 </h3>
 
                 {loading ? (
                     <div className="validacao-loading">
                         <i className="fas fa-spinner fa-spin fa-2x mb-3 d-block"></i>
-                        Carregando dados...
+                        Carregando solicitações de visita...
                     </div>
                 ) : solicitacoesFiltradas.length === 0 ? (
                     <div className="validacao-empty-state br-card">
                         <i className="fas fa-check-double validacao-empty-icon"></i>
                         <h4 className="text-weight-semi-bold">Tudo em dia!</h4>
-                        <p>Não há solicitações para os filtros selecionados.</p>
+                        <p>Não há solicitações pendentes no momento para os filtros selecionados.</p>
                     </div>
                 ) : (
                     <div className="br-table">
                         <table>
                             <thead className="tabela-validacao">
                                 <tr>
-                                    <th className="col-data" scope="col">Data</th>
-                                    <th className="col-agente" scope="col">Agente Solicitante</th>
-                                    <th className="col-endereco" scope="col">Localidade</th>
-                                    <th className="col-sintoma" scope="col">Dados do Caso</th>
-                                    <th className="col-acoes" scope="col">Ação do Resp. Técnico</th>
+                                    <th className="col-data" scope="col">Data/Origem</th>
+                                    <th className="col-endereco" scope="col">Localidade e Imóvel</th>
+                                    <th className="col-sintoma" scope="col">Demanda / Espécie</th>
+                                    <th className="col-agente" scope="col">Solicitante</th>
+                                    <th className="col-acoes" scope="col">Decisão do R.T.</th>
                                 </tr>
                             </thead>
                             <tbody className="tabela-validacao">
                                 {solicitacoesFiltradas.map((item) => (
                                     <tr key={item.id}>
-                                        <td data-th="Data">{item.data}</td>
-                                        <td data-th="Agente Solicitante" className="text-weight-semi-bold">{item.agente}</td>
+                                        <td data-th="Data/Origem">
+                                            <span className="text-weight-bold d-block">{item.data}</span>
+                                            <span className="text-small text-muted">{item.atendente}</span>
+                                        </td>
                                         
-                                        {/* 🟢 CORREÇÃO: Coluna de Localidade com Quarteirão e Zona */}
-                                        <td data-th="Localidade">
+                                        <td data-th="Localidade e Imóvel">
                                             <div className="d-flex align-items-center gap-2 mb-1">
                                                 <span className="text-weight-bold">{item.bairro}</span>
                                                 <span className="badge-distrito-tabela">{item.distrito}</span>
                                             </div>
-                                            <span className="d-block text-small text-muted">{item.endereco}</span>
+                                            <span className="d-block text-small">{item.endereco}</span>
                                             <span className="d-block text-small text-muted mt-1">
-                                                <i className="fas fa-map-signs mr-1"></i> Quart: {item.quarteirao} 
-                                                {item.zona && ` | Zona: ${item.zona}`}
-                                                {item.desmembramento && ` | Desm: ${item.desmembramento}`}
+                                                <i className="fas fa-building mr-1"></i> <strong>Imóvel:</strong> {item.tipoImovel}
+                                                {item.quarteirao && ` | Quart: ${item.quarteirao}`}
                                             </span>
+                                            {item.referencia && (
+                                                <span className="d-block text-small text-italic text-muted">
+                                                    Ref: {item.referencia}
+                                                </span>
+                                            )}
                                         </td>
                                         
-                                        {/* 🟢 CORREÇÃO: Coluna de Sintoma exibindo o Paciente */}
-                                        <td data-th="Dados do Caso">
-                                            <span className={`br-tag mb-1 ${getCorSuspeita(item.suspeita)}`}>
-                                                Suspeita: {item.suspeita}
+                                        <td data-th="Demanda / Espécie">
+                                            <span className={`br-tag mb-1 ${getCorEspecie(item.acaoEspecie)}`}>
+                                                {item.acaoEspecie}
                                             </span>
-                                            <p className="mb-0 text-small mt-1">
-                                                <strong>Munícipe:</strong> {item.paciente}
-                                            </p>
-                                            <p className="mb-0 text-small">
-                                                <strong>Início Sintomas:</strong> {item.dataSintomas}
-                                            </p>
+                                        </td>
+
+                                        <td data-th="Solicitante">
+                                            <span className="text-weight-semi-bold d-block">{item.municipe}</span>
+                                            <span className="text-small text-muted">{item.telefone || 'Sem telefone'}</span>
                                         </td>
                                         
                                         <td data-th="Ação" className="col-acoes-center">
@@ -225,17 +277,17 @@ export default function ValidacaoBloqueios() {
                                                 <div className="acoes-botoes-container">
                                                     <button 
                                                         className="br-button danger circle small" 
-                                                        title="Recusar e Gerar Relatório"
+                                                        title="Recusar Solicitação"
                                                         onClick={() => handleAbrirRecusa(item)}
                                                     >
                                                         <i className="fas fa-times"></i>
                                                     </button>
                                                     <button 
                                                         className="br-button success circle small" 
-                                                        title="Delegar p/ Supervisor + Borrifação"
+                                                        title="Aceitar e Encaminhar para Equipe/Entomologia"
                                                         onClick={() => handleAbrirDelegacao(item)}
                                                     >
-                                                        <i className="fas fa-spray-can"></i>
+                                                        <i className="fas fa-check"></i>
                                                     </button>
                                                 </div>
                                             ) : (
@@ -250,12 +302,12 @@ export default function ValidacaoBloqueios() {
                 )}
             </div>
 
-            {/* 🔴 MODAL DA JANELA DE RELATÓRIO DE RECUSA */}
+            {/* MODAL DE RECUSA */}
             {modalRecusaAberto && solicitacaoParaRecusar && (
                 <div className="modal-recusa-overlay">
                     <div className="modal-recusa-card">
                         <div className="modal-recusa-header">
-                            <h3><i className="fas fa-file-alt mr-2"></i> Relatório de Recusa de Bloqueio</h3>
+                            <h3><i className="fas fa-file-alt mr-2"></i> Motivo da Recusa da Visita</h3>
                             <button className="btn-fechar-modal" onClick={() => setModalRecusaAberto(false)}>
                                 <i className="fas fa-times"></i>
                             </button>
@@ -264,9 +316,10 @@ export default function ValidacaoBloqueios() {
                         <form onSubmit={handleConfirmarRecusa}>
                             <div className="modal-recusa-body">
                                 <div className="info-solicitacao-recusa">
-                                    <p><strong>Solicitação:</strong> #{solicitacaoParaRecusar.id}</p>
-                                    <p><strong>Paciente:</strong> {solicitacaoParaRecusar.paciente}</p>
-                                    <p><strong>Localidade:</strong> Quart. {solicitacaoParaRecusar.quarteirao}, {solicitacaoParaRecusar.bairro} ({solicitacaoParaRecusar.distrito})</p>
+                                    <p><strong>O.S.:</strong> #{solicitacaoParaRecusar.id}</p>
+                                    <p><strong>Solicitante:</strong> {solicitacaoParaRecusar.municipe}</p>
+                                    <p><strong>Espécie:</strong> {solicitacaoParaRecusar.acaoEspecie}</p>
+                                    <p><strong>Localidade:</strong> {solicitacaoParaRecusar.bairro} ({solicitacaoParaRecusar.distrito})</p>
                                 </div>
 
                                 <div className="form-group-recusa">
@@ -275,10 +328,10 @@ export default function ValidacaoBloqueios() {
                                     </label>
                                     <textarea
                                         id="justificativaTexto"
-                                        rows="5"
+                                        rows="4"
                                         value={justificativa}
                                         onChange={(e) => setJustificativa(e.target.value)}
-                                        placeholder="Digite detalhadamente o parecer técnico do porquê este bloqueio foi recusado..."
+                                        placeholder="Informe por que esta visita zoosanitária não será realizada..."
                                         required
                                     ></textarea>
                                 </div>
@@ -289,7 +342,7 @@ export default function ValidacaoBloqueios() {
                                     Cancelar
                                 </button>
                                 <button type="submit" className="br-button danger" disabled={!justificativa.trim()}>
-                                    <i className="fas fa-paper-plane mr-2"></i> Confirmar e Emitir Recusa
+                                    <i className="fas fa-paper-plane mr-2"></i> Confirmar Recusa
                                 </button>
                             </div>
                         </form>
@@ -297,12 +350,12 @@ export default function ValidacaoBloqueios() {
                 </div>
             )}
 
-            {/* 🟢 MODAL DE CONFIRMAÇÃO DE DELEGAÇÃO */}
+            {/* MODAL DE ACEITE E ENCAMINHAMENTO */}
             {modalDelegarAberto && solicitacaoParaDelegar && (
                 <div className="modal-delegar-overlay">
                     <div className="modal-delegar-card">
                         <div className="modal-delegar-header">
-                            <h3><i className="fas fa-paper-plane mr-2"></i> Confirmar Delegação de Bloqueio</h3>
+                            <h3><i className="fas fa-user-check mr-2"></i> Aceitar e Designar Equipe</h3>
                             <button className="btn-fechar-modal" onClick={() => setModalDelegarAberto(false)}>
                                 <i className="fas fa-times"></i>
                             </button>
@@ -310,25 +363,19 @@ export default function ValidacaoBloqueios() {
 
                         <div className="modal-delegar-body">
                             <div className="alerta-delegacao">
-                                <i className="fas fa-exclamation-triangle"></i>
-                                <p><strong>Atenção:</strong> Esta ação aprova tecnicamente a solicitação de bloqueio e a envia imediatamente para o painel de escala dos supervisores de campo.</p>
+                                <i className="fas fa-info-circle"></i>
+                                <p>Ao dar o aceite, a solicitação mudará para <strong>Em Andamento</strong> e ficará disponível para a equipe de Entomologia/Campo realizar a visita zoosanitária.</p>
                             </div>
 
                             <div className="info-solicitacao-delegar">
                                 <p><strong>Código da O.S.:</strong> #{solicitacaoParaDelegar.id}</p>
-                                <p><strong>Agente Solicitante:</strong> {solicitacaoParaDelegar.agente}</p>
-                                {/* 🟢 CORREÇÃO: Exibição completa no modal do RT */}
-                                <p><strong>Paciente Notificado:</strong> {solicitacaoParaDelegar.paciente}</p>
-                                <p><strong>Localidade:</strong> {solicitacaoParaDelegar.bairro} ({solicitacaoParaDelegar.distrito}) - Quart. {solicitacaoParaDelegar.quarteirao}</p>
-                                <p><strong>Endereço:</strong> {solicitacaoParaDelegar.endereco}</p>
-                                <p><strong>Suspeita Epidemiológica:</strong> 
-                                    <span className={`br-tag ml-2 ${getCorSuspeita(solicitacaoParaDelegar.suspeita)}`}>
-                                        {solicitacaoParaDelegar.suspeita}
-                                    </span>
-                                </p>
+                                <p><strong>Solicitante:</strong> {solicitacaoParaDelegar.municipe} ({solicitacaoParaDelegar.telefone})</p>
+                                <p><strong>Espécie/Demanda:</strong> <span className={`br-tag ml-1 ${getCorEspecie(solicitacaoParaDelegar.acaoEspecie)}`}>{solicitacaoParaDelegar.acaoEspecie}</span></p>
+                                <p><strong>Local:</strong> {solicitacaoParaDelegar.endereco} - {solicitacaoParaDelegar.bairro}</p>
+                                <p><strong>Tipo de Imóvel:</strong> {solicitacaoParaDelegar.tipoImovel}</p>
                             </div>
 
-                            <p className="pergunta-confirmacao">Tem certeza que deseja aprovar e prosseguir com a delegação?</p>
+                            <p className="pergunta-confirmacao">Deseja confirmar o aceite e encaminhar a O.S.?</p>
                         </div>
 
                         <div className="modal-delegar-footer">
@@ -336,7 +383,7 @@ export default function ValidacaoBloqueios() {
                                 Cancelar
                             </button>
                             <button type="button" className="br-button success" onClick={handleConfirmarDelegacao}>
-                                <i className="fas fa-check-circle mr-2"></i> Sim, Confirmar Delegação
+                                <i className="fas fa-check-circle mr-2"></i> Confirmar Aceite
                             </button>
                         </div>
                     </div>

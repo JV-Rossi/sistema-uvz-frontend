@@ -8,7 +8,10 @@ export default function OrdemServico({ setTelaAtual }) {
     const [origem, setOrigem] = useState('');
     const [nomeMunicipe, setNomeMunicipe] = useState('');
     const [telefone, setTelefone] = useState('');
-    
+
+    const [tipoImovel, setTipoImovel] = useState('');
+    const [referencia, setReferencia] = useState('');
+
     // 🟢 NOVOS CAMPOS CARTOGRÁFICOS ALINHADOS COM O BACKEND
     const [distrito, setDistrito] = useState('');
     const [bairro, setBairro] = useState('');
@@ -16,7 +19,7 @@ export default function OrdemServico({ setTelaAtual }) {
     const [zona, setZona] = useState('');
     const [desmembramento, setDesmembramento] = useState('');
     const [endereco, setEndereco] = useState('');
-    
+
     const [setorDestino, setSetorDestino] = useState('');
     const [servicoSolicitado, setServicoSolicitado] = useState('');
     const [descricao, setDescricao] = useState('');
@@ -43,7 +46,7 @@ export default function OrdemServico({ setTelaAtual }) {
             { id: 'inspecao_terreno', label: 'Inspeção em Terreno Baldio / Acúmulo de Lixo' },
             { id: 'bloqueio_quimico', label: 'Solicitação de Fumacê (UBV)' }
         ],
-       sinantropicos: [
+        sinantropicos: [
             { id: 'visita_pombo', label: 'Visita Zoosanitária - Pombos' },
             { id: 'visita_escorpiao', label: 'Visita Zoosanitária - Escorpiões' },
             { id: 'visita_caramujo', label: 'Visita Zoosanitária - Caramujos' },
@@ -75,11 +78,11 @@ export default function OrdemServico({ setTelaAtual }) {
             sintomas: [], feridas: [], outrosSintomas: ''
         }]);
     };
-    
+
     const removerAnimal = (id) => setAnimaisLeish(animaisLeish.filter(animal => animal.id !== id));
-    
+
     const handleAnimalChange = (id, campo, valor) => setAnimaisLeish(animaisLeish.map(a => a.id === id ? { ...a, [campo]: valor } : a));
-    
+
     const handleCheckboxArray = (id, tipoArray, item, isChecked) => {
         setAnimaisLeish(animaisLeish.map(a => {
             if (a.id !== id) return a;
@@ -90,9 +93,9 @@ export default function OrdemServico({ setTelaAtual }) {
     const limparFormulario = () => {
         const hoje = new Date().toISOString().split('T')[0];
         setDataSolicitacao(hoje);
-        setOrigem(''); setNomeMunicipe(''); setTelefone(''); 
+        setOrigem(''); setNomeMunicipe(''); setTelefone('');
         setDistrito(''); setBairro(''); setEndereco('');
-        setQuarteirao(''); setZona(''); setDesmembramento(''); // 🟢 Limpa novos campos
+        setQuarteirao(''); setZona(''); setDesmembramento('');
         setSetorDestino(''); setServicoSolicitado(''); setDescricao('');
         setAmbienteLeish({
             outrosAnimais: '', qtdCaes: '', qtdGatos: '', pessoasCasa: '', possuiMuro: '',
@@ -101,6 +104,9 @@ export default function OrdemServico({ setTelaAtual }) {
         });
         setAnimaisLeish([]); setErro('');
         setDadosBloqueio({ referencia: '', paciente: '', suspeita: '', dataSintomas: '' });
+
+        setTipoImovel('');
+        setReferencia('');
     };
 
     const handleSubmit = async (e) => {
@@ -132,6 +138,7 @@ export default function OrdemServico({ setTelaAtual }) {
         referencia: '', paciente: '', suspeita: '', dataSintomas: ''
     });
 
+
     return (
         <div className="os-wrapper">
             <main className="os-content">
@@ -145,7 +152,7 @@ export default function OrdemServico({ setTelaAtual }) {
 
                 <form onSubmit={handleSubmit} className="os-main-card">
 
-                    <h3 className="text-weight-semi-bold os-section-title">1. Dados do Solicitante / Paciente</h3>
+                    <h3 className="text-weight-semi-bold os-section-title">1. Dados do Solicitante</h3>
                     <div className="os-grid">
                         <div className="br-input">
                             <label>Data da Solicitação <span className="text-danger">*</span></label>
@@ -155,22 +162,22 @@ export default function OrdemServico({ setTelaAtual }) {
                             <label>Canal de Atendimento <span className="text-danger">*</span></label>
                             <select className="br-select" value={origem} onChange={(e) => setOrigem(e.target.value)}>
                                 <option value="">Selecione...</option>
-                                <option value="presencial">Presencial (Balcão)</option>
+                                <option value="presencial">Recepção</option>
                                 <option value="telefone">Telefone</option>
                                 <option value="whatsapp">WhatsApp</option>
                             </select>
                         </div>
-                        
+
                         <div className="br-input os-grid-full">
                             <label>Nome do Munícipe / Solicitante <span className="text-danger">*</span></label>
                             <input type="text" placeholder="Nome completo" value={nomeMunicipe} onChange={(e) => setNomeMunicipe(e.target.value)} />
                         </div>
-                        
+
                         <div className="br-input">
                             <label>Telefone para Contato</label>
                             <input type="tel" placeholder="(65) 99999-9999" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
                         </div>
-                        
+
                         <div className="br-input">
                             <label>Distrito <span className="text-danger">*</span></label>
                             <select className="br-select" value={distrito} onChange={(e) => setDistrito(e.target.value)}>
@@ -182,7 +189,7 @@ export default function OrdemServico({ setTelaAtual }) {
                                 <option value="ZONA RURAL">Zona Rural</option>
                             </select>
                         </div>
-                        
+
                         <div className="br-input">
                             <label>Bairro <span className="text-danger">*</span></label>
                             <input type="text" placeholder="Nome do Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} />
@@ -198,7 +205,7 @@ export default function OrdemServico({ setTelaAtual }) {
                             <label>Zona</label>
                             <input type="text" placeholder="Urbana / Rural" value={zona} onChange={(e) => setZona(e.target.value)} />
                         </div>
-                        
+
                         <div className="br-input">
                             <label>Desmembramento</label>
                             <input type="text" placeholder="Código" value={desmembramento} onChange={(e) => setDesmembramento(e.target.value)} />
@@ -250,11 +257,41 @@ export default function OrdemServico({ setTelaAtual }) {
                         />
                     )}
 
-                    <h3 className="text-weight-semi-bold os-section-title">Relato</h3>
-                    <div className="br-textarea">
-                        <label>Observações Gerais / Descrição Livre do Relato</label>
-                        <textarea rows="3" placeholder="Descreva os detalhes informados pelo solicitante..." value={descricao} onChange={(e) => setDescricao(e.target.value)}></textarea>
-                    </div>
+                    {/* INJEÇÃO: SINANTROPICOS (Apenas dados do imóvel para triagem) */}
+                    {setorDestino === 'sinantropicos' && (
+                        <div className="os-subform-card mt-4 border-top pt-3">
+                            <h3 className="text-weight-semi-bold os-section-title text-primary">
+                                <i className="fas fa-building mr-2"></i> Informações do Local (Sinantropia)
+                            </h3>
+                            <div className="os-grid">
+                                <div className="br-input">
+                                    <label>Tipo do Imóvel <span className="text-danger">*</span></label>
+                                    <select
+                                        className="br-select"
+                                        value={tipoImovel}
+                                        onChange={(e) => setTipoImovel(e.target.value)}
+                                    >
+                                        <option value="">Selecione...</option>
+                                        <option value="Residencial">Residencial</option>
+                                        <option value="Apartamento">Apartamento</option>
+                                        <option value="Órgão público">Órgão público</option>
+                                        <option value="Comercial">Comercial</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+
+                                <div className="br-input">
+                                    <label>Ponto de Referência</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ex: Próximo ao mercado X, em frente à igreja..."
+                                        value={referencia}
+                                        onChange={(e) => setReferencia(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="mt-5 pt-4 border-top d-flex gap-3">
                         <button type="submit" className="br-button primary" disabled={loading}>
