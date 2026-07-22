@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './DistribuidorTrabalho.css';
+import './DistribuidorTrabalho.css'; // Certifique-se de que o caminho do CSS está correto
 
 // Import corrigido para evitar o erro do Vite
 import { tabelaBairros } from '../../shared/utils/dadosBairros';
@@ -149,13 +149,9 @@ export default function DistribuidorTrabalho() {
 
     // --- FUNÇÃO PARA EXPORTAR PARA EXCEL (CSV) ---
     const exportarParaExcel = () => {
-        // Adiciona o BOM (\uFEFF) para o Excel reconhecer os acentos (UTF-8) corretamente
         let csvContent = "\uFEFF";
-
-        // Cabeçalho da tabela (usando ponto e vírgula como separador padrão no Brasil)
         csvContent += "Equipe;Quarteirões;Total Imóveis;Meta (Agentes);Média Real;Agentes Selecionados\n";
 
-        // Preenche as linhas com os dados
         resultados.forEach(item => {
             const equipe = `Equipe ${item.equipe}`;
             const quarteiroes = item.quarteiroes;
@@ -163,21 +159,16 @@ export default function DistribuidorTrabalho() {
             const meta = item.qtdAgentes;
             const media = item.mediaReal;
 
-            // Pega os agentes daquela equipe e junta com vírgula. 
-            // Usa aspas duplas ao redor para evitar que nomes com ponto-e-vírgula quebrem a coluna
             const agentes = selecaoAgentes[item.equipe] || [];
             const agentesStr = `"${agentes.join(", ")}"`;
 
-            // Monta a linha do CSV
             csvContent += `${equipe};${quarteiroes};${totalImoveis};${meta};${media};${agentesStr}\n`;
         });
 
-        // Cria o arquivo e dispara o download
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.setAttribute("href", url);
-        // O nome do arquivo terá o nome do bairro
         link.setAttribute("download", `Escala_Mutirao_${bairro.replace(/ /g, '_')}.csv`);
         document.body.appendChild(link);
         link.click();
@@ -185,26 +176,29 @@ export default function DistribuidorTrabalho() {
     };
 
     return (
-        <main className="distribuidor-content">
+        /* 1. Envelope cinza externo (fundo suave) */
+        <div className="os-wrapper">
 
-            <header className="pb-3 mb-4 border-bottom">
-                <h1 className="text-weight-semi-bold mb-1" style={{ color: '#1351B4' }}>
-                    <i className="fas fa-map-marked-alt mr-2" aria-hidden="true"></i>
-                    Distribuição de Mutirão
-                </h1>
-                <p className="mb-0" style={{ color: '#555' }}>
-                    Gere escalas equilibradas agrupando quarteirões inteiros por média de produtividade.
-                </p>
-            </header>
+            {/* 2. Container centralizado */}
+            <main className="os-content">
 
-            <div className="layout-full-width">
+                {/* 3. Cabeçalho alinhado */}
+                <header className="os-header pb-3 mb-4 border-bottom">
+                    <h1 className="text-weight-semi-bold os-title">
+                        <i className="fas fa-map-marked-alt mr-2" aria-hidden="true"></i>
+                        Distribuição de Mutirão
+                    </h1>
+                    <p className="os-subtitle">
+                        Gere escalas equilibradas agrupando quarteirões inteiros por média de produtividade.
+                    </p>
+                </header>
 
-                {/* 📝 FORMULÁRIO PRINCIPAL */}
-                <form onSubmit={gerarEscalaAutomatica} className="br-card p-4 mb-4">
-                    <h3 className="sessao-titulo text-weight-semi-bold mt-0 mb-4">Configuração da Área de Trabalho</h3>
+                {/* 4. FORMULÁRIO PRINCIPAL (Card Branco Elevado) */}
+                <form onSubmit={gerarEscalaAutomatica} className="os-main-card mb-4">
+                    <h3 className="text-weight-semi-bold os-section-title">1. Configuração da Área de Trabalho</h3>
 
-                    <div className="grid-form mb-4">
-                        <div className="form-group span-1">
+                    <div className="os-grid">
+                        <div className="br-input">
                             <label htmlFor="regional">Regional <span className="text-danger">*</span></label>
                             <select
                                 id="regional"
@@ -214,6 +208,7 @@ export default function DistribuidorTrabalho() {
                                     setRegional(e.target.value);
                                     setBairro('');
                                 }}
+                                required
                             >
                                 <option value="">Selecione...</option>
                                 <option value="Norte">Norte</option>
@@ -223,7 +218,7 @@ export default function DistribuidorTrabalho() {
                             </select>
                         </div>
 
-                        <div className="form-group span-1">
+                        <div className="br-input">
                             <label htmlFor="bairro">Bairro / Localidade <span className="text-danger">*</span></label>
                             <select
                                 id="bairro"
@@ -231,6 +226,7 @@ export default function DistribuidorTrabalho() {
                                 value={bairro}
                                 onChange={(e) => setBairro(e.target.value)}
                                 disabled={!regional}
+                                required
                             >
                                 <option value="">{regional ? "Selecione o Bairro..." : "Selecione uma Regional primeiro"}</option>
                                 {bairrosFiltrados.map((item, index) => (
@@ -239,35 +235,33 @@ export default function DistribuidorTrabalho() {
                             </select>
                         </div>
 
-                        <div className="form-group span-2 mt-3">
+                        <div className="br-input os-grid-full">
                             <label htmlFor="listaImoveis">Nº de Imóveis por Quarteirão (Separe por vírgula) <span className="text-danger">*</span></label>
                             <input
                                 id="listaImoveis"
-                                className="br-input"
                                 type="text"
                                 value={listaImoveis}
                                 onChange={(e) => setListaImoveis(e.target.value)}
                                 placeholder="Ex: 25, 30, 15, 40, 22"
+                                required
                             />
-                            <span className="text-small text-muted mt-1">Exemplo: Se o quarteirão 1 tem 25 imóveis e o quarteirão 2 tem 30, digite "25, 30".</span>
+                            <span className="d-block text-small text-muted mt-1">Exemplo: Se o quarteirão 1 tem 25 imóveis e o quarteirão 2 tem 30, digite "25, 30".</span>
                         </div>
                     </div>
 
-                    <hr className="divisor-form" />
+                    <h3 className="text-weight-semi-bold os-section-title">2. Alocação de Equipe</h3>
 
-                    <h3 className="sessao-titulo text-weight-semi-bold mb-4">Alocação de Equipe</h3>
-
-                    <div className="grid-form">
-                        <div className="form-group span-2">
+                    <div className="os-grid">
+                        <div className="br-input os-grid-full">
                             <label htmlFor="qtdAgentes">Quantidade de Agentes Disponíveis na Ação <span className="text-danger">*</span></label>
                             <input
                                 id="qtdAgentes"
-                                className="br-input"
                                 type="number"
                                 min="1"
                                 value={qtdAgentes}
                                 onChange={(e) => setQtdAgentes(e.target.value)}
                                 placeholder="Ex: 15"
+                                required
                             />
                             {agentesDisponiveis.length > 0 && (
                                 <span className="text-small text-info mt-2 d-block">
@@ -301,9 +295,9 @@ export default function DistribuidorTrabalho() {
                     </div>
                 </form>
 
-                {/* 📊 PAINEL DE RESULTADOS */}
+                {/* 📊 PAINEL DE RESULTADOS DA ESCALA */}
                 {resumo && (
-                    <div className="br-card p-4 mt-4 bg-light-blue" style={{ width: '100%' }}>
+                    <div className="os-main-card mt-4 bg-light-blue">
                         <h3 className="text-weight-semi-bold mb-4 text-primary">
                             <i className="fas fa-clipboard-check mr-2" aria-hidden="true"></i>
                             Resumo do Mutirão: {bairro} ({regional})
@@ -334,7 +328,6 @@ export default function DistribuidorTrabalho() {
                                         <th style={{ width: '15%' }}>Quarteirões</th>
                                         <th style={{ width: '10%' }}>Total Imóveis</th>
                                         <th style={{ width: '10%' }}>Meta (Qtd)</th>
-                                        {/* A classe ocultar-na-impressao entra aqui */}
                                         <th className="ocultar-na-impressao" style={{ width: '10%' }}>Média Real</th>
                                         <th style={{ width: '45%' }}>
                                             <span className="ocultar-na-impressao">Seleção de Agentes (Busca)</span>
@@ -360,16 +353,13 @@ export default function DistribuidorTrabalho() {
                                                     </span>
                                                 </td>
 
-                                                {/* E a classe ocultar-na-impressao entra aqui também */}
                                                 <td className="ocultar-na-impressao text-success text-weight-semi-bold" style={{ verticalAlign: 'top' }}>
                                                     {item.mediaReal}
                                                 </td>
 
                                                 <td style={{ verticalAlign: 'top' }}>
 
-                                                    {/* ==========================================
-                                                    VISÃO DA TELA (Oculta no Papel) 
-                                                     ========================================== */}
+                                                    {/* VISÃO DA TELA (Oculta no Papel) */}
                                                     <div className="ocultar-na-impressao">
                                                         <div className="mb-2">
                                                             {(selecaoAgentes[item.equipe] || []).map(nome => (
@@ -390,7 +380,6 @@ export default function DistribuidorTrabalho() {
                                                         <div style={{ position: 'relative' }}>
                                                             <input
                                                                 type="text"
-                                                                className="br-input"
                                                                 placeholder="Pesquise o nome para adicionar..."
                                                                 value={termoBusca}
                                                                 onChange={(e) => handleBuscaChange(item.equipe, e.target.value)}
@@ -441,9 +430,7 @@ export default function DistribuidorTrabalho() {
                                                         </div>
                                                     </div>
 
-                                                    {/* ==========================================
-                                                    VISÃO DE IMPRESSÃO (Oculta na Tela) 
-                                                    ========================================== */}
+                                                    {/* VISÃO DE IMPRESSÃO (Oculta na Tela) */}
                                                     <div className="mostrar-na-impressao">
                                                         <ul style={{ padding: 0, margin: '0 0 0 18px' }}>
                                                             {(selecaoAgentes[item.equipe] || []).length > 0 ? (
@@ -468,22 +455,22 @@ export default function DistribuidorTrabalho() {
                         </div>
 
                         <div className="form-actions mt-4 pt-3 border-top d-flex gap-3 ocultar-na-impressao">
-                            <button onClick={exportarParaExcel} className="br-button success text-white" style={{ backgroundColor: '#198754', borderColor: '#198754' }}>
+                            <button onClick={exportarParaExcel} type="button" className="br-button success text-white" style={{ backgroundColor: '#198754', borderColor: '#198754' }}>
                                 <i className="fas fa-file-excel mr-2" aria-hidden="true"></i> Exportar para Excel
                             </button>
 
-                            <button onClick={() => window.print()} className="br-button primary">
+                            <button onClick={() => window.print()} type="button" className="br-button primary">
                                 <i className="fas fa-print mr-2" aria-hidden="true"></i> Imprimir Escala
                             </button>
-                            
-                            <button onClick={limparCalculadora} className="br-button secondary">
+
+                            <button onClick={limparCalculadora} type="button" className="br-button secondary">
                                 <i className="fas fa-eraser mr-2" aria-hidden="true"></i> Limpar Simulação
                             </button>
                         </div>
                     </div>
                 )}
 
-            </div>
-        </main>
+            </main>
+        </div>
     );
 }

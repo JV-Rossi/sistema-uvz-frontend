@@ -387,3 +387,81 @@
 .modal-delegar-footer .br-button.success:hover {
     background-color: #2f855a;
 }
+
+/* =========================================
+   ALOCAÇÃO DINÂMICA DE AGENTES (TAGS & AUTOCOMPLETE)
+   ========================================= */
+.alocacao-agentes-container {
+    margin-top: 1rem;
+}
+
+.alocacao-agentes-label {
+    font-weight: 600;
+    color: #2d3748;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.tags-agentes-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.tag-agente-item {
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-remover-tag {
+    background: none;
+    border: none;
+    color: #ffffff;
+    margin-left: 8px;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+}
+
+.autocomplete-container {
+    position: relative;
+}
+
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 0 0 6px 6px;
+}
+
+.autocomplete-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 14px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.autocomplete-item:hover {
+    background-color: #f0f8ff;
+}
+
+.autocomplete-empty {
+    padding: 10px 12px;
+    color: #a0aec0;
+    font-size: 14px;
+}

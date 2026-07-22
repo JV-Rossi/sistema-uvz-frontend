@@ -14,6 +14,7 @@ export default function ValidacaoRTBase({
     colunaCasoHeader = "Dados do Caso",
     renderDadosCaso,         // Props de Renderização para a Coluna 4
     renderInfoModalAceite,   // Props de Renderização para as infos do Modal de Aceite
+    podeConfirmarAceite = true,
     onConfirmarRecusa,
     onConfirmarAceite
 }) {
@@ -68,14 +69,14 @@ export default function ValidacaoRTBase({
             {/* TOOLBAR COM FILTROS DE STATUS */}
             <div className="validacao-toolbar">
                 <div className="validacao-filtros">
-                    <button 
-                        className={`br-button ${filtroStatus === 'pendente' ? 'primary' : 'secondary'}`} 
+                    <button
+                        className={`br-button ${filtroStatus === 'pendente' ? 'primary' : 'secondary'}`}
                         onClick={() => setFiltroStatus('pendente')}
                     >
                         <i className="fas fa-clock mr-2"></i> Pendentes
                     </button>
-                    <button 
-                        className={`br-button ${filtroStatus === 'historico' ? 'primary' : 'secondary'}`} 
+                    <button
+                        className={`br-button ${filtroStatus === 'historico' ? 'primary' : 'secondary'}`}
                         onClick={() => setFiltroStatus('historico')}
                     >
                         <i className="fas fa-history mr-2"></i> Histórico Avaliado
@@ -130,13 +131,13 @@ export default function ValidacaoRTBase({
                                 {solicitacoes.map((item) => (
                                     <tr key={item.id}>
                                         <td data-th="Data">{item.data}</td>
-                                        
+
                                         <td data-th="Solicitante / Agente">
                                             <span className="text-weight-semi-bold d-block">{item.municipe || item.agente || item.paciente}</span>
                                             {item.atendente && <span className="d-block text-small text-muted">{item.atendente}</span>}
                                             {item.telefone && <span className="d-block text-small text-muted">{item.telefone}</span>}
                                         </td>
-                                        
+
                                         <td data-th="Localidade">
                                             <div className="d-flex align-items-center gap-2 mb-1">
                                                 <span className="text-weight-bold">{item.bairro}</span>
@@ -144,7 +145,7 @@ export default function ValidacaoRTBase({
                                             </div>
                                             <span className="d-block text-small text-muted">{item.endereco}</span>
                                             <span className="d-block text-small text-muted mt-1">
-                                                <i className="fas fa-map-signs mr-1"></i> Quart: {item.quarteirao} 
+                                                <i className="fas fa-map-signs mr-1"></i> Quart: {item.quarteirao}
                                                 {item.zona && ` | Zona: ${item.zona}`}
                                                 {item.desmembramento && ` | Desm: ${item.desmembramento}`}
                                             </span>
@@ -154,24 +155,24 @@ export default function ValidacaoRTBase({
                                                 </span>
                                             )}
                                         </td>
-                                        
+
                                         {/* RENDERIZAÇÃO DA COLUNA ESPECÍFICA */}
                                         <td data-th={colunaCasoHeader}>
                                             {renderDadosCaso ? renderDadosCaso(item) : null}
                                         </td>
-                                        
+
                                         <td data-th="Ação" className="col-acoes-center">
                                             {filtroStatus === 'pendente' ? (
                                                 <div className="acoes-botoes-container">
-                                                    <button 
-                                                        className="br-button danger circle small" 
+                                                    <button
+                                                        className="br-button danger circle small"
                                                         title="Recusar e Gerar Relatório"
                                                         onClick={() => handleAbrirRecusa(item)}
                                                     >
                                                         <i className="fas fa-times"></i>
                                                     </button>
-                                                    <button 
-                                                        className="br-button success circle small" 
+                                                    <button
+                                                        className="br-button success circle small"
                                                         title="Aceitar e Delegar"
                                                         onClick={() => handleAbrirDelegacao(item)}
                                                     >
@@ -200,7 +201,7 @@ export default function ValidacaoRTBase({
                                 <i className="fas fa-times"></i>
                             </button>
                         </div>
-                        
+
                         <form onSubmit={handleConfirmarRecusaSubmit}>
                             <div className="modal-recusa-body">
                                 <div className="info-solicitacao-recusa">
@@ -268,7 +269,12 @@ export default function ValidacaoRTBase({
                             <button type="button" className="br-button secondary" onClick={() => setModalDelegarAberto(false)}>
                                 Cancelar
                             </button>
-                            <button type="button" className="br-button success" onClick={handleConfirmarDelegacaoSubmit}>
+                            <button
+                                type="button"
+                                className="br-button success"
+                                onClick={handleConfirmarDelegacaoSubmit}
+                                disabled={!podeConfirmarAceite} // 👈 Trava o botão até selecionar a equipe
+                            >
                                 <i className="fas fa-check-circle mr-2"></i> Sim, Confirmar Delegação
                             </button>
                         </div>

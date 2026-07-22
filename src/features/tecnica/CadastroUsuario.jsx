@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import './CadastroUsuario.css';
+import './Formularios.css'; // Ou o arquivo de CSS que você está importando
 
-export default function CadastroUsuario({ setTelaAtual }) {
-    // 🟢 ESTADO CENTRALIZADO DO FORMULÁRIO
+export default function CadastroUsuario({ setAbaAtiva }) {
     const [formData, setFormData] = useState({
         nomeCompleto: '',
         email: '',
@@ -15,23 +14,19 @@ export default function CadastroUsuario({ setTelaAtual }) {
         regional: ''
     });
 
-    // 🟢 ATUALIZA OS INPUTS CONFORME O USUÁRIO DIGITA
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // 🟢 SUBMISSÃO E ENVIO PARA O BACKEND SPRING BOOT
     const handleCadastrarUsuario = (e) => {
         e.preventDefault();
 
-        // 🧹 Tratamento de dados (remove acentos e converte para caixa alta)
         const nomeTratado = formData.nomeCompleto
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "")
             .toUpperCase();
 
-        // 🔗 Mapeamento exato do DTO / Entity (Usuario.java)
         const usuarioParaOJava = {
             nome: nomeTratado,
             matricula: formData.matricula,
@@ -49,22 +44,18 @@ export default function CadastroUsuario({ setTelaAtual }) {
 
         fetch(URL_API, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(usuarioParaOJava)
         })
             .then(response => {
                 if (response.ok) {
                     alert(`✅ Usuário ${nomeTratado} cadastrado com sucesso e salvo no Supabase!`);
-
-                    // Reseta o formulário
                     setFormData({
                         nomeCompleto: '', email: '', dataNascimento: '', sexo: '',
                         telefone: '', matricula: '', senha: '', nivelAcesso: 'agente_campo', regional: ''
                     });
                 } else {
-                    alert('❌ O servidor Java recusou o cadastro. Verifique os logs do IntelliJ/Render.');
+                    alert('❌ O servidor Java recusou o cadastro. Verifique os logs.');
                 }
             })
             .catch(error => {
@@ -74,46 +65,50 @@ export default function CadastroUsuario({ setTelaAtual }) {
     };
 
     return (
-        <div className="container-cadastro-user">
+        /* 1. Envelope cinza externo (fundo suave) */
+        <div className="os-wrapper">
+            
+            {/* 2. Container centralizado de 1000px */}
+            <main className="os-content">
+                
+                {/* 3. Cabeçalho com o mesmo azul e respiro */}
+                <header className="os-header">
+                    <h1 className="text-weight-semi-bold os-title">
+                        <i className="fas fa-user-plus mr-2" aria-hidden="true"></i> 
+                        Cadastro de Equipe
+                    </h1>
+                    <p className="os-subtitle">
+                        Registro de novos usuários e configuração de acessos no sistema CVSA.
+                    </p>
+                </header>
 
-            <div className="header-cadastro pb-2 mb-4 border-bottom">
-                <h1 className="titulo-cadastro text-weight-semi-bold mb-1">
-                    <i className="fas fa-user-plus mr-2" aria-hidden="true"></i>
-                    Cadastro de Equipe
-                </h1>
-                <p className="subtitulo-cadastro mb-0">
-                    Registro de novos usuários e configuração de acessos no sistema CVSA.
-                </p>
-            </div>
-
-            <div className="form-wrapper">
-                <form onSubmit={handleCadastrarUsuario}>
-
+                {/* 4. Card Branco Elevado com sombra e borda suave */}
+                <form onSubmit={handleCadastrarUsuario} className="os-main-card">
+                    
                     {/* BLOCO 1: Informações Pessoais */}
-                    <h3 className="sessao-titulo text-weight-semi-bold mt-0 mb-3">Informações Pessoais</h3>
-                    <div className="grid-form">
-                        <div className="form-group span-2">
+                    <h3 className="text-weight-semi-bold os-section-title">1. Informações Pessoais</h3>
+                    
+                    <div className="os-grid">
+                        <div className="br-input os-grid-full">
                             <label htmlFor="nomeCompleto">Nome Completo <span className="text-danger">*</span></label>
-                            <input
+                            <input 
                                 id="nomeCompleto"
-                                className="br-input"
                                 type="text" name="nomeCompleto" required
                                 placeholder="Ex: Carlos Mendes"
                                 value={formData.nomeCompleto} onChange={handleInputChange}
                             />
                         </div>
 
-                        <div className="form-group">
+                        <div className="br-input">
                             <label htmlFor="dataNascimento">Data de Nascimento <span className="text-danger">*</span></label>
-                            <input
+                            <input 
                                 id="dataNascimento"
-                                className="br-input"
                                 type="date" name="dataNascimento" required
                                 value={formData.dataNascimento} onChange={handleInputChange}
                             />
                         </div>
 
-                        <div className="form-group">
+                        <div className="br-input">
                             <label htmlFor="sexo">Sexo <span className="text-danger">*</span></label>
                             <select id="sexo" className="br-select" name="sexo" required value={formData.sexo} onChange={handleInputChange}>
                                 <option value="" disabled>Selecione...</option>
@@ -123,18 +118,17 @@ export default function CadastroUsuario({ setTelaAtual }) {
                             </select>
                         </div>
 
-                        <div className="form-group span-2">
+                        <div className="br-input os-grid-full">
                             <label htmlFor="telefone">Telefone para Contato <span className="text-danger">*</span></label>
-                            <input
+                            <input 
                                 id="telefone"
-                                className="br-input"
                                 type="tel" name="telefone" required
                                 placeholder="Ex: (65) 99999-9999"
                                 value={formData.telefone} onChange={handleInputChange}
                             />
                         </div>
 
-                        <div className="form-group">
+                        <div className="br-input os-grid-full">
                             <label htmlFor="regional">Regional de Atuação <span className="text-danger">*</span></label>
                             <select id="regional" className="br-select" name="regional" required value={formData.regional} onChange={handleInputChange}>
                                 <option value="" disabled>Selecione...</option>
@@ -147,38 +141,34 @@ export default function CadastroUsuario({ setTelaAtual }) {
                         </div>
                     </div>
 
-                    <hr className="divisor-form" />
-
-                    {/* BLOCO 2: Acesso ao Sistema */}
-                    <h3 className="sessao-titulo text-weight-semi-bold mb-3">Credenciais de Acesso</h3>
-                    <div className="grid-form">
-                        <div className="form-group span-2">
+                    {/* BLOCO 2: Credenciais de Acesso */}
+                    <h3 className="text-weight-semi-bold os-section-title">2. Credenciais de Acesso</h3>
+                    
+                    <div className="os-grid">
+                        <div className="br-input os-grid-full">
                             <label htmlFor="email">E-mail <span className="text-danger">*</span></label>
-                            <input
+                            <input 
                                 id="email"
-                                className="br-input"
                                 type="email" name="email" required
                                 placeholder="usuario@uvz.com.br"
                                 value={formData.email} onChange={handleInputChange}
                             />
                         </div>
 
-                        <div className="form-group">
+                        <div className="br-input">
                             <label htmlFor="matricula">Matrícula (Login) <span className="text-danger">*</span></label>
-                            <input
+                            <input 
                                 id="matricula"
-                                className="br-input"
                                 type="text" name="matricula" required
                                 placeholder="Ex: 123456"
                                 value={formData.matricula} onChange={handleInputChange}
                             />
                         </div>
 
-                        <div className="form-group">
+                        <div className="br-input">
                             <label htmlFor="senha">Senha <span className="text-danger">*</span></label>
-                            <input
+                            <input 
                                 id="senha"
-                                className="br-input"
                                 type="password" name="senha" required
                                 placeholder="Mínimo 6 caracteres"
                                 minLength="6"
@@ -186,30 +176,30 @@ export default function CadastroUsuario({ setTelaAtual }) {
                             />
                         </div>
 
-                        <div className="form-group span-2">
+                        <div className="br-input os-grid-full">
                             <label>Nível de Acesso <span className="text-danger">*</span></label>
                             <div className="radio-group mt-2">
                                 <div className="br-radio">
-                                    <input
+                                    <input 
                                         id="acesso-agente"
                                         type="radio" name="nivelAcesso" value="agente_campo"
-                                        checked={formData.nivelAcesso === 'agente_campo'} onChange={handleInputChange}
+                                        checked={formData.nivelAcesso === 'agente_campo'} onChange={handleInputChange} 
                                     />
                                     <label htmlFor="acesso-agente">Agente de Campo</label>
                                 </div>
                                 <div className="br-radio">
-                                    <input
+                                    <input 
                                         id="acesso-tecnico"
                                         type="radio" name="nivelAcesso" value="tecnico"
-                                        checked={formData.nivelAcesso === 'tecnico'} onChange={handleInputChange}
+                                        checked={formData.nivelAcesso === 'tecnico'} onChange={handleInputChange} 
                                     />
                                     <label htmlFor="acesso-tecnico">Técnico</label>
                                 </div>
                                 <div className="br-radio">
-                                    <input
+                                    <input 
                                         id="acesso-gestao"
                                         type="radio" name="nivelAcesso" value="gestao"
-                                        checked={formData.nivelAcesso === 'gestao'} onChange={handleInputChange}
+                                        checked={formData.nivelAcesso === 'gestao'} onChange={handleInputChange} 
                                     />
                                     <label htmlFor="acesso-gestao">Gestão</label>
                                 </div>
@@ -217,13 +207,13 @@ export default function CadastroUsuario({ setTelaAtual }) {
                         </div>
                     </div>
 
-                    <div className="form-actions mt-4 pt-3 border-top">
-                        <button type="submit" className="br-button primary block-mobile">
+                    <div className="mt-5 pt-4 border-top d-flex gap-3">
+                        <button type="submit" className="br-button primary">
                             <i className="fas fa-save mr-2" aria-hidden="true"></i> Registrar Usuário
                         </button>
                     </div>
                 </form>
-            </div>
+            </main>
         </div>
     );
 }

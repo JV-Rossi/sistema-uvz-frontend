@@ -1,0 +1,239 @@
+/* ==========================================================================
+   CVSA - DESIGN SYSTEM PARA FORMULÁRIOS
+   Estilo padronizado para telas de preenchimento manual do Painel Técnico
+   ========================================================================== */
+
+/* 1. CONTAINER E ENVELOPE EXTERNO */
+.form-wrapper,
+.os-wrapper {
+    background-color: #f4f6f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+.form-content,
+.os-content {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* 2. CABEÇALHO DAS PÁGINAS */
+.form-header,
+.os-header {
+    margin-bottom: 2rem;
+}
+
+.form-title,
+.os-title {
+    color: #1351B4;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-subtitle,
+.os-subtitle {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* 3. CARTÃO PRINCIPAL (CARD BRANCO ELEVADO) */
+.form-main-card,
+.os-main-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef0f2;
+    padding: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 4. TÍTULOS DE SEÇÃO INTERNA */
+.form-section-title,
+.os-section-title {
+    color: #1351B4;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f0f2f5;
+}
+
+.form-section-title:first-child,
+.os-section-title:first-child {
+    margin-top: 0;
+}
+
+/* 5. GRIDS DE CAMPOS (RESPONSIVO) */
+.form-grid,
+.os-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-grid-full,
+.os-grid-full,
+.span-2 {
+    grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+    .form-grid,
+    .os-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-grid-full,
+    .os-grid-full,
+    .span-2 {
+        grid-column: span 1;
+    }
+    .form-main-card,
+    .os-main-card {
+        padding: 1.5rem;
+    }
+}
+
+/* 6. SUBCARDS E BLOCOS DESTACADOS (EX: LEISHMANIOSE, SINANTROPIA, ANIMAIS) */
+.form-subcard,
+.leish-subcard {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.form-item-card,
+.animal-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e4e7eb;
+    overflow: hidden;
+}
+
+.form-item-card-header,
+.animal-card-header {
+    background-color: #f1f4f9;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e4e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-item-card-body,
+.animal-card-body {
+    padding: 1.5rem;
+}
+
+/* 7. ESTILIZAÇÃO UNIVERSAL DE INPUTS, SELECTS E TEXTAREAS */
+
+/* Reset de wrappers externos do GovBR */
+.form-wrapper .br-input,
+.form-wrapper .br-textarea,
+.os-wrapper .br-input,
+.os-wrapper .br-textarea {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Aplicação de borda e padrão nos controles */
+.form-wrapper input:not([type="checkbox"]):not([type="radio"]),
+.form-wrapper select,
+.form-wrapper .br-select,
+.form-wrapper textarea,
+.os-wrapper input:not([type="checkbox"]):not([type="radio"]),
+.os-wrapper select,
+.os-wrapper .br-select,
+.os-wrapper textarea {
+    border: 1px solid #a8b2bb !important;
+    border-radius: 4px !important;
+    padding: 0.6rem 0.75rem !important;
+    background-color: #fff !important;
+    margin-top: 0.4rem !important;
+    width: 100%;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease-in-out;
+    color: #333 !important;
+    font-size: 0.95rem !important;
+    box-sizing: border-box !important;
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+}
+
+/* Efeito de Foco (Acessibilidade) */
+.form-wrapper input:not([type="checkbox"]):not([type="radio"]):focus,
+.form-wrapper select:focus,
+.form-wrapper .br-select:focus,
+.form-wrapper textarea:focus,
+.os-wrapper input:not([type="checkbox"]):not([type="radio"]):focus,
+.os-wrapper select:focus,
+.os-wrapper .br-select:focus,
+.os-wrapper textarea:focus {
+    border-color: #1351B4 !important;
+    box-shadow: 0 0 0 3px rgba(19, 81, 180, 0.2) !important;
+}
+
+/* Rótulos (Labels) */
+.form-wrapper label,
+.os-wrapper label {
+    font-weight: 600 !important;
+    color: #444 !important;
+    font-size: 0.9rem !important;
+    display: block !important;
+}
+
+/* Radio Buttons Padronizados */
+.form-radio-group,
+.radio-group {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.85rem 1rem;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    margin-top: 0.4rem;
+}
+
+.form-radio-item,
+.br-radio {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-radio-item input[type="radio"],
+.br-radio input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #1351B4;
+    cursor: pointer;
+}
+
+.form-radio-item label,
+.br-radio label {
+    font-weight: 500 !important;
+    cursor: pointer;
+    margin: 0 !important;
+}
+
+/* Indicador de campo obrigatório */
+.text-danger {
+    color: #e52207 !important;
+    font-weight: bold;
+}

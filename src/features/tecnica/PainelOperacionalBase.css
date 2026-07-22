@@ -1,0 +1,667 @@
+/* ==========================================================================
+   CVSA - DESIGN SYSTEM PARA PAINÉIS OPERACIONAIS (CAMPO & LABORATÓRIO)
+   Estilo unificado para Bloqueios, Entomologia e Ações Zoosanitárias
+   ========================================================================== */
+
+/* 1. CONTAINER E ESTRUTURA GERAL */
+.po-content,
+.bq-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Rawline', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+}
+
+/* 2. CABEÇALHO DA TELA */
+.po-header,
+.bq-header {
+  margin-bottom: 20px;
+}
+
+.po-header h1,
+.bq-header h1 {
+  color: #0056b3;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.po-header p,
+.bq-header p {
+  color: #4a5568;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* 3. SISTEMA DE ABAS OPERACIONAIS */
+.po-abas,
+.bq-abas {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.po-aba,
+.bq-aba {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #718096;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.po-aba:hover,
+.bq-aba:hover {
+  color: #0056b3;
+}
+
+.po-aba.ativa,
+.bq-aba.ativa {
+  color: #0056b3;
+  border-bottom-color: #0056b3;
+}
+
+/* 4. MENSAGENS DE FEEDBACK E ESTADOS VAZIOS */
+.po-alerta-sucesso,
+.bq-alerta-sucesso {
+  background-color: #c6f6d5;
+  color: #22543d;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.po-loading,
+.bq-loading,
+.po-vazio,
+.bq-vazio {
+  text-align: center;
+  padding: 40px;
+  color: #a0aec0;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e0;
+}
+
+.po-vazio i,
+.bq-vazio i {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #38a169;
+  display: block;
+}
+
+/* 5. GRADE E CARDS DE DEMANDA */
+.po-grade-demandas,
+.bq-grade-demandas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.po-card-demanda,
+.bq-card-demanda {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.po-card-demanda:hover,
+.bq-card-demanda:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.08);
+}
+
+.po-card-badges,
+.bq-card-badges {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* 6. BADGES E ETIQUETAS DE STATUS / AGRAVO */
+.badge-distrito {
+  background-color: #edf2f7;
+  color: #2d3748;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.badge-doenca {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.badge-doenca.dengue,
+.badge-doenca.barbeiro { background-color: #fed7d7; color: #9b2c2c; }
+
+.badge-doenca.zika,
+.badge-doenca.escorpião,
+.badge-doenca.escorpiao { background-color: #feebc8; color: #9c4221; }
+
+.badge-doenca.chikungunya,
+.badge-doenca.morcego,
+.badge-doenca.caramujo { background-color: #e2f8ff; color: #2b6cb0; }
+
+/* 7. CONTEÚDO DOS CARDS DO PAINEL */
+.po-card-corpo h3,
+.bq-card-corpo h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #1a202c;
+}
+
+.po-txt-endereco,
+.bq-txt-endereco {
+  font-size: 13px;
+  color: #4a5568;
+  margin: 0 0 6px 0;
+}
+
+.po-txt-detalhe,
+.bq-txt-detalhe {
+  font-size: 13px;
+  color: #2d3748;
+  font-weight: 500;
+  margin: 0 0 12px 0;
+}
+
+.po-info-escala,
+.bq-info-escala {
+  background-color: #f7fafc;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.po-info-escala p,
+.bq-info-escala p {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #4a5568;
+}
+
+.po-info-escala i,
+.bq-info-escala i {
+  color: #0056b3;
+  width: 16px;
+}
+
+/* Resumos de Executado (Verde) e Não Realizado (Vermelho) */
+.po-boletim-resumo,
+.bq-boletim-resumo {
+  background-color: #f0fdf4;
+  border: 1px dashed #bbf7d0;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+.po-divisor-card,
+.bq-divisor-card {
+  border: 0;
+  border-top: 1px dashed #cbd5e0;
+  margin: 10px 0;
+}
+
+.po-boletim-resumo h4,
+.bq-boletim-resumo h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #166534;
+}
+
+.po-boletim-dados p,
+.bq-boletim-dados p {
+  font-size: 12px;
+  margin: 5px 0;
+  color: #14532d;
+}
+
+.po-data-envio,
+.bq-data-envio {
+  display: block;
+  font-size: 10px;
+  color: #38a169;
+  margin-top: 8px;
+  text-align: right;
+}
+
+.po-boletim-resumo.cancelado,
+.bq-boletim-resumo.cancelado {
+  background-color: #fff5f5;
+  border: 1px dashed #feb2b2;
+}
+
+.po-boletim-resumo.cancelado h4,
+.bq-boletim-resumo.cancelado h4 { color: #c53030; }
+
+.po-divisor-card.cancelado,
+.bq-divisor-card.cancelado { border-top-color: #fc8181; }
+
+.po-boletim-resumo.cancelado p,
+.bq-boletim-resumo.cancelado p { color: #742a2a; }
+
+.po-data-envio.cancelado,
+.bq-data-envio.cancelado { color: #e53e3e; }
+
+/* 8. BOTÕES DE AÇÃO NOS CARDS */
+.po-card-acao,
+.bq-card-acao {
+  margin-top: 16px;
+}
+
+.po-botoes-acao-dupla,
+.bq-botoes-acao-dupla {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-executar {
+  flex: 1;
+  background-color: #38a169;
+  color: white;
+  border: none;
+  padding: 10px 6px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-executar:hover {
+  background-color: #2f855a;
+}
+
+.btn-nao-realizado {
+  flex: 1;
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  padding: 10px 6px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-nao-realizado:hover {
+  background-color: #c53030;
+}
+
+/* 9. ESTRUTURA DOS MODAIS OPERACIONAIS */
+.po-modal-overlay,
+.bq-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.po-modal-card,
+.bq-modal-card {
+  background: white;
+  width: 90%;
+  max-width: 520px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  overflow: hidden;
+  animation: fadeInModal 0.2s ease-out;
+}
+
+.po-modal-card.po-modal-largo,
+.bq-modal-card.bq-modal-largo {
+  max-width: 800px;
+}
+
+.po-modal-header,
+.bq-modal-header {
+  background-color: #0056b3;
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.po-modal-header h3,
+.bq-modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.po-btn-fechar,
+.bq-btn-fechar {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.po-modal-body,
+.bq-modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.po-modal-body.select-scroll,
+.bq-modal-body.select-scroll {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Resumos de Localização dentro do Modal */
+.po-resumo-localizacao,
+.bq-resumo-localizacao {
+  background-color: #f7fafc;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border-left: 4px solid #0056b3;
+  font-size: 13px;
+}
+
+.po-resumo-localizacao p,
+.bq-resumo-localizacao p { margin: 4px 0; color: #4a5568; }
+
+.cancelamento-header { background-color: #e53e3e; }
+
+.cancelamento-resumo {
+  border-left: 4px solid #e53e3e;
+  background-color: #fff5f5;
+}
+
+/* 10. FORMULÁRIOS INTERNOS DO MODAL */
+.po-subtitulo-form,
+.bq-subtitulo-form {
+  font-size: 13px;
+  font-weight: bold;
+  color: #0056b3;
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 4px;
+  margin-top: 10px;
+}
+
+.po-subtitulo-form-tabela,
+.bq-subtitulo-form-tabela {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #0056b3;
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 4px;
+  margin-top: 15px;
+}
+
+.po-form-group,
+.bq-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.po-form-group label,
+.bq-form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.po-form-group input,
+.po-form-group select,
+.po-form-group textarea,
+.bq-form-group input,
+.bq-form-group select,
+.bq-form-group textarea {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.po-form-linha-dupla,
+.bq-form-linha-dupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.po-form-linha-tripla,
+.bq-form-linha-tripla {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.obrigatorio { color: #e53e3e; }
+
+/* 11. TABELAS DINÂMICAS DENTRO DOS MODAIS (QUARTEIRÕES / AMOSTRAS) */
+.po-tabela-dinamica-container,
+.bq-tabela-dinamica-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-bottom: 10px;
+  background-color: white;
+}
+
+.po-tabela-boletim,
+.bq-tabela-boletim {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 600px;
+}
+
+.po-tabela-boletim th,
+.bq-tabela-boletim th {
+  background-color: #f8f9fa;
+  color: #4a5568;
+  padding: 8px 10px;
+  font-weight: bold;
+  text-align: left;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.po-tabela-boletim td,
+.bq-tabela-boletim td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.col-remover { width: 50px; text-align: center; }
+
+.btn-adicionar-linha {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-remover-linha {
+  background: none;
+  border: none;
+  color: #e53e3e;
+  cursor: pointer;
+  padding: 6px;
+  font-size: 14px;
+}
+
+/* 12. PAINEL DE CÁLCULO E RESUMOS TÉCNICOS */
+.po-painel-calculo,
+.bq-painel-calculo {
+  background-color: #ebf8ff;
+  border: 1px solid #90cdf4;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.po-calculo-item,
+.bq-calculo-item {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: #2c5282;
+}
+
+.po-calculo-item span,
+.bq-calculo-item span {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.po-calculo-item strong,
+.bq-calculo-item strong {
+  font-size: 18px;
+  color: #2b6cb0;
+}
+
+.po-calculo-item.destaque,
+.bq-calculo-item.destaque { text-align: right; }
+
+.po-calculo-item.destaque strong,
+.bq-calculo-item.destaque strong { color: #e53e3e; }
+
+.po-destaque-consumo,
+.bq-destaque-consumo {
+  background-color: #fff5f5;
+  color: #c53030 !important;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 6px !important;
+}
+
+/* 13. FOOTER E BOTÕES DE CONFIRMAÇÃO */
+.po-modal-footer,
+.bq-modal-footer {
+  padding: 16px 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-cancelar {
+  background: none;
+  border: 1px solid #cbd5e0;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-confirmar-boletim {
+  background-color: #38a169;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-confirmar-cancelamento {
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.mt-10 { margin-top: 10px; }
+
+/* 14. RESPONSIVIDADE EM DISPOSITIVOS MÓVEIS */
+@media (max-width: 768px) {
+  .po-form-linha-dupla,
+  .po-form-linha-tripla,
+  .bq-form-linha-dupla,
+  .bq-form-linha-tripla {
+    grid-template-columns: 1fr;
+  }
+
+  .po-grade-demandas,
+  .bq-grade-demandas {
+    grid-template-columns: 1fr;
+  }
+
+  .po-painel-calculo,
+  .bq-painel-calculo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .po-calculo-item.destaque,
+  .bq-calculo-item.destaque {
+    text-align: left;
+  }
+}

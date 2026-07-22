@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './OrdemServico.css';
+import './Formularios.css';
 import FormLeishmaniose from './FormLeishmaniose';
 import FormBloqueio from './FormBloqueio';
 

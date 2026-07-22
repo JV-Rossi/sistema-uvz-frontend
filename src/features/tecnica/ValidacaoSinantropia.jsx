@@ -8,7 +8,15 @@ export default function ValidacaoSinantropia({ setAbaAtiva }) {
     const [sucesso, setSucesso] = useState('');
     const [filtroStatus, setFiltroStatus] = useState('pendente');
 
-    useEffect(() => { buscarSolicitacoes(); }, [filtroStatus]);
+    // Estados para seleção dinâmica de Agentes
+    const [agentesDisponiveis, setAgentesDisponiveis] = useState([]);
+    const [agentesSelecionados, setAgentesSelecionados] = useState([]);
+    const [termoBusca, setTermoBusca] = useState('');
+
+    useEffect(() => { 
+        buscarSolicitacoes(); 
+        buscarAgentes();
+    }, [filtroStatus]);
 
     const buscarSolicitacoes = async () => {
         setLoading(true);
@@ -22,6 +30,43 @@ export default function ValidacaoSinantropia({ setAbaAtiva }) {
         }, 600);
     };
 
+    const buscarAgentes = async () => {
+        try {
+            const response = await fetch('https://sistema-uvz-backend.onrender.com/api/usuarios?perfil=agente_campo');
+            if (response.ok) {
+                const dados = await response.json();
+                setAgentesDisponiveis(dados);
+            } else {
+                setAgentesDisponiveis([
+                    { id: 1, nome: 'JOAO VITOR ROSSI' },
+                    { id: 2, nome: 'CAMILA BENEDITA' },
+                    { id: 3, nome: 'HELIO SIMIAO' },
+                    { id: 4, nome: 'MARCOS VINICIUS' },
+                    { id: 5, nome: 'ANA PAULA' }
+                ]);
+            }
+        } catch (err) {
+            setAgentesDisponiveis([
+                { id: 1, nome: 'JOAO VITOR ROSSI' },
+                { id: 2, nome: 'CAMILA BENEDITA' },
+                { id: 3, nome: 'HELIO SIMIAO' },
+                { id: 4, nome: 'MARCOS VINICIUS' },
+                { id: 5, nome: 'ANA PAULA' }
+            ]);
+        }
+    };
+
+    const adicionarAgente = (nomeAgente) => {
+        if (!agentesSelecionados.includes(nomeAgente)) {
+            setAgentesSelecionados(prev => [...prev, nomeAgente]);
+        }
+        setTermoBusca('');
+    };
+
+    const removerAgente = (nomeAgente) => {
+        setAgentesSelecionados(prev => prev.filter(nome => nome !== nomeAgente));
+    };
+
     const handleConfirmarRecusa = (item, justificativa) => {
         setSucesso(`Solicitação #${item.id} recusada com sucesso.`);
         setSolicitacoes(prev => prev.filter(s => s.id !== item.id));
@@ -29,8 +74,18 @@ export default function ValidacaoSinantropia({ setAbaAtiva }) {
     };
 
     const handleConfirmarAceite = (item) => {
-        setSucesso(`Solicitação #${item.id} aprovada e enviada para a equipe de Sinantropia!`);
+        if (agentesSelecionados.length === 0) {
+            setErro("Por favor, aloque ao menos um agente para a equipe responsável.");
+            setTimeout(() => setErro(''), 4000);
+            return;
+        }
+
+        const equipeFormada = agentesSelecionados.join(', ');
+        setSucesso(`Solicitação #${item.id} aprovada! Alocados: [${equipeFormada}]`);
         setSolicitacoes(prev => prev.filter(s => s.id !== item.id));
+        
+        setAgentesSelecionados([]);
+        setTermoBusca('');
         setTimeout(() => setSucesso(''), 3000);
     };
 
@@ -39,6 +94,9 @@ export default function ValidacaoSinantropia({ setAbaAtiva }) {
         if (especie === 'Escorpião') return 'bg-warning text-dark';
         return 'bg-primary text-white';
     };
+
+    const agentesLivres = agentesDisponiveis.filter(a => !agentesSelecionados.includes(a.nome));
+    const agentesFiltrados = agentesLivres.filter(a => a.nome.toLowerCase().includes(termoBusca.toLowerCase()));
 
     return (
         <ValidacaoRTBase
@@ -52,6 +110,7 @@ export default function ValidacaoSinantropia({ setAbaAtiva }) {
             filtroStatus={filtroStatus}
             setFiltroStatus={setFiltroStatus}
             colunaCasoHeader="Demanda / Espécie"
+            podeConfirmarAceite={agentesSelecionados.length > 0}
             renderDadosCaso={(item) => (
                 <>
                     <span className={`br-tag mb-1 ${getCorEspecie(item.acaoEspecie)}`}>
@@ -66,6 +125,65 @@ export default function ValidacaoSinantropia({ setAbaAtiva }) {
                 <>
                     <p><strong>Tipo de Imóvel:</strong> {item.tipoImovel}</p>
                     <p><strong>Demanda / Espécie:</strong> {item.acaoEspecie}</p>
+
+                    {/* ALOCAÇÃO DE AGENTES UTILIZANDO APENAS CLASSES CSS */}
+                    <div className="alocacao-agentes-container">
+                        <label className="alocacao-agentes-label">
+                            Designar Agentes Responsáveis <span className="text-danger">*</span>
+                        </label>
+
+                        {/* LISTA DE TAGS */}
+                        <div className="tags-agentes-wrapper">
+                            {agentesSelecionados.map(nome => (
+                                <span key={nome} className="br-tag bg-success text-white tag-agente-item">
+                                    {nome}
+                                    <button
+                                        type="button"
+                                        className="btn-remover-tag"
+                                        onClick={() => removerAgente(nome)}
+                                        title="Remover Agente"
+                                    >
+                                        <i className="fas fa-times"></i>
+                                    </button>
+                                </span>
+                            ))}
+                        </div>
+
+                        {/* AUTOCOMPLETE */}
+                        <div className="autocomplete-container">
+                            <input
+                                type="text"
+                                className="br-input"
+                                placeholder="Digite o nome do agente para adicionar..."
+                                value={termoBusca}
+                                onChange={(e) => setTermoBusca(e.target.value)}
+                            />
+
+                            {termoBusca && (
+                                <ul className="autocomplete-dropdown">
+                                    {agentesFiltrados.length > 0 ? (
+                                        agentesFiltrados.map(agente => (
+                                            <li
+                                                key={agente.id || agente.nome}
+                                                className="autocomplete-item"
+                                                onMouseDown={(e) => {
+                                                    e.preventDefault();
+                                                    adicionarAgente(agente.nome);
+                                                }}
+                                            >
+                                                <i className="fas fa-user-plus mr-2 text-primary"></i>
+                                                {agente.nome}
+                                            </li>
+                                        ))
+                                    ) : (
+                                        <li className="autocomplete-empty">
+                                            Nenhum agente livre com esse nome.
+                                        </li>
+                                    )}
+                                </ul>
+                            )}
+                        </div>
+                    </div>
                 </>
             )}
             onConfirmarRecusa={handleConfirmarRecusa}
