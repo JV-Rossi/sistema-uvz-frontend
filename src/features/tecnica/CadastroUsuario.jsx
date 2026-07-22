@@ -1,37 +1,100 @@
-import React from 'react';
-import { useCadastroUsuario } from './useCadastroUsuario';
+import React, { useState } from 'react';
 import './CadastroUsuario.css';
 
 export default function CadastroUsuario({ setTelaAtual }) {
-    // Puxando os dados e funções lá do nosso arquivo JS (Motor)
-    const { 
-        formData, 
-        handleInputChange, 
-        handleCadastrarUsuario 
-    } = useCadastroUsuario();
+    // 🟢 ESTADO CENTRALIZADO DO FORMULÁRIO
+    const [formData, setFormData] = useState({
+        nomeCompleto: '',
+        email: '',
+        dataNascimento: '',
+        sexo: '',
+        telefone: '',
+        matricula: '',
+        senha: '',
+        nivelAcesso: 'agente_campo',
+        regional: ''
+    });
+
+    // 🟢 ATUALIZA OS INPUTS CONFORME O USUÁRIO DIGITA
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    // 🟢 SUBMISSÃO E ENVIO PARA O BACKEND SPRING BOOT
+    const handleCadastrarUsuario = (e) => {
+        e.preventDefault();
+
+        // 🧹 Tratamento de dados (remove acentos e converte para caixa alta)
+        const nomeTratado = formData.nomeCompleto
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toUpperCase();
+
+        // 🔗 Mapeamento exato do DTO / Entity (Usuario.java)
+        const usuarioParaOJava = {
+            nome: nomeTratado,
+            matricula: formData.matricula,
+            senha: formData.senha,
+            regional: formData.regional,
+            email: formData.email,
+            telefone: formData.telefone,
+            sexo: formData.sexo,
+            dataNascimento: formData.dataNascimento,
+            status: 'Ativo',
+            nivelAcesso: formData.nivelAcesso === 'agente_campo' ? 'AGENTE_CAMPO' : formData.nivelAcesso.toUpperCase()
+        };
+
+        const URL_API = 'https://sistema-uvz-backend.onrender.com/api/usuarios';
+
+        fetch(URL_API, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(usuarioParaOJava)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert(`✅ Usuário ${nomeTratado} cadastrado com sucesso e salvo no Supabase!`);
+
+                    // Reseta o formulário
+                    setFormData({
+                        nomeCompleto: '', email: '', dataNascimento: '', sexo: '',
+                        telefone: '', matricula: '', senha: '', nivelAcesso: 'agente_campo', regional: ''
+                    });
+                } else {
+                    alert('❌ O servidor Java recusou o cadastro. Verifique os logs do IntelliJ/Render.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro de conexão com a API:', error);
+                alert('❌ Não foi possível conectar ao servidor Spring Boot.');
+            });
+    };
 
     return (
         <div className="container-cadastro-user">
-            
-            <div className="header-cadastro pb-3 mb-4 border-bottom">
-                <h1 className="titulo-cadastro text-weight-semi-bold mb-1" style={{ color: '#1351B4' }}>
-                    <i className="fas fa-user-plus mr-2" aria-hidden="true"></i> 
+
+            <div className="header-cadastro pb-2 mb-4 border-bottom">
+                <h1 className="titulo-cadastro text-weight-semi-bold mb-1">
+                    <i className="fas fa-user-plus mr-2" aria-hidden="true"></i>
                     Cadastro de Equipe
                 </h1>
-                <p className="subtitulo-cadastro mb-0" style={{ color: '#555' }}>
+                <p className="subtitulo-cadastro mb-0">
                     Registro de novos usuários e configuração de acessos no sistema CVSA.
                 </p>
             </div>
 
             <div className="form-wrapper">
                 <form onSubmit={handleCadastrarUsuario}>
-                    
+
                     {/* BLOCO 1: Informações Pessoais */}
                     <h3 className="sessao-titulo text-weight-semi-bold mt-0 mb-3">Informações Pessoais</h3>
                     <div className="grid-form">
                         <div className="form-group span-2">
                             <label htmlFor="nomeCompleto">Nome Completo <span className="text-danger">*</span></label>
-                            <input 
+                            <input
                                 id="nomeCompleto"
                                 className="br-input"
                                 type="text" name="nomeCompleto" required
@@ -42,7 +105,7 @@ export default function CadastroUsuario({ setTelaAtual }) {
 
                         <div className="form-group">
                             <label htmlFor="dataNascimento">Data de Nascimento <span className="text-danger">*</span></label>
-                            <input 
+                            <input
                                 id="dataNascimento"
                                 className="br-input"
                                 type="date" name="dataNascimento" required
@@ -62,7 +125,7 @@ export default function CadastroUsuario({ setTelaAtual }) {
 
                         <div className="form-group span-2">
                             <label htmlFor="telefone">Telefone para Contato <span className="text-danger">*</span></label>
-                            <input 
+                            <input
                                 id="telefone"
                                 className="br-input"
                                 type="tel" name="telefone" required
@@ -91,7 +154,7 @@ export default function CadastroUsuario({ setTelaAtual }) {
                     <div className="grid-form">
                         <div className="form-group span-2">
                             <label htmlFor="email">E-mail <span className="text-danger">*</span></label>
-                            <input 
+                            <input
                                 id="email"
                                 className="br-input"
                                 type="email" name="email" required
@@ -102,7 +165,7 @@ export default function CadastroUsuario({ setTelaAtual }) {
 
                         <div className="form-group">
                             <label htmlFor="matricula">Matrícula (Login) <span className="text-danger">*</span></label>
-                            <input 
+                            <input
                                 id="matricula"
                                 className="br-input"
                                 type="text" name="matricula" required
@@ -113,7 +176,7 @@ export default function CadastroUsuario({ setTelaAtual }) {
 
                         <div className="form-group">
                             <label htmlFor="senha">Senha <span className="text-danger">*</span></label>
-                            <input 
+                            <input
                                 id="senha"
                                 className="br-input"
                                 type="password" name="senha" required
@@ -127,26 +190,26 @@ export default function CadastroUsuario({ setTelaAtual }) {
                             <label>Nível de Acesso <span className="text-danger">*</span></label>
                             <div className="radio-group mt-2">
                                 <div className="br-radio">
-                                    <input 
+                                    <input
                                         id="acesso-agente"
                                         type="radio" name="nivelAcesso" value="agente_campo"
-                                        checked={formData.nivelAcesso === 'agente_campo'} onChange={handleInputChange} 
+                                        checked={formData.nivelAcesso === 'agente_campo'} onChange={handleInputChange}
                                     />
                                     <label htmlFor="acesso-agente">Agente de Campo</label>
                                 </div>
                                 <div className="br-radio">
-                                    <input 
+                                    <input
                                         id="acesso-tecnico"
                                         type="radio" name="nivelAcesso" value="tecnico"
-                                        checked={formData.nivelAcesso === 'tecnico'} onChange={handleInputChange} 
+                                        checked={formData.nivelAcesso === 'tecnico'} onChange={handleInputChange}
                                     />
                                     <label htmlFor="acesso-tecnico">Técnico</label>
                                 </div>
                                 <div className="br-radio">
-                                    <input 
+                                    <input
                                         id="acesso-gestao"
                                         type="radio" name="nivelAcesso" value="gestao"
-                                        checked={formData.nivelAcesso === 'gestao'} onChange={handleInputChange} 
+                                        checked={formData.nivelAcesso === 'gestao'} onChange={handleInputChange}
                                     />
                                     <label htmlFor="acesso-gestao">Gestão</label>
                                 </div>

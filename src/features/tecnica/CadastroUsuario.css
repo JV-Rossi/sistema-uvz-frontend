@@ -1,46 +1,64 @@
 /* =======================================================
-   CADASTRO DE EQUIPE (Padrão GovBR)
+   CADASTRO DE EQUIPE (Alinhado com a Ordem de Serviço)
    ======================================================= */
+
+/* Container Principal (Respiro em relação à sidebar e topo) */
 .container-cadastro-user {
-    color: #333333;
-    padding-right: 40px;  /* 🌟 Garante o recuo de segurança no canto direito */
-    padding-left: 8px;    /* Margem sutil na esquerda em relação à sidebar */
-    padding-top: 8px;     /* Alinha o topo com o menu lateral */
-    padding-bottom: 8px;  /* Espaço inferior para evitar corte de conteúdo */
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
     box-sizing: border-box;
 }
 
+/* Cabeçalho da Página */
+.header-cadastro {
+    margin-bottom: 1.5rem;
+}
+
+.titulo-cadastro {
+    font-size: 28px;
+    color: #1351B4;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.subtitulo-cadastro {
+    color: #555555;
+    font-size: 15px;
+    margin-top: 4px;
+}
+
+/* 🌟 CARD BRANCO PRINCIPAL (Igual ao Card da O.S.) */
 .form-wrapper {
-    max-width: 800px;
-    width: 100%;          /* 🌟 Força o formulário a respeitar o limite máximo elegantemente */
-    margin-right: auto;   /* Mantém o alinhamento fluído */
+    background-color: #FFFFFF;
+    border: 1px solid #E6E6E6;
+    border-radius: 8px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* 🌟 TÍTULOS DE SEÇÃO (Estilo Clean igual ao da O.S.) */
 .sessao-titulo {
-    color: #1351B4; /* Azul Primário GovBR */
-    border-left: 4px solid #1351B4;
-    padding-left: 12px;
+    color: #1351B4;
     font-size: 18px;
-    background-color: rgba(19, 81, 180, 0.05); /* Fundo sutil para destacar a seção */
-    padding-top: 6px;
-    padding-bottom: 6px;
-    border-radius: 0 4px 4px 0;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #F0F0F0;
 }
 
-.divisor-form {
-    border: 0;
-    height: 1px;
-    background: #E6E6E6; /* Linha divisória oficial GovBR */
-    margin: 32px 0;
-}
-
+/* Grade do Formulário */
 .grid-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px; /* Espaçamento padronizado em múltiplos de 8 */
+    gap: 20px 24px;
 }
 
-/* Faz o campo ocupar a linha inteira */
 .span-2 {
     grid-column: span 2;
 }
@@ -48,7 +66,7 @@
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .form-group label {
@@ -57,39 +75,46 @@
     font-weight: 600;
 }
 
+/* Divisor entre blocos */
+.divisor-form {
+    border: 0;
+    height: 1px;
+    background: #E6E6E6;
+    margin: 32px 0;
+}
+
 /* =======================================================
-   INPUTS E SELECTS (Estilo .br-input / .br-select)
+   INPUTS E SELECTS (.br-input / .br-select)
    ======================================================= */
 .br-input, 
 .br-select {
-    padding: 12px 16px;
+    padding: 10px 14px;
     background-color: #FFFFFF;
-    border: 1px solid #888888; /* Borda visível para alto contraste */
+    border: 1px solid #888888;
     border-radius: 4px;
     color: #333333;
     outline: none;
-    font-size: 16px;
+    font-size: 15px;
     transition: all 0.2s;
     width: 100%;
     box-sizing: border-box;
 }
 
-/* Estado de foco (acessibilidade GovBR) */
 .br-input:focus, 
 .br-select:focus {
     border-color: #1351B4;
-    box-shadow: 0 0 0 3px rgba(19, 81, 180, 0.4); 
+    box-shadow: 0 0 0 3px rgba(19, 81, 180, 0.25); 
 }
 
 /* =======================================================
-   RADIO BUTTONS (Estilo .br-radio)
+   RADIO BUTTONS (Nível de Acesso)
    ======================================================= */
 .radio-group {
     display: flex;
     gap: 24px;
-    padding: 16px;
+    padding: 14px 16px;
     background-color: #F8F9FA;
-    border-radius: 4px;
+    border-radius: 6px;
     border: 1px solid #E6E6E6;
 }
 
@@ -100,32 +125,37 @@
 }
 
 .br-radio input[type="radio"] {
-    width: 20px;
-    height: 20px;
-    accent-color: #1351B4; /* Cor azul no botão selecionado */
+    width: 18px;
+    height: 18px;
+    accent-color: #1351B4;
     cursor: pointer;
 }
 
 .br-radio label {
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
     color: #333333;
     margin: 0;
 }
 
 /* =======================================================
-   BOTÕES (Estilo .br-button)
+   AÇÕES E BOTÕES
    ======================================================= */
+.form-actions {
+    display: flex;
+    gap: 12px;
+}
+
 .br-button.primary {
     background-color: #1351B4;
     color: #FFFFFF;
     border: none;
-    padding: 12px 24px;
-    border-radius: 20px; /* GovBR utiliza botões arredondados */
+    padding: 10px 24px;
+    border-radius: 20px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 15px;
     transition: background-color 0.2s;
     display: inline-flex;
     align-items: center;
@@ -133,33 +163,40 @@
 }
 
 .br-button.primary:hover {
-    background-color: #0C326F; /* Azul escuro para hover */
+    background-color: #0C326F;
 }
 
-/* Utilitários de Texto */
 .text-danger {
-    color: #E52207; /* Vermelho oficial GovBR para erros/obrigatórios */
+    color: #E52207;
     font-weight: bold;
 }
 
 /* =======================================================
-    RESPONSIVIDADE PARA CELULARES
+   RESPONSIVIDADE (Celulares e Tablets)
    ======================================================= */
 @media (max-width: 768px) {
+    .container-cadastro-user {
+        padding: 1rem;
+    }
+
+    .form-wrapper {
+        padding: 20px;
+    }
+
     .grid-form {
-        grid-template-columns: 1fr; /* Quebra a grade para 1 coluna */
+        grid-template-columns: 1fr;
     }
 
     .span-2 {
-        grid-column: span 1; /* Anula o span em telas pequenas */
+        grid-column: span 1;
     }
 
     .radio-group {
-        flex-direction: column; /* Empilha as opções de nível de acesso */
-        gap: 16px;
+        flex-direction: column;
+        gap: 12px;
     }
 
     .block-mobile {
-        width: 100%; /* Expande o botão principal no celular */
+        width: 100%;
     }
 }
