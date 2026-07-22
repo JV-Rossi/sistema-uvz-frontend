@@ -83,7 +83,6 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
 
         const totais = calcularTotais();
 
-        // Envia o objeto formatado para o componente pai salvar
         onSalvar({
             inseticida,
             equipamento,
@@ -101,21 +100,29 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
     const totais = calcularTotais();
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="po-modal-body select-scroll">
-                
-                {/* 1. RESUMO DA LOCALIZAÇÃO DO CHAMADO */}
-                <div className="po-resumo-localizacao">
-                    <p><strong>Paciente Notificado:</strong> {bloqueio.paciente}</p>
-                    <p><strong>Localidade:</strong> Quart. {bloqueio.quarteirao}, {bloqueio.bairro} ({bloqueio.distrito})</p>
-                    <p><strong>Endereço de Referência:</strong> {bloqueio.endereco}</p>
+        <form onSubmit={handleSubmit} className="po-form-container p-2">
+            
+            {/* 1. CARD DE RESUMO DO CHAMADO */}
+            <div className="po-card-secao mb-3 border rounded p-3 bg-light shadow-sm">
+                <div className="d-flex align-items-center mb-2 text-primary font-weight-bold" style={{ fontSize: '1rem' }}>
+                    <i className="fas fa-map-marked-alt mr-2"></i> Localização do Chamado
+                </div>
+                <div className="d-flex flex-wrap gap-3 text-dark" style={{ fontSize: '0.95rem' }}>
+                    <span><strong>Paciente:</strong> {bloqueio.paciente || 'Não informado'}</span>
+                    <span><strong>Localidade:</strong> Quart. {bloqueio.quarteirao}, {bloqueio.bairro} ({bloqueio.distrito})</span>
+                    <span><strong>Endereço:</strong> {bloqueio.endereco}</span>
+                </div>
+            </div>
+
+            {/* 2. INFORMAÇÕES GERAIS DA APLICAÇÃO */}
+            <div className="po-card-secao mb-3 border rounded p-3 bg-white shadow-sm">
+                <div className="po-subtitulo-form border-bottom pb-2 mb-3 text-primary font-weight-bold">
+                    <i className="fas fa-cogs mr-2"></i> Parâmetros da Aplicação
                 </div>
 
-                {/* 2. INFORMAÇÕES GERAIS DA APLICAÇÃO */}
-                <div className="po-subtitulo-form">Informações Gerais</div>
                 <div className="po-form-linha-tripla">
                     <div className="po-form-group">
-                        <label>Inseticida Utilizado <span className="obrigatorio">*</span></label>
+                        <label className="font-weight-bold">Inseticida Utilizado <span className="obrigatorio">*</span></label>
                         <select value={inseticida} onChange={(e) => setInseticida(e.target.value)}>
                             <option value="Fludora">Fludora</option>
                             <option value="Cielo ULV">Cielo ULV</option>
@@ -124,7 +131,7 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                     </div>
 
                     <div className="po-form-group">
-                        <label>Equipamento Utilizado <span className="obrigatorio">*</span></label>
+                        <label className="font-weight-bold">Equipamento <span className="obrigatorio">*</span></label>
                         <select value={equipamento} onChange={(e) => setEquipamento(e.target.value)} required>
                             <option value="Nebulizador Motorizado">Nebulizador Motorizado</option>
                             <option value="Nebulizador Manual">Nebulizador Manual</option>
@@ -132,7 +139,7 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                     </div>
 
                     <div className="po-form-group">
-                        <label>Data da Realização <span className="obrigatorio">*</span></label>
+                        <label className="font-weight-bold">Data da Realização <span className="obrigatorio">*</span></label>
                         <input
                             type="date"
                             value={dataRealizacao}
@@ -141,25 +148,30 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                         />
                     </div>
                 </div>
+            </div>
 
-                {/* 3. PRODUTIVIDADE POR QUARTEIRÃO (TABELA DINÂMICA) */}
-                <div className="po-subtitulo-form-tabela">
-                    <span>Produtividade por Quarteirão</span>
-                    <button type="button" className="btn-adicionar-linha" onClick={handleAdicionarLinha}>
+            {/* 3. PRODUTIVIDADE POR QUARTEIRÃO (TABELA AMPLA) */}
+            <div className="po-card-secao mb-3 border rounded p-3 bg-white shadow-sm">
+                <div className="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <span className="font-weight-bold text-dark" style={{ fontSize: '1rem' }}>
+                        <i className="fas fa-th-list mr-2 text-primary"></i> Produtividade por Quarteirão
+                    </span>
+                    <button type="button" className="btn btn-sm btn-primary font-weight-bold px-3 py-1" onClick={handleAdicionarLinha}>
                         <i className="fas fa-plus mr-1"></i> Adicionar Quarteirão
                     </button>
                 </div>
 
-                <div className="po-tabela-dinamica-container">
-                    <table className="po-tabela-boletim">
-                        <thead>
-                            <tr>
-                                <th>Nº Quarteirão <span className="obrigatorio">*</span></th>
-                                <th>Imóveis Bloqueados <span className="obrigatorio">*</span></th>
-                                <th>Tempo Aplic. (Min) <span className="obrigatorio">*</span></th>
-                                <th>Vazão (ml/min) <span className="obrigatorio">*</span></th>
-                                <th>Combustível Gasto</th>
-                                <th className="col-remover">Ação</th>
+                {/* Tabela de Alto Contraste e Sem Scrollbar Interna */}
+                <div className="table-responsive" style={{ overflowX: 'auto' }}>
+                    <table className="table table-bordered table-hover align-middle mb-0" style={{ minWidth: '650px' }}>
+                        <thead className="table-light">
+                            <tr style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                <th style={{ width: '18%' }}>Nº Quarteirão <span className="text-danger">*</span></th>
+                                <th style={{ width: '20%' }}>Imóveis <span className="text-danger">*</span></th>
+                                <th style={{ width: '20%' }}>Tempo (Min) <span className="text-danger">*</span></th>
+                                <th style={{ width: '20%' }}>Vazão (ml/min) <span className="text-danger">*</span></th>
+                                <th style={{ width: '17%' }}>Combustível</th>
+                                <th style={{ width: '5%', textAlign: 'center' }}>Ação</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -168,6 +180,7 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                                     <td>
                                         <input
                                             type="number"
+                                            className="form-control form-control-sm"
                                             placeholder="Ex: 15"
                                             value={linha.numeroQuarteirao}
                                             onChange={(e) => handleAlterarLinha(linha.id, 'numeroQuarteirao', e.target.value)}
@@ -177,6 +190,7 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                                     <td>
                                         <input
                                             type="number"
+                                            className="form-control form-control-sm"
                                             placeholder="Ex: 24"
                                             value={linha.imoveisBloqueados}
                                             onChange={(e) => handleAlterarLinha(linha.id, 'imoveisBloqueados', e.target.value)}
@@ -186,6 +200,7 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                                     <td>
                                         <input
                                             type="number"
+                                            className="form-control form-control-sm"
                                             placeholder="Ex: 8"
                                             value={linha.tempoAplicacao}
                                             onChange={(e) => handleAlterarLinha(linha.id, 'tempoAplicacao', e.target.value)}
@@ -195,6 +210,7 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                                     <td>
                                         <input
                                             type="number"
+                                            className="form-control form-control-sm"
                                             placeholder="Ex: 1000"
                                             value={linha.mlMinuto}
                                             onChange={(e) => handleAlterarLinha(linha.id, 'mlMinuto', e.target.value)}
@@ -204,15 +220,16 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                                     <td>
                                         <input
                                             type="text"
+                                            className="form-control form-control-sm"
                                             placeholder="Ex: 300ml"
                                             value={linha.combustivel}
                                             onChange={(e) => handleAlterarLinha(linha.id, 'combustivel', e.target.value)}
                                         />
                                     </td>
-                                    <td className="col-remover">
+                                    <td className="text-center">
                                         <button
                                             type="button"
-                                            className="btn-remover-linha"
+                                            className="btn btn-outline-danger btn-sm border-0"
                                             onClick={() => handleRemoverLinha(linha.id)}
                                             title="Remover quarteirão"
                                         >
@@ -224,22 +241,34 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                         </tbody>
                     </table>
                 </div>
+            </div>
 
-                {/* 4. PAINEL DE CÁLCULO EM TEMPO REAL */}
-                <div className="po-painel-calculo">
-                    <div className="po-calculo-item">
-                        <span>Volume de Calda Aplicada:</span>
-                        <strong>{totais.totalCaldaLitros} Litros</strong>
+            {/* 4. PAINEL DE CÁLCULO EM DESTAQUE PARA APRESENTAÇÕES */}
+            <div className="po-card-secao mb-3 p-3 rounded border" style={{ backgroundColor: '#f0f9ff', borderColor: '#bae6fd' }}>
+                <div className="row text-center align-items-center">
+                    <div className="col-md-6 mb-2 mb-md-0 border-end border-info">
+                        <span className="text-uppercase text-muted font-weight-bold d-block" style={{ fontSize: '0.8rem' }}>
+                            Volume de Calda Aplicada
+                        </span>
+                        <span className="font-weight-bold text-primary" style={{ fontSize: '1.4rem' }}>
+                            <i className="fas fa-tint mr-1"></i> {totais.totalCaldaLitros} Litros
+                        </span>
                     </div>
-                    <div className="po-calculo-item destaque">
-                        <span>Consumo do Concentrado:</span>
-                        <strong>{totais.consumoProduto} {totais.unidadeProduto} de {inseticida}</strong>
+                    <div className="col-md-6">
+                        <span className="text-uppercase text-muted font-weight-bold d-block" style={{ fontSize: '0.8rem' }}>
+                            Consumo do Concentrado
+                        </span>
+                        <span className="font-weight-bold text-danger" style={{ fontSize: '1.4rem' }}>
+                            <i className="fas fa-flask mr-1"></i> {totais.consumoProduto} {totais.unidadeProduto} <small style={{ fontSize: '0.9rem' }}>de {inseticida}</small>
+                        </span>
                     </div>
                 </div>
+            </div>
 
-                {/* 5. DADOS DA EQUIPE RESPONSÁVEL */}
+            {/* 5. DADOS DA EQUIPE RESPONSÁVEL */}
+            <div className="po-card-secao mb-3 border rounded p-3 bg-white shadow-sm">
                 <div className="po-form-group">
-                    <label>Equipe de Borrifação: <span className="obrigatorio">*</span></label>
+                    <label className="font-weight-bold">Equipe de Borrifação: <span className="obrigatorio">*</span></label>
                     <input
                         type="text"
                         placeholder="Ex: Carlos Souza, Marcos Lima..."
@@ -250,8 +279,8 @@ export default function FormExecucaoBloqueio({ bloqueio, onSalvar, onCancelar })
                 </div>
             </div>
 
-            {/* RODAPÉ E BOTÕES DE AÇÃO */}
-            <div className="po-modal-footer">
+            {/* RODAPÉ FIXO DE AÇÕES */}
+            <div className="po-modal-footer d-flex justify-content-end gap-2 mt-3 pt-3 border-top">
                 <button type="button" className="btn-cancelar" onClick={onCancelar}>
                     Cancelar
                 </button>

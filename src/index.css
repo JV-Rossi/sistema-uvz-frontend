@@ -1,3 +1,16 @@
+/* =========================================================
+   1. ESCALONAMENTO FLUÍDO UNIVERSAL (Notebook, Monitor e TV)
+   ========================================================= */
+:root {
+    /* 
+       Calcula o tamanho da fonte base dinamicamente:
+       - Mínimo: 13.5px (Notebooks pequenos de 13"/14")
+       - Ideal: 0.85vw + 4px (Acompanha a largura da tela suavemente)
+       - Máximo: 19px (Telas ultrawide e Smart TVs 4K)
+    */
+    font-size: clamp(13.5px, 0.85vw + 4px, 19px);
+}
+
 /* RESET GLOBAL PARA TELA CHEIA */
 * {
     margin: 0;
@@ -6,8 +19,17 @@
 }
 
 html, body, #root {
-    width: 100vw;
-    min-height: 100vh;
+    width: 100%;             /* Corrigido: 100% evita o bug de scroll horizontal do 100vw */
+    min-height: 100dvh;      /* 100dvh ajusta perfeitamente em navegadores mobile/TV */
     background-color: #0d0d0d;
     overflow-x: hidden;
+    font-size: 1rem;         /* Herda a escala fluída do :root */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Garantia para botões e inputs acompanharem a escala rem */
+input, select, textarea, button {
+    font-family: inherit;
+    font-size: 1rem;
 }
