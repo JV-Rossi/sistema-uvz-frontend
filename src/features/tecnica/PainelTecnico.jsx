@@ -19,11 +19,12 @@ import GeradorReuniaoSemanal from './supervisao/GeradorReuniaoSemanal';
 import ValidacaoBloqueios from './responsaveis-tecnicos/ValidacaoBloqueios';
 import ValidacaoSinantropia from './responsaveis-tecnicos/ValidacaoSinantropia';
 
+// 📁 SETOR: CONSULTAS E RELATÓRIOS
+import ConsultasExportacoes from './consultas/ConsultasExportacoes';
+import IndicadoresRelatorios from './consultas/IndicadoresRelatorios';
+
 // 📁 SETOR: BORRIFAÇÃO
 import BloqueioQuimico from './borrifacao/BloqueioQuimico';
-
-// 📁 SETOR: CONSULTAS
-import ConsultasExportacoes from './consultas/ConsultasExportacoes';
 
 import './PainelTecnico.css';
 
@@ -57,7 +58,7 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                 <nav className="sidebar-menu mt-3">
 
-                    {/* 📁 SETOR: ADMINISTRATIVO */}
+                    {/* 📁 SETOR 1: ADMINISTRATIVO */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'administrativo' ? 'active' : ''}`} onClick={() => togglePasta('administrativo')}>
                             <i className={`fas ${pastaAberta === 'administrativo' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
@@ -80,7 +81,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                    {/* 📁 SETOR: SINANTROPIA */}
+                    {/* 📁 SETOR 2: SINANTROPIA */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'sinantropia' ? 'active' : ''}`} onClick={() => togglePasta('sinantropia')}>
                             <i className={`fas ${pastaAberta === 'sinantropia' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
@@ -103,7 +104,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                    {/* 📁 SETOR: SUPERVISORES */}
+                    {/* 📁 SETOR 3: SUPERVISORES */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'supervisao' ? 'active' : ''}`} onClick={() => togglePasta('supervisao')}>
                             <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
@@ -126,21 +127,16 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                    {/* 📁 SETOR: RESPONSÁVEIS TÉCNICOS */}
+                    {/* 📁 SETOR 4: RESPONSÁVEIS TÉCNICOS */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'responsaveis' ? 'active' : ''}`} onClick={() => togglePasta('responsaveis')}>
                             <i className={`fas ${pastaAberta === 'responsaveis' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Resp. Técnicos
                             <i className={`fas ${pastaAberta === 'responsaveis' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
+
                         {pastaAberta === 'responsaveis' && (
                             <div className="folder-content pl-3">
-                                <button className={`menu-btn br-button block ${abaAtiva === 'dashboards' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('dashboards')}>
-                                    <i className="fas fa-chart-pie mr-2" aria-hidden="true"></i> Indicadores e Relatórios
-                                </button>
-                                <button className={`menu-btn br-button block ${abaAtiva === 'consultas' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('consultas')}>
-                                    <i className="fas fa-search mr-2" aria-hidden="true"></i> Consultas & Exportação
-                                </button>
                                 <button className={`menu-btn br-button block ${abaAtiva === 'validacao-bloqueios' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('validacao-bloqueios')}>
                                     <i className="fas fa-shield-alt mr-2" aria-hidden="true"></i> Validação de Bloqueios
                                 </button>
@@ -151,17 +147,38 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                    {/* 📁 SETOR: BORRIFAÇÃO */}
+                    {/* 📁 SETOR 5: BORRIFAÇÃO */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'borrifacao' ? 'active' : ''}`} onClick={() => togglePasta('borrifacao')}>
                             <i className={`fas ${pastaAberta === 'borrifacao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Borrifação
                             <i className={`fas ${pastaAberta === 'borrifacao' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
                         </button>
+
                         {pastaAberta === 'borrifacao' && (
                             <div className="folder-content pl-3">
                                 <button className={`menu-btn br-button block ${abaAtiva === 'bloqueio_quimico' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('bloqueio_quimico')}>
                                     <i className="fas fa-shield-alt mr-2" aria-hidden="true"></i> Bloqueio Químico
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* 📁 SETOR 6: CONSULTAS E RELATÓRIOS (NOVA PASTA ISOLADA) */}
+                    <div className="menu-folder">
+                        <button className={`folder-btn br-button block ${pastaAberta === 'consultas-relatorios' ? 'active' : ''}`} onClick={() => togglePasta('consultas-relatorios')}>
+                            <i className={`fas ${pastaAberta === 'consultas-relatorios' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
+                            Consultas & Relatórios
+                            <i className={`fas ${pastaAberta === 'consultas-relatorios' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
+                        </button>
+
+                        {pastaAberta === 'consultas-relatorios' && (
+                            <div className="folder-content pl-3">
+                                <button className={`menu-btn br-button block ${abaAtiva === 'dashboards' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('dashboards')}>
+                                    <i className="fas fa-chart-pie mr-2" aria-hidden="true"></i> Indicadores e Relatórios
+                                </button>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'consultas' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('consultas')}>
+                                    <i className="fas fa-search mr-2" aria-hidden="true"></i> Consultas & Exportação
                                 </button>
                             </div>
                         )}
@@ -185,33 +202,36 @@ export default function PainelTecnico({ setTelaAtual }) {
                         <div className="icon"><i className="fas fa-info-circle fa-lg"></i></div>
                         <div className="content">
                             <span className="message-title text-weight-semi-bold">Bem-vindo(a) ao Painel da Equipe Técnica.</span>
-                            <span className="message-body"> Utilize o menu lateral para acessar os módulos de Sinantropia, Borrifação e Supervisão.</span>
+                            <span className="message-body"> Utilize o menu lateral para acessar os módulos de Sinantropia, Borrifação, Supervisão, Validações e Consultas.</span>
                         </div>
                     </div>
                 )}
 
-                {/* 📁 SETOR: ADMINISTRATIVO */}
+                {/* 📁 SETOR 1: ADMINISTRATIVO */}
                 {abaAtiva === 'ordem-servico' && <div className="br-card"><OrdemServico setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'equipe' && <div className="br-card"><CadastroUsuario setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'gerenciar-equipe' && <GerenciarUsuarios setTelaAtual={setTelaAtual} />}
 
-                {/* 📁 SETOR: SINANTROPIA */}
+                {/* 📁 SETOR 2: SINANTROPIA */}
                 {abaAtiva === 'sinantropia-ovos' && <div className="br-card"><AnaliseLarvas setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'sinantropia-busca-ativa' && <div className="br-card"><SinantropiaBuscaAtiva setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'sinantropia-analises' && <div className="br-card"><SinantropiaAnalises setAbaAtiva={setAbaAtiva} /></div>}
 
-                {/* 📁 SETOR: SUPERVISORES */}
+                {/* 📁 SETOR 3: SUPERVISORES */}
                 {abaAtiva === 'mutirao' && <div className="br-card"><DistribuidorTrabalho setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'programacao-bloqueios' && <div className="br-card"><ProgramacaoBloqueios setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'reuniao-semanal' && <div className="br-card"><GeradorReuniaoSemanal /></div>}
 
-                {/* 📁 SETOR: RESPONSÁVEIS TÉCNICOS / CONSULTAS */}
-                {abaAtiva === 'consultas' && <div className="br-card"><ConsultasExportacoes setTelaAtual={setTelaAtual} /></div>}
+                {/* 📁 SETOR 4: RESPONSÁVEIS TÉCNICOS */}
                 {abaAtiva === 'validacao-bloqueios' && <ValidacaoBloqueios setAbaAtiva={setAbaAtiva} />}
                 {abaAtiva === 'validacao-sinantropia' && <ValidacaoSinantropia setAbaAtiva={setAbaAtiva} />}
 
-                {/* 📁 SETOR: BORRIFAÇÃO */}
+                {/* 📁 SETOR 5: BORRIFAÇÃO */}
                 {abaAtiva === 'bloqueio_quimico' && <div className="br-card"><BloqueioQuimico setAbaAtiva={setAbaAtiva} /></div>}
+
+                {/* 📁 SETOR 6: CONSULTAS E RELATÓRIOS */}
+                {abaAtiva === 'dashboards' && <div className="br-card"><IndicadoresRelatorios setAbaAtiva={setAbaAtiva} /></div>}
+                {abaAtiva === 'consultas' && <div className="br-card"><ConsultasExportacoes setTelaAtual={setTelaAtual} /></div>}                
 
             </main>
         </div>

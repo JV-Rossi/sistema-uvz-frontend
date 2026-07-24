@@ -1,0 +1,152 @@
+.po-form-container {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.triato-secoes-empilhadas {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* CARDS DOS AMBIENTES */
+.triato-bloco-card {
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.triato-bloco-card.border-danger {
+    border-left: 5px solid #dc3545;
+}
+
+.triato-bloco-card.border-primary {
+    border-left: 5px solid #1351b4;
+}
+
+.triato-bloco-header {
+    font-weight: bold;
+    padding: 10px 16px;
+    font-size: 16px;
+}
+
+.triato-bloco-header.header-danger {
+    background-color: #fef2f2;
+    color: #dc3545;
+    border-bottom: 1px solid #fecaca;
+}
+
+.triato-bloco-header.header-primary {
+    background-color: #f0f5ff;
+    color: #1351b4;
+    border-bottom: 1px solid #c7d2fe;
+}
+
+/* GRID DE TABELAS PARALELAS DENTRO DO CARD DO AMBIENTE */
+.triato-tabelas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px;
+}
+
+.triato-tabela-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* ESTILIZAÇÃO DA TABELA HTML */
+.triato-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.triato-table thead th {
+    background-color: #f3f4f6;
+    color: #374151;
+    font-weight: 700;
+    text-align: center;
+    padding: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.triato-table tbody tr {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.triato-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.triato-table td.label-col {
+    padding: 8px 12px;
+    color: #1f2937;
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+.triato-table td.input-col {
+    width: 70px;
+    padding: 6px 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* INPUTS NUMÉRICOS, CHECKBOXES E TEXTUAIS */
+.triato-input-qtd {
+    width: 55px;
+    height: 32px;
+    text-align: center;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #1351b4;
+    font-size: 14px;
+}
+
+.triato-input-qtd:focus {
+    border-color: #1351b4;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(19, 81, 180, 0.2);
+}
+
+/* ESTILO DAS CAIXAS DE MARCAÇÃO (CHECKBOX) */
+.triato-checkbox {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    accent-color: #1351b4;
+    margin: 0 auto;
+    display: block;
+}
+
+.triato-input-texto {
+    width: 100%;
+    height: 30px;
+    padding: 4px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.triato-textarea-obs {
+    width: 100% !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px;
+}
+
+/* RESPONSIVIDADE PARA TELAS MENORES */
+@media (max-width: 768px) {
+    .triato-tabelas-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 12px;
+    }
+}

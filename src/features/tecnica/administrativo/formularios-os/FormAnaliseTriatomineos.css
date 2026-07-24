@@ -1,0 +1,104 @@
+.triato-analise-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.triato-analise-table thead th {
+    background-color: #f3f4f6;
+    color: #374151;
+    font-weight: 700;
+    text-align: center;
+    padding: 10px 8px;
+    border-bottom: 2px solid #d1d5db;
+}
+
+.triato-analise-table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+}
+
+.triato-analise-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.triato-analise-table td {
+    padding: 8px;
+    vertical-align: middle;
+}
+
+/* SELECTS E INPUTS DE GRID */
+.triato-select-grid {
+    width: 100%;
+    height: 34px;
+    padding: 4px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 13px;
+    background-color: #fff;
+    color: #1f2937;
+}
+
+.triato-select-grid:focus {
+    border-color: #1351b4;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(19, 81, 180, 0.15);
+}
+
+/* DESTAQUES DINÂMICOS CONFORME RESULTADO */
+.select-res-positivo {
+    background-color: #fef2f2;
+    color: #dc3545;
+    font-weight: bold;
+    border-color: #fecaca;
+}
+
+.select-res-negativo {
+    background-color: #f0fdf4;
+    color: #16a34a;
+    font-weight: bold;
+    border-color: #bbf7d0;
+}
+
+.select-res-não-examinado {
+    background-color: #fffbeb;
+    color: #d97706;
+    font-weight: bold;
+    border-color: #fef3c7;
+}
+
+/* BOTÃO REMOVER LINHA */
+.btn-remover-linha {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-remover-linha:hover {
+    background-color: #fee2e2;
+}
+
+.triato-resumo-bancada {
+    border-left: 4px solid #1351b4;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .triato-analise-table {
+        font-size: 12px;
+    }
+
+    .triato-select-grid {
+        height: 32px;
+        padding: 2px 4px;
+    }
+}

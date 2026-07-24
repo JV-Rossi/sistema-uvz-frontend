@@ -1,0 +1,22 @@
+.border-left-primary { border-left: 4px solid #1351b4 !important; }
+.border-left-success { border-left: 4px solid #198754 !important; }
+.border-left-warning { border-left: 4px solid #ffc107 !important; }
+.border-left-danger { border-left: 4px solid #dc3545 !important; }
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.generic-grid-2-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .generic-grid-2-cols {
+        grid-template-columns: 1fr;
+    }
+}

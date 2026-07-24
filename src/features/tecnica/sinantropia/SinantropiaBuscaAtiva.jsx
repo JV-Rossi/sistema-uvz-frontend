@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-// 🟢 IMPORTS ATUALIZADOS CONFORME A NOVA ESTRUTURA DE PASTAS
+// 🟢 IMPORTS ATUALIZADOS CONFORME A NOVA NOMECLATURA
 import PainelOperacionalBase from '../../../shared/components/PainelOperacionalBase';
-import FormTriatomineos from '../administrativo/formularios-os/FormTriatomineos';
+import FormBuscaTriatomineos from '../administrativo/formularios-os/FormBuscaTriatomineos';
 
 export default function SinantropiaBuscaAtiva() {
     const [demandas, setDemandas] = useState([]);
@@ -108,11 +108,12 @@ export default function SinantropiaBuscaAtiva() {
             renderFormExecucao={(item, fecharModal) => {
                 if (item.especie === 'Barbeiro') {
                     return (
-                        <FormTriatomineos
+                        <FormBuscaTriatomineos
                             onSubmitLaudo={(dados) => {
                                 handleSalvarBusca(item.id, dados);
                                 fecharModal();
                             }}
+                            onCancelar={fecharModal}
                         />
                     );
                 }

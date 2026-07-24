@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-// 🟢 IMPORT ATUALIZADO: Apontando para o componente base em src/shared/components/
+// 🟢 IMPORTS ATUALIZADOS
 import PainelOperacionalBase from '../../../shared/components/PainelOperacionalBase';
+import FormAnaliseTriatomineos from '../administrativo/formularios-os/FormAnaliseTriatomineos';
 
 export default function SinantropiaAnalises() {
     const [amostras, setAmostras] = useState([]);
@@ -45,7 +46,7 @@ export default function SinantropiaAnalises() {
             dadosAnalise
         } : item));
 
-        setSucesso(`Laudo Laboratorial da Amostra #${id} emitido com sucesso!`);
+        setSucesso(`Laudo Laboratorial da Amostra #${id} (${dadosAnalise.resumo?.resultadoGeral || 'Emitido'}) emitido com sucesso!`);
         setTimeout(() => setSucesso(''), 4000);
     };
 
@@ -95,28 +96,46 @@ export default function SinantropiaAnalises() {
                 <div className="po-boletim-resumo">
                     <hr className="po-divisor-card" />
                     <h4><i className="fas fa-file-medical-alt"></i> Laudo Final</h4>
-                    <p><strong>Resultado:</strong> {item.dadosAnalise?.resultado || 'Laudo Emitido'}</p>
+                    <p><strong>Resultado Geral:</strong> {item.dadosAnalise?.resumo?.resultadoGeral || 'Concluído'}</p>
+                    <p className="text-small text-muted">
+                        Exemplares: {item.dadosAnalise?.resumo?.totalExemplares || 0} | Positivos: {item.dadosAnalise?.resumo?.totalPositivos || 0}
+                    </p>
                 </div>
             )}
 
-            renderFormExecucao={(item, fecharModal) => (
-                <div className="p-4 text-center">
-                    <h4>Identificação de Bancada: {item.tipoAmostra} ({item.codigoTubo})</h4>
-                    <p className="text-muted">Formulário de laudo específico para <strong>{item.tipoAmostra}</strong>.</p>
-                    <div className="mt-3">
-                        <button 
-                            className="btn-confirmar-boletim mr-2" 
-                            onClick={() => {
-                                handleSalvarAnalise(item.id, { resultado: 'Análise Concluída em Bancada' });
+            renderFormExecucao={(item, fecharModal) => {
+                if (item.tipoAmostra === 'Barbeiro') {
+                    return (
+                        <FormAnaliseTriatomineos
+                            amostra={item}
+                            onSubmitLaudo={(dadosLaudo) => {
+                                handleSalvarAnalise(item.id, dadosLaudo);
                                 fecharModal();
                             }}
-                        >
-                            Finalizar Laudo Teste
-                        </button>
-                        <button className="btn-cancelar" onClick={fecharModal}>Cancelar</button>
+                            onCancelar={fecharModal}
+                        />
+                    );
+                }
+
+                return (
+                    <div className="p-4 text-center">
+                        <h4>Identificação de Bancada: {item.tipoAmostra} ({item.codigoTubo})</h4>
+                        <p className="text-muted">Formulário de laudo específico para <strong>{item.tipoAmostra}</strong> em desenvolvimento.</p>
+                        <div className="mt-3">
+                            <button
+                                className="btn-confirmar-boletim mr-2"
+                                onClick={() => {
+                                    handleSalvarAnalise(item.id, { resultado: 'Análise Concluída em Bancada' });
+                                    fecharModal();
+                                }}
+                            >
+                                Finalizar Laudo Teste
+                            </button>
+                            <button className="btn-cancelar" onClick={fecharModal}>Cancelar</button>
+                        </div>
                     </div>
-                </div>
-            )}
+                );
+            }}
         />
     );
 }
