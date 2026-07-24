@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
 
-// Imports de componentes na mesma pasta (./)
-import OrdemServico from './OrdemServico';
-import CadastroUsuario from './CadastroUsuario';
-import GerenciarUsuarios from './GerenciarUsuarios';
-import DistribuidorTrabalho from './DistribuidorTrabalho';
-import ProgramacaoBloqueios from './ProgramacaoBloqueios';
-import GeradorReuniaoSemanal from './GeradorReuniaoSemanal';
-import ConsultasExportacoes from './ConsultasExportacoes';
-import ValidacaoBloqueios from './ValidacaoBloqueios';
-import ValidacaoSinantropia from './ValidacaoSinantropia';
-import BloqueioQuimico from './BloqueioQuimico';
+// 📁 SETOR: ADMINISTRATIVO
+import OrdemServico from './administrativo/OrdemServico';
+import CadastroUsuario from './administrativo/CadastroUsuario';
+import GerenciarUsuarios from './administrativo/GerenciarUsuarios';
 
-// Módulo de Sinantropia (Arquivos na mesma pasta)
-import AnaliseLarvas from './AnaliseLarvas'; // Representando Contagem de Ovos/Larvas
-import SinantropiaBuscaAtiva from './SinantropiaBuscaAtiva';
-import SinantropiaAnalises from './SinantropiaAnalises';
+// 📁 SETOR: SINANTROPIA
+import AnaliseLarvas from './sinantropia/AnaliseLarvas';
+import SinantropiaBuscaAtiva from './sinantropia/SinantropiaBuscaAtiva';
+import SinantropiaAnalises from './sinantropia/SinantropiaAnalises';
+
+// 📁 SETOR: SUPERVISORES
+import DistribuidorTrabalho from './supervisao/DistribuidorTrabalho';
+import ProgramacaoBloqueios from './supervisao/ProgramacaoBloqueios';
+import GeradorReuniaoSemanal from './supervisao/GeradorReuniaoSemanal';
+
+// 📁 SETOR: RESPONSÁVEIS TÉCNICOS
+import ValidacaoBloqueios from './responsaveis-tecnicos/ValidacaoBloqueios';
+import ValidacaoSinantropia from './responsaveis-tecnicos/ValidacaoSinantropia';
+
+// 📁 SETOR: BORRIFAÇÃO
+import BloqueioQuimico from './borrifacao/BloqueioQuimico';
+
+// 📁 SETOR: CONSULTAS
+import ConsultasExportacoes from './consultas/ConsultasExportacoes';
 
 import './PainelTecnico.css';
 
@@ -171,6 +179,7 @@ export default function PainelTecnico({ setTelaAtual }) {
             {/* ➡️ ÁREA DE TRABALHO */}
             <main className="tecnico-conteudo p-4">
 
+                {/* 🏠 TELA INICIAL */}
                 {abaAtiva === 'inicio' && (
                     <div className="br-message is-info mt-5" role="alert">
                         <div className="icon"><i className="fas fa-info-circle fa-lg"></i></div>
@@ -181,22 +190,27 @@ export default function PainelTecnico({ setTelaAtual }) {
                     </div>
                 )}
 
+                {/* 📁 SETOR: ADMINISTRATIVO */}
                 {abaAtiva === 'ordem-servico' && <div className="br-card"><OrdemServico setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'equipe' && <div className="br-card"><CadastroUsuario setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'gerenciar-equipe' && <GerenciarUsuarios setTelaAtual={setTelaAtual} />}
 
-                {/* SINANTROPIA */}
+                {/* 📁 SETOR: SINANTROPIA */}
                 {abaAtiva === 'sinantropia-ovos' && <div className="br-card"><AnaliseLarvas setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'sinantropia-busca-ativa' && <div className="br-card"><SinantropiaBuscaAtiva setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'sinantropia-analises' && <div className="br-card"><SinantropiaAnalises setAbaAtiva={setAbaAtiva} /></div>}
 
-                {/* DEMAIS MÓDULOS */}
-                {abaAtiva === 'consultas' && <div className="br-card"><ConsultasExportacoes setTelaAtual={setTelaAtual} /></div>}
+                {/* 📁 SETOR: SUPERVISORES */}
                 {abaAtiva === 'mutirao' && <div className="br-card"><DistribuidorTrabalho setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'programacao-bloqueios' && <div className="br-card"><ProgramacaoBloqueios setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'reuniao-semanal' && <div className="br-card"><GeradorReuniaoSemanal /></div>}
+
+                {/* 📁 SETOR: RESPONSÁVEIS TÉCNICOS / CONSULTAS */}
+                {abaAtiva === 'consultas' && <div className="br-card"><ConsultasExportacoes setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'validacao-bloqueios' && <ValidacaoBloqueios setAbaAtiva={setAbaAtiva} />}
                 {abaAtiva === 'validacao-sinantropia' && <ValidacaoSinantropia setAbaAtiva={setAbaAtiva} />}
+
+                {/* 📁 SETOR: BORRIFAÇÃO */}
                 {abaAtiva === 'bloqueio_quimico' && <div className="br-card"><BloqueioQuimico setAbaAtiva={setAbaAtiva} /></div>}
 
             </main>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import './Formularios.css'; // Ou o arquivo de CSS que você está importando
+
+// 🟢 IMPORT ATUALIZADO: Apontando para o CSS global em src/shared/components/
+import '../../../shared/components/Formularios.css';
 
 export default function CadastroUsuario({ setAbaAtiva }) {
     const [formData, setFormData] = useState({

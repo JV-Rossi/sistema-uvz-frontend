@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ValidacaoRTBase from './ValidacaoRTBase';
+
+// 🟢 IMPORT ATUALIZADO: Apontando para a base compartilhada em src/shared/components/
+import ValidacaoRTBase from '../../../shared/components/ValidacaoRTBase';
 
 export default function ValidacaoBloqueios({ setAbaAtiva }) {
     const [solicitacoes, setSolicitacoes] = useState([]);
@@ -64,7 +66,7 @@ export default function ValidacaoBloqueios({ setAbaAtiva }) {
             setFiltroStatus={setFiltroStatus}
             colunaCasoHeader="Dados do Caso Epidemiológico"
             
-            // 🟢 Renderiza a especificidade da Arbovirose na tabela
+            // Renderiza a especificidade da Arbovirose na tabela
             renderDadosCaso={(item) => (
                 <>
                     <span className={`br-tag mb-1 ${getCorSuspeita(item.suspeita)}`}>
@@ -79,7 +81,7 @@ export default function ValidacaoBloqueios({ setAbaAtiva }) {
                 </>
             )}
 
-            // 🟢 Renderiza os detalhes de saúde no Modal de Aceite/Delegação
+            // Renderiza os detalhes de saúde no Modal de Aceite/Delegação
             renderInfoModalAceite={(item) => (
                 <>
                     <p><strong>Paciente Notificado:</strong> {item.paciente}</p>

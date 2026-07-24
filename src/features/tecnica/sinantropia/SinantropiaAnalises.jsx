@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import PainelOperacionalBase from './PainelOperacionalBase'; // 🟢 Import da mesma pasta
+
+// 🟢 IMPORT ATUALIZADO: Apontando para o componente base em src/shared/components/
+import PainelOperacionalBase from '../../../shared/components/PainelOperacionalBase';
 
 export default function SinantropiaAnalises() {
     const [amostras, setAmostras] = useState([]);

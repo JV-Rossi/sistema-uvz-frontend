@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import PainelOperacionalBase from './PainelOperacionalBase';
-import FormExecucaoBloqueio from './FormExecucaoBloqueio'; // 👈 Formulário isolado
+
+// 🟢 IMPORTS ATUALIZADOS CONFORME A NOVA ESTRUTURA DE PASTAS
+import PainelOperacionalBase from '../../../shared/components/PainelOperacionalBase';
+import FormExecucaoBloqueio from '../administrativo/formularios-os/FormExecucaoBloqueio';
 
 export default function BloqueioQuimico() {
     const [bloqueios, setBloqueios] = useState([]);
@@ -42,7 +44,7 @@ export default function BloqueioQuimico() {
             sucesso={sucesso}
             abaAtiva={abaAtiva}
             setAbaAtiva={setAbaAtiva}
-            onConfirmarCancelamento={handleSalvarCancelamento} // 🟢 Cancelamento padrão automático!
+            onConfirmarCancelamento={handleSalvarCancelamento}
 
             renderCardBadges={(b) => (
                 <>
@@ -68,7 +70,7 @@ export default function BloqueioQuimico() {
                 </div>
             )}
 
-            // Modal de Execução limpo usando o componente externo
+            /* Modal de Execução usando o componente externo */
             renderFormExecucao={(bloqueio, fecharModal) => (
                 <FormExecucaoBloqueio
                     bloqueio={bloqueio}

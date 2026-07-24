@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import FiltroTabelaVisitas from './FiltroTabelaVisitas';
-import FiltroTabelaResumos from './FiltroTabelaResumos';
-import FiltroTabelaOvitrampas from './FiltroTabelaOvitrampas';
-import FiltroTabelaPE from './FiltroTabelaPE';
-import FiltroTabelaBloqueio from './FiltroTabelaBloqueio';
-import FiltroTabelaConstituicao from './FiltroTabelaConstituicao';
-import FiltroTabelaMutirao from './FiltroTabelaMutirao';
+
+// 🟢 IMPORTS ATUALIZADOS: Apontando para a subpasta ./filtros/
+import FiltroTabelaVisitas from './filtros/FiltroTabelaVisitas';
+import FiltroTabelaResumos from './filtros/FiltroTabelaResumos';
+import FiltroTabelaOvitrampas from './filtros/FiltroTabelaOvitrampas';
+import FiltroTabelaPE from './filtros/FiltroTabelaPE';
+import FiltroTabelaBloqueio from './filtros/FiltroTabelaBloqueio';
+import FiltroTabelaConstituicao from './filtros/FiltroTabelaConstituicao';
+import FiltroTabelaMutirao from './filtros/FiltroTabelaMutirao';
+
 import './ConsultasExportacoes.css';
 
 export default function ConsultasExportacoes() {
@@ -25,7 +28,7 @@ export default function ConsultasExportacoes() {
                 </p>
             </header>
 
-            {/* 🗂️ SELETOR DE BASE DE DADOS (Padrão br-select do GovBR) */}
+            {/* 🗂️ SELETOR DE BASE DE DADOS */}
             <div className="br-card p-4 mb-4 select-base-card">
                 <div className="form-group">
                     <label htmlFor="fonteDados" className="text-weight-semi-bold mb-2">

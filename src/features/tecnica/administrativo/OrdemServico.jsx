@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './Formularios.css';
-import FormLeishmaniose from './FormLeishmaniose';
-import FormBloqueio from './FormBloqueio';
+
+// 🟢 IMPORTS ATUALIZADOS CONFORME A NOVA ESTRUTURA DE PASTAS
+import '../../../shared/components/Formularios.css';
+import FormLeishmaniose from './formularios-os/FormLeishmaniose';
+import FormBloqueio from './formularios-os/FormExecucaoBloqueio';
 
 export default function OrdemServico({ setTelaAtual }) {
     const [dataSolicitacao, setDataSolicitacao] = useState('');
@@ -12,7 +14,7 @@ export default function OrdemServico({ setTelaAtual }) {
     const [tipoImovel, setTipoImovel] = useState('');
     const [referencia, setReferencia] = useState('');
 
-    // 🟢 NOVOS CAMPOS CARTOGRÁFICOS ALINHADOS COM O BACKEND
+    // CAMPOS CARTOGRÁFICOS
     const [distrito, setDistrito] = useState('');
     const [bairro, setBairro] = useState('');
     const [quarteirao, setQuarteirao] = useState('');
@@ -120,7 +122,6 @@ export default function OrdemServico({ setTelaAtual }) {
         }
 
         try {
-            // Aqui futuramente entrará o Axios/Fetch chamando o Spring Boot
             setTimeout(() => {
                 setSucesso(`O.S. registrada com sucesso! Encaminhada para o RT de ${setorDestino.toUpperCase()}.`);
                 limparFormulario();
@@ -137,7 +138,6 @@ export default function OrdemServico({ setTelaAtual }) {
     const [dadosBloqueio, setDadosBloqueio] = useState({
         referencia: '', paciente: '', suspeita: '', dataSintomas: ''
     });
-
 
     return (
         <div className="os-wrapper">
@@ -195,7 +195,7 @@ export default function OrdemServico({ setTelaAtual }) {
                             <input type="text" placeholder="Nome do Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} />
                         </div>
 
-                        {/* 🟢 NOVOS CAMPOS DE LOCALIDADE */}
+                        {/* CAMPOS DE LOCALIDADE */}
                         <div className="br-input">
                             <label>Quarteirão</label>
                             <input type="number" placeholder="Nº (Opcional na Recepção)" value={quarteirao} onChange={(e) => setQuarteirao(e.target.value)} />
@@ -257,7 +257,7 @@ export default function OrdemServico({ setTelaAtual }) {
                         />
                     )}
 
-                    {/* INJEÇÃO: SINANTROPICOS (Apenas dados do imóvel para triagem) */}
+                    {/* INJEÇÃO: SINANTRÓPICOS */}
                     {setorDestino === 'sinantropicos' && (
                         <div className="os-subform-card mt-4 border-top pt-3">
                             <h3 className="text-weight-semi-bold os-section-title text-primary">

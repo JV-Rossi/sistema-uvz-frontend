@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import PainelOperacionalBase from './PainelOperacionalBase'; // 🟢 Import da mesma pasta
-import FormTriatomineos from './FormTriatomineos'; // 🟢 Import da mesma pasta
+
+// 🟢 IMPORTS ATUALIZADOS CONFORME A NOVA ESTRUTURA DE PASTAS
+import PainelOperacionalBase from '../../../shared/components/PainelOperacionalBase';
+import FormTriatomineos from '../administrativo/formularios-os/FormTriatomineos';
 
 export default function SinantropiaBuscaAtiva() {
     const [demandas, setDemandas] = useState([]);

@@ -2,9 +2,21 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import { db } from './core/dbLocal';
 import { Network } from '@capacitor/network'; 
+
+// 📁 AUTENTICAÇÃO E GESTÃO
 import Login from './features/auth/Login';
 import RecuperarSenha from './features/auth/RecuperarSenha';
-import Cadastro from './features/tecnica/CadastroUsuario.jsx'
+import PainelGestao from './features/gestao/PainelGestao.jsx';
+
+// 📁 MÓDULO TÉCNICO (Caminhos atualizados)
+import PainelTecnico from './features/tecnica/PainelTecnico.jsx';
+import Cadastro from './features/tecnica/administrativo/CadastroUsuario.jsx';
+import GerenciarUsuarios from './features/tecnica/administrativo/GerenciarUsuarios';
+import DistribuidorTrabalho from './features/tecnica/supervisao/DistribuidorTrabalho';
+import GeradorReuniaoSemanal from './features/tecnica/supervisao/GeradorReuniaoSemanal';
+import ProgramacaoBloqueios from './features/tecnica/supervisao/ProgramacaoBloqueios';
+
+// 📁 MÓDULO DE CAMPO
 import MenuCampo from './features/campo/MenuCampo';
 import MenuBoletins from './features/campo/MenuBoletins.jsx';
 import BoletimRotina from './features/campo/BoletimRotina';
@@ -14,21 +26,13 @@ import BoletimLira from './features/campo/BoletimLira.jsx';
 import OrdemServicoCampo from './features/campo/OrdemServicoCampo.jsx';
 import ResumoSemanal from './features/campo/ResumoSemanal';
 import Ovitrampa from './features/campo/Ovitrampa.jsx';
-import PainelGestao from './features/gestao/PainelGestao.jsx';
-import PainelTecnico from './features/tecnica/PainelTecnico.jsx';
-import DistribuidorTrabalho from './features/tecnica/DistribuidorTrabalho';
-import GeradorReuniaoSemanal from './features/tecnica/GeradorReuniaoSemanal';
-import ProgramacaoBloqueios from './features/tecnica/ProgramacaoBloqueios';
-import GerenciarUsuarios from './features/tecnica/GerenciarUsuarios'; 
-
-
 
 function App() {
   const [telaAtual, setTelaAtual] = useState('login');
   const [mensagem, setMensagem] = useState('');
 
   useEffect(() => {
-    // Essa linha força o navegador a "acordar" e criar o banco visivelmente
+    // Força o navegador a abrir e inicializar o IndexedDB local (Dexie)
     db.open().then(() => {
       console.log("Banco de dados criado e aberto com sucesso!");
     }).catch(err => {
@@ -36,28 +40,25 @@ function App() {
     });
   }, []);
 
-  // 🛡️ REFRESH DE SEGURANÇA: Se der F5, o agente vai direto para o MENU agora
+  // 🛡️ REFRESH DE SEGURANÇA: Se der F5, redireciona para a tela correspondente do perfil
   useEffect(() => {
     const cargoSalvo = localStorage.getItem('userCargo');
     if (cargoSalvo) {
       if (cargoSalvo === 'GESTAO') setTelaAtual('gestao');
       else if (cargoSalvo === 'TECNICO') setTelaAtual('tecnica');
-      else if (cargoSalvo === 'AGENTE_CAMPO') setTelaAtual('campo_menu'); // Direct para o Menu!
+      else if (cargoSalvo === 'AGENTE_CAMPO') setTelaAtual('campo_menu');
     }
   }, []);
 
   // 🔄 OUVINTE DE REDE: Dispara a sincronização assim que o Wi-Fi conecta
   useEffect(() => {
-    // 1. Guardamos a Promise retornada pelo Capacitor
     const ouvinteRedePromise = Network.addListener('networkStatusChange', async (status) => {
-      // Executa apenas se houver conectividade e se o tipo for Wi-Fi
       if (status.connected && status.connectionType === 'wifi') {
         console.log('🔄 Wi-Fi detectado! Iniciando sincronização automática...');
         await executarSincronizacaoSilenciosa();
       }
     });
 
-    // 2. No cleanup (desmontagem), resolvemos a Promise e então aplicamos o remove() no handle correto
     return () => {
       ouvinteRedePromise.then(handle => {
         if (handle) {
@@ -73,9 +74,7 @@ function App() {
     if (!loginAgente) return;
 
     try {
-      // ========================================================
-      // ETAPA PUSH: Descarrega os malotes fechados no Dexie para o Java
-      // ========================================================
+      // 1. PUSH: Envia resumos acumulados no Dexie para o servidor
       const resumos = await db.resumos_pendentes_envio.toArray();
       if (resumos.length > 0) {
         const resPush = await fetch('https://sistema-uvz-backend.onrender.com/api/resumos/lote', {
@@ -85,25 +84,20 @@ function App() {
         });
 
         if (resPush.ok) {
-          // Limpa a tabela de envios locais se o servidor confirmou o recebimento
           await db.resumos_pendentes_envio.bulkDelete(resumos.map(r => r.id));
           console.log('✅ Resumos pendentes enviados e limpos do armazenamento local.');
         }
       }
 
-      // ========================================================
-      // ETAPA PULL: Coleta as fichas rateadas de mutirões do servidor
-      // ========================================================
+      // 2. PULL: Busca fichas rateadas de mutirão atribuídas ao agente
       const resPull = await fetch(`https://sistema-uvz-backend.onrender.com/api/visitas/parceiro/${loginAgente}`);
       if (resPull.ok) {
         const fichasNovas = await resPull.json();
 
         if (fichasNovas.length > 0) {
-          // Aloca as frações da produção direto na gaveta do agente parceiro
           await db.fichas_soltas.bulkAdd(fichasNovas);
           console.log(`✅ ${fichasNovas.length} fichas de parceria adicionadas ao Dexie.`);
 
-          // Confirma a baixa do lote no backend para evitar duplicidade no próximo ciclo
           await fetch(`https://sistema-uvz-backend.onrender.com/api/visitas/parceiro/confirmar/${loginAgente}`, {
             method: 'POST'
           });

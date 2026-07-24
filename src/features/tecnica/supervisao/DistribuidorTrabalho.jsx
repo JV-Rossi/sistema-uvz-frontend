@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './DistribuidorTrabalho.css'; // Certifique-se de que o caminho do CSS está correto
 
-// Import corrigido para evitar o erro do Vite
-import { tabelaBairros } from '../../shared/utils/dadosBairros';
+// 🟢 IMPORTS COM CAMINHOS RELATIVOS CORRETOS
+import './DistribuidorTrabalho.css';
+import { tabelaBairros } from '../../../shared/utils/dadosBairros';
 
 export default function DistribuidorTrabalho() {
     // Estados do Formulário
@@ -359,7 +359,7 @@ export default function DistribuidorTrabalho() {
 
                                                 <td style={{ verticalAlign: 'top' }}>
 
-                                                    {/* VISÃO DA TELA (Oculta no Papel) */}
+                                                    {/* VISÃO DA TELA */}
                                                     <div className="ocultar-na-impressao">
                                                         <div className="mb-2">
                                                             {(selecaoAgentes[item.equipe] || []).map(nome => (
@@ -430,7 +430,7 @@ export default function DistribuidorTrabalho() {
                                                         </div>
                                                     </div>
 
-                                                    {/* VISÃO DE IMPRESSÃO (Oculta na Tela) */}
+                                                    {/* VISÃO DE IMPRESSÃO */}
                                                     <div className="mostrar-na-impressao">
                                                         <ul style={{ padding: 0, margin: '0 0 0 18px' }}>
                                                             {(selecaoAgentes[item.equipe] || []).length > 0 ? (

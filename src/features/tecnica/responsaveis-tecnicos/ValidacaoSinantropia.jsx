@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ValidacaoRTBase from './ValidacaoRTBase';
+
+// 🟢 IMPORT ATUALIZADO: Apontando para a base compartilhada em src/shared/components/
+import ValidacaoRTBase from '../../../shared/components/ValidacaoRTBase';
 
 export default function ValidacaoSinantropia({ setAbaAtiva }) {
     const [solicitacoes, setSolicitacoes] = useState([]);
@@ -126,7 +128,7 @@ export default function ValidacaoSinantropia({ setAbaAtiva }) {
                     <p><strong>Tipo de Imóvel:</strong> {item.tipoImovel}</p>
                     <p><strong>Demanda / Espécie:</strong> {item.acaoEspecie}</p>
 
-                    {/* ALOCAÇÃO DE AGENTES UTILIZANDO APENAS CLASSES CSS */}
+                    {/* ALOCAÇÃO DE AGENTES */}
                     <div className="alocacao-agentes-container">
                         <label className="alocacao-agentes-label">
                             Designar Agentes Responsáveis <span className="text-danger">*</span>

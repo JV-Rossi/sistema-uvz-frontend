@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+
+// 🟢 IMPORT DO CSS LOCAL
 import './GeradorReuniaoSemanal.css';
 
 export default function GeradorReuniaoSemanal({ setTelaAtual }) {
@@ -53,7 +55,7 @@ export default function GeradorReuniaoSemanal({ setTelaAtual }) {
         "[GRAFICO_SLIDE_6]": ""
     });
 
-    // Função que converte o arquivo de imagem escolhido pelo usuário para Base64
+    // Converte arquivo de imagem para Base64
     const handleUploadImagem = (chave, evento) => {
         const file = evento.target.files[0];
         if (file) {
@@ -72,7 +74,6 @@ export default function GeradorReuniaoSemanal({ setTelaAtual }) {
     const handleGerarPowerPoint = async () => {
         setCarregando(true);
         try {
-            // Unifica textos e imagens no mesmo pacote
             const payload = {
                 ...geral, ...dias, ...atividades, ...epidemiologico, ...vetorial, ...analise, ...distritos, ...imagens
             };
@@ -195,7 +196,7 @@ export default function GeradorReuniaoSemanal({ setTelaAtual }) {
                 </div>
             </div>
 
-            {/* SEÇÃO anexo de imagens #5 e #6 */}
+            {/* SEÇÃO ANEXO DE IMAGENS #5 E #6 */}
             <h5 className="text-secondary mt-4"><i className="fas fa-chart-area mr-2"></i> Anexar Gráficos (Slides 5 e 6)</h5>
             <div className="row mb-4">
                 <div className="col-md-6">
@@ -217,7 +218,6 @@ export default function GeradorReuniaoSemanal({ setTelaAtual }) {
                     </div>
                 </div>
             </div>
-
 
             {/* SEÇÃO DISTRITOS */}
             <h5 className="text-secondary"><i className="fas fa-map-marker-alt mr-2"></i> Pontos de Encontro (Slide 8)</h5>

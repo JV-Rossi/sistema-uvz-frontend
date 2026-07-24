@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+// 🟢 IMPORT DO CSS LOCAL (Localizado em src/shared/components/)
 import './ValidacaoRTBase.css';
 
 export default function ValidacaoRTBase({
@@ -273,7 +275,7 @@ export default function ValidacaoRTBase({
                                 type="button"
                                 className="br-button success"
                                 onClick={handleConfirmarDelegacaoSubmit}
-                                disabled={!podeConfirmarAceite} // 👈 Trava o botão até selecionar a equipe
+                                disabled={!podeConfirmarAceite}
                             >
                                 <i className="fas fa-check-circle mr-2"></i> Sim, Confirmar Delegação
                             </button>

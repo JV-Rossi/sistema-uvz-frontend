@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+
+// 🟢 IMPORT DO CSS LOCAL DA PASTA SUPERVISAO
 import './ProgramacaoBloqueios.css';
 
 export default function ProgramacaoBloqueios() {
@@ -15,13 +17,12 @@ export default function ProgramacaoBloqueios() {
   // Campos do formulário
   const [dataAgendada, setDataAgendada] = useState('');
   const [horarioAgendado, setHorarioAgendado] = useState('');
-  const [equipeEscalada, setEquipeEscalada] = useState(''); // Representa a Equipe de Vistoria/Foco
+  const [equipeEscalada, setEquipeEscalada] = useState(''); // Equipe de Vistoria/Foco
   const [nomeSupervisor, setNomeSupervisor] = useState('');
 
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      // 🟢 CORREÇÃO: Mock de dados atualizado com Quarteirão, Zona e Paciente
       const dadosIniciais = [
         { 
           id: 101, 
@@ -60,7 +61,7 @@ export default function ProgramacaoBloqueios() {
           status: 'programado',
           dataExecucao: '2026-07-15',
           horaExecucao: '07:30',
-          equipe: 'Carlos Souza, Marcos Lima', // Equipe de Foco atribuída
+          equipe: 'Carlos Souza, Marcos Lima',
           supervisorResponsavel: 'PEDRO ALMEIDA'
         }
       ];
@@ -192,7 +193,6 @@ export default function ProgramacaoBloqueios() {
               <div className="sup-card-corpo">
                 <h3>{demanda.bairro}</h3>
                 
-                {/* 🟢 CORREÇÃO: Inclusão do Paciente e Quarteirão no card */}
                 <p className="sup-txt-endereco"><strong>Paciente:</strong> {demanda.paciente}</p>
                 <p className="sup-txt-endereco"><strong>Local:</strong> Quart. {demanda.quarteirao} - {demanda.endereco}</p>
                 
@@ -276,7 +276,6 @@ export default function ProgramacaoBloqueios() {
                 </div>
 
                 <div className="sup-form-group">
-                  {/* 🟢 CORREÇÃO: Texto alterado para Equipe de Vistoria de Foco */}
                   <label>Agentes Escalados (Equipe de Bloqueio de Foco) <span className="obrigatorio">*</span></label>
                   <textarea 
                     rows="3"

@@ -1,10 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+
+// 📁 IMPORTS PRINCIPAIS E MÓDULOS
 import App from './App.jsx'
 import PainelGestao from './features/gestao/PainelGestao.jsx';
 import PainelTecnico from './features/tecnica/PainelTecnico.jsx';
-import MenuCampo from './features/tecnica/CadastroUsuario.jsx';
+import MenuCampo from './features/campo/MenuCampo'; // 🟢 CORRIGIDO: Apontando para o módulo de campo!
+
+// 🎨 ESTILOS GLOBAIS
 import './index.css'
 import './shared/assets/rawline.css';
 

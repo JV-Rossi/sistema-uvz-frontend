@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../core/api';
+
+// 🟢 IMPORTS COM CAMINHOS RELATIVOS CORRETOS
+import api from '../../../core/api';
 import './GerenciarUsuarios.css';
 
 export default function GerenciarUsuarios() {
@@ -7,7 +9,7 @@ export default function GerenciarUsuarios() {
     const [carregando, setCarregando] = useState(true);
     const [usuarioEmEdicao, setUsuarioEmEdicao] = useState(null);
 
-    // 🎯 NOVO: Estado para armazenar o texto da barra de pesquisa
+    // 🎯 Estado para armazenar o texto da barra de pesquisa
     const [termoBusca, setTermoBusca] = useState('');
 
     const [formulario, setFormulario] = useState({
@@ -37,7 +39,7 @@ export default function GerenciarUsuarios() {
         }
     };
 
-    // 🎯 NOVO: Lógica que filtra a lista original baseada no que foi digitado (Nome ou Matrícula)
+    // 🎯 Lógica que filtra a lista original baseada no que foi digitado (Nome ou Matrícula)
     const usuariosFiltrados = usuarios.filter((user) => {
         const busca = termoBusca.toLowerCase();
         const nome = user.nome ? user.nome.toLowerCase() : '';
@@ -95,7 +97,7 @@ export default function GerenciarUsuarios() {
 
             {!usuarioEmEdicao ? (
                 <div className="painel-administrative-largo">
-                    {/* 🎯 BARRA DE PESQUISA CORRIGIDA (Sem bordas duplas) */}
+                    {/* BARRA DE PESQUISA */}
                     <div className="container-busca-servidor">
                         <div className="wrapper-busca">
                             <i className="fas fa-search icone-lupa" aria-hidden="true"></i>
@@ -132,14 +134,12 @@ export default function GerenciarUsuarios() {
                                 ) : usuariosFiltrados.length === 0 ? (
                                     <tr>
                                         <td colSpan="5" className="txt-center text-muted py-4">
-                                            {/* Mensagem dinâmica caso a pesquisa não encontre ninguém */}
                                             {termoBusca !== ''
                                                 ? `Nenhum servidor encontrado para "${termoBusca}".`
                                                 : "Nenhum usuário localizado no banco de dados."}
                                         </td>
                                     </tr>
                                 ) : (
-                                    /* 🎯 MUDANÇA: Agora o map roda em cima de usuariosFiltrados, e não da lista original */
                                     usuariosFiltrados.map((user) => (
                                         <tr key={user.matricula}>
                                             <td className="font-weight-bold id-amostra-destaque">{user.matricula}</td>
@@ -166,7 +166,7 @@ export default function GerenciarUsuarios() {
                     </div>
                 </div>
             ) : (
-                /* 📝 VISÃO 2: FORMULÁRIO DE ALTERAÇÃO COMPLETA (ESPELHO DO CADASTRO) */
+                /* 📝 VISÃO 2: FORMULÁRIO DE ALTERAÇÃO COMPLETA */
                 <div className="form-wrapper">
                     <button className="toggle-avancado-btn mb-4 btn-voltar-painel" onClick={() => setUsuarioEmEdicao(null)}>
                         <i className="fas fa-arrow-left mr-2" aria-hidden="true"></i> Cancelar e Voltar para Lista

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import './PainelOperacionalBase.css'; // Estilos globais para painéis operacionais
+
+// 🟢 IMPORT DO CSS COMPARTILHADO (Mesma pasta: src/shared/components/)
+import './PainelOperacionalBase.css';
 
 export default function PainelOperacionalBase({
     titulo,
@@ -27,7 +29,7 @@ export default function PainelOperacionalBase({
     // Configurações do Modal Padrão de Cancelamento / Não Realização
     tituloModalCancelamento = "Registrar Não Realização / Impedimento",
     onConfirmarCancelamento,
-    renderFormCancelamentoCustom // Opcional: caso alguma tela exija um form de cancelamento diferente
+    renderFormCancelamentoCustom
 }) {
     const [modalExecucaoAberto, setModalExecucaoAberto] = useState(false);
     const [modalCancelamentoAberto, setModalCancelamentoAberto] = useState(false);
