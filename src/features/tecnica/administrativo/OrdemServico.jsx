@@ -111,6 +111,13 @@ export default function OrdemServico({ setTelaAtual }) {
         setReferencia('');
     };
 
+
+    // Estado do Bloqueio (Passado para o FormBloqueio)
+    const [dadosBloqueio, setDadosBloqueio] = useState({
+        referencia: '', paciente: '', suspeita: '', dataSintomas: ''
+    });
+
+    //integrar com o backend Spring Boot
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErro(''); setSucesso(''); setLoading(true);
@@ -121,23 +128,42 @@ export default function OrdemServico({ setTelaAtual }) {
             return;
         }
 
+        const payload = {
+            dataSolicitacao,
+            origem,
+            municipe: nomeMunicipe,
+            telefone,
+            tipoImovel,
+            referencia,
+            distrito,
+            bairro,
+            quarteirao: quarteirao ? parseInt(quarteirao) : null,
+            zona,
+            desmembramento,
+            endereco,
+            setorDestino,
+            servicoSolicitado,
+            descricao
+        };
+
         try {
-            setTimeout(() => {
-                setSucesso(`O.S. registrada com sucesso! Encaminhada para o RT de ${setorDestino.toUpperCase()}.`);
-                limparFormulario();
-                setLoading(false);
-                setTimeout(() => setSucesso(''), 5000);
-            }, 1000);
+            const response = await fetch('http://localhost:8080/api/ordens-servico', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error("Erro ao salvar O.S.");
+
+            const osCriada = await response.json();
+            setSucesso(`O.S. #${osCriada.id} registrada com sucesso! Encaminhada para o R.T. de ${setorDestino.toUpperCase()}.`);
+            limparFormulario();
         } catch (err) {
-            setErro("Falha ao registrar a Ordem de Serviço.");
+            setErro("Falha ao registrar a Ordem de Serviço no servidor.");
+        } finally {
             setLoading(false);
         }
     };
-
-    // Estado do Bloqueio (Passado para o FormBloqueio)
-    const [dadosBloqueio, setDadosBloqueio] = useState({
-        referencia: '', paciente: '', suspeita: '', dataSintomas: ''
-    });
 
     return (
         <div className="os-wrapper">
