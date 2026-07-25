@@ -143,7 +143,9 @@ export default function OrdemServico({ setTelaAtual }) {
             endereco,
             setorDestino,
             servicoSolicitado,
-            descricao
+            descricao,
+            // 🟢 Anexa o objeto de bloqueio apenas se for a ação correspondente
+            solicitacaoBloqueio: servicoSolicitado === 'bloqueio_foco' ? dadosBloqueio : null
         };
 
         try {
