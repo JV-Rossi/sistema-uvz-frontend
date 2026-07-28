@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-// 🟢 IMPORTS ATUALIZADOS
+// 🟢 IMPORTS DAS COMPONENTES E FORMULÁRIOS DE LABORATÓRIO
 import PainelOperacionalBase from '../../../shared/components/PainelOperacionalBase';
 import FormAnaliseTriatomineos from '../administrativo/formularios-os/FormAnaliseTriatomineos';
+import FormAnaliseEscorpioes from '../administrativo/formularios-os/FormAnaliseEscorpioes'; // 🟢 Novo formulário importado
 
 export default function SinantropiaAnalises() {
     const [amostras, setAmostras] = useState([]);
@@ -26,6 +27,16 @@ export default function SinantropiaAnalises() {
                 },
                 {
                     id: 502,
+                    codigoTubo: 'ESC-2026-014', // 🟢 Exemplo de amostra de Escorpião
+                    tipoAmostra: 'Escorpião',
+                    origem: 'Vistoria Zoosanitária (Tijucal)',
+                    agenteColetor: 'HELIO SIMIAO',
+                    dataEntrada: '23/07/2026',
+                    qtdExemplares: 2,
+                    status: 'pendente'
+                },
+                {
+                    id: 503,
                     codigoTubo: 'TB-2026-090',
                     tipoAmostra: 'Larvas',
                     origem: 'LIA - Tijucal',
@@ -73,7 +84,7 @@ export default function SinantropiaAnalises() {
             setAbaAtiva={setAbaAtiva}
             textoAbaPendentes="Amostras Fila de Análise"
             textoAbaConcluidos="Laudos Emitidos"
-            tituloModalExecucao="Laudo Técnico de Análise Entomológica"
+            tituloModalExecucao="Laudo Técnico de Análise Entomológica / Zoosanitária"
             onConfirmarCancelamento={handleInviabilizarAmostra}
 
             renderCardBadges={(item) => (
@@ -96,14 +107,20 @@ export default function SinantropiaAnalises() {
                 <div className="po-boletim-resumo">
                     <hr className="po-divisor-card" />
                     <h4><i className="fas fa-file-medical-alt"></i> Laudo Final</h4>
-                    <p><strong>Resultado Geral:</strong> {item.dadosAnalise?.resumo?.resultadoGeral || 'Concluído'}</p>
+                    <p><strong>Examinador:</strong> {item.dadosAnalise?.tecnicoAnalista || 'Não informado'}</p>
                     <p className="text-small text-muted">
-                        Exemplares: {item.dadosAnalise?.resumo?.totalExemplares || 0} | Positivos: {item.dadosAnalise?.resumo?.totalPositivos || 0}
+                        Total Exemplares: {item.dadosAnalise?.resumo?.totalExemplares || 0}
+                        {item.tipoAmostra === 'Escorpião' ? (
+                            <> | Vivos: {item.dadosAnalise?.resumo?.vivos || 0} | Mortos: {item.dadosAnalise?.resumo?.mortos || 0}</>
+                        ) : (
+                            <> | Positivos: {item.dadosAnalise?.resumo?.totalPositivos || 0}</>
+                        )}
                     </p>
                 </div>
             )}
 
             renderFormExecucao={(item, fecharModal) => {
+                // 1. LAUDO DE TRIATOMÍNEOS (BARBEIROS)
                 if (item.tipoAmostra === 'Barbeiro') {
                     return (
                         <FormAnaliseTriatomineos
@@ -117,6 +134,21 @@ export default function SinantropiaAnalises() {
                     );
                 }
 
+                // 2. LAUDO DE ESCORPIÕES (🟢 CONECTADO)
+                if (item.tipoAmostra === 'Escorpião') {
+                    return (
+                        <FormAnaliseEscorpioes
+                            amostra={item}
+                            onSubmitLaudo={(dadosLaudo) => {
+                                handleSalvarAnalise(item.id, dadosLaudo);
+                                fecharModal();
+                            }}
+                            onCancelar={fecharModal}
+                        />
+                    );
+                }
+
+                // 3. OUTROS LAUDOS (EM DESENVOLVIMENTO)
                 return (
                     <div className="p-4 text-center">
                         <h4>Identificação de Bancada: {item.tipoAmostra} ({item.codigoTubo})</h4>

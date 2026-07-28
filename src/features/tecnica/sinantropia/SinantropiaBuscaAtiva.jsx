@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-// 🟢 IMPORTS ATUALIZADOS CONFORME A NOVA NOMECLATURA
+// 🟢 IMPORTS DAS COMPONENTES E FORMULÁRIOS DE CAMPO
 import PainelOperacionalBase from '../../../shared/components/PainelOperacionalBase';
 import FormBuscaTriatomineos from '../administrativo/formularios-os/FormBuscaTriatomineos';
+import FormBuscaEscorpioes from '../administrativo/formularios-os/FormBuscaEscorpioes'; // 🟢 Novo formulário importado
 
 export default function SinantropiaBuscaAtiva() {
     const [demandas, setDemandas] = useState([]);
@@ -106,6 +107,7 @@ export default function SinantropiaBuscaAtiva() {
             )}
 
             renderFormExecucao={(item, fecharModal) => {
+                // 1. BUSCA ATIVA DE BARBEIROS
                 if (item.especie === 'Barbeiro') {
                     return (
                         <FormBuscaTriatomineos
@@ -118,6 +120,20 @@ export default function SinantropiaBuscaAtiva() {
                     );
                 }
 
+                // 2. BUSCA ATIVA DE ESCORPIÕES (🟢 CONECTADO)
+                if (item.especie === 'Escorpião') {
+                    return (
+                        <FormBuscaEscorpioes
+                            onSubmitLaudo={(dados) => {
+                                handleSalvarBusca(item.id, dados);
+                                fecharModal();
+                            }}
+                            onCancelar={fecharModal}
+                        />
+                    );
+                }
+
+                // 3. OUTROS SINANTRÓPICOS (EM DESENVOLVIMENTO)
                 return (
                     <div className="p-4 text-center">
                         <p>Formulário de Busca Ativa de Campo para <strong>{item.especie}</strong> em desenvolvimento.</p>

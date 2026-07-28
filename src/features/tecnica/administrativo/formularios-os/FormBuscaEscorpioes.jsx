@@ -3,9 +3,9 @@ import './FormBuscaBase.css';
 
 const estadoInicialAmbiente = {
     coletado: {
-        triatomineo: 0,
-        ovo: 0,
-        vestigiosMuda: 0,
+        escorpiao: 0,
+        exuvia: 0,
+        filhote: 0,
         outrosNome: '',
         outrosQtd: 0
     },
@@ -43,7 +43,7 @@ const estadoInicial = {
     observacoes: ''
 };
 
-export default function FormBuscaTriatomineos({ onSubmitLaudo, onCancelar }) {
+export default function FormBuscaEscorpioes({ onSubmitLaudo, onCancelar }) {
     const [formData, setFormData] = useState(estadoInicial);
 
     const handleChange = (campo, valor) => {
@@ -268,10 +268,10 @@ export default function FormBuscaTriatomineos({ onSubmitLaudo, onCancelar }) {
                 </div>
             </div>
 
-            {/* SEÇÃO 3: REGISTROS DA PESQUISA ENTOMOLÓGICA */}
+            {/* SEÇÃO 3: REGISTROS DA PESQUISA ZOOSANITÁRIA */}
             <div className="po-card-secao mb-4 border rounded p-3 bg-white shadow-sm">
                 <div className="po-subtitulo-form border-bottom pb-2 mb-3 text-primary font-weight-bold">
-                    <i className="fas fa-bug mr-2"></i> 3. Registros da Pesquisa Entomológica (Busca Ativa)
+                    <i className="fas fa-bug mr-2"></i> 3. Registros da Pesquisa Zoosanitária (Busca Ativa)
                 </div>
 
                 <div className="triato-secoes-empilhadas">
@@ -321,7 +321,7 @@ export default function FormBuscaTriatomineos({ onSubmitLaudo, onCancelar }) {
                     </button>
                 )}
                 <button type="submit" className="btn-confirmar-boletim">
-                    <i className="fas fa-save mr-1"></i> Salvar Busca Ativa de Triatomíneos
+                    <i className="fas fa-save mr-1"></i> Salvar Busca Ativa de Escorpiões
                 </button>
             </div>
         </form>
@@ -347,38 +347,38 @@ function TabelaAmbiente({ titulo, icone, corTag, dados, onChange }) {
                         </thead>
                         <tbody>
                             <tr>
-                                <td className="label-col">Triatomíneo</td>
+                                <td className="label-col">Escorpião</td>
                                 <td className="input-col">
                                     <input
                                         type="number"
                                         min="0"
                                         className="triato-input-qtd"
-                                        value={dados.coletado.triatomineo}
-                                        onChange={(e) => onChange('coletado', 'triatomineo', parseInt(e.target.value) || 0)}
+                                        value={dados.coletado.escorpiao}
+                                        onChange={(e) => onChange('coletado', 'escorpiao', parseInt(e.target.value) || 0)}
                                     />
                                 </td>
                             </tr>
                             <tr>
-                                <td className="label-col">Ovo</td>
+                                <td className="label-col">Exúvia</td>
                                 <td className="input-col">
                                     <input
                                         type="number"
                                         min="0"
                                         className="triato-input-qtd"
-                                        value={dados.coletado.ovo}
-                                        onChange={(e) => onChange('coletado', 'ovo', parseInt(e.target.value) || 0)}
+                                        value={dados.coletado.exuvia}
+                                        onChange={(e) => onChange('coletado', 'exuvia', parseInt(e.target.value) || 0)}
                                     />
                                 </td>
                             </tr>
                             <tr>
-                                <td className="label-col">Vestígios / Muda</td>
+                                <td className="label-col">Filhote</td>
                                 <td className="input-col">
                                     <input
                                         type="number"
                                         min="0"
                                         className="triato-input-qtd"
-                                        value={dados.coletado.vestigiosMuda}
-                                        onChange={(e) => onChange('coletado', 'vestigiosMuda', parseInt(e.target.value) || 0)}
+                                        value={dados.coletado.filhote}
+                                        onChange={(e) => onChange('coletado', 'filhote', parseInt(e.target.value) || 0)}
                                     />
                                 </td>
                             </tr>

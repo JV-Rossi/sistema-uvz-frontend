@@ -1,34 +1,30 @@
 import React, { useState } from 'react';
 import './FormAnaliseBase.css'; 
 
-export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCancelar }) {
+export default function FormAnaliseEscorpioes({ amostra, onSubmitLaudo, onCancelar }) {
     const [tecnicoAnalista, setTecnicoAnalista] = useState('');
     const [dataAnalise, setDataAnalise] = useState(new Date().toISOString().split('T')[0]);
     const [observacoes, setObservacoes] = useState('');
 
-    // Lista dinâmica de exemplares analisados na bancada
     const [exemplares, setExemplares] = useState([
         {
             id: Date.now(),
-            especie: 'Triatoma sordida',
+            especie: 'Tityus serrulatus',
             especieOutra: '',
             localCaptura: 'Intradomicílio',
-            estagio: 'Adulto Macho',
-            resultado: 'Negativo'
+            estagio: 'Adulto'
         }
     ]);
 
-    // Handlers para manipular linhas de exemplares
     const handleAdicionarExemplar = () => {
         setExemplares(prev => [
             ...prev,
             {
                 id: Date.now() + Math.random(),
-                especie: 'Triatoma sordida',
+                especie: 'Tityus serrulatus',
                 especieOutra: '',
                 localCaptura: 'Intradomicílio',
-                estagio: 'Adulto Macho',
-                resultado: 'Negativo'
+                estagio: 'Adulto'
             }
         ]);
     };
@@ -58,12 +54,6 @@ export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCanc
             return;
         }
 
-        // Resumo estatístico
-        const totalExemplares = exemplares.length;
-        const totalPositivos = exemplares.filter(e => e.resultado === 'Positivo').length;
-        const totalNegativos = exemplares.filter(e => e.resultado === 'Negativo').length;
-        const totalNaoExaminados = exemplares.filter(e => e.resultado === 'Não examinado').length;
-
         const laudoCompleto = {
             amostraId: amostra?.id,
             codigoTubo: amostra?.codigoTubo,
@@ -71,11 +61,8 @@ export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCanc
             dataAnalise,
             exemplares,
             resumo: {
-                totalExemplares,
-                totalPositivos,
-                totalNegativos,
-                totalNaoExaminados,
-                resultadoGeral: totalPositivos > 0 ? 'POSITIVO' : 'NEGATIVO'
+                totalExemplares: exemplares.length,
+                resultadoGeral: 'IDENTIFICADO'
             },
             observacoes
         };
@@ -137,7 +124,7 @@ export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCanc
             <div className="po-card-secao mb-4 border rounded p-3 bg-white shadow-sm">
                 <div className="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3 flex-wrap gap-2">
                     <span className="po-subtitulo-form text-primary font-weight-bold m-0">
-                        <i className="fas fa-bug mr-2"></i> 2. Exame Microscópico e Taxonomia por Exemplar
+                        <i className="fas fa-bug mr-2"></i> 2. Identificação Taxonômica por Exemplar
                     </span>
                     <button
                         type="button"
@@ -153,16 +140,16 @@ export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCanc
                         <thead>
                             <tr>
                                 <th style={{ width: '5%' }}>#</th>
-                                <th style={{ width: '28%' }}>Espécie de Triatomíneo</th>
-                                <th style={{ width: '20%' }}>Captura (Local)</th>
-                                <th style={{ width: '22%' }}>Estágio / Sexo</th>
-                                <th style={{ width: '20%' }}>Resultado (T. cruzi)</th>
+                                <th style={{ width: '45%' }}>Espécie de Escorpião</th>
+                                <th style={{ width: '22%' }}>Captura (Local)</th>
+                                <th style={{ width: '23%' }}>Estágio / Fase</th>
                                 <th style={{ width: '5%' }}>Ação</th>
                             </tr>
                         </thead>
                         <tbody>
                             {exemplares.map((ex, index) => (
-                                <tr key={ex.id} className={`linha-resultado-${ex.resultado.toLowerCase().replace(' ', '-')}`}>
+                                /* 🟢 Injeção da classe para dar o fundo verde suave na tabela */
+                                <tr key={ex.id} className="linha-resultado-negativo">
                                     <td className="text-center font-weight-bold">{index + 1}</td>
 
                                     {/* ESPÉCIE */}
@@ -172,11 +159,10 @@ export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCanc
                                             value={ex.especie}
                                             onChange={(e) => handleExemplarChange(ex.id, 'especie', e.target.value)}
                                         >
-                                            <option value="Triatoma sordida">Triatoma sordida</option>
-                                            <option value="Rhodnius neglectus">Rhodnius neglectus</option>
-                                            <option value="Panstrongylus megistus">Panstrongylus megistus</option>
-                                            <option value="Triatoma infestans">Triatoma infestans</option>
-                                            <option value="Rhodnius prolixus">Rhodnius prolixus</option>
+                                            <option value="Tityus serrulatus">Tityus serrulatus (Escorpião-amarelo)</option>
+                                            <option value="Tityus bahiensis">Tityus bahiensis (Escorpião-marrom)</option>
+                                            <option value="Tityus stigmurus">Tityus stigmurus (Amarelo do Nordeste)</option>
+                                            <option value="Ananteris sp.">Ananteris sp.</option>
                                             <option value="Outra">Outra / Não Identificada</option>
                                         </select>
                                         {ex.especie === 'Outra' && (
@@ -209,22 +195,9 @@ export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCanc
                                             value={ex.estagio}
                                             onChange={(e) => handleExemplarChange(ex.id, 'estagio', e.target.value)}
                                         >
-                                            <option value="Ninfa">Ninfa</option>
-                                            <option value="Adulto Macho">Adulto Macho</option>
-                                            <option value="Adulto Fêmea">Adulto Fêmea</option>
-                                        </select>
-                                    </td>
-
-                                    {/* RESULTADO */}
-                                    <td>
-                                        <select
-                                            className={`triato-select-grid select-res-${ex.resultado.toLowerCase().replace(' ', '-')}`}
-                                            value={ex.resultado}
-                                            onChange={(e) => handleExemplarChange(ex.id, 'resultado', e.target.value)}
-                                        >
-                                            <option value="Positivo">Positivo (+)</option>
-                                            <option value="Negativo">Negativo (-)</option>
-                                            <option value="Não examinado">Não examinado</option>
+                                            <option value="Adulto">Adulto</option>
+                                            <option value="Jovem / Filhote">Jovem / Filhote</option>
+                                            <option value="Exúvia">Exúvia (Muda)</option>
                                         </select>
                                     </td>
 
@@ -251,18 +224,6 @@ export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCanc
                         <small className="text-muted d-block text-uppercase font-weight-bold">Total Exemplares</small>
                         <span className="h6 font-weight-bold">{exemplares.length}</span>
                     </div>
-                    <div>
-                        <small className="text-success d-block text-uppercase font-weight-bold">Negativos</small>
-                        <span className="h6 text-success font-weight-bold">{exemplares.filter(e => e.resultado === 'Negativo').length}</span>
-                    </div>
-                    <div>
-                        <small className="text-danger d-block text-uppercase font-weight-bold">Positivos</small>
-                        <span className="h6 text-danger font-weight-bold">{exemplares.filter(e => e.resultado === 'Positivo').length}</span>
-                    </div>
-                    <div>
-                        <small className="text-warning d-block text-uppercase font-weight-bold">Não Examinados</small>
-                        <span className="h6 text-warning font-weight-bold">{exemplares.filter(e => e.resultado === 'Não examinado').length}</span>
-                    </div>
                 </div>
             </div>
 
@@ -274,7 +235,7 @@ export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCanc
                 <textarea
                     rows="3"
                     className="br-input triato-textarea-obs"
-                    placeholder="Detalhes adicionais sobre vitalidade, estado de conservação ou observações fasmídicas/microscópicas..."
+                    placeholder="Detalhes adicionais sobre vitalidade, estado de conservação ou observações microscópicas..."
                     value={observacoes}
                     onChange={(e) => setObservacoes(e.target.value)}
                 ></textarea>
@@ -283,7 +244,7 @@ export default function FormAnaliseTriatomineos({ amostra, onSubmitLaudo, onCanc
             {/* RODAPÉ E AÇÕES */}
             <div className="po-modal-footer d-flex justify-content-end gap-2 mt-3 pt-3 border-top">
                 {onCancelar && (
-                    <button type="button" className="btn-cancelar mr-2" onClick={onCancelar}>
+                    <button type="button" className="btn-cancelar" onClick={onCancelar}>
                         Cancelar
                     </button>
                 )}
