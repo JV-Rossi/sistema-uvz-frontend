@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-// 🟢 IMPORTS ATUALIZADOS CONFORME A NOVA ESTRUTURA DE PASTAS
+// 🟢 IMPORTS CORRIGIDOS (Apenas uma declaração para FormBloqueio)
 import '../../../shared/components/Formularios.css';
 import FormLeishmaniose from './formularios-os/FormLeishmaniose';
-import FormBloqueio from './formularios-os/FormExecucaoBloqueio';
+import FormBloqueio from './formularios-os/FormBloqueio';
+
+// 🌐 Configuração adaptativa da URL da API (Local vs Produção no Render)
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8080'
+    : 'https://sistema-uvz-backend.onrender.com';
 
 export default function OrdemServico({ setTelaAtual }) {
     const [dataSolicitacao, setDataSolicitacao] = useState('');
@@ -26,12 +31,18 @@ export default function OrdemServico({ setTelaAtual }) {
     const [servicoSolicitado, setServicoSolicitado] = useState('');
     const [descricao, setDescricao] = useState('');
 
+    // Estado para Leishmaniose
     const [ambienteLeish, setAmbienteLeish] = useState({
         outrosAnimais: '', qtdCaes: '', qtdGatos: '', pessoasCasa: '', possuiMuro: '',
         arvoreFrutifera: false, galinheiro: false, matoAlto: false, coletaLixo: false,
         esgotoTratado: false, localCaes: '', teveLeishmaniose: '', qtdLeishmaniose: ''
     });
     const [animaisLeish, setAnimaisLeish] = useState([]);
+
+    // Estado do Bloqueio de Foco (Arboviroses)
+    const [dadosBloqueio, setDadosBloqueio] = useState({
+        referencia: '', paciente: '', suspeita: '', dataSintomas: ''
+    });
 
     const [loading, setLoading] = useState(false);
     const [sucesso, setSucesso] = useState('');
@@ -63,7 +74,9 @@ export default function OrdemServico({ setTelaAtual }) {
         ]
     };
 
-    useEffect(() => { setServicoSolicitado(''); }, [setorDestino]);
+    useEffect(() => { 
+        setServicoSolicitado(''); 
+    }, [setorDestino]);
 
     useEffect(() => {
         if (servicoSolicitado !== 'teste_leishmaniose') {
@@ -74,19 +87,19 @@ export default function OrdemServico({ setTelaAtual }) {
     }, [servicoSolicitado]);
 
     const adicionarAnimal = () => {
-        setAnimaisLeish([...animaisLeish, {
+        setAnimaisLeish(prev => [...prev, {
             id: Date.now(), nome: '', especie: '', raca: '', sexo: '', idade: '', porte: '', corPelo: '',
             domiciliado: '', origem: '', quandoAdoeceu: '', saiSolto: '', vacinadoRaiva: '', localVacina: '', ultimaVacina: '',
             sintomas: [], feridas: [], outrosSintomas: ''
         }]);
     };
 
-    const removerAnimal = (id) => setAnimaisLeish(animaisLeish.filter(animal => animal.id !== id));
+    const removerAnimal = (id) => setAnimaisLeish(prev => prev.filter(animal => animal.id !== id));
 
-    const handleAnimalChange = (id, campo, valor) => setAnimaisLeish(animaisLeish.map(a => a.id === id ? { ...a, [campo]: valor } : a));
+    const handleAnimalChange = (id, campo, valor) => setAnimaisLeish(prev => prev.map(a => a.id === id ? { ...a, [campo]: valor } : a));
 
     const handleCheckboxArray = (id, tipoArray, item, isChecked) => {
-        setAnimaisLeish(animaisLeish.map(a => {
+        setAnimaisLeish(prev => prev.map(a => {
             if (a.id !== id) return a;
             return { ...a, [tipoArray]: isChecked ? [...a[tipoArray], item] : a[tipoArray].filter(i => i !== item) };
         }));
@@ -95,32 +108,36 @@ export default function OrdemServico({ setTelaAtual }) {
     const limparFormulario = () => {
         const hoje = new Date().toISOString().split('T')[0];
         setDataSolicitacao(hoje);
-        setOrigem(''); setNomeMunicipe(''); setTelefone('');
-        setDistrito(''); setBairro(''); setEndereco('');
-        setQuarteirao(''); setZona(''); setDesmembramento('');
-        setSetorDestino(''); setServicoSolicitado(''); setDescricao('');
+        setOrigem(''); 
+        setNomeMunicipe(''); 
+        setTelefone('');
+        setDistrito(''); 
+        setBairro(''); 
+        setEndereco('');
+        setQuarteirao(''); 
+        setZona(''); 
+        setDesmembramento('');
+        setSetorDestino(''); 
+        setServicoSolicitado(''); 
+        setDescricao('');
+        setTipoImovel('');
+        setReferencia('');
         setAmbienteLeish({
             outrosAnimais: '', qtdCaes: '', qtdGatos: '', pessoasCasa: '', possuiMuro: '',
             arvoreFrutifera: false, galinheiro: false, matoAlto: false, coletaLixo: false,
             esgotoTratado: false, localCaes: '', teveLeishmaniose: '', qtdLeishmaniose: ''
         });
-        setAnimaisLeish([]); setErro('');
+        setAnimaisLeish([]); 
         setDadosBloqueio({ referencia: '', paciente: '', suspeita: '', dataSintomas: '' });
-
-        setTipoImovel('');
-        setReferencia('');
+        setErro('');
     };
 
-
-    // Estado do Bloqueio (Passado para o FormBloqueio)
-    const [dadosBloqueio, setDadosBloqueio] = useState({
-        referencia: '', paciente: '', suspeita: '', dataSintomas: ''
-    });
-
-    //integrar com o backend Spring Boot
+    // 🚀 Integração com o Backend Spring Boot
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErro(''); setSucesso(''); setLoading(true);
+        setErro(''); 
+        setSucesso(''); 
+        setLoading(true);
 
         if (!dataSolicitacao || !origem || !nomeMunicipe || !distrito || !bairro || !setorDestino || !servicoSolicitado) {
             setErro("Por favor, preencha todos os campos obrigatórios (*).");
@@ -149,7 +166,7 @@ export default function OrdemServico({ setTelaAtual }) {
         };
 
         try {
-            const response = await fetch('http://localhost:8080/api/ordens-servico', {
+            const response = await fetch(`${API_BASE_URL}/api/ordens-servico`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -180,7 +197,8 @@ export default function OrdemServico({ setTelaAtual }) {
 
                 <form onSubmit={handleSubmit} className="os-main-card">
 
-                    <h3 className="text-weight-semi-bold os-section-title">1. Dados do Solicitante</h3>
+                    {/* SEÇÃO 1: DADOS DO SOLICITANTE */}
+                    <h3 className="text-weight-semi-bold os-section-title">1. Dados do Solicitante e Localização</h3>
                     <div className="os-grid">
                         <div className="br-input">
                             <label>Data da Solicitação <span className="text-danger">*</span></label>
@@ -240,12 +258,13 @@ export default function OrdemServico({ setTelaAtual }) {
                         </div>
 
                         <div className="br-input os-grid-full">
-                            <label>Endereço Completo (Rua, Número, Referência)</label>
+                            <label>Endereço Completo (Rua, Número, Bairro)</label>
                             <input type="text" placeholder="Endereço da ocorrência" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
                         </div>
                     </div>
 
-                    <h3 className="text-weight-semi-bold os-section-title">2. Direcionamento e Serviço</h3>
+                    {/* SEÇÃO 2: DIRECIONAMENTO E SERVIÇO */}
+                    <h3 className="text-weight-semi-bold os-section-title mt-4">2. Direcionamento e Serviço</h3>
                     <div className="os-grid">
                         <div className="br-input">
                             <label>Setor de Destino da O.S. <span className="text-danger">*</span></label>
@@ -256,6 +275,7 @@ export default function OrdemServico({ setTelaAtual }) {
                                 <option value="sinantropicos">Sinantrópicos e Peçonhentos</option>
                             </select>
                         </div>
+
                         <div className="br-input">
                             <label>Tipo de Ação <span className="text-danger">*</span></label>
                             <select className="br-select" value={servicoSolicitado} onChange={(e) => setServicoSolicitado(e.target.value)} disabled={!setorDestino}>
@@ -264,6 +284,18 @@ export default function OrdemServico({ setTelaAtual }) {
                                     <option key={servico.id} value={servico.id}>{servico.label}</option>
                                 ))}
                             </select>
+                        </div>
+
+                        {/* 🟢 CAMPO DE DESCRIÇÃO ADICIONADO NO JSX */}
+                        <div className="br-input os-grid-full">
+                            <label>Descrição / Detalhes da Solicitação</label>
+                            <textarea
+                                rows="3"
+                                className="br-textarea"
+                                placeholder="Relate o motivo do chamado, relatos do morador ou detalhes adicionais da ocorrência..."
+                                value={descricao}
+                                onChange={(e) => setDescricao(e.target.value)}
+                            ></textarea>
                         </div>
                     </div>
 
@@ -321,6 +353,7 @@ export default function OrdemServico({ setTelaAtual }) {
                         </div>
                     )}
 
+                    {/* BOTÕES DE AÇÃO */}
                     <div className="mt-5 pt-4 border-top d-flex gap-3">
                         <button type="submit" className="br-button primary" disabled={loading}>
                             {loading ? <><i className="fas fa-spinner fa-spin mr-2"></i> Gerando Protocolo...</> : <><i className="fas fa-save mr-2"></i> Registrar O.S.</>}

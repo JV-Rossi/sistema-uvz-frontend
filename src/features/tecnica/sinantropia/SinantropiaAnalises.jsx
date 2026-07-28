@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import PainelOperacionalBase from '../../../shared/components/PainelOperacionalBase';
 import FormAnaliseTriatomineos from '../administrativo/formularios-os/FormAnaliseTriatomineos';
 import FormAnaliseEscorpioes from '../administrativo/formularios-os/FormAnaliseEscorpioes'; // 🟢 Novo formulário importado
+import FormAnaliseLarva from '../administrativo/formularios-os/FormAnaliseLarva';
 
 export default function SinantropiaAnalises() {
     const [amostras, setAmostras] = useState([]);
@@ -138,6 +139,20 @@ export default function SinantropiaAnalises() {
                 if (item.tipoAmostra === 'Escorpião') {
                     return (
                         <FormAnaliseEscorpioes
+                            amostra={item}
+                            onSubmitLaudo={(dadosLaudo) => {
+                                handleSalvarAnalise(item.id, dadosLaudo);
+                                fecharModal();
+                            }}
+                            onCancelar={fecharModal}
+                        />
+                    );
+                }
+
+                // 3. LAUDO DE LARVAS 
+                if (item.tipoAmostra === 'Larvas' || item.tipoAmostra === 'Larva') {
+                    return (
+                        <FormAnaliseLarva
                             amostra={item}
                             onSubmitLaudo={(dadosLaudo) => {
                                 handleSalvarAnalise(item.id, dadosLaudo);
