@@ -23,6 +23,7 @@ const estadoInicial = {
     nomeMunicipio: 'CUIABÁ',
     nomeLocalidade: '',
     dataAtividade: new Date().toISOString().split('T')[0],
+    equipeResponsavel: '', // 🟢 NOVO CAMPO: Equipe de Busca Ativa
     atividade: 'Realizada',
     denuncia: 'Sim',
     quarteirao: '',
@@ -131,6 +132,18 @@ export default function FormBuscaTriatomineos({ onSubmitLaudo, onCancelar }) {
                     </div>
                 </div>
 
+                {/* 🟢 LINHA ADICIONADA: AGENTES / EQUIPE RESPONSÁVEL */}
+                <div className="po-form-group mt-2">
+                    <label>Agente(s) / Equipe Responsável pela Busca Ativa <span className="obrigatorio">*</span></label>
+                    <input
+                        type="text"
+                        placeholder="Ex: JOAO VITOR ROSSI, CAMILA BENEDITA"
+                        value={formData.equipeResponsavel}
+                        onChange={(e) => handleChange('equipeResponsavel', e.target.value)}
+                        required
+                    />
+                </div>
+
                 <div className="po-form-linha-tripla mt-2">
                     <div className="po-form-group">
                         <label>Situação da Visita <span className="obrigatorio">*</span></label>
@@ -184,13 +197,12 @@ export default function FormBuscaTriatomineos({ onSubmitLaudo, onCancelar }) {
                     </div>
 
                     <div className="po-form-group">
-                        <label>Nome do Morador Responsável <span className="obrigatorio">*</span></label>
+                        <label>Nome do Morador Responsável</label>
                         <input
                             type="text"
                             placeholder="Nome completo do morador"
                             value={formData.nomeMorador}
                             onChange={(e) => handleChange('nomeMorador', e.target.value)}
-                            required
                         />
                     </div>
                 </div>

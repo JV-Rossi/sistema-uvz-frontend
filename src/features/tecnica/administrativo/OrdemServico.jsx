@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// 🟢 IMPORTS CORRIGIDOS (Apenas uma declaração para FormBloqueio)
+// 🟢 IMPORTS E ESTILOS
 import '../../../shared/components/Formularios.css';
 import FormLeishmaniose from './formularios-os/FormLeishmaniose';
 import FormBloqueio from './formularios-os/FormBloqueio';
@@ -16,9 +16,6 @@ export default function OrdemServico({ setTelaAtual }) {
     const [nomeMunicipe, setNomeMunicipe] = useState('');
     const [telefone, setTelefone] = useState('');
 
-    const [tipoImovel, setTipoImovel] = useState('');
-    const [referencia, setReferencia] = useState('');
-
     // CAMPOS CARTOGRÁFICOS
     const [distrito, setDistrito] = useState('');
     const [bairro, setBairro] = useState('');
@@ -30,6 +27,13 @@ export default function OrdemServico({ setTelaAtual }) {
     const [setorDestino, setSetorDestino] = useState('');
     const [servicoSolicitado, setServicoSolicitado] = useState('');
     const [descricao, setDescricao] = useState('');
+
+    // 🟢 ESTADOS ESPECÍFICOS DE SINANTROPIA
+    const [tipoImovel, setTipoImovel] = useState('');
+    const [referencia, setReferencia] = useState('');
+    const [houveAgravo, setHouveAgravo] = useState('Não');
+    const [idadeVitima, setIdadeVitima] = useState('');
+    const [codigoSinan, setCodigoSinan] = useState('');
 
     // Estado para Leishmaniose
     const [ambienteLeish, setAmbienteLeish] = useState({
@@ -53,6 +57,7 @@ export default function OrdemServico({ setTelaAtual }) {
         setDataSolicitacao(hoje);
     }, []);
 
+    // 🟢 SERVIÇOS POR SETOR
     const servicosPorSetor = {
         arboviroses: [
             { id: 'bloqueio_foco', label: 'Solicitação de Bloqueio de Foco' },
@@ -60,11 +65,11 @@ export default function OrdemServico({ setTelaAtual }) {
             { id: 'bloqueio_quimico', label: 'Solicitação de Fumacê (UBV)' }
         ],
         sinantropicos: [
-            { id: 'visita_pombo', label: 'Visita Zoosanitária - Pombos' },
-            { id: 'visita_escorpiao', label: 'Visita Zoosanitária - Escorpiões' },
-            { id: 'visita_caramujo', label: 'Visita Zoosanitária - Caramujos' },
-            { id: 'visita_barbeiro', label: 'Visita Zoosanitária - Barbeiros' },
-            { id: 'visita_outros_sinantropicos', label: 'Visita Zoosanitária - Outros' }
+            { id: 'identificacao_especie', label: 'Identificação de espécie' },
+            { id: 'vistoria_escorpiao', label: 'Vistoria Escorpião' },
+            { id: 'vistoria_barbeiro', label: 'Vistoria Barbeiro' },
+            { id: 'vistoria_morcego', label: 'Vistoria Morcego' },
+            { id: 'vistoria_outros', label: 'Vistoria Outros' }
         ],
         animais_domesticos: [
             { id: 'teste_leishmaniose', label: 'Solicitação de Teste Rápido para Leishmaniose' },
@@ -76,6 +81,11 @@ export default function OrdemServico({ setTelaAtual }) {
 
     useEffect(() => { 
         setServicoSolicitado(''); 
+        setTipoImovel('');
+        setReferencia('');
+        setHouveAgravo('Não');
+        setIdadeVitima('');
+        setCodigoSinan('');
     }, [setorDestino]);
 
     useEffect(() => {
@@ -120,8 +130,14 @@ export default function OrdemServico({ setTelaAtual }) {
         setSetorDestino(''); 
         setServicoSolicitado(''); 
         setDescricao('');
+        
+        // Limpa Sinantropia
         setTipoImovel('');
         setReferencia('');
+        setHouveAgravo('Não');
+        setIdadeVitima('');
+        setCodigoSinan('');
+
         setAmbienteLeish({
             outrosAnimais: '', qtdCaes: '', qtdGatos: '', pessoasCasa: '', possuiMuro: '',
             arvoreFrutifera: false, galinheiro: false, matoAlto: false, coletaLixo: false,
@@ -132,7 +148,7 @@ export default function OrdemServico({ setTelaAtual }) {
         setErro('');
     };
 
-    // 🚀 Integração com o Backend Spring Boot
+    // 🚀 Submit para API
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErro(''); 
@@ -145,13 +161,25 @@ export default function OrdemServico({ setTelaAtual }) {
             return;
         }
 
+        // Validações específicas de Sinantropia
+        if (setorDestino === 'sinantropicos') {
+            if (!tipoImovel) {
+                setErro("Selecione o Tipo do Imóvel para a solicitação de Sinantropia.");
+                setLoading(false);
+                return;
+            }
+            if (servicoSolicitado === 'identificacao_especie' && !codigoSinan.trim()) {
+                setErro("O Número do SINAN é obrigatório para Identificação de Espécie.");
+                setLoading(false);
+                return;
+            }
+        }
+
         const payload = {
             dataSolicitacao,
             origem,
             municipe: nomeMunicipe,
             telefone,
-            tipoImovel,
-            referencia,
             distrito,
             bairro,
             quarteirao: quarteirao ? parseInt(quarteirao) : null,
@@ -160,8 +188,15 @@ export default function OrdemServico({ setTelaAtual }) {
             endereco,
             setorDestino,
             servicoSolicitado,
-            descricao,
-            // 🟢 Anexa o objeto de bloqueio apenas se for a ação correspondente
+            descricao, // 🟢 Enviado no payload final
+            
+            // Dados de Sinantropia
+            tipoImovel: setorDestino === 'sinantropicos' ? tipoImovel : null,
+            referencia: setorDestino === 'sinantropicos' ? referencia : null,
+            houveAgravo: setorDestino === 'sinantropicos' ? houveAgravo : null,
+            idadeVitima: (setorDestino === 'sinantropicos' && houveAgravo === 'Sim') ? idadeVitima : null,
+            codigoSinan: (setorDestino === 'sinantropicos' && servicoSolicitado === 'identificacao_especie') ? codigoSinan : null,
+
             solicitacaoBloqueio: servicoSolicitado === 'bloqueio_foco' ? dadosBloqueio : null
         };
 
@@ -189,7 +224,7 @@ export default function OrdemServico({ setTelaAtual }) {
             <main className="os-content">
                 <header className="os-header">
                     <h1 className="text-weight-semi-bold os-title"><i className="fas fa-headset mr-2"></i> Abertura de Ordem de Serviço (O.S.)</h1>
-                    <p className="os-subtitle">Registre e encaminhe as demandas da população para os setores competentes da UVZ.</p>
+                    <p className="os-subtitle">Registre e encaminhe as demandas da população e entidades para os setores competentes da UVZ.</p>
                 </header>
 
                 {sucesso && <div className="br-message is-success mb-4"><div className="icon"><i className="fas fa-check-circle fa-lg"></i></div><div className="content"><span className="message-body">{sucesso}</span></div></div>}
@@ -208,15 +243,16 @@ export default function OrdemServico({ setTelaAtual }) {
                             <label>Canal de Atendimento <span className="text-danger">*</span></label>
                             <select className="br-select" value={origem} onChange={(e) => setOrigem(e.target.value)}>
                                 <option value="">Selecione...</option>
-                                <option value="presencial">Recepção</option>
+                                <option value="presencial">Recepção / Entrega Presencial</option>
                                 <option value="telefone">Telefone</option>
                                 <option value="whatsapp">WhatsApp</option>
+                                <option value="oficio">Ofício / Protocolo Institucional</option>
                             </select>
                         </div>
 
                         <div className="br-input os-grid-full">
-                            <label>Nome do Munícipe / Solicitante <span className="text-danger">*</span></label>
-                            <input type="text" placeholder="Nome completo" value={nomeMunicipe} onChange={(e) => setNomeMunicipe(e.target.value)} />
+                            <label>Solicitante (Nome do Munícipe / Entidade) <span className="text-danger">*</span></label>
+                            <input type="text" placeholder="Nome completo do morador ou instituição" value={nomeMunicipe} onChange={(e) => setNomeMunicipe(e.target.value)} />
                         </div>
 
                         <div className="br-input">
@@ -241,10 +277,9 @@ export default function OrdemServico({ setTelaAtual }) {
                             <input type="text" placeholder="Nome do Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} />
                         </div>
 
-                        {/* CAMPOS DE LOCALIDADE */}
                         <div className="br-input">
                             <label>Quarteirão</label>
-                            <input type="number" placeholder="Nº (Opcional na Recepção)" value={quarteirao} onChange={(e) => setQuarteirao(e.target.value)} />
+                            <input type="number" placeholder="Nº (Opcional)" value={quarteirao} onChange={(e) => setQuarteirao(e.target.value)} />
                         </div>
 
                         <div className="br-input">
@@ -258,7 +293,7 @@ export default function OrdemServico({ setTelaAtual }) {
                         </div>
 
                         <div className="br-input os-grid-full">
-                            <label>Endereço Completo (Rua, Número, Bairro)</label>
+                            <label>Endereço Completo (Rua e Número)</label>
                             <input type="text" placeholder="Endereço da ocorrência" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
                         </div>
                     </div>
@@ -270,8 +305,8 @@ export default function OrdemServico({ setTelaAtual }) {
                             <label>Setor de Destino da O.S. <span className="text-danger">*</span></label>
                             <select className="br-select" value={setorDestino} onChange={(e) => setSetorDestino(e.target.value)}>
                                 <option value="">Selecione a área técnica...</option>
-                                <option value="arboviroses">Arboviroses (Dengue, Zika, Chikungunya)</option>
-                                <option value="animais_domesticos">Animais Domésticos (Cães e Gatos)</option>
+                                <option value="arboviroses">Arboviroses</option>
+                                <option value="animais_domesticos">Animais Domésticos</option>
                                 <option value="sinantropicos">Sinantrópicos e Peçonhentos</option>
                             </select>
                         </div>
@@ -285,19 +320,81 @@ export default function OrdemServico({ setTelaAtual }) {
                                 ))}
                             </select>
                         </div>
-
-                        {/* 🟢 CAMPO DE DESCRIÇÃO ADICIONADO NO JSX */}
-                        <div className="br-input os-grid-full">
-                            <label>Descrição / Detalhes da Solicitação</label>
-                            <textarea
-                                rows="3"
-                                className="br-textarea"
-                                placeholder="Relate o motivo do chamado, relatos do morador ou detalhes adicionais da ocorrência..."
-                                value={descricao}
-                                onChange={(e) => setDescricao(e.target.value)}
-                            ></textarea>
-                        </div>
                     </div>
+
+                    {/* 🟢 INJEÇÃO UNIFICADA: SUBFORMULÁRIO DE SINANTROPIA */}
+                    {setorDestino === 'sinantropicos' && (
+                        <div className="os-subform-card mt-4 border-top pt-3">
+                            <h3 className="text-weight-semi-bold os-section-title text-primary">
+                                <i className="fas fa-bug mr-2"></i> Detalhes da Solicitação de Sinantropia
+                            </h3>
+                            <div className="os-grid">
+                                <div className="br-input">
+                                    <label>Tipo do Imóvel <span className="text-danger">*</span></label>
+                                    <select
+                                        className="br-select"
+                                        value={tipoImovel}
+                                        onChange={(e) => setTipoImovel(e.target.value)}
+                                    >
+                                        <option value="">Selecione...</option>
+                                        <option value="Residencial">Residencial</option>
+                                        <option value="Apartamento">Apartamento</option>
+                                        <option value="Comercial">Comercial</option>
+                                        <option value="Órgão público">Órgão público</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+
+                                <div className="br-input">
+                                    <label>Ponto de Referência</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ex: Próximo ao mercado X, em frente à igreja..."
+                                        value={referencia}
+                                        onChange={(e) => setReferencia(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="br-input">
+                                    <label>Houve Agravo / Acidente? <span className="text-danger">*</span></label>
+                                    <select
+                                        className="br-select"
+                                        value={houveAgravo}
+                                        onChange={(e) => setHouveAgravo(e.target.value)}
+                                    >
+                                        <option value="Não">Não (Sem picada/contato)</option>
+                                        <option value="Sim">Sim (Picada/Acidente com humano)</option>
+                                    </select>
+                                </div>
+
+                                {houveAgravo === 'Sim' && (
+                                    <div className="br-input">
+                                        <label>Idade da Vítima <span className="text-danger">*</span></label>
+                                        <input
+                                            type="number"
+                                            placeholder="Idade em anos"
+                                            value={idadeVitima}
+                                            onChange={(e) => setIdadeVitima(e.target.value)}
+                                            min="0"
+                                        />
+                                    </div>
+                                )}
+
+                                {/* CAMPO EXCLUSIVO DE IDENTIFICAÇÃO DE ESPÉCIE */}
+                                {servicoSolicitado === 'identificacao_especie' && (
+                                    <div className="br-input os-grid-full">
+                                        <label>Número do SINAN <span className="text-danger">*</span></label>
+                                        <input
+                                            type="text"
+                                            placeholder="Digite o código da Notificação SINAN"
+                                            value={codigoSinan}
+                                            onChange={(e) => setCodigoSinan(e.target.value)}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
 
                     {/* INJEÇÃO: LEISHMANIOSE */}
                     {servicoSolicitado === 'teste_leishmaniose' && (
@@ -317,41 +414,22 @@ export default function OrdemServico({ setTelaAtual }) {
                         />
                     )}
 
-                    {/* INJEÇÃO: SINANTRÓPICOS */}
-                    {setorDestino === 'sinantropicos' && (
-                        <div className="os-subform-card mt-4 border-top pt-3">
-                            <h3 className="text-weight-semi-bold os-section-title text-primary">
-                                <i className="fas fa-building mr-2"></i> Informações do Local (Sinantropia)
-                            </h3>
-                            <div className="os-grid">
-                                <div className="br-input">
-                                    <label>Tipo do Imóvel <span className="text-danger">*</span></label>
-                                    <select
-                                        className="br-select"
-                                        value={tipoImovel}
-                                        onChange={(e) => setTipoImovel(e.target.value)}
-                                    >
-                                        <option value="">Selecione...</option>
-                                        <option value="Residencial">Residencial</option>
-                                        <option value="Apartamento">Apartamento</option>
-                                        <option value="Órgão público">Órgão público</option>
-                                        <option value="Comercial">Comercial</option>
-                                        <option value="Outro">Outro</option>
-                                    </select>
-                                </div>
-
-                                <div className="br-input">
-                                    <label>Ponto de Referência</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Ex: Próximo ao mercado X, em frente à igreja..."
-                                        value={referencia}
-                                        onChange={(e) => setReferencia(e.target.value)}
-                                    />
-                                </div>
-                            </div>
+                    {/* 🟢 DESCRIÇÃO / DETALHES DA SOLICITAÇÃO (NO FINAL DO FORMULÁRIO) */}
+                    <div className="os-subform-card mt-4 border-top pt-3">
+                        <h3 className="text-weight-semi-bold os-section-title">
+                            <i className="fas fa-align-left mr-2"></i> Observações e Detalhes
+                        </h3>
+                        <div className="br-input os-grid-full">
+                            <label>Descrição / Detalhes da Solicitação</label>
+                            <textarea
+                                rows="3"
+                                className="br-textarea"
+                                placeholder="Relate o motivo do chamado, relatos do morador ou detalhes adicionais da ocorrência..."
+                                value={descricao}
+                                onChange={(e) => setDescricao(e.target.value)}
+                            ></textarea>
                         </div>
-                    )}
+                    </div>
 
                     {/* BOTÕES DE AÇÃO */}
                     <div className="mt-5 pt-4 border-top d-flex gap-3">
