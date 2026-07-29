@@ -103,7 +103,7 @@
     }
 }
 
-/* 6. SUBCARDS E BLOCOS DESTACADOS (EX: LEISHMANIOSE, SINANTROPIA, ANIMAIS) */
+/* 6. SUBCARDS E BLOCOS DESTACADOS */
 .form-subcard,
 .leish-subcard {
     background-color: #f8f9fa;
@@ -138,9 +138,11 @@
     padding: 1.5rem;
 }
 
-/* 7. ESTILIZAÇÃO UNIVERSAL DE INPUTS, SELECTS E TEXTAREAS */
+/* ==========================================================================
+   7. ESTILIZAÇÃO UNIVERSAL DE INPUTS, SELECTS E TEXTAREAS (CORRIGIDO)
+   ========================================================================== */
 
-/* Reset de wrappers externos do GovBR */
+/* Reset absoluto de wrappers do GovBR e bibliotecas auxiliares */
 .form-wrapper .br-input,
 .form-wrapper .br-textarea,
 .os-wrapper .br-input,
@@ -149,31 +151,75 @@
     background: transparent !important;
     box-shadow: none !important;
     padding: 0 !important;
+    margin: 0 !important;
 }
 
-/* Aplicação de borda e padrão nos controles */
+/* Regra Mestra: Geometria idêntica para Inputs e Selects */
 .form-wrapper input:not([type="checkbox"]):not([type="radio"]),
 .form-wrapper select,
 .form-wrapper .br-select,
-.form-wrapper textarea,
 .os-wrapper input:not([type="checkbox"]):not([type="radio"]),
 .os-wrapper select,
-.os-wrapper .br-select,
-.os-wrapper textarea {
+.os-wrapper .br-select {
+    height: 42px !important;
+    line-height: 40px !important; /* Centraliza o texto verticalmente sem cortar */
+    padding: 0 12px !important;   /* Zera padding vertical para não empurrar o texto */
     border: 1px solid #a8b2bb !important;
-    border-radius: 4px !important;
-    padding: 0.6rem 0.75rem !important;
-    background-color: #fff !important;
-    margin-top: 0.4rem !important;
-    width: 100%;
+    border-radius: 6px !important;
+    background-color: #ffffff !important;
+    margin-top: 0.35rem !important;
+    width: 100% !important;
     outline: none !important;
     box-shadow: none !important;
-    transition: all 0.2s ease-in-out;
-    color: #333 !important;
-    font-size: 0.95rem !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: #1e293b !important;
+    font-size: 0.9rem !important;
+    font-family: inherit !important;
     box-sizing: border-box !important;
-    appearance: auto !important;
-    -webkit-appearance: auto !important;
+    vertical-align: middle !important;
+}
+
+/* Padronização exclusiva para SELECTS (Seta vetorial limpa) */
+.form-wrapper select,
+.form-wrapper .br-select,
+.os-wrapper select,
+.os-wrapper .br-select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%3a475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
+    padding-right: 36px !important; /* Garante que o texto longo não atinja a seta */
+    cursor: pointer !important;
+}
+
+/* Ajuste fino para campo do tipo DATE */
+.form-wrapper input[type="date"],
+.os-wrapper input[type="date"] {
+    padding-right: 8px !important;
+}
+
+/* Exceção para TEXTAREA */
+.form-wrapper textarea,
+.form-wrapper .br-textarea,
+.os-wrapper textarea,
+.os-wrapper .br-textarea {
+    height: auto !important;
+    min-height: 90px !important;
+    line-height: 1.4 !important;
+    padding: 10px 12px !important;
+    border: 1px solid #a8b2bb !important;
+    border-radius: 6px !important;
+    background-color: #ffffff !important;
+    margin-top: 0.35rem !important;
+    width: 100% !important;
+    color: #1e293b !important;
+    font-size: 0.9rem !important;
+    font-family: inherit !important;
+    box-sizing: border-box !important;
+    resize: vertical !important;
 }
 
 /* Efeito de Foco (Acessibilidade) */
@@ -187,14 +233,15 @@
 .os-wrapper textarea:focus {
     border-color: #1351B4 !important;
     box-shadow: 0 0 0 3px rgba(19, 81, 180, 0.2) !important;
+    background-color: #ffffff !important;
 }
 
 /* Rótulos (Labels) */
 .form-wrapper label,
 .os-wrapper label {
     font-weight: 600 !important;
-    color: #444 !important;
-    font-size: 0.9rem !important;
+    color: #334155 !important;
+    font-size: 0.88rem !important;
     display: block !important;
 }
 
@@ -236,4 +283,104 @@
 .text-danger {
     color: #e52207 !important;
     font-weight: bold;
+}
+
+/* ==========================================================================
+   ESTILO DA ÁREA DE UPLOAD DE IMAGEM (DROPZONE)
+   ========================================================================== */
+.upload-dropzone {
+    border: 2px dashed #cbd5e1;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    margin-top: 0.35rem;
+}
+
+.upload-dropzone:hover {
+    border-color: #1351B4;
+    background-color: #f0f7ff;
+}
+
+.upload-label {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0 !important;
+    width: 100%;
+}
+
+.upload-icon-wrapper {
+    font-size: 2rem;
+    color: #1351B4;
+    margin-bottom: 2px;
+}
+
+.upload-text {
+    font-size: 0.9rem;
+    color: #334155;
+    font-weight: 400;
+}
+
+.upload-text strong {
+    color: #1351B4;
+    font-weight: 600;
+}
+
+.upload-hint {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+/* CARTÃO DE PRÉ-VISUALIZAÇÃO DA FOTO ANEXADA */
+.upload-preview-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    margin-top: 0.35rem;
+}
+
+.upload-preview-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+}
+
+.upload-preview-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+}
+
+.upload-filename {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.btn-remover-foto {
+    background: transparent;
+    border: none;
+    color: #dc3545;
+    font-size: 0.825rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color 0.2s;
+}
+
+.btn-remover-foto:hover {
+    color: #a71d2a;
+    text-decoration: underline;
 }

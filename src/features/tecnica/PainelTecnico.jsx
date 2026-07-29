@@ -95,10 +95,10 @@ export default function PainelTecnico({ setTelaAtual }) {
                                     <i className="fas fa-egg mr-2" aria-hidden="true"></i> Contagem de Ovos
                                 </button>
                                 <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-busca-ativa' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('sinantropia-busca-ativa')}>
-                                    <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Busca Ativa (Campo)
+                                    <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Procedências
                                 </button>
                                 <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-analises' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('sinantropia-analises')}>
-                                    <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Análises do Laboratório
+                                    <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Análises
                                 </button>
                             </div>
                         )}

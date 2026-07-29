@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import '../../../shared/components/Formularios.css';
 import FormLeishmaniose from './formularios-os/FormLeishmaniose';
 import FormBloqueio from './formularios-os/FormBloqueio';
+import FormInspecaoTerreno from './formularios-os/FormInspecaoTerreno';
 
 // 🌐 Configuração adaptativa da URL da API (Local vs Produção no Render)
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -52,17 +53,27 @@ export default function OrdemServico({ setTelaAtual }) {
     const [sucesso, setSucesso] = useState('');
     const [erro, setErro] = useState('');
 
+    // Formulário para Inspeção em Terrenos Baldios ou Casas de Acumuladores
+    const [dadosTerreno, setDadosTerreno] = useState({
+        tipoOcorrencia: '',
+        origemRegistro: '',
+        referencia: '',
+        fotoBase64: null,
+        nomeArquivo: '',
+        acessoImovel: null,
+        focoEncontrado: null
+    });
+
     useEffect(() => {
         const hoje = new Date().toISOString().split('T')[0];
         setDataSolicitacao(hoje);
     }, []);
 
-    // 🟢 SERVIÇOS POR SETOR
+    // 🟢 SERVIÇOS POR SETOR (EPIZOOTIAS ATUALIZADO)
     const servicosPorSetor = {
         arboviroses: [
             { id: 'bloqueio_foco', label: 'Solicitação de Bloqueio de Foco' },
             { id: 'inspecao_terreno', label: 'Inspeção em Terreno Baldio / Acúmulo de Lixo' },
-            { id: 'bloqueio_quimico', label: 'Solicitação de Fumacê (UBV)' }
         ],
         sinantropicos: [
             { id: 'identificacao_especie', label: 'Identificação de espécie' },
@@ -71,7 +82,7 @@ export default function OrdemServico({ setTelaAtual }) {
             { id: 'vistoria_morcego', label: 'Vistoria Morcego' },
             { id: 'vistoria_outros', label: 'Vistoria Outros' }
         ],
-        animais_domesticos: [
+        epizootias: [ // 🟢 Renomeado de animais_domesticos para epizootias
             { id: 'teste_leishmaniose', label: 'Solicitação de Teste Rápido para Leishmaniose' },
             { id: 'vacinacao_antirrabica', label: 'Vacinação Antirrábica' },
             { id: 'recolhimento_animal', label: 'Animal Solto / Agressivo em Via Pública' },
@@ -79,8 +90,8 @@ export default function OrdemServico({ setTelaAtual }) {
         ]
     };
 
-    useEffect(() => { 
-        setServicoSolicitado(''); 
+    useEffect(() => {
+        setServicoSolicitado('');
         setTipoImovel('');
         setReferencia('');
         setHouveAgravo('Não');
@@ -118,19 +129,19 @@ export default function OrdemServico({ setTelaAtual }) {
     const limparFormulario = () => {
         const hoje = new Date().toISOString().split('T')[0];
         setDataSolicitacao(hoje);
-        setOrigem(''); 
-        setNomeMunicipe(''); 
+        setOrigem('');
+        setNomeMunicipe('');
         setTelefone('');
-        setDistrito(''); 
-        setBairro(''); 
+        setDistrito('');
+        setBairro('');
         setEndereco('');
-        setQuarteirao(''); 
-        setZona(''); 
+        setQuarteirao('');
+        setZona('');
         setDesmembramento('');
-        setSetorDestino(''); 
-        setServicoSolicitado(''); 
+        setSetorDestino('');
+        setServicoSolicitado('');
         setDescricao('');
-        
+
         // Limpa Sinantropia
         setTipoImovel('');
         setReferencia('');
@@ -143,16 +154,25 @@ export default function OrdemServico({ setTelaAtual }) {
             arvoreFrutifera: false, galinheiro: false, matoAlto: false, coletaLixo: false,
             esgotoTratado: false, localCaes: '', teveLeishmaniose: '', qtdLeishmaniose: ''
         });
-        setAnimaisLeish([]); 
+        setAnimaisLeish([]);
         setDadosBloqueio({ referencia: '', paciente: '', suspeita: '', dataSintomas: '' });
+        setDadosTerreno({
+            tipoOcorrencia: '',
+            origemRegistro: '',
+            referencia: '',
+            fotoBase64: null,
+            nomeArquivo: '',
+            acessoImovel: null,
+            focoEncontrado: null
+        });
         setErro('');
     };
 
     // 🚀 Submit para API
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErro(''); 
-        setSucesso(''); 
+        setErro('');
+        setSucesso('');
         setLoading(true);
 
         if (!dataSolicitacao || !origem || !nomeMunicipe || !distrito || !bairro || !setorDestino || !servicoSolicitado) {
@@ -188,8 +208,9 @@ export default function OrdemServico({ setTelaAtual }) {
             endereco,
             setorDestino,
             servicoSolicitado,
-            descricao, // 🟢 Enviado no payload final
-            
+            descricao,
+            solicitacaoTerreno: servicoSolicitado === 'inspecao_terreno' ? dadosTerreno : null,
+
             // Dados de Sinantropia
             tipoImovel: setorDestino === 'sinantropicos' ? tipoImovel : null,
             referencia: setorDestino === 'sinantropicos' ? referencia : null,
@@ -306,7 +327,7 @@ export default function OrdemServico({ setTelaAtual }) {
                             <select className="br-select" value={setorDestino} onChange={(e) => setSetorDestino(e.target.value)}>
                                 <option value="">Selecione a área técnica...</option>
                                 <option value="arboviroses">Arboviroses</option>
-                                <option value="animais_domesticos">Animais Domésticos</option>
+                                <option value="epizootias">Epizootias</option> {/* 🟢 Opção atualizada */}
                                 <option value="sinantropicos">Sinantrópicos e Peçonhentos</option>
                             </select>
                         </div>
@@ -322,7 +343,7 @@ export default function OrdemServico({ setTelaAtual }) {
                         </div>
                     </div>
 
-                    {/* 🟢 INJEÇÃO UNIFICADA: SUBFORMULÁRIO DE SINANTROPIA */}
+                    {/* 🟢 SUBFORMULÁRIO DE SINANTROPIA */}
                     {setorDestino === 'sinantropicos' && (
                         <div className="os-subform-card mt-4 border-top pt-3">
                             <h3 className="text-weight-semi-bold os-section-title text-primary">
@@ -414,7 +435,15 @@ export default function OrdemServico({ setTelaAtual }) {
                         />
                     )}
 
-                    {/* 🟢 DESCRIÇÃO / DETALHES DA SOLICITAÇÃO (NO FINAL DO FORMULÁRIO) */}
+                    {/* INJEÇÃO: INSPEÇÃO DE TERRENO BALDIO / ACUMULADOR */}
+                    {servicoSolicitado === 'inspecao_terreno' && (
+                        <FormInspecaoTerreno
+                            dadosTerreno={dadosTerreno}
+                            setDadosTerreno={setDadosTerreno}
+                        />
+                    )}
+
+                    {/* DESCRIÇÃO / DETALHES DA SOLICITAÇÃO */}
                     <div className="os-subform-card mt-4 border-top pt-3">
                         <h3 className="text-weight-semi-bold os-section-title">
                             <i className="fas fa-align-left mr-2"></i> Observações e Detalhes
