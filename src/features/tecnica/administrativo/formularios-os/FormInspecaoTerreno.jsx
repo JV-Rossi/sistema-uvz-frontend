@@ -38,7 +38,7 @@ export default function FormInspecaoTerreno({ dadosTerreno, setDadosTerreno }) {
 
             <div className="os-grid">
                 {/* TIPO DE OCORRÊNCIA / IMÓVEL */}
-                <div className="br-input">
+                <div className="br-input os-grid-full">
                     <label>Tipo de Imóvel / Terreno <span className="text-danger">*</span></label>
                     <select
                         className="br-select"
@@ -53,22 +53,6 @@ export default function FormInspecaoTerreno({ dadosTerreno, setDadosTerreno }) {
                     </select>
                 </div>
 
-                {/* ORIGEM DO REGISTRO */}
-                <div className="br-input">
-                    <label>Origem do Registro / Denúncia <span className="text-danger">*</span></label>
-                    <select
-                        className="br-select"
-                        value={dadosTerreno?.origemRegistro || ''}
-                        onChange={(e) => handleChange('origemRegistro', e.target.value)}
-                    >
-                        <option value="">Selecione...</option>
-                        <option value="Denúncia de Munícipe (Telefone / Presencial)">Denúncia de Munícipe (Telefone / Presencial)</option>
-                        <option value="Solicitação via WhatsApp">Solicitação via WhatsApp</option>
-                        <option value="Ofício / Protocolo Institucional">Ofício / Protocolo Institucional</option>
-                        <option value="Demanda Interna / Mapeamento">Demanda Interna / Mapeamento</option>
-                    </select>
-                </div>
-
                 {/* PONTO DE REFERÊNCIA */}
                 <div className="br-input os-grid-full">
                     <label>Ponto de Referência do Local</label>
@@ -80,7 +64,7 @@ export default function FormInspecaoTerreno({ dadosTerreno, setDadosTerreno }) {
                     />
                 </div>
 
-                {/* 🟢 DROPZONE MODERNO DE UPLOAD DE FOTO */}
+                {/* DROPZONE DE UPLOAD DE FOTO */}
                 <div className="br-input os-grid-full">
                     <label>Anexar Imagem / Foto da Denúncia (Opcional)</label>
                     
