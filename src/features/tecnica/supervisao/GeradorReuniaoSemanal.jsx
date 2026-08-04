@@ -214,8 +214,8 @@ return (
             </table>
         </div>
 
-        {/* SEÇÃO 3: PONTOS DE ENCONTRO */}
-        <h4><i className="fas fa-map-marker-alt" style={{ marginRight: '8px' }}></i> PONTOS DE ENCONTRO DIÁRIOS (P.A)</h4>
+        {/* SEÇÃO 3: PONTOS DE APOIO */}
+        <h4><i className="fas fa-map-marker-alt" style={{ marginRight: '8px' }}></i> PONTOS DE APOIO (P.A)</h4>
         <div className="distritos-grid">
             <div className="distrito-card norte">
                 <label><i className="far fa-compass"></i> Distrito Norte</label>

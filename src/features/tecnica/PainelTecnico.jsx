@@ -14,6 +14,7 @@ import SinantropiaAnalises from './sinantropia/SinantropiaAnalises';
 import DistribuidorTrabalho from './supervisao/DistribuidorTrabalho';
 import ProgramacaoBloqueios from './supervisao/ProgramacaoBloqueios';
 import GeradorReuniaoSemanal from './supervisao/GeradorReuniaoSemanal';
+import InspecaoTerrenos from './supervisao/InspecaoTerrenos';
 
 // 📁 SETOR: RESPONSÁVEIS TÉCNICOS
 import ValidacaoBloqueios from './responsaveis-tecnicos/ValidacaoBloqueios';
@@ -104,9 +105,50 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                    {/* 📁 SETOR 3: SUPERVISORES */}
+                    {/* 📁 SETOR 3: Epizootias */}
                     <div className="menu-folder">
-                        <button className={`folder-btn br-button block ${pastaAberta === 'supervisao' ? 'active' : ''}`} onClick={() => togglePasta('supervisao')}>
+                        <button
+                            className={`folder-btn br-button block ${pastaAberta === 'epizootias' ? 'active' : ''}`}
+                            onClick={() => togglePasta('epizootias')}
+                        >
+                            <i className={`fas ${pastaAberta === 'epizootias' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
+                            Epizootias
+                            <i className={`fas ${pastaAberta === 'epizootias' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
+                        </button>
+
+                        {pastaAberta === 'epizootias' && (
+                            <div className="folder-content pl-3">
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'leishmaniose' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('leishmaniose')}
+                                >
+                                    <i className="fas fa-paw mr-2" aria-hidden="true"></i> Leishmaniose
+                                </button>
+
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'raiva_animal' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('raiva_animal')}
+                                >
+                                    <i className="fas fa-biohazard mr-2" aria-hidden="true"></i> Raiva Animal
+                                </button>
+
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'vacinacao' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('vacinacao')}
+                                >
+                                    <i className="fas fa-syringe mr-2" aria-hidden="true"></i> Vacinação
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+
+                    {/* 📁 SETOR 4: SUPERVISORES */}
+                    <div className="menu-folder">
+                        <button
+                            className={`folder-btn br-button block ${pastaAberta === 'supervisao' ? 'active' : ''}`}
+                            onClick={() => togglePasta('supervisao')}
+                        >
                             <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Supervisores
                             <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
@@ -114,20 +156,35 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                         {pastaAberta === 'supervisao' && (
                             <div className="folder-content pl-3">
-                                <button className={`menu-btn br-button block ${abaAtiva === 'mutirao' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('mutirao')}>
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'inspecoes' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('inspecoes')}
+                                >
+                                    <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Inspeções
+                                </button>
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'mutirao' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('mutirao')}
+                                >
                                     <i className="fas fa-clipboard-list mr-2" aria-hidden="true"></i> Distribuição de Mutirão
                                 </button>
-                                <button className={`menu-btn br-button block ${abaAtiva === 'programacao-bloqueios' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('programacao-bloqueios')}>
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'programacao-bloqueios' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('programacao-bloqueios')}
+                                >
                                     <i className="fas fa-calendar-alt mr-2" aria-hidden="true"></i> Planejamento de Bloqueios
                                 </button>
-                                <button className={`menu-btn br-button block ${abaAtiva === 'reuniao-semanal' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('reuniao-semanal')}>
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'reuniao-semanal' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('reuniao-semanal')}
+                                >
                                     <i className="fas fa-file-powerpoint mr-2 text-danger" aria-hidden="true"></i> Reunião Semanal (PPTX)
                                 </button>
                             </div>
                         )}
                     </div>
 
-                    {/* 📁 SETOR 4: RESPONSÁVEIS TÉCNICOS */}
+                    {/* 📁 SETOR 5: RESPONSÁVEIS TÉCNICOS */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'responsaveis' ? 'active' : ''}`} onClick={() => togglePasta('responsaveis')}>
                             <i className={`fas ${pastaAberta === 'responsaveis' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
@@ -147,7 +204,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                    {/* 📁 SETOR 5: BORRIFAÇÃO */}
+                    {/* 📁 SETOR 6: BORRIFAÇÃO */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'borrifacao' ? 'active' : ''}`} onClick={() => togglePasta('borrifacao')}>
                             <i className={`fas ${pastaAberta === 'borrifacao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
@@ -164,7 +221,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                    {/* 📁 SETOR 6: CONSULTAS E RELATÓRIOS (NOVA PASTA ISOLADA) */}
+                    {/* 📁 SETOR 7: CONSULTAS E RELATÓRIOS (NOVA PASTA ISOLADA) */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'consultas-relatorios' ? 'active' : ''}`} onClick={() => togglePasta('consultas-relatorios')}>
                             <i className={`fas ${pastaAberta === 'consultas-relatorios' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
@@ -221,6 +278,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {abaAtiva === 'mutirao' && <div className="br-card"><DistribuidorTrabalho setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'programacao-bloqueios' && <div className="br-card"><ProgramacaoBloqueios setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'reuniao-semanal' && <div className="br-card"><GeradorReuniaoSemanal /></div>}
+                {abaAtiva === 'inspecoes' && <div className="br-card"><InspecaoTerrenos /></div>}
 
                 {/* 📁 SETOR 4: RESPONSÁVEIS TÉCNICOS */}
                 {abaAtiva === 'validacao-bloqueios' && <ValidacaoBloqueios setAbaAtiva={setAbaAtiva} />}
@@ -231,7 +289,7 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                 {/* 📁 SETOR 6: CONSULTAS E RELATÓRIOS */}
                 {abaAtiva === 'dashboards' && <div className="br-card"><IndicadoresRelatorios setAbaAtiva={setAbaAtiva} /></div>}
-                {abaAtiva === 'consultas' && <div className="br-card"><ConsultasExportacoes setTelaAtual={setTelaAtual} /></div>}                
+                {abaAtiva === 'consultas' && <div className="br-card"><ConsultasExportacoes setTelaAtual={setTelaAtual} /></div>}
 
             </main>
         </div>
