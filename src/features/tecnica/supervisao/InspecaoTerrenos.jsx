@@ -164,13 +164,13 @@ export default function InspecaoTerrenos() {
         }
     };
 
-    // 🖨️ IMPRESSÃO DO RELATÓRIO OFICIAL (LAYOUT PREFEITURA DE CUIABÁ)
+    // 🖨️ IMPRESSÃO DO RELATÓRIO OFICIAL (PADRÃO MANUAL DE MARCA PREFEITURA DE CUIABÁ)
     const handleImprimirRelatorio = (item) => {
         const rel = item.relatorioOficial || {
             numeroRelatorio: `${item.id}/2026`,
             dataVisita: new Date().toLocaleDateString('pt-BR'),
             horarioVisita: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-            locaisVisitados: `${item.bairro} - ${item.endereco}`,
+            locaisVisitados: `${item.bairro || ''} - ${item.endereco || ''}`,
             supervisoresArea: 'Ace Carlos França, Ace Anderson Sena',
             equipePresente: item.equipeAlocada || 'ACE Anderson Sena e Carlos França',
             tiposImoveis: [item.tipoOcorrencia || 'Residencial'],
@@ -178,8 +178,11 @@ export default function InspecaoTerrenos() {
             obsPacientes: 'População receptiva às orientações.',
             prestativosLimpeza: 'Sim',
             obsLimpeza: 'Colaboraram com a limpeza e remoção dos focos.',
-            fotos: item.fotoBase64 ? [item.fotoBase64] : []
+            fotos: [] // Fotos de campo da vistoria
         };
+
+        const fotoDenuncia = item.fotoBase64 || null; // 🟢 Foto original registrada na abertura da O.S.
+        const fotosVistoria = rel.fotos || [];        // 🟢 Fotos anexadas pelos supervisores no laudo
 
         const janela = window.open('', '_blank', 'width=900,height=1000');
         janela.document.write(`
@@ -188,40 +191,152 @@ export default function InspecaoTerrenos() {
             <head>
                 <title>Relatório de Visita Domiciliar Nº ${rel.numeroRelatorio}</title>
                 <style>
-                    body { font-family: Arial, sans-serif; margin: 30px; color: #111; font-size: 13px; line-height: 1.4; }
-                    .header-prefeitura { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #006837; padding-bottom: 10px; }
-                    .header-title { font-weight: bold; font-size: 16px; color: #006837; text-transform: uppercase; margin-top: 5px; }
-                    .header-sub { font-size: 12px; font-weight: bold; color: #333; margin: 2px 0; }
-                    .relatorio-num { font-size: 15px; font-weight: bold; text-align: center; margin: 15px 0; text-transform: uppercase; background: #e8f5e9; padding: 6px; border: 1px solid #c8e6c9; }
-                    .campo-linha { margin-bottom: 8px; }
-                    .campo-label { font-weight: bold; color: #222; }
-                    .checkbox-group { margin: 10px 0; padding-left: 15px; }
-                    .checkbox-item { display: inline-block; width: 45%; margin-bottom: 5px; }
-                    .anexo-pagina { page-break-before: always; text-align: center; }
-                    .anexo-titulo { font-weight: bold; font-size: 14px; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-                    .foto-box { margin-bottom: 20px; border: 1px solid #ddd; padding: 8px; background: #fafafa; display: inline-block; max-width: 90%; }
-                    .foto-img { max-width: 100%; max-height: 450px; object-fit: contain; }
-                    .footer-ccz { margin-top: 30px; font-size: 10px; text-align: center; color: #555; border-top: 1px solid #ccc; padding-top: 8px; }
-                    .assinatura-area { margin-top: 50px; text-align: center; }
-                    .linha-assinatura { width: 300px; border-top: 1px solid #000; margin: 0 auto 5px auto; }
+                    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+                    
+                    body { 
+                        font-family: 'Plus Jakarta Sans', Arial, sans-serif; 
+                        margin: 25px; 
+                        color: #1e293b; 
+                        font-size: 12px; 
+                        line-height: 1.4; 
+                    }
+                    
+                    /* CORES OFICIAIS PREFEITURA DE CUIABÁ (MANUAL DE MARCA) */
+                    :root {
+                        --verde-cuiaba: #367962; /* Pantone 335 C */
+                        --amarelo-cuiaba: #F5C745; /* Pantone 7548 C */
+                        --verde-escuro: #22524C;
+                    }
+
+                    .header-prefeitura { 
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 15px;
+                        border-bottom: 3px solid var(--verde-cuiaba); 
+                        padding-bottom: 12px; 
+                        margin-bottom: 15px;
+                    }
+
+                    .header-titles {
+                        text-align: left;
+                    }
+
+                    .header-main-title { 
+                        font-weight: 800; 
+                        font-size: 18px; 
+                        color: var(--verde-cuiaba); 
+                        text-transform: uppercase; 
+                        letter-spacing: 0.5px;
+                        margin: 0;
+                    }
+                    
+                    .header-sub { 
+                        font-size: 11px; 
+                        font-weight: 700; 
+                        color: #475569; 
+                        margin: 1px 0; 
+                        text-transform: uppercase;
+                    }
+
+                    .relatorio-num { 
+                        font-size: 14px; 
+                        font-weight: 800; 
+                        text-align: center; 
+                        margin: 15px 0; 
+                        text-transform: uppercase; 
+                        background: #f0fdf4; 
+                        color: var(--verde-escuro);
+                        padding: 8px; 
+                        border: 1px solid #bbf7d0; 
+                        border-radius: 4px;
+                    }
+
+                    .secao-titulo {
+                        font-size: 12px;
+                        font-weight: 700;
+                        color: var(--verde-cuiaba);
+                        border-bottom: 1px solid #cbd5e1;
+                        padding-bottom: 4px;
+                        margin-top: 15px;
+                        margin-bottom: 8px;
+                        text-transform: uppercase;
+                    }
+
+                    .campo-linha { margin-bottom: 6px; }
+                    .campo-label { font-weight: 700; color: #0f172a; }
+
+                    .checkbox-group { margin: 8px 0; padding-left: 10px; }
+                    .checkbox-item { display: inline-block; width: 48%; margin-bottom: 4px; font-size: 11.5px; }
+
+                    .anexo-pagina { page-break-before: always; margin-top: 20px; }
+                    .anexo-titulo { 
+                        font-weight: 800; 
+                        font-size: 13px; 
+                        color: var(--verde-cuiaba);
+                        margin-bottom: 12px; 
+                        text-transform: uppercase; 
+                        border-bottom: 2px solid var(--verde-cuiaba); 
+                        padding-bottom: 4px; 
+                    }
+
+                    .foto-box { 
+                        margin-bottom: 15px; 
+                        border: 1px solid #e2e8f0; 
+                        padding: 8px; 
+                        background: #f8fafc; 
+                        border-radius: 6px;
+                        text-align: center;
+                    }
+                    
+                    .foto-img { 
+                        max-width: 100%; 
+                        max-height: 380px; 
+                        object-fit: contain; 
+                        border-radius: 4px;
+                    }
+
+                    .assinatura-area { margin-top: 40px; text-align: center; }
+                    .linha-assinatura { width: 280px; border-top: 1px solid #334155; margin: 0 auto 6px auto; }
+
+                    .footer-ccz { 
+                        margin-top: 25px; 
+                        font-size: 9.5px; 
+                        text-align: center; 
+                        color: #64748b; 
+                        border-top: 1px solid #e2e8f0; 
+                        padding-top: 8px; 
+                    }
+
                     @media print {
                         .no-print { display: none; }
-                        body { margin: 15mm; }
+                        body { margin: 10mm; }
                     }
                 </style>
             </head>
             <body>
                 <div class="no-print" style="margin-bottom: 20px; text-align: right;">
-                    <button onclick="window.print()" style="padding: 10px 20px; background: #006837; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                    <button onclick="window.print()" style="padding: 10px 22px; background: #367962; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 13px;">
                         🖨️ Imprimir / Salvar PDF
                     </button>
                 </div>
 
+                <!-- CABEÇALHO OFICIAL DA PREFEITURA DE CUIABÁ -->
                 <div class="header-prefeitura">
-                    <div style="font-size: 22px; font-weight: bold; color: #006837;">CUIABÁ PREFEITURA</div>
-                    <div class="header-sub">SECRETARIA MUNICIPAL DE SAÚDE</div>
-                    <div class="header-sub">DIRETORIA DE VIGILÂNCIA EM SAÚDE</div>
-                    <div class="header-sub">COORDENADORIA DE VIGILÂNCIA EM SAÚDE AMBIENTAL</div>
+                    <svg width="60" height="65" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Coroa Superior em Amarelo Pantone 7548 C -->
+                        <path d="M20 25 L35 35 L50 15 L65 35 L80 25 L75 42 L25 42 Z" fill="#F5C745"/>
+                        <!-- Escudo Verde Pantone 335 C -->
+                        <path d="M15 42 H85 V70 C85 90 50 105 50 105 C50 105 15 90 15 70 Z" fill="#367962"/>
+                        <!-- Centro Geodésico em Amarelo -->
+                        <path d="M50 52 L68 82 L50 74 L32 82 Z" fill="#F5C745"/>
+                    </svg>
+                    <div class="header-titles">
+                        <div class="header-main-title">PREFEITURA DE CUIABÁ</div>
+                        <div class="header-sub">SECRETARIA MUNICIPAL DE SAÚDE</div>
+                        <div class="header-sub">DIRETORIA DE VIGILÂNCIA EM SAÚDE</div>
+                        <div class="header-sub">COORDENADORIA DE VIGILÂNCIA EM SAÚDE AMBIENTAL (CVSA)</div>
+                    </div>
                 </div>
 
                 <div class="relatorio-num">
@@ -234,7 +349,7 @@ export default function InspecaoTerrenos() {
                 <div class="campo-linha"><span class="campo-label">Supervisores da área:</span> ${rel.supervisoresArea}</div>
                 <div class="campo-linha"><span class="campo-label">Equipe presente durante visita:</span> ${rel.equipePresente}</div>
 
-                <div style="margin-top: 15px;" class="campo-label">Tipos de imóveis visitados:</div>
+                <div class="secao-titulo">Tipos de imóveis visitados</div>
                 <div class="checkbox-group">
                     <div class="checkbox-item">${rel.tiposImoveis?.includes('Residencial') ? '(X)' : '( )'} Residencial</div>
                     <div class="checkbox-item">${rel.tiposImoveis?.includes('Residencial - condomínio') ? '(X)' : '( )'} Residencial - condomínio</div>
@@ -244,33 +359,41 @@ export default function InspecaoTerrenos() {
                     <div class="checkbox-item">${rel.tiposImoveis?.includes('Órgão Público') ? '(X)' : '( )'} Órgão Público</div>
                 </div>
 
-                <div style="margin-top: 15px;" class="campo-label">Em casos de presença de morador, servidores e comerciantes:</div>
-                <div style="padding-left: 15px; margin-top: 5px;">
+                <div class="secao-titulo">Conduta de moradores, servidores e comerciantes</div>
+                <div style="padding-left: 10px;">
                     <div class="campo-linha">
                         <strong>Foram pacientes com a presença dos servidores e orientações?</strong><br />
                         (${rel.pacientesOrientacoes === 'Sim' ? 'X' : ' '}) Sim &nbsp;&nbsp;&nbsp;&nbsp; (${rel.pacientesOrientacoes === 'Não' ? 'X' : ' '}) Não
                         ${rel.obsPacientes ? ` - <em>${rel.obsPacientes}</em>` : ''}
                     </div>
 
-                    <div class="campo-linha" style="margin-top: 10px;">
+                    <div class="campo-linha" style="margin-top: 8px;">
                         <strong>Foram prestativos com as solicitações de limpeza?</strong><br />
                         (${rel.prestativosLimpeza === 'Sim' ? 'X' : ' '}) Sim &nbsp;&nbsp;&nbsp;&nbsp; (${rel.prestativosLimpeza === 'Não' ? 'X' : ' '}) Não
                         ${rel.obsLimpeza ? ` - <em>${rel.obsLimpeza}</em>` : ''}
                     </div>
                 </div>
 
-                ${rel.fotos && rel.fotos.length > 0 ? `
-                    <div class="anexo-pagina">
-                        <div class="header-prefeitura">
-                            <div style="font-size: 18px; font-weight: bold; color: #006837;">CUIABÁ PREFEITURA</div>
-                            <div class="header-sub">SECRETARIA MUNICIPAL DE SAÚDE | VIGILÂNCIA AMBIENTAL</div>
+                <!-- 🟢 SEÇÃO 1: FOTO REGISTRADA NA SOLICITAÇÃO INICIAL / DENÚNCIA (SE HOUVER) -->
+                ${fotoDenuncia ? `
+                    <div style="margin-top: 20px;">
+                        <div class="anexo-titulo">1. Registro Fotográfico Anexado na Denúncia / Solicitação</div>
+                        <div class="foto-box">
+                            <img src="${fotoDenuncia}" class="foto-img" alt="Foto da Denúncia" />
+                            <div style="font-size: 10px; color: #64748b; margin-top: 4px;">Imagem registrada pelo munícipe ou canal de atendimento na abertura da O.S.</div>
                         </div>
-                        <div class="anexo-titulo">ANEXO - IMAGEM DOS PONTOS VISITADOS</div>
+                    </div>
+                ` : ''}
+
+                <!-- 🟢 SEÇÃO 2: IMAGENS DA VISTORIA DE CAMPO (SUPERVISÃO) -->
+                ${fotosVistoria.length > 0 ? `
+                    <div class="${fotoDenuncia ? 'anexo-pagina' : ''}" style="margin-top: 20px;">
+                        <div class="anexo-titulo">2. Anexo - Registros Fotográficos da Vistoria de Campo (Máx. 3 fotos)</div>
                         
-                        ${rel.fotos.map((foto, index) => `
+                        ${fotosVistoria.map((foto, index) => `
                             <div class="foto-box">
-                                <img src="${foto}" class="foto-img" alt="Foto Anexo ${index + 1}" />
-                                <div style="font-size: 11px; color: #666; margin-top: 4px;">Foto ${index + 1} de ${rel.fotos.length} - Ponto registrado durante vistoria</div>
+                                <img src="${foto}" class="foto-img" alt="Foto Vistoria ${index + 1}" />
+                                <div style="font-size: 10px; color: #64748b; margin-top: 4px;">Foto ${index + 1} de ${fotosVistoria.length} - Ponto inspecionado pela equipe técnica</div>
                             </div>
                         `).join('')}
                     </div>
@@ -278,8 +401,8 @@ export default function InspecaoTerrenos() {
 
                 <div class="assinatura-area">
                     <div class="linha-assinatura"></div>
-                    <div style="font-weight: bold;">${rel.supervisoresArea || 'Supervisor de Campo'}</div>
-                    <div style="font-size: 11px; color: #555;">Coordenadoria de Vigilância em Saúde Ambiental</div>
+                    <div style="font-weight: 700; color: #0f172a;">${rel.supervisoresArea || 'Supervisor de Campo'}</div>
+                    <div style="font-size: 10.5px; color: #64748b;">Coordenadoria de Vigilância em Saúde Ambiental</div>
                 </div>
 
                 <div class="footer-ccz">

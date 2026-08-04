@@ -209,7 +209,14 @@ export default function OrdemServico({ setTelaAtual }) {
             setorDestino,
             servicoSolicitado,
             descricao,
-            solicitacaoTerreno: servicoSolicitado === 'inspecao_terreno' ? dadosTerreno : null,
+
+            // 🟢 Garante dados padrão para a criação na tb_solicitacao_inspecao
+            solicitacaoTerreno: servicoSolicitado === 'inspecao_terreno' ? {
+                ...dadosTerreno,
+                tipoOcorrencia: dadosTerreno.tipoOcorrencia || 'Terreno Baldio / Acúmulo de Lixo',
+                origemRegistro: origem || 'Atendimento O.S.',
+                referencia: dadosTerreno.referencia || endereco || 'Sem ponto de referência'
+            } : null,
 
             // Dados de Sinantropia
             tipoImovel: setorDestino === 'sinantropicos' ? tipoImovel : null,
@@ -220,7 +227,6 @@ export default function OrdemServico({ setTelaAtual }) {
 
             solicitacaoBloqueio: servicoSolicitado === 'bloqueio_foco' ? dadosBloqueio : null
         };
-
         try {
             const response = await fetch(`${API_BASE_URL}/api/ordens-servico`, {
                 method: 'POST',
@@ -231,9 +237,10 @@ export default function OrdemServico({ setTelaAtual }) {
             if (!response.ok) throw new Error("Erro ao salvar O.S.");
 
             const osCriada = await response.json();
-            setSucesso(`O.S. #${osCriada.id} registrada com sucesso! Encaminhada para o R.T. de ${setorDestino.toUpperCase()}.`);
+            setSucesso(`O.S. #${osCriada.id} registrada com sucesso! Encaminhada para a Supervisão de Campo (${setorDestino.toUpperCase()}).`);
             limparFormulario();
         } catch (err) {
+            console.error("ERRO REAL DETECTADO NO REACT:", err); // 🟢 Exibe o erro real no F12
             setErro("Falha ao registrar a Ordem de Serviço no servidor.");
         } finally {
             setLoading(false);
