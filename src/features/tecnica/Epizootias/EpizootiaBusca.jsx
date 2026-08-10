@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-// 🎨 IMPORTS DE ESTILOS GLOBAIS DE FORMULÁRIO
-import '../../../shared/components/Formularios.css';
-
-// 🟢 IMPORTS DOS COMPONENTES E FORMULÁRIOS DE CAMPO
+// 🟢 IMPORTS DOS COMPONENTES E FORMULÁRIOS
 import PainelOperacionalBase from '../../../shared/components/PainelOperacionalBase';
-import FormVistoriaLeishmaniose from './FormVistoriaLeishmaniose';
+import FormBuscaLeishmaniose from '../administrativo/formularios-os/FormBuscaLeishmaniose';
 import EpizootiaResultados from './EpizootiaResultados';
 
 export default function EpizootiaBusca() {
@@ -111,15 +108,16 @@ export default function EpizootiaBusca() {
                     <h4><i className="fas fa-clipboard-check"></i> Resumo da Vistoria</h4>
                     <p><strong>Status:</strong> Visita Realizada</p>
                     {item.dadosBusca && (
-                        <p><strong>Animais Vistoriados:</strong> {item.dadosBusca.totalVistoriados || 0}</p>
+                        <p><strong>Animais Vistoriados:</strong> {item.dadosBusca.totalAnimaisVistoriados || 0}</p>
                     )}
                 </div>
             )}
 
             renderFormExecucao={(item, fecharModal) => {
+                // 1. FORMULÁRIO DE LEISHMANIOSE
                 if (item.servico.toLowerCase().includes('leish')) {
                     return (
-                        <FormVistoriaLeishmaniose
+                        <FormBuscaLeishmaniose
                             osSelecionada={item}
                             onSubmitLaudo={(dados) => {
                                 handleSalvarBusca(item.id, dados);
@@ -130,6 +128,7 @@ export default function EpizootiaBusca() {
                     );
                 }
 
+                // 2. DEMAIS AÇÕES DE CAMPO (VACINAÇÃO / OUTROS)
                 return (
                     <EpizootiaResultados
                         osSelecionada={item}

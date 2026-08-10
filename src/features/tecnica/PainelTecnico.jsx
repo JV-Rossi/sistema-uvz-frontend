@@ -7,7 +7,7 @@ import GerenciarUsuarios from './administrativo/GerenciarUsuarios';
 
 // 📁 SETOR: EPIZOOTIAS
 import EpizootiaBusca from './epizootias/EpizootiaBusca';
-import EpizootiaResultados from './epizootias/EpizootiaResultados';
+import EpizootiaAnalises from './Epizootias/EpizootiaAnalises';
 
 // 📁 SETOR: SINANTROPIA
 import AnaliseLarvas from './sinantropia/AnaliseLarvas';
@@ -100,7 +100,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                                     <i className="fas fa-egg mr-2" aria-hidden="true"></i> Contagem de Ovos
                                 </button>
                                 <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-busca-ativa' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('sinantropia-busca-ativa')}>
-                                    <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Procedências
+                                    <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Agendamentos
                                 </button>
                                 <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-analises' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('sinantropia-analises')}>
                                     <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Análises
@@ -126,14 +126,14 @@ export default function PainelTecnico({ setTelaAtual }) {
                                     className={`menu-btn br-button block ${abaAtiva === 'epizootia-busca' ? 'active text-primary' : ''}`}
                                     onClick={() => setAbaAtiva('epizootia-busca')}
                                 >
-                                    <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Busca Ativa e Agendamentos
+                                    <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Agendamentos
                                 </button>
 
                                 <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'epizootia-resultados' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('epizootia-resultados')}
+                                    className={`menu-btn br-button block ${abaAtiva === 'epizootia-analises' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('epizootia-analises')}
                                 >
-                                    <i className="fas fa-file-medical-alt mr-2" aria-hidden="true"></i> Lançamento de Resultados
+                                    <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Análises e Retaguarda
                                 </button>
                             </div>
                         )}
@@ -273,7 +273,7 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                 {/* 📁 SETOR 3: EPIZOOTIAS */}
                 {abaAtiva === 'epizootia-busca' && <div className="br-card"><EpizootiaBusca setAbaAtiva={setAbaAtiva} /></div>}
-                {abaAtiva === 'epizootia-resultados' && <div className="br-card"><EpizootiaResultados setAbaAtiva={setAbaAtiva} /></div>}
+                {abaAtiva === 'epizootia-analises' && <div className="br-card"><EpizootiaAnalises setAbaAtiva={setAbaAtiva} /></div>}
 
                 {/* 📁 SETOR 4: SUPERVISORES */}
                 {abaAtiva === 'mutirao' && <div className="br-card"><DistribuidorTrabalho setTelaAtual={setTelaAtual} /></div>}
