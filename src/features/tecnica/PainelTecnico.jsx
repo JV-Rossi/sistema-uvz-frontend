@@ -5,6 +5,10 @@ import OrdemServico from './administrativo/OrdemServico';
 import CadastroUsuario from './administrativo/CadastroUsuario';
 import GerenciarUsuarios from './administrativo/GerenciarUsuarios';
 
+// 📁 SETOR: EPIZOOTIAS
+import EpizootiaBusca from './epizootias/EpizootiaBusca';
+import EpizootiaResultados from './epizootias/EpizootiaResultados';
+
 // 📁 SETOR: SINANTROPIA
 import AnaliseLarvas from './sinantropia/AnaliseLarvas';
 import SinantropiaBuscaAtiva from './sinantropia/SinantropiaBuscaAtiva';
@@ -119,24 +123,17 @@ export default function PainelTecnico({ setTelaAtual }) {
                         {pastaAberta === 'epizootias' && (
                             <div className="folder-content pl-3">
                                 <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'leishmaniose' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('leishmaniose')}
+                                    className={`menu-btn br-button block ${abaAtiva === 'epizootia-busca' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('epizootia-busca')}
                                 >
-                                    <i className="fas fa-paw mr-2" aria-hidden="true"></i> Leishmaniose
+                                    <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Busca Ativa e Agendamentos
                                 </button>
 
                                 <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'raiva_animal' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('raiva_animal')}
+                                    className={`menu-btn br-button block ${abaAtiva === 'epizootia-resultados' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('epizootia-resultados')}
                                 >
-                                    <i className="fas fa-biohazard mr-2" aria-hidden="true"></i> Raiva Animal
-                                </button>
-
-                                <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'vacinacao' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('vacinacao')}
-                                >
-                                    <i className="fas fa-syringe mr-2" aria-hidden="true"></i> Vacinação
+                                    <i className="fas fa-file-medical-alt mr-2" aria-hidden="true"></i> Lançamento de Resultados
                                 </button>
                             </div>
                         )}
@@ -274,17 +271,21 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {abaAtiva === 'sinantropia-busca-ativa' && <div className="br-card"><SinantropiaBuscaAtiva setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'sinantropia-analises' && <div className="br-card"><SinantropiaAnalises setAbaAtiva={setAbaAtiva} /></div>}
 
-                {/* 📁 SETOR 3: SUPERVISORES */}
+                {/* 📁 SETOR 3: EPIZOOTIAS */}
+                {abaAtiva === 'epizootia-busca' && <div className="br-card"><EpizootiaBusca setAbaAtiva={setAbaAtiva} /></div>}
+                {abaAtiva === 'epizootia-resultados' && <div className="br-card"><EpizootiaResultados setAbaAtiva={setAbaAtiva} /></div>}
+
+                {/* 📁 SETOR 4: SUPERVISORES */}
                 {abaAtiva === 'mutirao' && <div className="br-card"><DistribuidorTrabalho setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'programacao-bloqueios' && <div className="br-card"><ProgramacaoBloqueios setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'reuniao-semanal' && <div className="br-card"><GeradorReuniaoSemanal /></div>}
                 {abaAtiva === 'inspecoes' && <div className="br-card"><InspecaoTerrenos /></div>}
 
-                {/* 📁 SETOR 4: RESPONSÁVEIS TÉCNICOS */}
+                {/* 📁 SETOR 5: RESPONSÁVEIS TÉCNICOS */}
                 {abaAtiva === 'validacao-bloqueios' && <ValidacaoBloqueios setAbaAtiva={setAbaAtiva} />}
                 {abaAtiva === 'validacao-sinantropia' && <ValidacaoSinantropia setAbaAtiva={setAbaAtiva} />}
 
-                {/* 📁 SETOR 5: BORRIFAÇÃO */}
+                {/* 📁 SETOR 6: BORRIFAÇÃO */}
                 {abaAtiva === 'bloqueio_quimico' && <div className="br-card"><BloqueioQuimico setAbaAtiva={setAbaAtiva} /></div>}
 
                 {/* 📁 SETOR 6: CONSULTAS E RELATÓRIOS */}
