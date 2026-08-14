@@ -14,6 +14,7 @@ export default function PainelOperacionalBase({
     abaAtiva,
     setAbaAtiva,
     textoAbaPendentes = "Pendentes",
+    textoAbaEncerramentos, // 🟢 PROP DA ABA INTERMEDIÁRIA
     textoAbaConcluidos = "Concluídos / Justificados",
 
     // Injeções dinâmicas dos Cards
@@ -52,13 +53,15 @@ export default function PainelOperacionalBase({
         setItemSelecionado(null);
     };
 
-    // Filtros de Abas
+    // 🟢 FILTROS DE ABAS ATUALIZADOS PARA SUPORTAR 3 STATUS
     const itensFiltrados = itens.filter(i => {
         if (abaAtiva === 'pendentes') return i.status === 'programado' || i.status === 'pendente';
+        if (abaAtiva === 'encerramentos') return i.status === 'encerramento';
         return i.status === 'executado' || i.status === 'nao_realizado';
     });
 
     const qtdPendentes = itens.filter(i => i.status === 'programado' || i.status === 'pendente').length;
+    const qtdEncerramentos = itens.filter(i => i.status === 'encerramento').length;
     const qtdConcluidos = itens.filter(i => i.status === 'executado' || i.status === 'nao_realizado').length;
 
     return (
@@ -70,7 +73,7 @@ export default function PainelOperacionalBase({
                 <p>{subtitulo}</p>
             </header>
 
-            {/* 2. NAVEGAÇÃO DE ABAS */}
+            {/* 2. NAVEGAÇÃO DE ABAS (2 OU 3 ABAS) */}
             <div className="po-abas">
                 <button
                     className={`po-aba ${abaAtiva === 'pendentes' ? 'ativa' : ''}`}
@@ -78,6 +81,17 @@ export default function PainelOperacionalBase({
                 >
                     <i className="fas fa-clock mr-1"></i> {textoAbaPendentes} ({qtdPendentes})
                 </button>
+
+                {/* 🟢 RENDERIZA A ABA INTERMEDIÁRIA SE FOR PASSADA */}
+                {textoAbaEncerramentos && (
+                    <button
+                        className={`po-aba ${abaAtiva === 'encerramentos' ? 'ativa' : ''}`}
+                        onClick={() => setAbaAtiva('encerramentos')}
+                    >
+                        <i className="fas fa-file-contract mr-1"></i> {textoAbaEncerramentos} ({qtdEncerramentos})
+                    </button>
+                )}
+
                 <button
                     className={`po-aba ${abaAtiva === 'concluidos' ? 'ativa' : ''}`}
                     onClick={() => setAbaAtiva('concluidos')}
@@ -98,7 +112,11 @@ export default function PainelOperacionalBase({
             ) : itensFiltrados.length === 0 ? (
                 <div className="po-vazio">
                     <i className="fas fa-clipboard-check"></i>
-                    <p>{abaAtiva === 'pendentes' ? "Nenhuma demanda pendente no momento." : "Nenhum histórico encontrado nesta seção."}</p>
+                    <p>
+                        {abaAtiva === 'pendentes' && "Nenhuma demanda pendente no momento."}
+                        {abaAtiva === 'encerramentos' && "Nenhum laudo aguardando encerramento."}
+                        {abaAtiva === 'concluidos' && "Nenhum histórico encontrado nesta seção."}
+                    </p>
                 </div>
             ) : (
                 <div className="po-grade-demandas">
@@ -114,8 +132,8 @@ export default function PainelOperacionalBase({
                             <div className="po-card-corpo">
                                 {renderCardCorpo && renderCardCorpo(item)}
 
-                                {/* Exibição de resumos para itens já finalizados */}
-                                {item.status === 'executado' && renderResumoExecutado && renderResumoExecutado(item)}
+                                {/* Exibição de resumos para itens já analisados/finalizados */}
+                                {(item.status === 'executado' || item.status === 'encerramento') && renderResumoExecutado && renderResumoExecutado(item)}
                                 {item.status === 'nao_realizado' && renderResumoCancelado && renderResumoCancelado(item)}
                             </div>
 
@@ -138,9 +156,7 @@ export default function PainelOperacionalBase({
                 </div>
             )}
 
-            {/* ========================================================= */}
-            {/* 🟢 MODAL 1: EXECUÇÃO / LAUDO TÉCNICO                      */}
-            {/* ========================================================= */}
+            {/* MODAL 1: EXECUÇÃO / LAUDO TÉCNICO */}
             {modalExecucaoAberto && itemSelecionado && (
                 <div className="po-modal-overlay">
                     <div className="po-modal-card po-modal-largo">
@@ -155,14 +171,10 @@ export default function PainelOperacionalBase({
                 </div>
             )}
 
-            {/* ========================================================= */}
-            {/* 🔴 MODAL 2: CANCELAMENTO / NÃO REALIZAÇÃO (PADRÃO)         */}
-            {/* ========================================================= */}
+            {/* MODAL 2: CANCELAMENTO / NÃO REALIZAÇÃO */}
             {modalCancelamentoAberto && itemSelecionado && (
                 <div className="po-modal-overlay">
                     <div className="po-modal-card">
-                        
-                        {/* Cabeçalho Vermelho do Modal */}
                         <div className="po-modal-header cancelamento-header">
                             <h3><i className="fas fa-exclamation-triangle mr-2"></i> {tituloModalCancelamento}</h3>
                             <button className="po-btn-fechar" onClick={fecharModais}>
@@ -170,7 +182,6 @@ export default function PainelOperacionalBase({
                             </button>
                         </div>
 
-                        {/* Se a página enviou um formulário customizado, usa ele. Senão, usa o Form Padrão! */}
                         {renderFormCancelamentoCustom ? (
                             renderFormCancelamentoCustom(itemSelecionado, fecharModais)
                         ) : (
@@ -185,7 +196,6 @@ export default function PainelOperacionalBase({
                                 onCancelar={fecharModais}
                             />
                         )}
-
                     </div>
                 </div>
             )}
@@ -194,9 +204,6 @@ export default function PainelOperacionalBase({
     );
 }
 
-/* ==========================================================================
-   SUB-COMPONENTE INTERNO: FORMULÁRIO DE CANCELAMENTO PADRÃO
-   ========================================================================== */
 function FormCancelamentoPadrao({ item, onSalvar, onCancelar }) {
     const [agenteRelator, setAgenteRelator] = useState('');
     const [justificativa, setJustificativa] = useState('');
@@ -216,15 +223,12 @@ function FormCancelamentoPadrao({ item, onSalvar, onCancelar }) {
     return (
         <form onSubmit={handleSubmit}>
             <div className="po-modal-body">
-                
-                {/* Resumo visual do local afetado */}
                 <div className="po-resumo-localizacao cancelamento-resumo">
                     {item.paciente && <p><strong>Paciente / Solicitante:</strong> {item.paciente || item.municipe}</p>}
                     <p><strong>Localidade:</strong> {item.bairro} ({item.distrito || 'Cuiabá'})</p>
                     <p><strong>Endereço:</strong> {item.endereco}</p>
                 </div>
 
-                {/* Nome do Agente que relata */}
                 <div className="po-form-group mt-10">
                     <label>Nome do Agente Relator <span className="obrigatorio">*</span></label>
                     <input
@@ -236,21 +240,18 @@ function FormCancelamentoPadrao({ item, onSalvar, onCancelar }) {
                     />
                 </div>
 
-                {/* Justificativa técnica */}
                 <div className="po-form-group">
                     <label>Justificativa Técnica / Motivo do Impedimento <span className="obrigatorio">*</span></label>
                     <textarea
                         rows="4"
-                        placeholder="Ex: Imóvel fechado durante 3 tentativas. / Ex: Recusa expressa do morador. / Ex: Condições climáticas adversas (chuva forte)."
+                        placeholder="Ex: Imóvel fechado durante 3 tentativas..."
                         value={justificativa}
                         onChange={(e) => setJustificativa(e.target.value)}
                         required
                     ></textarea>
                 </div>
-
             </div>
 
-            {/* Rodapé do Modal */}
             <div className="po-modal-footer">
                 <button type="button" className="btn-cancelar" onClick={onCancelar}>
                     Cancelar

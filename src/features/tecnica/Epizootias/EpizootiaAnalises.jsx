@@ -12,7 +12,6 @@ export default function EpizootiaAnalises() {
     const [abaAtiva, setAbaAtiva] = useState('pendentes');
 
     useEffect(() => {
-        // Simulação de amostras de epizootias na bancada do laboratório
         setTimeout(() => {
             setAmostras([
                 {
@@ -53,14 +52,27 @@ export default function EpizootiaAnalises() {
         }, 500);
     }, []);
 
+    // 1️⃣ Envia o Laudo de Bancada e move para "Encerramentos"
     const handleSalvarAnalise = (id, dadosAnalise) => {
         setAmostras(prev => prev.map(item => item.id === id ? {
             ...item,
-            status: 'executado',
+            status: 'encerramento',
             dadosAnalise
         } : item));
 
-        setSucesso(`Laudo Laboratorial da Amostra #${id} (${dadosAnalise.resumo?.resultadoGeral || 'Emitido'}) emitido com sucesso!`);
+        setSucesso(`Laudo da Amostra #${id} emitido! Encaminhado para Encerramentos.`);
+        setTimeout(() => setSucesso(''), 4000);
+    };
+
+    // 2️⃣ Conclui o Encerramento e move para "Serviços Concluídos"
+    const handleFinalizarEncerramento = (id) => {
+        setAmostras(prev => prev.map(item => item.id === id ? {
+            ...item,
+            status: 'executado',
+            dataEncerramento: new Date().toLocaleDateString('pt-BR')
+        } : item));
+
+        setSucesso(`Serviço #${id} encerrado e concluído com sucesso!`);
         setTimeout(() => setSucesso(''), 4000);
     };
 
@@ -85,8 +97,12 @@ export default function EpizootiaAnalises() {
             sucesso={sucesso}
             abaAtiva={abaAtiva}
             setAbaAtiva={setAbaAtiva}
+
+            /* 🟢 CONFIGURAÇÃO DAS 3 ABAS SOLICITADAS */
             textoAbaPendentes="Amostras Fila de Análise"
-            textoAbaConcluidos="Laudos Emitidos"
+            textoAbaEncerramentos="Encerramentos"
+            textoAbaConcluidos="Serviços Concluídos"
+
             tituloModalExecucao="Laudo Técnico de Análise Zoonótica / Laboratorial"
             onConfirmarCancelamento={handleInviabilizarAmostra}
 
@@ -112,7 +128,7 @@ export default function EpizootiaAnalises() {
             renderResumoExecutado={(item) => (
                 <div className="po-boletim-resumo">
                     <hr className="po-divisor-card" />
-                    <h4><i className="fas fa-file-medical-alt"></i> Laudo Laboratorial Final</h4>
+                    <h4><i className="fas fa-file-medical-alt"></i> Laudo Laboratorial</h4>
                     <p><strong>Examinador / Laboratorista:</strong> {item.dadosAnalise?.tecnicoAnalista || 'Não informado'}</p>
                     <p><strong>Resultado Geral:</strong> <span className="font-weight-bold text-primary">{item.dadosAnalise?.resumo?.resultadoGeral || 'Concluído'}</span></p>
                     <p className="text-small text-muted">
@@ -120,6 +136,18 @@ export default function EpizootiaAnalises() {
                         | Reagentes (+): {item.dadosAnalise?.resumo?.totalReagentes || 0}
                         | Não Reagentes (-): {item.dadosAnalise?.resumo?.totalNaoReagentes || 0}
                     </p>
+
+                    {/* BOTÃO PARA CONCLUIR O SERVIÇO NA ABA "ENCERRAMENTOS" */}
+                    {item.status === 'encerramento' && (
+                        <button
+                            type="button"
+                            className="btn-executar mt-3 w-100"
+                            style={{ backgroundColor: '#0288d1', color: '#fff' }}
+                            onClick={() => handleFinalizarEncerramento(item.id)}
+                        >
+                            <i className="fas fa-check-double mr-1"></i> Finalizar Encerramento
+                        </button>
+                    )}
                 </div>
             )}
 
@@ -137,7 +165,6 @@ export default function EpizootiaAnalises() {
     );
 }
 
-// 🟢 SUBCOMPONENTE DE FORMULÁRIO DE ANÁLISE DE BANCADA
 function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
     const [tecnicoAnalista, setTecnicoAnalista] = useState('');
     const [dataAnalise, setDataAnalise] = useState(new Date().toISOString().split('T')[0]);
@@ -221,8 +248,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
 
     return (
         <form onSubmit={handleSubmit} className="po-form-container p-2">
-
-            {/* CABEÇALHO RESUMO DA AMOSTRA */}
             {amostra && (
                 <div className="br-card p-3 mb-3 bg-light border-left-primary border rounded">
                     <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -237,7 +262,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                 </div>
             )}
 
-            {/* SEÇÃO 1: IDENTIFICAÇÃO DO LABORATORISTA E KIT */}
             <div className="po-card-secao mb-4 border rounded p-3 bg-white shadow-sm">
                 <div className="po-subtitulo-form border-bottom pb-2 mb-3 text-primary font-weight-bold">
                     <i className="fas fa-microscope mr-2"></i> 1. Identificação Técnica de Bancada
@@ -287,7 +311,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                 </div>
             </div>
 
-            {/* SEÇÃO 2: RESULTADOS ANALÍTICOS POR ANIMAL / AMOSTRA */}
             <div className="po-card-secao mb-4 border rounded p-3 bg-white shadow-sm">
                 <div className="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3 flex-wrap gap-2">
                     <span className="po-subtitulo-form text-primary font-weight-bold m-0">
@@ -318,7 +341,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                             {resultadosAnimais.map((ra, index) => (
                                 <tr key={ra.id}>
                                     <td className="text-center font-weight-bold">{index + 1}</td>
-
                                     <td>
                                         <input
                                             type="text"
@@ -328,7 +350,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                                             onChange={(e) => handleLinhaChange(ra.id, 'identificacaoAnimal', e.target.value)}
                                         />
                                     </td>
-
                                     <td>
                                         <select
                                             className="triato-select-grid"
@@ -340,7 +361,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                                             <option value="OUTRO">Outro</option>
                                         </select>
                                     </td>
-
                                     <td>
                                         <select
                                             className="triato-select-grid font-weight-bold"
@@ -353,7 +373,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                                             <option value="Amostra Inviável">Amostra Inviável/Hemolisada</option>
                                         </select>
                                     </td>
-
                                     <td>
                                         <input
                                             type="text"
@@ -363,7 +382,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                                             onChange={(e) => handleLinhaChange(ra.id, 'titulacao', e.target.value)}
                                         />
                                     </td>
-
                                     <td className="text-center">
                                         <button
                                             type="button"
@@ -380,7 +398,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                     </table>
                 </div>
 
-                {/* PAINEL RESUMO DA BANCADA */}
                 <div className="triato-resumo-bancada mt-3 p-2 rounded bg-light border d-flex justify-content-around text-center flex-wrap gap-2">
                     <div>
                         <small className="text-muted d-block text-uppercase font-weight-bold">Total Amostras</small>
@@ -401,7 +418,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                 </div>
             </div>
 
-            {/* OBSERVAÇÕES / PARECER TÉCNICO */}
             <div className="po-card-secao mb-4 border rounded p-3 bg-white shadow-sm">
                 <label className="font-weight-bold text-dark d-block mb-2">
                     <i className="fas fa-sticky-note mr-2 text-primary"></i> Observações / Parecer Técnico do Laboratório:
@@ -415,7 +431,6 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                 ></textarea>
             </div>
 
-            {/* RODAPÉ E AÇÕES */}
             <div className="po-modal-footer d-flex justify-content-end gap-2 mt-3 pt-3 border-top">
                 {onCancelar && (
                     <button type="button" className="btn-cancelar mr-2" onClick={onCancelar}>
@@ -423,7 +438,7 @@ function FormAnaliseEpizootias({ amostra, onSubmitLaudo, onCancelar }) {
                     </button>
                 )}
                 <button type="submit" className="btn-confirmar-boletim">
-                    <i className="fas fa-check-circle mr-1"></i> Emitir Laudo Laboratorial de Epizootias
+                    <i className="fas fa-paper-plane mr-1"></i> Emitir Laudo e Enviar para Encerramento
                 </button>
             </div>
         </form>
