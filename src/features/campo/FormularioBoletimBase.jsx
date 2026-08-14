@@ -19,7 +19,7 @@ export default function FormularioBoletimBase({
     // ==========================================
     // 🧠 GESTÃO DE ESTADO CENTRALIZADA
     // ==========================================
-    const nomeLogado = localStorage.getItem('userLogin') || '';
+    const nomeLogado = localStorage.getItem('userName') || '';
     const titularPadronizado = nomeLogado.toUpperCase();
 
     const [listaImoveis, setListaImoveis] = useState([]);
@@ -155,7 +155,7 @@ export default function FormularioBoletimBase({
         }).filter(Boolean);
 
         const payloadOffline = {
-            id: tipoBoletim === 'BLOQUEIO' ? solicitacaoId : null, // 🟢 2. Vincula o ID da O.S. se for bloqueio
+            id: tipoBoletim === 'BLOQUEIO' ? solicitacaoId : undefined, // 🟢 2. Vincula o ID da O.S. se for bloqueio
             ...cabecalho,
             tipo_boletim: tipoBoletim,
             imoveis: listaImoveis,
@@ -734,7 +734,7 @@ export default function FormularioBoletimBase({
 
             {/* ================= MODAL GOV.BR PARA REVISÃO ================= */}
             {modalRevisaoAberto && (
-                <div className="br-scrim is-active" onClick={() => setModalRevisaoAberto(true)}>
+                <div className="br-scrim is-active" onClick={() => setModalRevisaoAberto(false)}>
                     <div className="br-modal modal-revisao-gov" onClick={e => e.stopPropagation()}>
 
                         <div className="br-modal-header border-bottom">

@@ -7,7 +7,7 @@ export default function OrdemServicoCampo({ setTelaAtual }) {
 
   // Estados Gerais comuns
   const [dataSolicitacao, setDataSolicitacao] = useState('');
-  const [agenteSolicitante, setAgenteSolicitante] = useState('JOAO VITOR ROSSI');
+  const [agenteSolicitante, setAgenteSolicitante] = useState(localStorage.getItem('userName') || 'Agente');
   const [bairro, setBairro] = useState('');
   const [endereco, setEndereco] = useState('');
   const [quarteirao, setQuarteirao] = useState('');

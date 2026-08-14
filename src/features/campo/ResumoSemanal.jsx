@@ -199,13 +199,9 @@ export default function ResumoSemanal({ setTelaAtual }) {
         };
 
         try {
-            const resposta = await fetch('https://sistema-uvz-backend.onrender.com/api/resumos-semanais', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            const resposta = await api.post('/resumos-semanais', payload);
 
-            if (resposta.ok) {
+            if (resposta.status === 200 || resposta.status === 201) {
                 alert('✅ Resumo Semanal enviado com sucesso para a Gestão!');
                 setTelaAtual('campo_menu');
             } else {
