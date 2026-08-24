@@ -27,6 +27,7 @@ import ValidacaoSinantropia from './responsaveis-tecnicos/ValidacaoSinantropia';
 // 📁 SETOR: CONSULTAS E RELATÓRIOS
 import ConsultasExportacoes from './consultas/ConsultasExportacoes';
 import IndicadoresRelatorios from './consultas/IndicadoresRelatorios';
+import TabelaResumoPNCD from './consultas/TabelaResumoPNCD.jsx';
 
 // 📁 SETOR: BORRIFAÇÃO
 import BloqueioQuimico from './borrifacao/BloqueioQuimico';
@@ -218,7 +219,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                         )}
                     </div>
 
-                    {/* 📁 SETOR 7: CONSULTAS E RELATÓRIOS (NOVA PASTA ISOLADA) */}
+                    {/* 📁 SETOR 7: CONSULTAS E RELATÓRIOS */}
                     <div className="menu-folder">
                         <button className={`folder-btn br-button block ${pastaAberta === 'consultas-relatorios' ? 'active' : ''}`} onClick={() => togglePasta('consultas-relatorios')}>
                             <i className={`fas ${pastaAberta === 'consultas-relatorios' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
@@ -233,6 +234,10 @@ export default function PainelTecnico({ setTelaAtual }) {
                                 </button>
                                 <button className={`menu-btn br-button block ${abaAtiva === 'consultas' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('consultas')}>
                                     <i className="fas fa-search mr-2" aria-hidden="true"></i> Consultas & Exportação
+                                </button>
+                                {/* 🟢 Novo botão para o relatório PNCD */}
+                                <button className={`menu-btn br-button block ${abaAtiva === 'resumo-pncd' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('resumo-pncd')}>
+                                    <i className="fas fa-table mr-2" aria-hidden="true"></i> Resumo Semanal (PNCD)
                                 </button>
                             </div>
                         )}
@@ -291,6 +296,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {/* 📁 SETOR 6: CONSULTAS E RELATÓRIOS */}
                 {abaAtiva === 'dashboards' && <div className="br-card"><IndicadoresRelatorios setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'consultas' && <div className="br-card"><ConsultasExportacoes setTelaAtual={setTelaAtual} /></div>}
+                {abaAtiva === 'resumo-pncd' && <TabelaResumoPNCD />}
 
             </main>
         </div>
