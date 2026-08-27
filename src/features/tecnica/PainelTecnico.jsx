@@ -6,8 +6,9 @@ import CadastroUsuario from './administrativo/CadastroUsuario';
 import GerenciarUsuarios from './administrativo/GerenciarUsuarios';
 
 // 📁 SETOR: EPIZOOTIAS
-import EpizootiaBusca from './epizootias/EpizootiaBusca';
+import EpizootiaBusca from './Epizootias/EpizootiaBusca';
 import EpizootiaAnalises from './Epizootias/EpizootiaAnalises';
+import MonitorTemperatura from './Epizootias/MonitorTemperatura';
 
 // 📁 SETOR: SINANTROPIA
 import AnaliseLarvas from './sinantropia/AnaliseLarvas';
@@ -154,6 +155,12 @@ export default function PainelTecnico({ setTelaAtual }) {
                                 <button className={`menu-btn br-button block ${abaAtiva === 'epizootia-analises' ? 'active text-primary' : ''}`} onClick={() => navegarPara('epizootia-analises')}>
                                     <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Análises e Retaguarda
                                 </button>
+                                <button
+                                    className={`menu-btn br-button block ${abaAtiva === 'monitor-temperatura' ? 'active text-primary' : ''}`}
+                                    onClick={() => setAbaAtiva('monitor-temperatura')}
+                                >
+                                    <i className="fas fa-thermometer-half mr-2" aria-hidden="true"></i> Monitor de Temperatura
+                                </button>
                             </div>
                         )}
                     </div>
@@ -280,6 +287,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {/* 📁 SETOR 3: EPIZOOTIAS */}
                 {abaAtiva === 'epizootia-busca' && <div className="br-card"><EpizootiaBusca setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'epizootia-analises' && <div className="br-card"><EpizootiaAnalises setAbaAtiva={setAbaAtiva} /></div>}
+                {abaAtiva === 'monitor-temperatura' && <MonitorTemperatura setAbaAtiva={setAbaAtiva} setTelaAtual={setTelaAtual} />}
 
                 {/* 📁 SETOR 4: SUPERVISORES */}
                 {abaAtiva === 'mutirao' && <div className="br-card"><DistribuidorTrabalho setTelaAtual={setTelaAtual} /></div>}
