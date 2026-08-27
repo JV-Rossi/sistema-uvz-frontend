@@ -1,17 +1,29 @@
 /* ==========================================================================
-   ⚙️ PAINEL TÉCNICO CENTRAL - LAYOUT PADRÃO (RESTAURADO)
+   ⚙️ PAINEL TÉCNICO CENTRAL - LAYOUT RESPONSIVO (DESKTOP & MOBILE)
    ========================================================================== */
 
-/* Container que junta o menu e o conteúdo lado a lado */
+/* Container Principal */
 .tecnico-container {
     display: flex;
     min-height: 100vh;
     width: 100%;
-    background-color: #f4f6f9; /* Fundo acinzentado padrão */
-    font-family: 'Rawline', sans-serif; /* Padrão GovBR */
+    background-color: #f4f6f9;
+    font-family: 'Rawline', sans-serif;
+    position: relative;
+    overflow-x: hidden;
 }
 
-/* Barra lateral esquerda */
+/* Barra superior Mobile (Oculta no Desktop) */
+.mobile-header {
+    display: none;
+}
+
+/* Backdrop escuro (Oculto no Desktop) */
+.sidebar-backdrop {
+    display: none;
+}
+
+/* Barra lateral esquerda (Desktop padrão) */
 .tecnico-sidebar {
     width: 280px;
     min-width: 280px;
@@ -42,7 +54,7 @@
 }
 
 .sidebar-logo-btn h2 {
-    color: #1351B4; /* Azul GovBR */
+    color: #1351B4;
     font-size: 20px;
     margin: 0;
 }
@@ -63,7 +75,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-start !important; /* 🎯 Força o alinhamento à esquerda, anulando o GovBR */
+    justify-content: flex-start !important;
     padding: 12px 15px;
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
@@ -92,8 +104,8 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-start !important; /* 🎯 Força o alinhamento à esquerda */
-    padding: 10px 15px 10px 38px !important; /* 📐 Indentação extra na esquerda para dar efeito de sub-menu */
+    justify-content: flex-start !important;
+    padding: 10px 15px 10px 38px !important;
     background: none;
     border: none;
     border-radius: 4px;
@@ -120,10 +132,113 @@
     background-color: #ffffff;
 }
 
-/* ➡️ ÁREA DE CONTEÚDO (DIREITA) */
+/* Área de Conteúdo Principal (Desktop) */
 .tecnico-conteudo {
     flex: 1;
     padding: 30px;
     box-sizing: border-box;
     overflow-y: auto;
+    width: calc(100% - 280px);
+}
+
+
+/* ==========================================================================
+   📱 REGRAS ESPECÍFICAS PARA CELULARES (Galaxy A05 e telas <= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .tecnico-container {
+        flex-direction: column;
+    }
+
+    /* 1. Header fixo no topo do celular */
+    .mobile-header {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 56px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0 16px;
+        z-index: 1050;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .mobile-menu-toggle {
+        background-color: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 18px;
+        color: #1351B4;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-header-title {
+        margin-left: 12px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-header-title .title-bold {
+        font-weight: 700;
+        color: #1351B4;
+        font-size: 15px;
+        line-height: 1.2;
+    }
+
+    .mobile-header-title .title-sub {
+        font-size: 11px;
+        color: #64748b;
+    }
+
+    /* 2. Backdrop Escuro */
+    .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.45);
+        z-index: 1100;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease-in-out;
+        backdrop-filter: blur(2px);
+    }
+
+    .sidebar-backdrop.ativo {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* 3. Barra Lateral como Drawer Off-Canvas */
+    .tecnico-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        height: 100vh;
+        width: 280px;
+        max-width: 82vw;
+        z-index: 1150;
+        transform: translateX(-100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: none;
+    }
+
+    .tecnico-sidebar.sidebar-aberta {
+        transform: translateX(0);
+        box-shadow: 4px 0 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 4. Área de Trabalho no Mobile (100% da tela útil) */
+    .tecnico-conteudo {
+        width: 100% !important;
+        padding: 68px 12px 24px 12px !important;
+        overflow-x: auto;
+    }
 }

@@ -37,21 +37,49 @@ import './PainelTecnico.css';
 export default function PainelTecnico({ setTelaAtual }) {
     const [abaAtiva, setAbaAtiva] = useState('inicio');
     const [pastaAberta, setPastaAberta] = useState(null);
+    const [sidebarAberta, setSidebarAberta] = useState(false);
 
     const togglePasta = (nomeDaPasta) => {
         setPastaAberta(pastaAberta === nomeDaPasta ? null : nomeDaPasta);
     };
 
+    // Navega para a aba e recolhe o menu no celular automaticamente
+    const navegarPara = (aba) => {
+        setAbaAtiva(aba);
+        setSidebarAberta(false);
+    };
+
     return (
         <div className="tecnico-container ds-gov-layout">
 
-            {/* ⬅️ BARRA LATERAL */}
-            <aside className="tecnico-sidebar br-menu">
+            {/* 📱 BARRA SUPERIOR EXCLUSIVA PARA CELULAR / TABLET */}
+            <header className="mobile-header">
+                <button
+                    className="mobile-menu-toggle"
+                    onClick={() => setSidebarAberta(!sidebarAberta)}
+                    aria-label="Abrir menu"
+                >
+                    <i className={`fas ${sidebarAberta ? 'fa-times' : 'fa-bars'}`}></i>
+                </button>
+                <div className="mobile-header-title">
+                    <span className="title-bold">CVSA - Cuiabá</span>
+                    <span className="title-sub">Painel Técnico</span>
+                </div>
+            </header>
+
+            {/* 🌑 BACKDROP (Fundo escuro que fecha a sidebar ao tocar fora) */}
+            <div
+                className={`sidebar-backdrop ${sidebarAberta ? 'ativo' : ''}`}
+                onClick={() => setSidebarAberta(false)}
+            />
+
+            {/* ⬅️ BARRA LATERAL (DRAWER NO MOBILE) */}
+            <aside className={`tecnico-sidebar br-menu ${sidebarAberta ? 'sidebar-aberta' : ''}`}>
 
                 <button
                     className="sidebar-logo-btn"
                     onClick={() => {
-                        setAbaAtiva('inicio');
+                        navegarPara('inicio');
                         setPastaAberta(null);
                     }}
                     title="Ir para o início"
@@ -74,13 +102,13 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                         {pastaAberta === 'administrativo' && (
                             <div className="folder-content pl-3">
-                                <button className={`menu-btn br-button block ${abaAtiva === 'ordem-servico' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('ordem-servico')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'ordem-servico' ? 'active text-primary' : ''}`} onClick={() => navegarPara('ordem-servico')}>
                                     <i className="fas fa-headset mr-2" aria-hidden="true"></i> Ordem de Serviço
                                 </button>
-                                <button className={`menu-btn br-button block ${abaAtiva === 'equipe' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('equipe')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'equipe' ? 'active text-primary' : ''}`} onClick={() => navegarPara('equipe')}>
                                     <i className="fas fa-user-plus mr-2" aria-hidden="true"></i> Cadastro de Equipe
                                 </button>
-                                <button className={`menu-btn br-button block ${abaAtiva === 'gerenciar-equipe' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('gerenciar-equipe')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'gerenciar-equipe' ? 'active text-primary' : ''}`} onClick={() => navegarPara('gerenciar-equipe')}>
                                     <i className="fas fa-user-edit mr-2" aria-hidden="true"></i> Gerenciar Usuários
                                 </button>
                             </div>
@@ -97,25 +125,22 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                         {pastaAberta === 'sinantropia' && (
                             <div className="folder-content pl-3">
-                                <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-ovos' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('sinantropia-ovos')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-ovos' ? 'active text-primary' : ''}`} onClick={() => navegarPara('sinantropia-ovos')}>
                                     <i className="fas fa-egg mr-2" aria-hidden="true"></i> Contagem de Ovos
                                 </button>
-                                <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-busca-ativa' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('sinantropia-busca-ativa')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-busca-ativa' ? 'active text-primary' : ''}`} onClick={() => navegarPara('sinantropia-busca-ativa')}>
                                     <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Agendamentos
                                 </button>
-                                <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-analises' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('sinantropia-analises')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'sinantropia-analises' ? 'active text-primary' : ''}`} onClick={() => navegarPara('sinantropia-analises')}>
                                     <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Análises
                                 </button>
                             </div>
                         )}
                     </div>
 
-                    {/* 📁 SETOR 3: Epizootias */}
+                    {/* 📁 SETOR 3: EPIZOOTIAS */}
                     <div className="menu-folder">
-                        <button
-                            className={`folder-btn br-button block ${pastaAberta === 'epizootias' ? 'active' : ''}`}
-                            onClick={() => togglePasta('epizootias')}
-                        >
+                        <button className={`folder-btn br-button block ${pastaAberta === 'epizootias' ? 'active' : ''}`} onClick={() => togglePasta('epizootias')}>
                             <i className={`fas ${pastaAberta === 'epizootias' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Epizootias
                             <i className={`fas ${pastaAberta === 'epizootias' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
@@ -123,30 +148,19 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                         {pastaAberta === 'epizootias' && (
                             <div className="folder-content pl-3">
-                                <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'epizootia-busca' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('epizootia-busca')}
-                                >
+                                <button className={`menu-btn br-button block ${abaAtiva === 'epizootia-busca' ? 'active text-primary' : ''}`} onClick={() => navegarPara('epizootia-busca')}>
                                     <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Agendamentos
                                 </button>
-
-                                <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'epizootia-analises' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('epizootia-analises')}
-                                >
+                                <button className={`menu-btn br-button block ${abaAtiva === 'epizootia-analises' ? 'active text-primary' : ''}`} onClick={() => navegarPara('epizootia-analises')}>
                                     <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Análises e Retaguarda
                                 </button>
                             </div>
                         )}
                     </div>
 
-
                     {/* 📁 SETOR 4: SUPERVISORES */}
                     <div className="menu-folder">
-                        <button
-                            className={`folder-btn br-button block ${pastaAberta === 'supervisao' ? 'active' : ''}`}
-                            onClick={() => togglePasta('supervisao')}
-                        >
+                        <button className={`folder-btn br-button block ${pastaAberta === 'supervisao' ? 'active' : ''}`} onClick={() => togglePasta('supervisao')}>
                             <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-folder-open' : 'fa-folder'} mr-2`} aria-hidden="true"></i>
                             Supervisores
                             <i className={`fas ${pastaAberta === 'supervisao' ? 'fa-angle-up' : 'fa-angle-down'} ml-auto`} aria-hidden="true"></i>
@@ -154,28 +168,16 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                         {pastaAberta === 'supervisao' && (
                             <div className="folder-content pl-3">
-                                <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'inspecoes' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('inspecoes')}
-                                >
+                                <button className={`menu-btn br-button block ${abaAtiva === 'inspecoes' ? 'active text-primary' : ''}`} onClick={() => navegarPara('inspecoes')}>
                                     <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Inspeções
                                 </button>
-                                <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'mutirao' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('mutirao')}
-                                >
+                                <button className={`menu-btn br-button block ${abaAtiva === 'mutirao' ? 'active text-primary' : ''}`} onClick={() => navegarPara('mutirao')}>
                                     <i className="fas fa-clipboard-list mr-2" aria-hidden="true"></i> Distribuição de Mutirão
                                 </button>
-                                <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'programacao-bloqueios' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('programacao-bloqueios')}
-                                >
+                                <button className={`menu-btn br-button block ${abaAtiva === 'programacao-bloqueios' ? 'active text-primary' : ''}`} onClick={() => navegarPara('programacao-bloqueios')}>
                                     <i className="fas fa-calendar-alt mr-2" aria-hidden="true"></i> Planejamento de Bloqueios
                                 </button>
-                                <button
-                                    className={`menu-btn br-button block ${abaAtiva === 'reuniao-semanal' ? 'active text-primary' : ''}`}
-                                    onClick={() => setAbaAtiva('reuniao-semanal')}
-                                >
+                                <button className={`menu-btn br-button block ${abaAtiva === 'reuniao-semanal' ? 'active text-primary' : ''}`} onClick={() => navegarPara('reuniao-semanal')}>
                                     <i className="fas fa-file-powerpoint mr-2 text-danger" aria-hidden="true"></i> Reunião Semanal (PPTX)
                                 </button>
                             </div>
@@ -192,10 +194,10 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                         {pastaAberta === 'responsaveis' && (
                             <div className="folder-content pl-3">
-                                <button className={`menu-btn br-button block ${abaAtiva === 'validacao-bloqueios' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('validacao-bloqueios')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'validacao-bloqueios' ? 'active text-primary' : ''}`} onClick={() => navegarPara('validacao-bloqueios')}>
                                     <i className="fas fa-shield-alt mr-2" aria-hidden="true"></i> Validação de Bloqueios
                                 </button>
-                                <button className={`menu-btn br-button block ${abaAtiva === 'validacao-sinantropia' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('validacao-sinantropia')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'validacao-sinantropia' ? 'active text-primary' : ''}`} onClick={() => navegarPara('validacao-sinantropia')}>
                                     <i className="fas fa-bug mr-2" aria-hidden="true"></i> Validação Sinantropia
                                 </button>
                             </div>
@@ -212,7 +214,7 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                         {pastaAberta === 'borrifacao' && (
                             <div className="folder-content pl-3">
-                                <button className={`menu-btn br-button block ${abaAtiva === 'bloqueio_quimico' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('bloqueio_quimico')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'bloqueio_quimico' ? 'active text-primary' : ''}`} onClick={() => navegarPara('bloqueio_quimico')}>
                                     <i className="fas fa-shield-alt mr-2" aria-hidden="true"></i> Bloqueio Químico
                                 </button>
                             </div>
@@ -229,14 +231,13 @@ export default function PainelTecnico({ setTelaAtual }) {
 
                         {pastaAberta === 'consultas-relatorios' && (
                             <div className="folder-content pl-3">
-                                <button className={`menu-btn br-button block ${abaAtiva === 'dashboards' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('dashboards')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'dashboards' ? 'active text-primary' : ''}`} onClick={() => navegarPara('dashboards')}>
                                     <i className="fas fa-chart-pie mr-2" aria-hidden="true"></i> Indicadores e Relatórios
                                 </button>
-                                <button className={`menu-btn br-button block ${abaAtiva === 'consultas' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('consultas')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'consultas' ? 'active text-primary' : ''}`} onClick={() => navegarPara('consultas')}>
                                     <i className="fas fa-search mr-2" aria-hidden="true"></i> Consultas & Exportação
                                 </button>
-                                {/* 🟢 Novo botão para o relatório PNCD */}
-                                <button className={`menu-btn br-button block ${abaAtiva === 'resumo-pncd' ? 'active text-primary' : ''}`} onClick={() => setAbaAtiva('resumo-pncd')}>
+                                <button className={`menu-btn br-button block ${abaAtiva === 'resumo-pncd' ? 'active text-primary' : ''}`} onClick={() => navegarPara('resumo-pncd')}>
                                     <i className="fas fa-table mr-2" aria-hidden="true"></i> Resumo Semanal (PNCD)
                                 </button>
                             </div>
@@ -252,16 +253,16 @@ export default function PainelTecnico({ setTelaAtual }) {
                 </div>
             </aside>
 
-            {/* ➡️ ÁREA DE TRABALHO */}
-            <main className="tecnico-conteudo p-4">
+            {/* ➡️ ÁREA DE TRABALHO (100% DA LARGURA NO CELULAR) */}
+            <main className="tecnico-conteudo">
 
                 {/* 🏠 TELA INICIAL */}
                 {abaAtiva === 'inicio' && (
-                    <div className="br-message is-info mt-5" role="alert">
+                    <div className="br-message is-info mt-2" role="alert">
                         <div className="icon"><i className="fas fa-info-circle fa-lg"></i></div>
                         <div className="content">
                             <span className="message-title text-weight-semi-bold">Bem-vindo(a) ao Painel da Equipe Técnica.</span>
-                            <span className="message-body"> Utilize o menu lateral para acessar os módulos de Sinantropia, Borrifação, Supervisão, Validações e Consultas.</span>
+                            <span className="message-body"> Utilize o menu para acessar os módulos operacionais, de supervisão e relatórios.</span>
                         </div>
                     </div>
                 )}
@@ -293,7 +294,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {/* 📁 SETOR 6: BORRIFAÇÃO */}
                 {abaAtiva === 'bloqueio_quimico' && <div className="br-card"><BloqueioQuimico setAbaAtiva={setAbaAtiva} /></div>}
 
-                {/* 📁 SETOR 6: CONSULTAS E RELATÓRIOS */}
+                {/* 📁 SETOR 7: CONSULTAS E RELATÓRIOS */}
                 {abaAtiva === 'dashboards' && <div className="br-card"><IndicadoresRelatorios setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'consultas' && <div className="br-card"><ConsultasExportacoes setTelaAtual={setTelaAtual} /></div>}
                 {abaAtiva === 'resumo-pncd' && <TabelaResumoPNCD />}
