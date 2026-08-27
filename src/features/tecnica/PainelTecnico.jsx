@@ -28,7 +28,7 @@ import ValidacaoSinantropia from './responsaveis-tecnicos/ValidacaoSinantropia';
 // 📁 SETOR: CONSULTAS E RELATÓRIOS
 import ConsultasExportacoes from './consultas/ConsultasExportacoes';
 import IndicadoresRelatorios from './consultas/IndicadoresRelatorios';
-import TabelaResumoPNCD from './consultas/TabelaResumoPNCD.jsx';
+import TabelaResumoPNCD from './consultas/TabelaResumoPNCD';
 
 // 📁 SETOR: BORRIFAÇÃO
 import BloqueioQuimico from './borrifacao/BloqueioQuimico';
@@ -305,7 +305,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                 {/* 📁 SETOR 7: CONSULTAS E RELATÓRIOS */}
                 {abaAtiva === 'dashboards' && <div className="br-card"><IndicadoresRelatorios setAbaAtiva={setAbaAtiva} /></div>}
                 {abaAtiva === 'consultas' && <div className="br-card"><ConsultasExportacoes setTelaAtual={setTelaAtual} /></div>}
-                {abaAtiva === 'resumo-pncd' && <TabelaResumoPNCD />}
+                {abaAtiva === 'resumo-pncd' && <div className="br-card"><TabelaResumoPNCD setAbaAtiva={setAbaAtiva} /></div>}
 
             </main>
         </div>
