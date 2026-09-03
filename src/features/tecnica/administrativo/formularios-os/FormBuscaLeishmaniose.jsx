@@ -5,7 +5,7 @@ import './FormBuscaBase.css';
 const estadoInicialAnimal = () => ({
     id: Date.now() + Math.random(),
     nome: '',
-    especie: 'cao',
+    especie: 'cao', // Fixo como cão (rotina exclusiva de LVC na CVSA)
     raca: '',
     sexo: 'macho',
     idade: '',
@@ -15,9 +15,18 @@ const estadoInicialAnimal = () => ({
     origem: '',
     quandoAdoeceu: '',
     saiSolto: 'nao',
+    
+    // Imunização Antirrábica
     vacinadoRaiva: 'sim',
     localVacina: 'campanha',
     ultimaVacina: '',
+    
+    // 🟢 CAMPOS DE COLETA PARA O LABORATÓRIO / BANCADA DPP
+    coletouSangue: 'sim', // 'sim', 'nao', 'recusa', 'inviavel'
+    codigoTubo: '',       // Ex: DPP-2026-042
+    motivoNaoColeta: '',
+    
+    // Quadro Clínico
     sintomas: [],
     feridas: [],
     outrosSintomas: '',
@@ -157,11 +166,24 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Validação: se marcou que coletou sangue, o código do tubo é obrigatório para o laboratório
+        for (let i = 0; i < animais.length; i++) {
+            const a = animais[i];
+            if (a.coletouSangue === 'sim' && !a.codigoTubo.trim()) {
+                alert(`Por favor, informe o Nº do Tubo / Amostra coletada para o animal #${i + 1} (${a.nome || 'Sem nome'}).`);
+                return;
+            }
+        }
+
+        const totalAmostrasColetadas = animais.filter(a => a.coletouSangue === 'sim').length;
+
         const payload = {
             osId: osSelecionada?.id,
             ...formData,
             animais,
-            totalAnimaisVistoriados: animais.length
+            totalAnimaisVistoriados: animais.length,
+            totalAmostrasColetadas
         };
 
         if (onSubmitLaudo) {
@@ -192,7 +214,6 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                 <div className="po-subtitulo-form border-bottom pb-2 mb-3 text-primary font-weight-bold d-flex justify-content-between align-items-center">
                     <span><i className="fas fa-map-marker-alt mr-2"></i> 1. LOCALIZAÇÃO E DADOS DA VISITA DE CAMPO</span>
                     
-                    {/* BOTÃO DE GPS AQUI */}
                     <button 
                         type="button" 
                         onClick={capturarGPS}
@@ -321,7 +342,6 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                     <i className="fas fa-home mr-2"></i> 2. CARACTERIZAÇÃO EPIDEMIOLÓGICA E VETORIAL DO IMÓVEL
                 </div>
 
-                {/* 🟢 BLOCO SAÚDE HUMANA (ALINHAMENTO CORRIGIDO PELA BASE) */}
                 <div className="po-form-linha-tripla mb-3 pb-3 border-bottom" style={{ alignItems: 'flex-end' }}>
                     <div className="po-form-group">
                         <label>Nº de Residentes na Casa</label>
@@ -352,7 +372,6 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                     </div>
                 </div>
 
-                {/* 🟢 BLOCO CÃES E AMBIENTE (ALINHAMENTO CORRIGIDO PELA BASE) */}
                 <div className="po-form-linha-tripla mb-3" style={{ alignItems: 'flex-end' }}>
                     <div className="po-form-group">
                         <label>Possui Muro Fechado?</label>
@@ -380,7 +399,6 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                     </div>
                 </div>
 
-                {/* 🟢 BLOCO CONDICIONAL + OUTROS ANIMAIS (ALINHAMENTO CORRIGIDO PELA BASE) */}
                 <div className="po-form-linha-tripla mb-3" style={{ alignItems: 'flex-end' }}>
                     {formData.teveLeishmaniose === 'sim' && (
                         <>
@@ -447,14 +465,14 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                 </div>
             </div>
 
-            {/* SEÇÃO 3: REGISTRO CLÍNICO E EXAME FÍSICO POR ANIMAL */}
+            {/* SEÇÃO 3: REGISTRO CLÍNICO E COLETA POR ANIMAL */}
             <div className="po-card-secao mb-4 border rounded p-3 bg-white shadow-sm">
                 <div className="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
                     <span className="po-subtitulo-form text-primary font-weight-bold m-0">
-                        <i className="fas fa-stethoscope mr-2"></i> 3. REGISTRO CLÍNICO E EXAME FÍSICO POR ANIMAL
+                        <i className="fas fa-stethoscope mr-2"></i> 3. REGISTRO CLÍNICO E COLETA SANGUÍNEA (CANINOS)
                     </span>
                     <button type="button" className="br-button primary small" onClick={handleAdicionarAnimal}>
-                        <i className="fas fa-plus mr-1"></i> Adicionar Animal
+                        <i className="fas fa-plus mr-1"></i> Adicionar Cão
                     </button>
                 </div>
 
@@ -462,7 +480,7 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                     <div key={animal.id} className="p-3 mb-4 border rounded bg-light">
                         <div className="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                             <span className="font-weight-bold text-primary" style={{ fontSize: '1rem' }}>
-                                <i className="fas fa-dog mr-2"></i> Animal #{idx + 1}
+                                <i className="fas fa-dog mr-2"></i> Cão #{idx + 1}
                             </span>
                             {animais.length > 1 && (
                                 <button type="button" className="btn-remover-linha" onClick={() => handleRemoverAnimal(animal.id)}>
@@ -474,7 +492,7 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                         {/* LINHA 1: IDENTIFICAÇÃO E FOTO */}
                         <div className="po-form-linha-tripla mb-3">
                             <div className="po-form-group">
-                                <label>Nome do Animal <span className="obrigatorio">*</span></label>
+                                <label>Nome do Cão <span className="obrigatorio">*</span></label>
                                 <input
                                     type="text"
                                     placeholder="Ex: Rex"
@@ -485,14 +503,15 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                             </div>
 
                             <div className="po-form-group">
-                                <label>Espécie <span className="obrigatorio">*</span></label>
-                                <select value={animal.especie} onChange={(e) => handleAnimalChange(animal.id, 'especie', e.target.value)}>
-                                    <option value="cao">Cão (Canina)</option>
-                                    <option value="gato">Gato (Felina)</option>
-                                </select>
+                                <label>Raça</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ex: SRD / Pitbull"
+                                    value={animal.raca}
+                                    onChange={(e) => handleAnimalChange(animal.id, 'raca', e.target.value)}
+                                />
                             </div>
                             
-                            {/* UPLOAD DE FOTO */}
                             <div className="po-form-group">
                                 <label>Foto do Animal (Opcional)</label>
                                 {!animal.fotoBase64 ? (
@@ -521,17 +540,8 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                             </div>
                         </div>
 
-                        {/* LINHA 2: CARACTERÍSTICAS FÍSICAS E RAÇA */}
+                        {/* LINHA 2: CARACTERÍSTICAS FÍSICAS */}
                         <div className="po-form-linha-tripla mb-3">
-                            <div className="po-form-group">
-                                <label>Raça</label>
-                                <input
-                                    type="text"
-                                    placeholder="Ex: SRD / Poodle"
-                                    value={animal.raca}
-                                    onChange={(e) => handleAnimalChange(animal.id, 'raca', e.target.value)}
-                                />
-                            </div>
                             <div className="po-form-group">
                                 <label>Sexo</label>
                                 <select value={animal.sexo} onChange={(e) => handleAnimalChange(animal.id, 'sexo', e.target.value)}>
@@ -549,10 +559,7 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                                     onChange={(e) => handleAnimalChange(animal.id, 'idade', e.target.value)}
                                 />
                             </div>
-                        </div>
-                        
-                        {/* LINHA 3: PORTE E PELAGEM */}
-                        <div className="po-form-linha-dupla mb-3">
+
                             <div className="po-form-group">
                                 <label>Porte</label>
                                 <select value={animal.porte} onChange={(e) => handleAnimalChange(animal.id, 'porte', e.target.value)}>
@@ -561,7 +568,10 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                                     <option value="grande">Grande</option>
                                 </select>
                             </div>
-
+                        </div>
+                        
+                        {/* LINHA 3: PELAGEM E SITUAÇÃO */}
+                        <div className="po-form-linha-tripla mb-3">
                             <div className="po-form-group">
                                 <label>Cor da Pelagem</label>
                                 <input
@@ -571,10 +581,7 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                                     onChange={(e) => handleAnimalChange(animal.id, 'corPelo', e.target.value)}
                                 />
                             </div>
-                        </div>
 
-                        {/* LINHA 4: SITUAÇÃO E ACESSO */}
-                        <div className="po-form-linha-tripla mb-3">
                             <div className="po-form-group">
                                 <label>Situação do Animal</label>
                                 <select value={animal.domiciliado} onChange={(e) => handleAnimalChange(animal.id, 'domiciliado', e.target.value)}>
@@ -584,21 +591,55 @@ export default function FormBuscaLeishmaniose({ osSelecionada, onSubmitLaudo, on
                             </div>
 
                             <div className="po-form-group">
-                                <label>Procedência / Origem</label>
-                                <input
-                                    type="text"
-                                    placeholder="Ex: Criado desde filhote"
-                                    value={animal.origem}
-                                    onChange={(e) => handleAnimalChange(animal.id, 'origem', e.target.value)}
-                                />
-                            </div>
-
-                            <div className="po-form-group">
                                 <label>Acesso à Rua Solto Sem Guia?</label>
                                 <select value={animal.saiSolto} onChange={(e) => handleAnimalChange(animal.id, 'saiSolto', e.target.value)}>
                                     <option value="nao">Não (Fica no quintal/preso)</option>
                                     <option value="sim">Sim (Sai solto na rua)</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        {/* 🟢 SUB-BLOCO: COLETA DE SANGUE PARA A BANCADA DO LABORATÓRIO (DPP) */}
+                        <div className="p-3 mb-3 bg-white rounded border" style={{ borderLeft: '4px solid #0288d1' }}>
+                            <div className="font-weight-bold text-primary mb-2" style={{ fontSize: '0.9rem' }}>
+                                <i className="fas fa-vial mr-1"></i> Coleta Sanguínea para Triagem DPP (Laboratório CVSA)
+                            </div>
+                            <div className="po-form-linha-dupla">
+                                <div className="po-form-group">
+                                    <label>Amostra Coletada? <span className="obrigatorio">*</span></label>
+                                    <select 
+                                        value={animal.coletouSangue} 
+                                        onChange={(e) => handleAnimalChange(animal.id, 'coletouSangue', e.target.value)}
+                                    >
+                                        <option value="sim">Sim (Sangue Coletado no Tubo)</option>
+                                        <option value="nao">Não Coletado (Sem Indicação / Assintomático)</option>
+                                        <option value="recusa">Recusada pelo Tutor</option>
+                                        <option value="inviavel">Inviável (Agressividade / Difícil Acesso)</option>
+                                    </select>
+                                </div>
+
+                                {animal.coletouSangue === 'sim' ? (
+                                    <div className="po-form-group">
+                                        <label>Nº do Tubo / Código da Amostra <span className="obrigatorio">*</span></label>
+                                        <input
+                                            type="text"
+                                            placeholder="Ex: DPP-2026-042 ou Lote/Tubo nº"
+                                            value={animal.codigoTubo}
+                                            onChange={(e) => handleAnimalChange(animal.id, 'codigoTubo', e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="po-form-group">
+                                        <label>Motivo da Não Coleta</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Ex: Tutor assinou recusa / Animal agressivo"
+                                            value={animal.motivoNaoColeta}
+                                            onChange={(e) => handleAnimalChange(animal.id, 'motivoNaoColeta', e.target.value)}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
 

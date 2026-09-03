@@ -28,7 +28,7 @@ export default function PainelOperacionalBase({
     renderFormExecucao,
 
     // Configurações do Modal Padrão de Cancelamento / Não Realização
-    tituloModalCancelamento = "Registrar Não Realização / Impedimento",
+    tituloModalCancelamento = "Registrar Impedimento",
     onConfirmarCancelamento,
     renderFormCancelamentoCustom
 }) {
@@ -142,7 +142,7 @@ export default function PainelOperacionalBase({
                                 {(item.status === 'programado' || item.status === 'pendente') && (
                                     <div className="po-botoes-acao-dupla">
                                         <button className="btn-executar" onClick={() => handleAbrirExecucao(item)}>
-                                            <i className="fas fa-check"></i> Executado / Laudo
+                                            <i className="fas fa-check"></i> Executar
                                         </button>
                                         <button className="btn-nao-realizado" onClick={() => handleAbrirCancelamento(item)}>
                                             <i className="fas fa-times"></i> Não Realizado
@@ -241,7 +241,7 @@ function FormCancelamentoPadrao({ item, onSalvar, onCancelar }) {
                 </div>
 
                 <div className="po-form-group">
-                    <label>Justificativa Técnica / Motivo do Impedimento <span className="obrigatorio">*</span></label>
+                    <label>Justificativa do Impedimento <span className="obrigatorio">*</span></label>
                     <textarea
                         rows="4"
                         placeholder="Ex: Imóvel fechado durante 3 tentativas..."

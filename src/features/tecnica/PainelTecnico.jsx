@@ -153,7 +153,7 @@ export default function PainelTecnico({ setTelaAtual }) {
                                     <i className="fas fa-search-location mr-2" aria-hidden="true"></i> Agendamentos
                                 </button>
                                 <button className={`menu-btn br-button block ${abaAtiva === 'epizootia-analises' ? 'active text-primary' : ''}`} onClick={() => navegarPara('epizootia-analises')}>
-                                    <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Análises e Retaguarda
+                                    <i className="fas fa-microscope mr-2" aria-hidden="true"></i> Análises
                                 </button>
                                 <button
                                     className={`menu-btn br-button block ${abaAtiva === 'monitor-temperatura' ? 'active text-primary' : ''}`}
